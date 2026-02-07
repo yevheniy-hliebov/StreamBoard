@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StreamBoard.Components.Navigation"
+             xmlns:settings="clr-namespace:StreamBoard.Features.Settings.Pages"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -29,7 +30,7 @@
             
             <ui:NavigationViewItem Content="Settings" 
                                    Icon="{ui:SymbolIcon Settings24}" 
-                                   Tag="settings" />
+                                   TargetPageType="{x:Type settings:SettingsPage}" />
         </ui:NavigationView.FooterMenuItems>
     </ui:NavigationView>
 </UserControl>
