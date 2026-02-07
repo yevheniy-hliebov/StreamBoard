@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StreamBoard.Features.Settings.ViewModels;
+using System.Windows.Controls;
 
 namespace StreamBoard.Features.Settings.Pages
 {
@@ -10,6 +12,8 @@ namespace StreamBoard.Features.Settings.Pages
         public SettingsPage()
         {
             InitializeComponent();
+
+            this.DataContext = App.ServiceProvider.GetRequiredService<SettingsViewModel>();
         }
     }
 }

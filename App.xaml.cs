@@ -1,6 +1,8 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using StreamBoard.Features.Settings.Services;
+using StreamBoard.Features.Settings.ViewModels;
+using Wpf.Ui.Appearance;
 
 namespace StreamBoard
 {
@@ -9,6 +11,32 @@ namespace StreamBoard
     /// </summary>
     public partial class App : Application
     {
+        public static IServiceProvider ServiceProvider { get; private set; } = null!;
+
+        public App()
+        {
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+            ServiceProvider = services.BuildServiceProvider();
+        }
+
+        private void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<SettingsStorage>();
+            services.AddTransient<SettingsViewModel>();
+
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            var storage = ServiceProvider.GetRequiredService<SettingsStorage>();
+
+            ApplicationThemeManager.Apply(
+                storage.Current.Theme == "Dark" ? ApplicationTheme.Dark : ApplicationTheme.Light
+            );
+        }
     }
 
 }
