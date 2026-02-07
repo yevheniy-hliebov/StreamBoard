@@ -17,6 +17,8 @@ namespace StreamBoard
         public MainWindow()
         {
             InitializeComponent();
+
+            WindowBackdropType = Wpf.Ui.Controls.WindowBackdropType.Mica;
         }
     }
 }

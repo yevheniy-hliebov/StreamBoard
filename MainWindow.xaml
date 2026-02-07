@@ -7,10 +7,11 @@
         xmlns:titlebar="clr-namespace:StreamBoard.Components.TitleBar"
         mc:Ignorable="d"
         Title="StreamBoard" Height="600" Width="1000"
+        WindowBackdropType="Mica"
         WindowStartupLocation="CenterScreen"
         ExtendsContentIntoTitleBar="True">
 
-    <Grid>
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
