@@ -8,7 +8,6 @@ namespace StreamBoard.Components.Cards
         public CardWithToggleSwitch()
         {
             InitializeComponent();
-            this.DataContext = this;
         }
 
         public string Title
