@@ -10,7 +10,7 @@
     
     <ui:TitleBar Height="32" Padding="12,0,0,0">
         <ui:TitleBar.Icon>
-            <ui:ImageIcon Source="pack://application:,,,/StreamBoard;component/Assets/logo.ico" 
+            <ui:ImageIcon Source="pack://application:,,,/StreamBoard;component/Assets/Images/logo.ico" 
               Margin="0,0,16,0" />
         </ui:TitleBar.Icon>
 

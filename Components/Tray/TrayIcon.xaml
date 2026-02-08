@@ -7,7 +7,7 @@
     <Grid>
         <tb:TaskbarIcon x:Name="NotifyIcon" 
                         ToolTipText="StreamBoard" 
-                        IconSource="pack://application:,,,/StreamBoard;component/Assets/logo.ico" >
+                        IconSource="pack://application:,,,/StreamBoard;component/Assets/Images/logo.ico" >
 
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
