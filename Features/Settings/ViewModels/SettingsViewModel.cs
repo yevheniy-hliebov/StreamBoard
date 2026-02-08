@@ -1,7 +1,9 @@
 ﻿using Microsoft.Win32;
 using StreamBoard.Core;
 using StreamBoard.Features.Settings.Services;
+using System.Windows.Input;
 using Wpf.Ui.Appearance;
+using Wpf.Ui.Input;
 
 namespace StreamBoard.Features.Settings.ViewModels
 {
@@ -9,11 +11,13 @@ namespace StreamBoard.Features.Settings.ViewModels
     {
         private readonly SettingsStorage _storage;
         private readonly StartupService _startupService;
+        private readonly PrivilegeService _privilegeService;
 
-        public SettingsViewModel(SettingsStorage storage, StartupService startupService)
+        public SettingsViewModel(SettingsStorage storage, StartupService startupService, PrivilegeService privilegeService)
         {
             _storage = storage;
             _startupService = startupService;
+            _privilegeService = privilegeService;
         }
 
         public bool IsDarkTheme
@@ -68,5 +72,21 @@ namespace StreamBoard.Features.Settings.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public bool RunAsAdmin
+        {
+            get => _storage.Current.RunAsAdmin;
+            set
+            {
+                if (_storage.Current.RunAsAdmin == value) return;
+                _storage.Current.RunAsAdmin = value;
+                _storage.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsRunAsAdmin => _privilegeService.IsRunAsAdmin();
+
+        public ICommand RestartAsAdminCommand => new RelayCommand<object>(_ => _privilegeService.RestartAsAdmin());
     }
 }

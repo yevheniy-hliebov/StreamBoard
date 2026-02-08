@@ -24,6 +24,7 @@ namespace StreamBoard
         {
             services.AddSingleton<SettingsStorage>();
             services.AddSingleton<StartupService>();
+            services.AddSingleton<PrivilegeService>();
 
             services.AddTransient<SettingsViewModel>();
         }
@@ -33,10 +34,19 @@ namespace StreamBoard
             base.OnStartup(e);
 
             var storage = ServiceProvider.GetRequiredService<SettingsStorage>();
+            var privilegeService = ServiceProvider.GetRequiredService<PrivilegeService>();
 
             ApplicationThemeManager.Apply(
                 storage.Current.Theme == "Dark" ? ApplicationTheme.Dark : ApplicationTheme.Light
             );
+
+            if (storage.Current.RunAsAdmin && !privilegeService.IsRunAsAdmin())
+            {
+                privilegeService.RestartAsAdmin();
+
+                Application.Current.Shutdown();
+                return;
+            }
         }
     }
 
