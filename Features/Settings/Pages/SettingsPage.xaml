@@ -11,13 +11,24 @@
       Title="SettingsPage">
 
     <StackPanel Margin="16">
+        <StackPanel.Resources>
+            <Style TargetType="cards:CardWithToggleSwitch">
+                <Setter Property="Margin" Value="0,0,0,12"/>
+            </Style>
+        </StackPanel.Resources>
+
         <TextBlock Text="Settings" 
                    FontSize="20" 
                    FontWeight="SemiBold" 
                    LineHeight="28" 
                    Margin="0,0,0,12"
                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-
+        
+        <cards:CardWithToggleSwitch x:Name="MinimizeToTraySwitcher"
+                                    Title="Minimize to Tray"
+                                    Description="Hide to system tray when minimized"
+                                    IsChecked="{Binding MinimizeToTray, Mode=TwoWay}" />
+        
         <cards:CardWithToggleSwitch x:Name="ThemeSwitcher"
                                     Title="Theme"
                                     Description="Switch between light and dark appearance" 

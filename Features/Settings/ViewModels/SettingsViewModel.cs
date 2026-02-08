@@ -26,5 +26,17 @@ namespace StreamBoard.Features.Settings.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public bool MinimizeToTray
+        {
+            get => _storage.Current.MinimizeToTray;
+            set
+            {
+                if (_storage.Current.MinimizeToTray == value) return;
+                _storage.Current.MinimizeToTray = value;
+                _storage.Save();
+                OnPropertyChanged();
+            }
+        }
     }
 }
