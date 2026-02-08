@@ -5,17 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:titlebar="clr-namespace:StreamBoard.Components.TitleBar"
+        xmlns:navigation="clr-namespace:StreamBoard.Components.Navigation"
+        xmlns:tray="clr-namespace:StreamBoard.Components.Tray"
         mc:Ignorable="d"
         Title="StreamBoard" Height="600" Width="1000"
+        WindowBackdropType="Mica"
         WindowStartupLocation="CenterScreen"
         ExtendsContentIntoTitleBar="True">
 
-    <Grid>
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
+        
+        <tray:TrayIconView />
+        
         <titlebar:MainTitleBar Grid.Row="0" />
+
+        <navigation:MainNavView Grid.Row="1"/>
     </Grid>
 </ui:FluentWindow>

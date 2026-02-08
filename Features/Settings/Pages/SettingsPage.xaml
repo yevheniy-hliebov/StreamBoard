@@ -1,0 +1,52 @@
+﻿<Page x:Class="StreamBoard.Features.Settings.Pages.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:local="clr-namespace:StreamBoard.Features.Settings.Pages"
+      xmlns:cards="clr-namespace:StreamBoard.Components.Cards"
+      xmlns:components="clr-namespace:StreamBoard.Features.Settings.Components"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SettingsPage">
+
+    <StackPanel Margin="16">
+        <StackPanel.Resources>
+            <Style TargetType="cards:CardWithToggleSwitch">
+                <Setter Property="Margin" Value="0,0,0,12"/>
+            </Style>
+        </StackPanel.Resources>
+
+        <TextBlock Text="Settings" 
+                   FontSize="20" 
+                   FontWeight="SemiBold" 
+                   LineHeight="28" 
+                   Margin="0,0,0,12"
+                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+
+        <cards:CardWithToggleSwitch Title="Minimize to Tray"
+                                    Description="Hide to system tray when minimized"
+                                    IsChecked="{Binding MinimizeToTray, Mode=TwoWay}" />
+
+        <cards:CardWithToggleSwitch Title="Start minimized"
+                                    Description="Launch the app hidden in the background on startup"
+                                    IsChecked="{Binding StartMinimized, Mode=TwoWay}" />
+
+        <cards:CardWithToggleSwitch Title="Startup with Windows"
+                                    Description="Launch StreamBoard automatically when Windows starts up"
+                                    IsChecked="{Binding StartupWithWindows, Mode=TwoWay}" />
+
+        <cards:CardWithToggleSwitch Title="Run as an administrator"
+                                    Description="Grant permission to intercept and block input from specific keyboards"
+                                    IsChecked="{Binding RunAsAdmin, Mode=TwoWay}" />
+
+        <components:PrivilegeStatusInfo />
+
+        <cards:CardWithToggleSwitch Title="Theme"
+                                    Description="Switch between light and dark appearance" 
+                                    ToggleOffText="Light" 
+                                    ToggleOnText="Dark"
+                                    IsChecked="{Binding IsDarkTheme, Mode=TwoWay}" />
+    </StackPanel>
+</Page>
