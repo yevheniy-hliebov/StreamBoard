@@ -23,7 +23,7 @@
                    LineHeight="28" 
                    Margin="0,0,0,12"
                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-        
+
         <cards:CardWithToggleSwitch Title="Minimize to Tray"
                                     Description="Hide to system tray when minimized"
                                     IsChecked="{Binding MinimizeToTray, Mode=TwoWay}" />
@@ -31,7 +31,11 @@
         <cards:CardWithToggleSwitch Title="Start minimized"
                                     Description="Launch the app hidden in the background on startup"
                                     IsChecked="{Binding StartMinimized, Mode=TwoWay}" />
-        
+
+        <cards:CardWithToggleSwitch Title="Startup with Windows"
+                                    Description="Launch StreamBoard automatically when Windows starts up"
+                                    IsChecked="{Binding StartupWithWindows, Mode=TwoWay}" />
+
         <cards:CardWithToggleSwitch Title="Theme"
                                     Description="Switch between light and dark appearance" 
                                     ToggleOffText="Light" 

@@ -23,8 +23,9 @@ namespace StreamBoard
         private void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<SettingsStorage>();
-            services.AddTransient<SettingsViewModel>();
+            services.AddSingleton<StartupService>();
 
+            services.AddTransient<SettingsViewModel>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

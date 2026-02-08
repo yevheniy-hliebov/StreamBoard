@@ -1,4 +1,5 @@
-﻿using StreamBoard.Core;
+﻿using Microsoft.Win32;
+using StreamBoard.Core;
 using StreamBoard.Features.Settings.Services;
 using Wpf.Ui.Appearance;
 
@@ -7,10 +8,12 @@ namespace StreamBoard.Features.Settings.ViewModels
     public class SettingsViewModel : ObservableObject
     {
         private readonly SettingsStorage _storage;
+        private readonly StartupService _startupService;
 
-        public SettingsViewModel(SettingsStorage storage)
+        public SettingsViewModel(SettingsStorage storage, StartupService startupService)
         {
             _storage = storage;
+            _startupService = startupService;
         }
 
         public bool IsDarkTheme
@@ -47,6 +50,21 @@ namespace StreamBoard.Features.Settings.ViewModels
                 if (_storage.Current.StartMinimized == value) return;
                 _storage.Current.StartMinimized = value;
                 _storage.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public bool StartupWithWindows
+        {
+            get => _storage.Current.StartupWithWindows;
+            set
+            {
+                if (_storage.Current.StartupWithWindows == value) return;
+                _storage.Current.StartupWithWindows = value;
+                _storage.Save();
+
+                _startupService.SetStartup(value);
+
                 OnPropertyChanged();
             }
         }
