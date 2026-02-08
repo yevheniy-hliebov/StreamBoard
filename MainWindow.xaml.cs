@@ -26,7 +26,16 @@ namespace StreamBoard
 
             _settings = App.ServiceProvider.GetRequiredService<SettingsStorage>();
 
+            Loaded += MainWindow_Loaded;
             StateChanged += MainWindow_StateChanged;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_settings.Current.StartMinimized)
+            {
+                WindowState = WindowState.Minimized;
+            }
         }
 
         private void MainWindow_StateChanged(object? sender, EventArgs e)

@@ -38,5 +38,17 @@ namespace StreamBoard.Features.Settings.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public bool StartMinimized
+        {
+            get => _storage.Current.StartMinimized;
+            set
+            {
+                if (_storage.Current.StartMinimized == value) return;
+                _storage.Current.StartMinimized = value;
+                _storage.Save();
+                OnPropertyChanged();
+            }
+        }
     }
 }
