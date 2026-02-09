@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StreamBoard.Components.Navigation"
+             xmlns:home="clr-namespace:StreamBoard.Features.Home.Pages"
              xmlns:settings="clr-namespace:StreamBoard.Features.Settings.Pages"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d" 
@@ -20,7 +21,7 @@
         <ui:NavigationView.MenuItems>
             <ui:NavigationViewItem Content="Home"
                                    Icon="{ui:SymbolIcon Home24}" 
-                                   Tag="home" />
+                                   TargetPageType="{x:Type home:HomePage}" />
 
             <ui:NavigationViewItemSeparator />
         </ui:NavigationView.MenuItems>
