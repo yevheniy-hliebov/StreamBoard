@@ -8,12 +8,26 @@
 		<UseWPF>true</UseWPF>
 		<AssemblyName>StreamBoard</AssemblyName>
 		<RootNamespace>StreamBoard</RootNamespace>
-		<ApplicationIcon>Assets\logo.ico</ApplicationIcon>
+		<ApplicationIcon>Assets\Images\logo.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Resource Include="Assets\logo.ico" />
-		<Resource Include="Assets\logo.png" />
+		<Resource Include="Assets\Images\banner_background.png" />
+		<Resource Include="Assets\Images\Integrations\obs.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Images\Integrations\streamerbot.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Images\Integrations\twitch.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Images\logo.ico">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Images\logo.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
 	</ItemGroup>
 
 	<ItemGroup>

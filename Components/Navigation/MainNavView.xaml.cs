@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StreamBoard.Features.Home.Pages;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -18,9 +19,20 @@ namespace StreamBoard.Components.Navigation
     /// </summary>
     public partial class MainNavView : UserControl
     {
+        public Wpf.Ui.Controls.NavigationView GetNavigation() => RootNavigation;
+
         public MainNavView()
         {
             InitializeComponent();
+
+            Loaded += OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Loaded -= OnLoaded;
+            
+            RootNavigation.Navigate(typeof(HomePage));
         }
     }
 }
