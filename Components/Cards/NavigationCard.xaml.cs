@@ -35,7 +35,6 @@ namespace StreamBoard.Components.Cards
         public object Icon { get => GetValue(IconProperty); set => SetValue(IconProperty, value); }
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(nameof(Icon), typeof(object), typeof(NavigationCard));
 
-        // Нові налаштування універсальності
         public bool IsChevronVisible { get => (bool)GetValue(IsChevronVisibleProperty); set => SetValue(IsChevronVisibleProperty, value); }
         public static readonly DependencyProperty IsChevronVisibleProperty = DependencyProperty.Register(nameof(IsChevronVisible), typeof(bool), typeof(NavigationCard), new PropertyMetadata(false));
 

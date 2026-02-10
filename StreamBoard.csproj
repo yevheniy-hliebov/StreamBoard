@@ -13,6 +13,15 @@
 
 	<ItemGroup>
 		<Resource Include="Assets\Images\banner_background.png" />
+		<Resource Include="Assets\Images\Integrations\obs.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Images\Integrations\streamerbot.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Images\Integrations\twitch.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
 		<Resource Include="Assets\Images\logo.ico">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>

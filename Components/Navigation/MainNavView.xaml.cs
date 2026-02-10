@@ -19,6 +19,8 @@ namespace StreamBoard.Components.Navigation
     /// </summary>
     public partial class MainNavView : UserControl
     {
+        public Wpf.Ui.Controls.NavigationView GetNavigation() => RootNavigation;
+
         public MainNavView()
         {
             InitializeComponent();

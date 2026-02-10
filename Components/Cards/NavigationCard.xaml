@@ -7,6 +7,7 @@
 
     <ui:CardAction VerticalAlignment="Stretch"
                    HorizontalAlignment="Stretch"
+                   VerticalContentAlignment="Top"
                    Command="{Binding Command, ElementName=Root}"
                    IsChevronVisible="{Binding IsChevronVisible, ElementName=Root}">
         <Grid>
@@ -27,6 +28,8 @@
                                 x:Name="IconContainer">
                     <ContentControl.Style>
                         <Style TargetType="ContentControl">
+                            <Setter Property="Width" Value="28"/>
+                            <Setter Property="Height" Value="28"/>
                             <Setter Property="Margin" Value="0,0,0,12"/>
                             <Setter Property="VerticalAlignment" Value="Stretch"/>
                             <Style.Triggers>
@@ -34,6 +37,8 @@
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IconPosition, ElementName=Root}" Value="{x:Static local:IconPosition.Left}">
+                                    <Setter Property="Width" Value="28"/>
+                                    <Setter Property="Height" Value="28"/>
                                     <Setter Property="Margin" Value="0,0,12,0"/>
                                     <Setter Property="VerticalAlignment" Value="Center"/>
                                 </DataTrigger>

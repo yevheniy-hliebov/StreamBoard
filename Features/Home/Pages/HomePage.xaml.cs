@@ -1,26 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using StreamBoard.Components.Cards;
+using StreamBoard.Components.Navigation;
+using StreamBoard.Features.GridDeck.Pages;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace StreamBoard.Features.Home.Pages
 {
-    /// <summary>
-    /// Interaction logic for HomePage.xaml
-    /// </summary>
     public partial class HomePage : Page
     {
         public HomePage()
         {
             InitializeComponent();
+        }
+
+        private void OnCardClick(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is NavigationCard card && card.Tag is string destination)
+            {
+                NavigateTo(destination);
+            }
+        }
+
+        private void NavigateTo(string destination)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow == null) return;
+
+            var navComponent = mainWindow.FindName("RootNavView") as MainNavView;
+            var navigationControl = navComponent?.GetNavigation();
+
+            if (navigationControl == null) return;
+
+            switch (destination)
+            {
+                case "GridDeck":
+                    navigationControl.Navigate(typeof(GridDeckPage));
+                    break;
+                case "KeyboardDeck":
+                    // navigationControl.Navigate(new KeyboardDeckPage());
+                    break;
+                case "OBS":
+                    // navigationControl.Navigate(new ObsSettingsPage());
+                    break;
+                case "Twitch":
+                    // navigationControl.Navigate(new TwitchSettingsPage());
+                    break;
+            }
         }
     }
 }

@@ -23,6 +23,6 @@
         
         <titlebar:MainTitleBar Grid.Row="0" />
 
-        <navigation:MainNavView Grid.Row="1"/>
+        <navigation:MainNavView Grid.Row="1" x:Name="RootNavView"/>
     </Grid>
 </ui:FluentWindow>
