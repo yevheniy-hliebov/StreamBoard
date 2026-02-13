@@ -27,6 +27,8 @@ namespace StreamBoard.Features.Servers.ViewModels
             OnPropertyChanged(nameof(IsProcessing));
         }
 
+        // Start / Stop Server
+
         public string ServerStatusString
         {
             get
@@ -76,5 +78,18 @@ namespace StreamBoard.Features.Servers.ViewModels
                 await _server.StartAsync();
             }
         });
+
+        // Auto Start Toggle
+        public bool AutoStart
+        {
+            get => _storage.Current.Http.AutoStart;
+            set
+            {
+                if (_storage.Current.Http.AutoStart == value) return;
+                _storage.Current.Http.AutoStart = value;
+                _storage.Save();
+                OnPropertyChanged();
+            }
+        }
     }
 }
