@@ -44,5 +44,22 @@
             </cards:CardControl.ActionContent>
         </cards:CardControl>
 
+        <cards:CardControl Title="Address"
+                           Description="The local IP address used to connect your devices">
+            <cards:CardControl.ActionContent>
+                <ui:TextBox Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}" 
+                            IsEnabled="{Binding CanEditSettings}"
+                            Width="128" />
+            </cards:CardControl.ActionContent>
+        </cards:CardControl>
+
+        <cards:CardControl Title="Port"
+                           Description="The network port used for server communication">
+            <cards:CardControl.ActionContent>
+                <ui:TextBox Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" 
+                            IsEnabled="{Binding CanEditSettings}"
+                            Width="128" />
+            </cards:CardControl.ActionContent>
+        </cards:CardControl>
     </StackPanel>
 </Page>

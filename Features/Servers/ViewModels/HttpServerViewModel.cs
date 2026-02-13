@@ -25,6 +25,7 @@ namespace StreamBoard.Features.Servers.ViewModels
             OnPropertyChanged(nameof(ActionButtonText));
             OnPropertyChanged(nameof(ActionButtonIcon));
             OnPropertyChanged(nameof(IsProcessing));
+            OnPropertyChanged(nameof(CanEditSettings));
         }
 
         // Start / Stop Server
@@ -91,5 +92,37 @@ namespace StreamBoard.Features.Servers.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        // Address
+        public string Address
+        {
+            get => _storage.Current.Http.Address;
+            set
+            {
+                if (_storage.Current.Http.Address != value)
+                {
+                    _storage.Current.Http.Address = value;
+                    _storage.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        // Port
+        public int Port
+        {
+            get => _storage.Current.Http.Port;
+            set
+            {
+                if (_storage.Current.Http.Port != value)
+                {
+                    _storage.Current.Http.Port = value;
+                    _storage.Save();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool CanEditSettings => _server.Status == ServerStatus.Stopped;
     }
 }
