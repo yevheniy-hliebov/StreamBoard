@@ -11,6 +11,7 @@ namespace StreamBoard.Features.Servers.Services
         private CancellationTokenSource? _cts;
 
         public bool IsRunning => _listener?.IsListening == true;
+        public bool ShouldAutoStart => _config.AutoStart;
 
         public HttpServer(HttpServerConfig config)
         {

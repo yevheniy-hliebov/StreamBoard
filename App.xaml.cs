@@ -25,8 +25,16 @@ namespace StreamBoard
         private void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<SettingsStorage>();
+            services.AddSingleton<ServerConfigsStorage>();
+
             services.AddSingleton<StartupService>();
             services.AddSingleton<PrivilegeService>();
+
+            services.AddSingleton<HttpServer>(sp =>
+            {
+                var storage = sp.GetRequiredService<ServerConfigsStorage>();
+                return new HttpServer(storage.Current.Http);
+            });
 
             services.AddTransient<SettingsViewModel>();
         }
@@ -35,12 +43,10 @@ namespace StreamBoard
         {
             base.OnStartup(e);
 
-            var httpServerConfig = new HttpServerConfig();
-            var httpServer = new HttpServer(httpServerConfig);
-            httpServer.Start();
-
             var storage = ServiceProvider.GetRequiredService<SettingsStorage>();
             var privilegeService = ServiceProvider.GetRequiredService<PrivilegeService>();
+
+            var httpServer = ServiceProvider.GetRequiredService<HttpServer>();
 
             ApplicationThemeManager.Apply(
                 storage.Current.Theme == "Dark" ? ApplicationTheme.Dark : ApplicationTheme.Light
@@ -52,6 +58,11 @@ namespace StreamBoard
 
                 Application.Current.Shutdown();
                 return;
+            }
+
+            if (httpServer != null && httpServer.ShouldAutoStart && !httpServer.IsRunning)
+            {
+                httpServer.Start();
             }
         }
     }

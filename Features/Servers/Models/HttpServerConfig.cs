@@ -1,13 +1,19 @@
-﻿namespace StreamBoard.Features.Servers.Models
+﻿using System.Text.Json.Serialization;
+
+namespace StreamBoard.Features.Servers.Models
 {
     public class HttpServerConfig
     {
+        [JsonPropertyName("address")]
         public string Address { get; set; } = "localhost";
 
+        [JsonPropertyName("port")]
         public int Port { get; set; } = 13550;
 
+        [JsonPropertyName("auto_start")]
         public bool AutoStart { get; set; } = false;
 
+        [JsonIgnore]
         public string Prefix => $"http://{Address}:{Port}/";
     }
 }
