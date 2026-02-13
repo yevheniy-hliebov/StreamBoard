@@ -39,7 +39,7 @@ namespace StreamBoard
             services.AddTransient<SettingsViewModel>();
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
@@ -62,7 +62,7 @@ namespace StreamBoard
 
             if (httpServer != null && httpServer.ShouldAutoStart && !httpServer.IsRunning)
             {
-                httpServer.Start();
+                await httpServer.StartAsync();
             }
         }
     }
