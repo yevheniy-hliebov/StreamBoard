@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using StreamBoard.Features.Servers.Models;
+using StreamBoard.Features.Servers.Services;
 using StreamBoard.Features.Settings.Services;
 using StreamBoard.Features.Settings.ViewModels;
 using Wpf.Ui.Appearance;
@@ -32,6 +34,10 @@ namespace StreamBoard
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            var httpServerConfig = new HttpServerConfig();
+            var httpServer = new HttpServer(httpServerConfig);
+            httpServer.Start();
 
             var storage = ServiceProvider.GetRequiredService<SettingsStorage>();
             var privilegeService = ServiceProvider.GetRequiredService<PrivilegeService>();
