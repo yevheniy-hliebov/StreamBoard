@@ -70,13 +70,33 @@ namespace StreamBoard.Features.Servers.ViewModels
         {
             if (IsProcessing) return;
 
-            if (_server.Status == ServerStatus.Running)
+            try
             {
-                await _server.StopAsync();
+                if (_server.Status == ServerStatus.Running)
+                    await _server.StopAsync();
+                else
+                    await _server.StartAsync();
             }
-            else if (_server.Status == ServerStatus.Stopped)
+            catch (Exception ex)
             {
-                await _server.StartAsync();
+                string message = ex switch
+                {
+                    UnauthorizedAccessException => "Access denied. Run the application as Administrator to use this IP address.",
+                    InvalidOperationException => ex.Message,
+                    _ => $"Unexpected error: {ex.Message}"
+                };
+
+                var uiMessageBox = new MessageBox
+                {
+                    Title = "Server Error",
+                    Content = message,
+                    CloseButtonText = "Close",
+                    MaxWidth = 400
+                };
+
+                uiMessageBox.Owner = System.Windows.Application.Current.MainWindow;
+
+                await uiMessageBox.ShowDialogAsync();
             }
         });
 

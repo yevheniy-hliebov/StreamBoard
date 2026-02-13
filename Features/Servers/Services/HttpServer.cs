@@ -57,6 +57,16 @@ namespace StreamBoard.Features.Servers.Services
 
                 Status = ServerStatus.Running;
             }
+            catch (HttpListenerException ex)
+            {
+                Status = ServerStatus.Stopped;
+                if (ex.ErrorCode == 5)
+                    throw new UnauthorizedAccessException("Access denied. Run as admin to use this IP/Port.", ex);
+                if (ex.ErrorCode == 183)
+                    throw new InvalidOperationException("Port is already in use by another application.", ex);
+
+                throw;
+            }
             catch (Exception)
             {
                 Status = ServerStatus.Stopped;
@@ -97,7 +107,6 @@ namespace StreamBoard.Features.Servers.Services
                 catch when (token.IsCancellationRequested) { break; }
                 catch (Exception ex)
                 {
-                    // Тут можна додати логування помилок циклу
                     if (_listener?.IsListening != true) break;
                 }
             }
