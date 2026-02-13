@@ -1,0 +1,35 @@
+﻿<Page x:Class="StreamBoard.Features.Servers.Pages.HttpServerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:local="clr-namespace:StreamBoard.Features.Servers.Pages"
+      xmlns:cards="clr-namespace:StreamBoard.Components.Cards"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="HttpServerPage">
+
+    <StackPanel Margin="16">
+        <TextBlock Text="HTTP Server"
+                   FontSize="20" 
+                   FontWeight="SemiBold" 
+                   LineHeight="28" 
+                   Margin="0,0,0,12"
+                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+
+        <cards:CardControl Title="Server Status"
+                           Description="{Binding ServerStatusString}">
+            <cards:CardControl.ActionContent>
+                <ui:Button Content="{Binding ActionButtonText}"
+                           Command="{Binding ToggleServerCommand}">
+                    <ui:Button.Icon>
+                        <ui:SymbolIcon Symbol="{Binding ActionButtonIcon}" />
+                    </ui:Button.Icon>
+                </ui:Button>
+            </cards:CardControl.ActionContent>
+        </cards:CardControl>
+
+
+    </StackPanel>
+</Page>

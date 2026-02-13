@@ -1,16 +1,13 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Features.Servers.Models;
 using StreamBoard.Features.Servers.Services;
+using StreamBoard.Features.Servers.ViewModels;
 using StreamBoard.Features.Settings.Services;
 using StreamBoard.Features.Settings.ViewModels;
 using Wpf.Ui.Appearance;
 
 namespace StreamBoard
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         public static IServiceProvider ServiceProvider { get; private set; } = null!;
@@ -37,6 +34,7 @@ namespace StreamBoard
             });
 
             services.AddTransient<SettingsViewModel>();
+            services.AddTransient<HttpServerViewModel>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)

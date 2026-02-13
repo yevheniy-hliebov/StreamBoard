@@ -15,7 +15,19 @@ namespace StreamBoard.Features.Servers.Services
         private CancellationTokenSource? _cts;
         private readonly object _statusLock = new();
 
-        public ServerStatus Status { get; private set; } = ServerStatus.Stopped;
+        public event Action<ServerStatus>? StatusChanged;
+
+        private ServerStatus _status = ServerStatus.Stopped;
+        public ServerStatus Status
+        {
+            get => _status;
+            private set
+            {
+                if (_status == value) return;
+                _status = value;
+                StatusChanged?.Invoke(_status);
+            }
+        }
 
         public bool IsRunning => Status == ServerStatus.Running;
         public bool ShouldAutoStart => _config.AutoStart;
