@@ -9,8 +9,6 @@ namespace StreamBoard.Features.Servers.Services
         Stopped, Starting, Running, Stopping
     }
 
-    public record HttpRequestLog(string Method, string Endpoint, string IpAddress, int StatusCode, DateTime Timestamp);
-
     public class HttpServer
     {
         private readonly HttpServerConfig _config;
@@ -149,20 +147,7 @@ namespace StreamBoard.Features.Servers.Services
             }
             finally
             {
-                string ip = ctx.Request.RemoteEndPoint?.Address.ToString() ?? "Unknown";
-
-                if (ip == "::1") ip = "127.0.0.1";
-
-                var log = new HttpRequestLog(
-                    ctx.Request.HttpMethod, 
-                    ctx.Request.Url?.AbsolutePath ?? "/",
-                    ip, 
-                    ctx.Response.StatusCode, 
-                    DateTime.Now
-                );
-
-                RequestProcessed?.Invoke(log);
-
+                RequestProcessed?.Invoke(new HttpRequestLog(ctx));
                 ctx.Response.OutputStream.Close();
             }
         }
