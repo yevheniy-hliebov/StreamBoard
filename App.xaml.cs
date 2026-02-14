@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using StreamBoard.Features.Servers.Controllers;
 using StreamBoard.Features.Servers.Services;
 using StreamBoard.Features.Servers.ViewModels;
 using StreamBoard.Features.Settings.Services;
@@ -30,7 +31,9 @@ namespace StreamBoard
             services.AddSingleton<HttpServer>(sp =>
             {
                 var storage = sp.GetRequiredService<ServerConfigsStorage>();
-                return new HttpServer(storage.Current.Http);
+                var homeController = new HomeController(storage.Current.Http);
+
+                return new HttpServer(storage.Current.Http, [ homeController ]);
             });
 
             services.AddTransient<SettingsViewModel>();

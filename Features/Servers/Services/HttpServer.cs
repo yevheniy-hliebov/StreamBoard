@@ -11,8 +11,11 @@ namespace StreamBoard.Features.Servers.Services
     public class HttpServer
     {
         private readonly HttpServerConfig _config;
+
+        private readonly IEnumerable<IHttpController> _controllers;
         private HttpListener? _listener;
         private CancellationTokenSource? _cts;
+        
         private readonly object _statusLock = new();
 
         public event Action<ServerStatus>? StatusChanged;
@@ -32,9 +35,10 @@ namespace StreamBoard.Features.Servers.Services
         public bool IsRunning => Status == ServerStatus.Running;
         public bool ShouldAutoStart => _config.AutoStart;
 
-        public HttpServer(HttpServerConfig config)
+        public HttpServer(HttpServerConfig config, IEnumerable<IHttpController> controllers)
         {
             _config = config;
+            _controllers = controllers;
         }
 
         public async Task StartAsync()
@@ -105,7 +109,7 @@ namespace StreamBoard.Features.Servers.Services
                     _ = Task.Run(() => Handle(ctx));
                 }
                 catch when (token.IsCancellationRequested) { break; }
-                catch (Exception ex)
+                catch
                 {
                     if (_listener?.IsListening != true) break;
                 }
@@ -119,11 +123,24 @@ namespace StreamBoard.Features.Servers.Services
         {
             try
             {
-                string text = $"Running on {_config.Address}:{_config.Port}";
-                byte[] data = Encoding.UTF8.GetBytes(text);
-                ctx.Response.ContentType = "text/plain";
-                ctx.Response.ContentLength64 = data.Length;
-                await ctx.Response.OutputStream.WriteAsync(data);
+                var path = ctx.Request.Url?.AbsolutePath ?? "/";
+
+                var controller = _controllers.FirstOrDefault(c => c.CanHandle(path));
+
+                if (controller != null)
+                {
+                    await controller.HandleAsync(ctx);
+                }
+                else
+                {
+                    ctx.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    byte[] data = Encoding.UTF8.GetBytes("404 - Not Found");
+                    await ctx.Response.OutputStream.WriteAsync(data);
+                }
+            }
+            catch
+            {
+                ctx.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
             finally
             {
