@@ -18,12 +18,7 @@
             </Style>
         </StackPanel.Resources>
 
-        <TextBlock Text="HTTP Server"
-                   FontSize="20" 
-                   FontWeight="SemiBold" 
-                   LineHeight="28" 
-                   Margin="0,0,0,12"
-                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <controls:PageTitle Text="HTTP Server" />
 
         <cards:CardControl Title="Server Status"
                            Description="{Binding ServerStatusString}">
