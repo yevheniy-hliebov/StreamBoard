@@ -36,8 +36,9 @@ namespace StreamBoard
                 return new HttpServer(storage.Current.Http, [ homeController ]);
             });
 
+            services.AddSingleton<HttpServerViewModel>();
+
             services.AddTransient<SettingsViewModel>();
-            services.AddTransient<HttpServerViewModel>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)

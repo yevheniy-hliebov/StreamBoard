@@ -56,5 +56,38 @@
                             Width="128" />
             </cards:CardControl.ActionContent>
         </cards:CardControl>
+
+        <ui:CardExpander Header="Requests"
+                         Icon="{ui:SymbolIcon History24}">
+            <Border Background="{DynamicResource ControlFillColorDefaultBrush}"
+                    CornerRadius="4"
+                    Padding="8"
+                    MinHeight="150"
+                    MaxHeight="300">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding RequestLogs}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="60" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="{Binding Timestamp, StringFormat=HH:mm:ss}" Foreground="Gray" Margin="0,0,8,0"/>
+                                    <ui:Badge Grid.Column="1" Content="{Binding StatusCode}" Appearance="Success" Margin="0,0,8,0" />
+                                    <TextBlock Grid.Column="2" Text="{Binding Method}" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding Endpoint}" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Grid.Column="4" Text="{Binding IpAddress}" Foreground="Gray" HorizontalAlignment="Right" Margin="0,0,16,0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+        </ui:CardExpander>
     </StackPanel>
 </Page>

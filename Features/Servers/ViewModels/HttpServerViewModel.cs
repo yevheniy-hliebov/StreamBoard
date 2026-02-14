@@ -1,5 +1,6 @@
 ﻿using StreamBoard.Core;
 using StreamBoard.Features.Servers.Services;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Wpf.Ui.Controls;
 using Wpf.Ui.Input;
@@ -11,12 +12,15 @@ namespace StreamBoard.Features.Servers.ViewModels
         private readonly ServerConfigsStorage _storage;
         private readonly HttpServer _server;
 
+        public ObservableCollection<HttpRequestLog> RequestLogs { get; } = new();
+
         public HttpServerViewModel(ServerConfigsStorage storage, HttpServer server)
         {
             _storage = storage;
             _server = server;
 
             _server.StatusChanged += OnServerStatusChanged;
+            _server.RequestProcessed += OnRequestProcessed;
         }
 
         private void OnServerStatusChanged(ServerStatus status)
@@ -26,6 +30,16 @@ namespace StreamBoard.Features.Servers.ViewModels
             OnPropertyChanged(nameof(ActionButtonIcon));
             OnPropertyChanged(nameof(IsProcessing));
             OnPropertyChanged(nameof(CanEditSettings));
+        }
+
+        private void OnRequestProcessed(HttpRequestLog log)
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                RequestLogs.Insert(0, log);
+
+                if (RequestLogs.Count > 50) RequestLogs.RemoveAt(50);
+            });
         }
 
         // Start / Stop Server
