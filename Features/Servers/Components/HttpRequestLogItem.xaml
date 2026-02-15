@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="StreamBoard.Features.Servers.Components.HttpRequestLogItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:local="clr-namespace:StreamBoard.Features.Servers.Components"
+             xmlns:helpers="clr-namespace:StreamBoard.Helpers">
+    
+    <UserControl.Resources>
+        <helpers:StatusCodeToAppearanceConverter x:Key="StatusConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="0,4" VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="TimeCol"/>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="StatusCol"/>
+            <ColumnDefinition Width="60"   SharedSizeGroup="MethodCol"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" SharedSizeGroup="IpCol"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="{Binding Timestamp, StringFormat=HH:mm:ss}" 
+                   Foreground="Gray" 
+                   VerticalAlignment="Center"
+                   Margin="0,0,12,0"/>
+
+        <ui:Badge Grid.Column="1" 
+                  Content="{Binding StatusCode}" 
+                  Appearance="{Binding StatusCode, Converter={StaticResource StatusConverter}}" 
+                  FontSize="9"
+                  VerticalAlignment="Center"
+                  Margin="0,0,12,0" />
+
+        <TextBlock Grid.Column="2" 
+                   Text="{Binding Method}" 
+                   FontWeight="SemiBold"
+                   VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Column="3" 
+                   Text="{Binding Endpoint}" 
+                   TextTrimming="CharacterEllipsis" 
+                   ToolTip="{Binding Endpoint}"
+                   VerticalAlignment="Center"
+                   Margin="0,0,12,0"/>
+
+        <TextBlock Grid.Column="4" 
+                   Text="{Binding IpAddress}" 
+                   Foreground="Gray" 
+                   FontSize="11"
+                   HorizontalAlignment="Right" 
+                   VerticalAlignment="Center"
+                   Margin="0,0,8,0"/>
+    </Grid>
+</UserControl>

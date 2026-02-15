@@ -6,6 +6,7 @@
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:local="clr-namespace:StreamBoard.Features.Settings.Pages"
       xmlns:cards="clr-namespace:StreamBoard.Components.Cards"
+      xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
       xmlns:components="clr-namespace:StreamBoard.Features.Settings.Components"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -13,40 +14,50 @@
 
     <StackPanel Margin="16">
         <StackPanel.Resources>
-            <Style TargetType="cards:CardWithToggleSwitch">
+            <Style TargetType="cards:CardControl">
                 <Setter Property="Margin" Value="0,0,0,12"/>
             </Style>
         </StackPanel.Resources>
 
-        <TextBlock Text="Settings" 
-                   FontSize="20" 
-                   FontWeight="SemiBold" 
-                   LineHeight="28" 
-                   Margin="0,0,0,12"
-                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <controls:PageTitle Text="Settings" />
+        
+        <cards:CardControl Title="Minimize to Tray"
+                           Description="Hide to system tray when minimized">
+            <cards:CardControl.ActionContent>
+                <controls:LabeledToggle IsChecked="{Binding MinimizeToTray, Mode=TwoWay}" />
+            </cards:CardControl.ActionContent>
+        </cards:CardControl>
 
-        <cards:CardWithToggleSwitch Title="Minimize to Tray"
-                                    Description="Hide to system tray when minimized"
-                                    IsChecked="{Binding MinimizeToTray, Mode=TwoWay}" />
+        <cards:CardControl Title="Start minimized"
+                           Description="Launch the app hidden in the background on startup">
+            <cards:CardControl.ActionContent>
+                <controls:LabeledToggle IsChecked="{Binding StartMinimized, Mode=TwoWay}" />
+            </cards:CardControl.ActionContent>
+        </cards:CardControl>
 
-        <cards:CardWithToggleSwitch Title="Start minimized"
-                                    Description="Launch the app hidden in the background on startup"
-                                    IsChecked="{Binding StartMinimized, Mode=TwoWay}" />
+        <cards:CardControl Title="Startup with Windows"
+                           Description="Launch StreamBoard automatically when Windows starts up">
+            <cards:CardControl.ActionContent>
+                <controls:LabeledToggle IsChecked="{Binding StartupWithWindows, Mode=TwoWay}" />
+            </cards:CardControl.ActionContent>
+        </cards:CardControl>
 
-        <cards:CardWithToggleSwitch Title="Startup with Windows"
-                                    Description="Launch StreamBoard automatically when Windows starts up"
-                                    IsChecked="{Binding StartupWithWindows, Mode=TwoWay}" />
-
-        <cards:CardWithToggleSwitch Title="Run as an administrator"
-                                    Description="Grant permission to intercept and block input from specific keyboards"
-                                    IsChecked="{Binding RunAsAdmin, Mode=TwoWay}" />
+        <cards:CardControl Title="Run as an administrator"
+                           Description="Grant permission to intercept and block input from specific keyboards">
+            <cards:CardControl.ActionContent>
+                <controls:LabeledToggle IsChecked="{Binding RunAsAdmin, Mode=TwoWay}" />
+            </cards:CardControl.ActionContent>
+        </cards:CardControl>
 
         <components:PrivilegeStatusInfo />
 
-        <cards:CardWithToggleSwitch Title="Theme"
-                                    Description="Switch between light and dark appearance" 
-                                    ToggleOffText="Light" 
-                                    ToggleOnText="Dark"
-                                    IsChecked="{Binding IsDarkTheme, Mode=TwoWay}" />
+        <cards:CardControl Title="Theme"
+                           Description="Switch between light and dark appearance">
+            <cards:CardControl.ActionContent>
+                <controls:LabeledToggle ToggleOffText="Light" 
+                                        ToggleOnText="Dark"
+                                        IsChecked="{Binding IsDarkTheme, Mode=TwoWay}" />
+            </cards:CardControl.ActionContent>
+        </cards:CardControl>
     </StackPanel>
 </Page>
