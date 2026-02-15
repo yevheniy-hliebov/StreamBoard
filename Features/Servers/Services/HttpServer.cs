@@ -1,23 +1,19 @@
-﻿using StreamBoard.Features.Servers.Models;
+﻿using StreamBoard.Core.Models;
+using StreamBoard.Features.Servers.Models;
 using System.Net;
 using System.Text;
 
 namespace StreamBoard.Features.Servers.Services
 {
-    public enum ServerStatus
+    public class HttpServer(HttpServerConfig config, HttpRouter router)
     {
-        Stopped, Starting, Running, Stopping
-    }
+        private readonly HttpServerConfig _config = config;
+        private readonly HttpRouter _router = router;
+        private readonly Lock _statusLock = new();
 
-    public class HttpServer
-    {
-        private readonly HttpServerConfig _config;
-
-        private readonly IEnumerable<IHttpController> _controllers;
         private HttpListener? _listener;
         private CancellationTokenSource? _cts;
-
-        private readonly object _statusLock = new();
+        private Task? _listeningTask;
 
         public event Action<ServerStatus>? StatusChanged;
 
@@ -38,13 +34,7 @@ namespace StreamBoard.Features.Servers.Services
 
         public event Action<HttpRequestLog>? RequestProcessed;
 
-        public HttpServer(HttpServerConfig config, IEnumerable<IHttpController> controllers)
-        {
-            _config = config;
-            _controllers = controllers;
-        }
-
-        public async Task StartAsync()
+        public async Task Start()
         {
             lock (_statusLock)
             {
@@ -60,28 +50,18 @@ namespace StreamBoard.Features.Servers.Services
 
                 _listener.Start();
 
-                _ = Task.Run(() => ListenLoop(_cts.Token));
+                _listeningTask = Task.Run(() => ListenLoop(_cts.Token));
 
                 Status = ServerStatus.Running;
             }
-            catch (HttpListenerException ex)
+            catch (Exception ex)
             {
                 Status = ServerStatus.Stopped;
-                if (ex.ErrorCode == 5)
-                    throw new UnauthorizedAccessException("Access denied. Run as admin to use this IP/Port.", ex);
-                if (ex.ErrorCode == 183)
-                    throw new InvalidOperationException("Port is already in use by another application.", ex);
-
-                throw;
-            }
-            catch (Exception)
-            {
-                Status = ServerStatus.Stopped;
-                throw;
+                HandleStartupException(ex);
             }
         }
 
-        public async Task StopAsync()
+        public async Task Stop()
         {
             lock (_statusLock)
             {
@@ -93,6 +73,9 @@ namespace StreamBoard.Features.Servers.Services
             {
                 _cts?.Cancel();
                 _listener?.Stop();
+
+                if (_listeningTask != null)
+                    await Task.WhenAny(_listeningTask, Task.Delay(5000));
 
                 _listener?.Close();
             }
@@ -108,8 +91,12 @@ namespace StreamBoard.Features.Servers.Services
             {
                 try
                 {
-                    var ctx = await _listener!.GetContextAsync();
-                    _ = Task.Run(() => Handle(ctx));
+                    var listener = _listener;
+                    if (listener == null)
+                        return;
+
+                    var ctx = await listener.GetContextAsync();
+                    _ = Task.Run(() => Handle(ctx), token);
                 }
                 catch when (token.IsCancellationRequested) { break; }
                 catch
@@ -119,37 +106,63 @@ namespace StreamBoard.Features.Servers.Services
             }
         }
 
-        public void Start() => StartAsync().GetAwaiter().GetResult();
-        public void Stop() => StopAsync().GetAwaiter().GetResult();
-
         private async Task Handle(HttpListenerContext ctx)
         {
             try
             {
-                var path = ctx.Request.Url?.AbsolutePath ?? "/";
-
-                var controller = _controllers.FirstOrDefault(c => c.CanHandle(path));
-
-                if (controller != null)
-                {
-                    await controller.HandleAsync(ctx);
-                }
-                else
-                {
-                    ctx.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                    byte[] data = Encoding.UTF8.GetBytes("404 - Not Found");
-                    await ctx.Response.OutputStream.WriteAsync(data);
-                }
+                await ProcessRequest(ctx);
             }
             catch
             {
-                ctx.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                await WriteTextResponse(ctx, HttpStatusCode.InternalServerError, "Internal Server Error");
             }
             finally
             {
                 RequestProcessed?.Invoke(new HttpRequestLog(ctx));
                 ctx.Response.OutputStream.Close();
             }
+        }
+
+        private async Task ProcessRequest(HttpListenerContext ctx)
+        {
+            var path = ctx.Request.Url?.AbsolutePath ?? "/";
+
+            var controller = _router.Resolve(path);
+
+            if (controller == null)
+            {
+                await WriteTextResponse(ctx, HttpStatusCode.NotFound, "Not Found");
+                return;
+            }
+
+            await controller.HandleAsync(ctx);
+        }
+
+        private static async Task WriteTextResponse(
+            HttpListenerContext ctx,
+            HttpStatusCode status,
+            string text
+        )
+        {
+            ctx.Response.StatusCode = (int)status;
+
+            var data = Encoding.UTF8.GetBytes($"{status} - {text}");
+            await ctx.Response.OutputStream.WriteAsync(data);
+        }
+
+        private static void HandleStartupException(Exception ex)
+        {
+            if (ex is HttpListenerException httpEx)
+            {
+                switch (httpEx.ErrorCode)
+                {
+                    case (int)WinErrorCodes.AccessDenied:
+                        throw new UnauthorizedAccessException("Access denied. Run as admin to use this IP/Port.", ex);
+                    case (int)WinErrorCodes.AlreadyExists:
+                        throw new InvalidOperationException("Port is already in use by another application.", ex);
+                }
+            }
+            throw ex;
         }
     }
 }

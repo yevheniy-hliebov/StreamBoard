@@ -4,7 +4,7 @@ namespace StreamBoard.Features.Servers.Services
 {
     public interface IHttpController
     {
-        bool CanHandle(string path);
+        string RoutePrefix { get; }
         Task HandleAsync(HttpListenerContext ctx);
     }
 }

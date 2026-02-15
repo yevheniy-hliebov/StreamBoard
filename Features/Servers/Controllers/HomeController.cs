@@ -14,10 +14,7 @@ namespace StreamBoard.Features.Servers.Controllers
             _config = config;
         }
 
-        public bool CanHandle(string path)
-        {
-            return path == "/" || string.IsNullOrEmpty(path);
-        }
+        public string RoutePrefix => "/";
 
         public async Task HandleAsync(HttpListenerContext ctx)
         {

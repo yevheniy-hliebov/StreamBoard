@@ -1,4 +1,5 @@
 ﻿using StreamBoard.Core;
+using StreamBoard.Features.Servers.Models;
 using StreamBoard.Features.Servers.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -87,9 +88,9 @@ namespace StreamBoard.Features.Servers.ViewModels
             try
             {
                 if (_server.Status == ServerStatus.Running)
-                    await _server.StopAsync();
+                    await _server.Stop();
                 else
-                    await _server.StartAsync();
+                    await _server.Start();
             }
             catch (Exception ex)
             {

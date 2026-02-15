@@ -33,7 +33,9 @@ namespace StreamBoard
                 var storage = sp.GetRequiredService<ServerConfigsStorage>();
                 var homeController = new HomeController(storage.Current.Http);
 
-                return new HttpServer(storage.Current.Http, [ homeController ]);
+                var httpRouter = new HttpRouter([homeController]);
+
+                return new HttpServer(storage.Current.Http, httpRouter);
             });
 
             services.AddSingleton<HttpServerViewModel>();
@@ -64,7 +66,7 @@ namespace StreamBoard
 
             if (httpServer != null && httpServer.ShouldAutoStart && !httpServer.IsRunning)
             {
-                await httpServer.StartAsync();
+                await httpServer.Start();
             }
         }
     }
