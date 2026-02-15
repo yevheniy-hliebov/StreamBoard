@@ -144,9 +144,10 @@ namespace StreamBoard.Features.Servers.Services
             string text
         )
         {
-            ctx.Response.StatusCode = (int)status;
+            int statusCode = (int)status;
+            ctx.Response.StatusCode = statusCode;
 
-            var data = Encoding.UTF8.GetBytes($"{status} - {text}");
+            var data = Encoding.UTF8.GetBytes($"{statusCode} - {text}");
             await ctx.Response.OutputStream.WriteAsync(data);
         }
 
