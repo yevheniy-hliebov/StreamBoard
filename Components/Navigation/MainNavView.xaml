@@ -6,7 +6,7 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:local="clr-namespace:StreamBoard.Components.Navigation"
              xmlns:home="clr-namespace:StreamBoard.Features.Home.Pages"
-             xmlns:griddeck="clr-namespace:StreamBoard.Features.GridDeck.Pages"
+             xmlns:decks="clr-namespace:StreamBoard.Features.Decks.Views.Pages"
              xmlns:settings="clr-namespace:StreamBoard.Features.Settings.Pages"
              xmlns:servers="clr-namespace:StreamBoard.Features.Servers.Pages"
              mc:Ignorable="d" 
@@ -29,7 +29,7 @@
 
             <ui:NavigationViewItem Content="Grid Deck"
                                    Icon="{ui:SymbolIcon Grid24}" 
-                                   TargetPageType="{x:Type griddeck:GridDeckPage}" />
+                                   TargetPageType="{x:Type decks:GridDeckPage}" />
             
             <ui:NavigationViewItemSeparator />
 

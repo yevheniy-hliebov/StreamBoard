@@ -8,7 +8,7 @@
         xmlns:navigation="clr-namespace:StreamBoard.Components.Navigation"
         xmlns:tray="clr-namespace:StreamBoard.Components.Tray"
         mc:Ignorable="d"
-        Title="StreamBoard" Height="600" Width="1000"
+        Title="StreamBoard" Height="800" Width="1252"
         WindowBackdropType="Mica"
         WindowStartupLocation="CenterScreen"
         ExtendsContentIntoTitleBar="True">

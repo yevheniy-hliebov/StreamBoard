@@ -1,6 +1,6 @@
 ﻿using StreamBoard.Components.Cards;
 using StreamBoard.Components.Navigation;
-using StreamBoard.Features.GridDeck.Pages;
+using StreamBoard.Features.Decks.Views.Pages;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
