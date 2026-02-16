@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.Json;
+using StreamBoard.Features.Decks.Serialization;
 
 namespace StreamBoard.Helpers
 {
@@ -8,6 +9,8 @@ namespace StreamBoard.Helpers
         private static readonly JsonSerializerOptions _options = new()
         {
             WriteIndented = true,
+            PropertyNameCaseInsensitive = true,
+            TypeInfoResolver = ActionSerializationContext.GetResolver()
         };
 
         public static void Save<T>(string filePath, T data)
@@ -28,7 +31,7 @@ namespace StreamBoard.Helpers
             try
             {
                 string json = File.ReadAllText(filePath);
-                return JsonSerializer.Deserialize<T>(json) ?? new T();
+                return JsonSerializer.Deserialize<T>(json, _options) ?? new T();
             }
             catch
             {

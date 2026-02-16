@@ -1,10 +1,12 @@
-﻿using System.Windows;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StreamBoard.Features.Decks.Services;
+using StreamBoard.Features.GridDeck.ViewModels;
 using StreamBoard.Features.Servers.Controllers;
 using StreamBoard.Features.Servers.Services;
 using StreamBoard.Features.Servers.ViewModels;
 using StreamBoard.Features.Settings.Services;
 using StreamBoard.Features.Settings.ViewModels;
+using System.Windows;
 using Wpf.Ui.Appearance;
 
 namespace StreamBoard
@@ -39,6 +41,9 @@ namespace StreamBoard
             });
 
             services.AddSingleton<HttpServerViewModel>();
+            services.AddSingleton<ActionRegistry>();
+            services.AddSingleton<GridDeckStorage>();
+            services.AddSingleton<KeyboardDeckStorage>();
 
             services.AddTransient<SettingsViewModel>();
         }
@@ -51,6 +56,7 @@ namespace StreamBoard
             var privilegeService = ServiceProvider.GetRequiredService<PrivilegeService>();
 
             var httpServer = ServiceProvider.GetRequiredService<HttpServer>();
+            var registry = ServiceProvider.GetRequiredService<ActionRegistry>();
 
             ApplicationThemeManager.Apply(
                 storage.Current.Theme == "Dark" ? ApplicationTheme.Dark : ApplicationTheme.Light
@@ -68,6 +74,14 @@ namespace StreamBoard
             {
                 await httpServer.Start();
             }
+
+            registry.RegisterActions();
+
+            var gridDeckStorage = ServiceProvider.GetRequiredService<GridDeckStorage>();
+            gridDeckStorage.Initialize();
+
+            var keyboardDeckStorage = ServiceProvider.GetRequiredService<KeyboardDeckStorage>();
+            keyboardDeckStorage.Initialize();
         }
     }
 
