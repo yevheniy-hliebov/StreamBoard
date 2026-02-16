@@ -42,9 +42,10 @@ namespace StreamBoard
 
             services.AddSingleton<HttpServerViewModel>();
             services.AddSingleton<ActionRegistry>();
+            services.AddSingleton<GridDeckStorage>();
+            services.AddSingleton<KeyboardDeckStorage>();
 
             services.AddTransient<SettingsViewModel>();
-            services.AddTransient<GridDeckViewModel>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
@@ -75,6 +76,12 @@ namespace StreamBoard
             }
 
             registry.RegisterActions();
+
+            var gridDeckStorage = ServiceProvider.GetRequiredService<GridDeckStorage>();
+            gridDeckStorage.Initialize();
+
+            var keyboardDeckStorage = ServiceProvider.GetRequiredService<KeyboardDeckStorage>();
+            keyboardDeckStorage.Initialize();
         }
     }
 
