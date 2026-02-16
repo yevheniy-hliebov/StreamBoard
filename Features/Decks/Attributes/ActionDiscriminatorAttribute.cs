@@ -1,4 +1,4 @@
-﻿namespace StreamBoard.Features.Decks.Serialization
+﻿namespace StreamBoard.Features.Decks.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class ActionDiscriminatorAttribute : Attribute

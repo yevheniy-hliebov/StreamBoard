@@ -1,10 +1,11 @@
-﻿using StreamBoard.Features.Decks.Models;
+﻿using StreamBoard.Features.Decks.Attributes;
+using StreamBoard.Features.Decks.Models;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
-using StreamBoard.Features.Decks.Serialization;
 
 namespace StreamBoard.Features.Decks.Actions.System
 {
+    //[ActionCategory("System")]
     [ActionDiscriminator("website")]
     public class WebsiteAction : DeckAction
     {
