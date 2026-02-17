@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StreamBoard.Features.GridDeck.ViewModels;
+using System.Windows.Controls;
 
 namespace StreamBoard.Features.Decks.Views.Pages
 {
@@ -7,6 +9,8 @@ namespace StreamBoard.Features.Decks.Views.Pages
         public GridDeckPage()
         {
             InitializeComponent();
+
+            this.DataContext = App.ServiceProvider.GetRequiredService<GridDeckViewModel>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using StreamBoard.Features.Decks.Services;
+using StreamBoard.Features.GridDeck.ViewModels;
 using StreamBoard.Features.Servers.Controllers;
 using StreamBoard.Features.Servers.Services;
 using StreamBoard.Features.Servers.ViewModels;
@@ -45,6 +46,7 @@ namespace StreamBoard
             services.AddSingleton<KeyboardDeckStorage>();
 
             services.AddTransient<SettingsViewModel>();
+            services.AddTransient<GridDeckViewModel>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
