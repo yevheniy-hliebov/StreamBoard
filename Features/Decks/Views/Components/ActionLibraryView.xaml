@@ -33,7 +33,11 @@
             <ItemsControl ItemsSource="{Binding ActionCategories}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <local:CategoryExpander Title="{Binding Name}" IsExpanded="False" Margin="0,0,0,4">
+                        <local:CategoryExpander Title="{Binding Name}" 
+                                                IconSymbol="{Binding Symbol}"
+                                                IconPath="{Binding IconPath}"
+                                                IsExpanded="False" 
+                                                Margin="0,0,0,4">
                             <local:CategoryExpander.InnerContent>
                                 <ItemsControl ItemsSource="{Binding Actions}">
                                     <ItemsControl.ItemTemplate>

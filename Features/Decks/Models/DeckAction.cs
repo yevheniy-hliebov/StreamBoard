@@ -1,8 +1,14 @@
 ﻿using StreamBoard.Core;
+using StreamBoard.Features.Decks.Attributes;
 using System.Text.Json.Serialization;
+using Wpf.Ui.Controls;
 
 namespace StreamBoard.Features.Decks.Models
 {
+    //[ActionCategory("System", IconPath = "/Assets/Images/Integrations/twitch.png")]
+    [ActionCategory("System", SymbolRegular.Laptop24)]
+    public abstract class SystemDeckAction : DeckAction { }
+
     public abstract class DeckAction : ObservableObject
     {
         [JsonPropertyName("id")]

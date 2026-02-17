@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Wpf.Ui.Controls;
 
 namespace StreamBoard.Features.Decks.Views.Components
 {
@@ -13,7 +14,23 @@ namespace StreamBoard.Features.Decks.Views.Components
             set => SetValue(TitleProperty, value);
         }
         public static readonly DependencyProperty TitleProperty =
-    DependencyProperty.Register("Title", typeof(string), typeof(CategoryExpander), new PropertyMetadata(string.Empty));
+            DependencyProperty.Register("Title", typeof(string), typeof(CategoryExpander), new PropertyMetadata(string.Empty));
+
+        public SymbolRegular IconSymbol
+        {
+            get => (SymbolRegular)GetValue(IconSymbolProperty);
+            set => SetValue(IconSymbolProperty, value);
+        }
+        public static readonly DependencyProperty IconSymbolProperty =
+            DependencyProperty.Register(nameof(IconSymbol), typeof(SymbolRegular), typeof(CategoryExpander), new PropertyMetadata(SymbolRegular.Folder24));
+
+        public string? IconPath
+        {
+            get => (string?)GetValue(IconPathProperty);
+            set => SetValue(IconPathProperty, value);
+        }
+        public static readonly DependencyProperty IconPathProperty =
+            DependencyProperty.Register(nameof(IconPath), typeof(string), typeof(CategoryExpander), new PropertyMetadata(null));
 
         public bool IsExpanded
         {

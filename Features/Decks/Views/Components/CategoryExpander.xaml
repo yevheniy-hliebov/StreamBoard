@@ -25,18 +25,53 @@
                             Padding="12,8">
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
+                            <Grid Grid.Column="0" Margin="0,0,12,0" VerticalAlignment="Center">
+
+                                <Image Source="{Binding IconPath, ElementName=Root}"
+                                       Width="20" Height="20"
+                                       RenderOptions.BitmapScalingMode="HighQuality">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="Source" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+
+                                <ui:SymbolIcon Symbol="{Binding IconSymbol, ElementName=Root}"
+                                               FontSize="20"
+                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                    <ui:SymbolIcon.Style>
+                                        <Style TargetType="ui:SymbolIcon">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IconPath, ElementName=Root}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:SymbolIcon.Style>
+                                </ui:SymbolIcon>
+                            </Grid>
+
                             <TextBlock Text="{Binding Title, ElementName=Root}"
+                                       Grid.Column="1"
                                        VerticalAlignment="Center"
                                        FontWeight="Medium"
                                        FontSize="14"
                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
 
                             <ui:SymbolIcon x:Name="ChevronIcon"
-                                           Grid.Column="1"
+                                           Grid.Column="2"
                                            Symbol="ChevronDown24"
                                            FontSize="12"
                                            VerticalAlignment="Center"

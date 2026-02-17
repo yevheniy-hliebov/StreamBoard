@@ -5,9 +5,8 @@ using System.Text.Json.Serialization;
 
 namespace StreamBoard.Features.Decks.Actions.System
 {
-    //[ActionCategory("System")]
     [ActionDiscriminator("website")]
-    public class WebsiteAction : DeckAction
+    public class WebsiteAction : SystemDeckAction
     {
         public static readonly ActionMetadata StaticMetadata = new(
             Name: "Open Website",
