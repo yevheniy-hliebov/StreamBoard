@@ -7,16 +7,16 @@ namespace StreamBoard.Features.GridDeck.ViewModels
 {
     public partial class GridDeckViewModel : ObservableObject
     {
-        private readonly ActionRegistry _registry;
         private readonly GridDeckStorage _storage;
-
-        public List<ActionCategoryViewModel> ActionCategories => _registry.Categories;
+        
         public DeckProfile Profile => _storage.CurrentProfile;
 
-        public GridDeckViewModel(ActionRegistry registry, GridDeckStorage storage)
+        public ActionLibraryViewModel Library { get; }
+
+        public GridDeckViewModel(GridDeckStorage storage, ActionRegistry registry)
         {
-            _registry = registry;
             _storage = storage;
+            Library = new ActionLibraryViewModel(registry);
         }
     }
 }

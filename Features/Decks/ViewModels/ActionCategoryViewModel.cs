@@ -13,6 +13,13 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         public ObservableCollection<ActionDescriptor> Actions { get; } = [];
 
+        private bool _isExpanded = false;
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set => SetProperty(ref _isExpanded, value);
+        }
+
         public ActionCategoryViewModel(string name, SymbolRegular symbol, string? iconPath = null)
         {
             Name = name;

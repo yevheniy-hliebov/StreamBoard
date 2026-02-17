@@ -24,7 +24,7 @@
         </components:DeckEditorLayout.PropertiesContent>
 
         <components:DeckEditorLayout.LibraryContent>
-            <components:ActionLibraryView />
+            <components:ActionLibraryView DataContext="{Binding Library}" />
         </components:DeckEditorLayout.LibraryContent>
 
     </components:DeckEditorLayout>

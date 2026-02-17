@@ -15,28 +15,35 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0">
-            <TextBlock Text="Action Library"
-                       FontSize="14" 
-                       FontWeight="SemiBold" 
-                       Margin="8,8,8,0"
-                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+        <Border Grid.Row="0"
+                BorderThickness="0,0,0,1"
+                BorderBrush="{DynamicResource SurfaceStrokeColorDefaultBrush}">
 
-            <ui:TextBox PlaceholderText="Search actions..." 
-                        Icon="{ui:SymbolIcon Search24}"
-                        Margin="8"
-                        ClearButtonEnabled="True" />
-        </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Action Library"
+                   FontSize="14" 
+                   FontWeight="SemiBold" 
+                   Margin="8,8,8,0"
+                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+
+                <ui:TextBox Icon="{ui:SymbolIcon Search24}"
+                    PlaceholderText="Search actions..." 
+                    Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Margin="8"
+                    ClearButtonEnabled="True" />
+            </StackPanel>
+        </Border>
 
         <ScrollViewer Grid.Row="1"
-                      VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding ActionCategories}">
+                      VerticalScrollBarVisibility="Auto"
+                      Margin="0,4,0,0">
+            <ItemsControl ItemsSource="{Binding FilteredCategories}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <local:CategoryExpander Title="{Binding Name}" 
                                                 IconSymbol="{Binding Symbol}"
                                                 IconPath="{Binding IconPath}"
-                                                IsExpanded="False" 
+                                                IsExpanded="{Binding IsExpanded}" 
                                                 Margin="0,0,0,4">
                             <local:CategoryExpander.InnerContent>
                                 <ItemsControl ItemsSource="{Binding Actions}">
