@@ -15,24 +15,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0"
-                BorderThickness="0,0,0,1"
-                BorderBrush="{DynamicResource SurfaceStrokeColorDefaultBrush}">
-
-            <StackPanel>
-                <TextBlock Text="Action Library"
-                   FontSize="14" 
-                   FontWeight="SemiBold" 
-                   Margin="8,8,8,0"
-                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-
+        <local:DeckSidebarHeader Title="Action Library">
+            <local:DeckSidebarHeader.BottomContent>
                 <ui:TextBox Icon="{ui:SymbolIcon Search24}"
-                    PlaceholderText="Search actions..." 
-                    Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Margin="8"
-                    ClearButtonEnabled="True" />
-            </StackPanel>
-        </Border>
+                            PlaceholderText="Search actions..." 
+                            Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="8,0,8,8"
+                            ClearButtonEnabled="True" />
+            </local:DeckSidebarHeader.BottomContent>
+        </local:DeckSidebarHeader>
 
         <ScrollViewer Grid.Row="1"
                       VerticalScrollBarVisibility="Auto"
