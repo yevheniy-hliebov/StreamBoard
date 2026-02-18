@@ -5,12 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:local="clr-namespace:StreamBoard.Components.Navigation"
+             xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
              xmlns:home="clr-namespace:StreamBoard.Features.Home.Pages"
              xmlns:decks="clr-namespace:StreamBoard.Features.Decks.Views.Pages"
              xmlns:settings="clr-namespace:StreamBoard.Features.Settings.Pages"
              xmlns:servers="clr-namespace:StreamBoard.Features.Servers.Pages"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" d:Background="White">
 
     <ui:NavigationView x:Name="RootNavigation"
                        PaneDisplayMode="Left"
@@ -18,27 +19,45 @@
                        IsPaneToggleVisible="True"
                        IsTopSeparatorVisible="False"
                        IsFooterSeparatorVisible="False"
-                       OpenPaneLength="250"
+                       OpenPaneLength="200"
                        FrameMargin="0">
         <ui:NavigationView.MenuItems>
-            <ui:NavigationViewItem Content="Home"
-                                   Icon="{ui:SymbolIcon Home24}" 
-                                   TargetPageType="{x:Type home:HomePage}" />
+            <ui:NavigationViewItem Content="Home" TargetPageType="{x:Type home:HomePage}">
+                <ui:NavigationViewItem.Icon>
+                    <controls:FluentIcon IconType="Home" FontSize="16" />
+                </ui:NavigationViewItem.Icon>
+            </ui:NavigationViewItem>
 
             <ui:NavigationViewItemSeparator />
 
             <ui:NavigationViewItem Content="Grid Deck"
-                                   Icon="{ui:SymbolIcon Grid24}" 
-                                   TargetPageType="{x:Type decks:GridDeckPage}" />
-            
+                                   TargetPageType="{x:Type decks:GridDeckPage}">
+                <ui:NavigationViewItem.Icon>
+                    <controls:FluentIcon IconType="Grid" FontSize="16" />
+                </ui:NavigationViewItem.Icon>
+            </ui:NavigationViewItem>
+
+            <ui:NavigationViewItem Content="Keyboard Deck"
+                                   TargetPageType="{x:Type decks:KeyboardDeckPage}">
+                <ui:NavigationViewItem.Icon>
+                    <controls:FluentIcon IconType="Keyboard" FontSize="16" />
+                </ui:NavigationViewItem.Icon>
+            </ui:NavigationViewItem>
+
             <ui:NavigationViewItemSeparator />
 
-            <ui:NavigationViewItem Content="Servers / Clients" 
-                           Icon="{ui:SymbolIcon Server24}">
+            <ui:NavigationViewItem Content="Servers / Clients">
+                <ui:NavigationViewItem.Icon>
+                    <controls:FluentIcon IconType="Devices" FontSize="16" />
+                </ui:NavigationViewItem.Icon>
+
                 <ui:NavigationViewItem.MenuItems>
                     <ui:NavigationViewItem Content="HTTP Server"
-                                   Icon="{ui:SymbolIcon Globe24}"
-                                   TargetPageType="{x:Type servers:HttpServerPage}" />
+                                   TargetPageType="{x:Type servers:HttpServerPage}">
+                        <ui:NavigationViewItem.Icon>
+                            <controls:FluentIcon IconType="Network" FontSize="16" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
 
                 </ui:NavigationViewItem.MenuItems>
             </ui:NavigationViewItem>
@@ -46,10 +65,13 @@
 
         <ui:NavigationView.FooterMenuItems>
             <ui:NavigationViewItemSeparator />
-            
-            <ui:NavigationViewItem Content="Settings" 
-                                   Icon="{ui:SymbolIcon Settings24}" 
-                                   TargetPageType="{x:Type settings:SettingsPage}" />
+
+            <ui:NavigationViewItem Content="Settings"
+                                   TargetPageType="{x:Type settings:SettingsPage}">
+                <ui:NavigationViewItem.Icon>
+                    <controls:FluentIcon IconType="Settings" FontSize="16" />
+                </ui:NavigationViewItem.Icon>
+            </ui:NavigationViewItem>
         </ui:NavigationView.FooterMenuItems>
     </ui:NavigationView>
 </UserControl>
