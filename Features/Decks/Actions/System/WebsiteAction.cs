@@ -1,4 +1,5 @@
-﻿using StreamBoard.Features.Decks.Attributes;
+﻿using StreamBoard.Components.Controls;
+using StreamBoard.Features.Decks.Attributes;
 using StreamBoard.Features.Decks.Models;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
@@ -11,7 +12,7 @@ namespace StreamBoard.Features.Decks.Actions.System
         public static readonly ActionMetadata StaticMetadata = new(
             Name: "Open Website",
             DialogTitle: "Enter URL",
-            IconKey: "Globe24"
+            Icon: FluentIconType.Globe
         );
 
         [JsonIgnore]

@@ -41,7 +41,7 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <local:ActionLibraryItem Text="{Binding Metadata.Name}" 
-                                                                     Icon="{Binding Metadata.IconKey}" />
+                                                                     Icon="{Binding Metadata.Icon}" />
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>

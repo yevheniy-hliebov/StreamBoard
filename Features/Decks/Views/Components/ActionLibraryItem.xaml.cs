@@ -1,22 +1,22 @@
-﻿using System.Windows;
+﻿using StreamBoard.Components.Controls;
+using System.Windows;
 using System.Windows.Controls;
-using Wpf.Ui.Controls;
 
 namespace StreamBoard.Features.Decks.Views.Components
 {
     public partial class ActionLibraryItem : UserControl
     {
         public static readonly DependencyProperty IconProperty =
-            DependencyProperty.Register("Icon", typeof(SymbolRegular), typeof(ActionLibraryItem),
-                new PropertyMetadata(SymbolRegular.Empty));
+            DependencyProperty.Register("Icon", typeof(FluentIconType), typeof(ActionLibraryItem),
+                new PropertyMetadata(FluentIconType.Checkbox));
 
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register("Text", typeof(string), typeof(ActionLibraryItem),
                 new PropertyMetadata(string.Empty));
 
-        public SymbolRegular Icon
+        public FluentIconType Icon
         {
-            get => (SymbolRegular)GetValue(IconProperty);
+            get => (FluentIconType)GetValue(IconProperty);
             set => SetValue(IconProperty, value);
         }
 
