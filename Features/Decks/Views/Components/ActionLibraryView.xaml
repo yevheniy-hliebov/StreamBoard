@@ -32,8 +32,8 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <local:CategoryExpander Title="{Binding Name}" 
-                                                IconSymbol="{Binding Symbol}"
-                                                IconPath="{Binding IconPath}"
+                                                Icon="{Binding Icon}"
+                                                ImagePath="{Binding ImagePath}"
                                                 IsExpanded="{Binding IsExpanded}" 
                                                 Margin="0,0,0,4">
                             <local:CategoryExpander.InnerContent>

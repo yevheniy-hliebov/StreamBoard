@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using StreamBoard.Components.Controls;
+using System.Windows;
 using System.Windows.Controls;
 using Wpf.Ui.Controls;
 
@@ -16,21 +17,21 @@ namespace StreamBoard.Features.Decks.Views.Components
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register("Title", typeof(string), typeof(CategoryExpander), new PropertyMetadata(string.Empty));
 
-        public SymbolRegular IconSymbol
+        public FluentIconType Icon
         {
-            get => (SymbolRegular)GetValue(IconSymbolProperty);
-            set => SetValue(IconSymbolProperty, value);
+            get => (FluentIconType)GetValue(IconProperty);
+            set => SetValue(IconProperty, value);
         }
-        public static readonly DependencyProperty IconSymbolProperty =
-            DependencyProperty.Register(nameof(IconSymbol), typeof(SymbolRegular), typeof(CategoryExpander), new PropertyMetadata(SymbolRegular.Folder24));
+        public static readonly DependencyProperty IconProperty =
+            DependencyProperty.Register(nameof(Icon), typeof(FluentIconType), typeof(CategoryExpander), new PropertyMetadata(FluentIconType.Folder));
 
-        public string? IconPath
+        public string? ImagePath
         {
-            get => (string?)GetValue(IconPathProperty);
-            set => SetValue(IconPathProperty, value);
+            get => (string?)GetValue(ImagePathProperty);
+            set => SetValue(ImagePathProperty, value);
         }
-        public static readonly DependencyProperty IconPathProperty =
-            DependencyProperty.Register(nameof(IconPath), typeof(string), typeof(CategoryExpander), new PropertyMetadata(null));
+        public static readonly DependencyProperty ImagePathProperty =
+            DependencyProperty.Register(nameof(ImagePath), typeof(string), typeof(CategoryExpander), new PropertyMetadata(null));
 
         public bool IsExpanded
         {

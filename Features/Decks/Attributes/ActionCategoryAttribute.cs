@@ -1,4 +1,5 @@
-﻿using Wpf.Ui.Controls;
+﻿using StreamBoard.Components.Controls;
+using Wpf.Ui.Controls;
 
 namespace StreamBoard.Features.Decks.Attributes
 {
@@ -6,18 +7,18 @@ namespace StreamBoard.Features.Decks.Attributes
     public class ActionCategoryAttribute : Attribute
     {
         public string Name { get; }
-        public SymbolRegular Symbol { get; } = SymbolRegular.Folder24;
-        public string? IconPath { get; set; }
+        public FluentIconType FluentIcon { get; } = FluentIconType.Folder;
+        public string? ImagePath { get; set; }
 
         public ActionCategoryAttribute(string name)
         {
             Name = name;
         }
 
-        public ActionCategoryAttribute(string name, SymbolRegular symbol)
+        public ActionCategoryAttribute(string name, FluentIconType icon)
         {
             Name = name;
-            Symbol = symbol;
+            FluentIcon = icon;
         }
     }
 }

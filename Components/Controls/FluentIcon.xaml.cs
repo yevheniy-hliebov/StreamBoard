@@ -6,25 +6,31 @@ namespace StreamBoard.Components.Controls
     public enum FluentIconType
     {
         Add,
-        Rename,
         Delete,
-        Home,
-        Grid,
-        Keyboard,
         Devices,
-        Network,
+        Folder,
         Globe,
+        Grid,
+        Home,
+        Keyboard,
+        Network,
+        Rename,
+        Settings,
         System,
-        Settings
     }
 
     public partial class FluentIcon : FontIcon
     {
+        static FluentIcon()
+        {
+            FontSizeProperty.OverrideMetadata(typeof(FluentIcon), new FrameworkPropertyMetadata(14.0));
+        }
+
         public FluentIcon()
         {
             InitializeComponent();
 
-            this.Glyph = "\uE710";
+            UpdateGlyph(IconType);
         }
 
         public static readonly DependencyProperty IconTypeProperty =
@@ -41,22 +47,28 @@ namespace StreamBoard.Components.Controls
         {
             if (d is FluentIcon control && e.NewValue is FluentIconType type)
             {
-                control.Glyph = type switch
-                {
-                    FluentIconType.Add => "\uE710",
-                    FluentIconType.Rename => "\uE8AC",
-                    FluentIconType.Delete => "\uE74D",
-                    FluentIconType.Home => "\uE80F",
-                    FluentIconType.Grid => "\uF0E2",
-                    FluentIconType.Keyboard => "\uE92E",
-                    FluentIconType.Devices => "\uEA6C",
-                    FluentIconType.Network => "\uE968",
-                    FluentIconType.Globe => "\uE12B",
-                    FluentIconType.System => "\uE770",
-                    FluentIconType.Settings => "\uE713",
-                    _ => "\uE710"
-                };
+                control.UpdateGlyph(type);
             }
+        }
+
+        private void UpdateGlyph(FluentIconType type)
+        {
+            this.Glyph = type switch
+            {
+                FluentIconType.Add => "\uE710",
+                FluentIconType.Delete => "\uE74D",
+                FluentIconType.Devices => "\uEA6C",
+                FluentIconType.Folder => "\uE8B7",
+                FluentIconType.Globe => "\uE12B",
+                FluentIconType.Grid => "\uF0E2",
+                FluentIconType.Home => "\uE80F",
+                FluentIconType.Keyboard => "\uE92E",
+                FluentIconType.Network => "\uE968",
+                FluentIconType.Rename => "\uE8AC",
+                FluentIconType.Settings => "\uE713",
+                FluentIconType.System => "\uE770",
+                _ => "\uE710"
+            };
         }
     }
 }

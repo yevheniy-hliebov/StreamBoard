@@ -1,8 +1,9 @@
-﻿using System.Reflection;
-using Wpf.Ui.Controls;
+﻿using StreamBoard.Components.Controls;
 using StreamBoard.Features.Decks.Attributes;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.ViewModels;
+using System.Reflection;
+using Wpf.Ui.Controls;
 
 namespace StreamBoard.Features.Decks.Services
 {
@@ -25,14 +26,14 @@ namespace StreamBoard.Features.Decks.Services
                 var attribute = type.GetCustomAttribute<ActionCategoryAttribute>();
 
                 string categoryName = attribute?.Name ?? GetRawCategoryFromNamespace(type.Namespace);
-                SymbolRegular symbol = attribute?.Symbol ?? SymbolRegular.Folder24;
-                string? iconPath = attribute?.IconPath;
+                FluentIconType icon = attribute?.FluentIcon ?? FluentIconType.Folder;
+                string? imagePath = attribute?.ImagePath;
 
                 var descriptor = new ActionDescriptor(categoryName, tempInstance.Metadata, type);
 
                 if (!categoryMap.TryGetValue(categoryName, out var categoryVm))
                 {
-                    categoryVm = new ActionCategoryViewModel(categoryName, symbol, iconPath);
+                    categoryVm = new ActionCategoryViewModel(categoryName, icon, imagePath);
                     categoryMap[categoryName] = categoryVm;
                 }
 

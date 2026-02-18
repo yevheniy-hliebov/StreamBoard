@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
              x:Name="Root">
 
     <Grid>
@@ -30,10 +31,16 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Grid Grid.Column="0" Margin="0,0,12,0" VerticalAlignment="Center">
-
-                                <Image Source="{Binding IconPath, ElementName=Root}"
+                            <Grid Grid.Column="0"
+                                  Width="24" 
+                                  Height="24" 
+                                  Margin="0,0,12,0" 
+                                  VerticalAlignment="Center">
+                                
+                                <Image Source="{Binding ImagePath, ElementName=Root}"
                                        Width="20" Height="20"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
                                        RenderOptions.BitmapScalingMode="HighQuality">
                                     <Image.Style>
                                         <Style TargetType="Image">
@@ -47,20 +54,22 @@
                                     </Image.Style>
                                 </Image>
 
-                                <ui:SymbolIcon Symbol="{Binding IconSymbol, ElementName=Root}"
-                                               FontSize="20"
-                                               Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                                    <ui:SymbolIcon.Style>
-                                        <Style TargetType="ui:SymbolIcon">
+                                <controls:FluentIcon IconType="{Binding Icon, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                     FontSize="20"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center"
+                                                     Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                    <controls:FluentIcon.Style>
+                                        <Style TargetType="controls:FluentIcon">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IconPath, ElementName=Root}" Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding ImagePath, ElementName=Root}" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Visible"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </ui:SymbolIcon.Style>
-                                </ui:SymbolIcon>
+                                    </controls:FluentIcon.Style>
+                                </controls:FluentIcon>
                             </Grid>
 
                             <TextBlock Text="{Binding Title, ElementName=Root}"
