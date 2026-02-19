@@ -14,6 +14,7 @@ namespace StreamBoard.Features.Decks.ViewModels
         public ActionLibraryViewModel Library { get; }
 
         public ICommand AddPageCommand { get; }
+        public ICommand RenamePageCommand { get; }
         public ICommand DeletePageCommand { get; }
 
         public GridDeckViewModel(GridDeckStorage storage, ActionRegistry registry)
@@ -23,6 +24,9 @@ namespace StreamBoard.Features.Decks.ViewModels
 
             AddPageCommand = new RelayCommand(_ => OnAddPage());
             DeletePageCommand = new RelayCommand(_ => OnDeletePage());
+            RenamePageCommand = new RelayCommand(_ => {
+                if (SelectedPage != null) IsRenameMode = true;
+            }, _ => SelectedPage != null);
         }
 
         public DeckPageInfo? SelectedPage
@@ -30,6 +34,7 @@ namespace StreamBoard.Features.Decks.ViewModels
             get => Profile.Pages.List.FirstOrDefault(p => p.Id == Profile.Pages.SelectedPageId);
             set
             {
+                IsRenameMode = false;
                 if (value != null && Profile.Pages.SelectedPageId != value.Id)
                 {
                     Profile.Pages.SelectedPageId = value.Id;
@@ -39,15 +44,24 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
         }
 
+        private bool _isRenameMode;
+        public bool IsRenameMode
+        {
+            get => _isRenameMode;
+            set => SetProperty(ref _isRenameMode, value);
+        }
+
         private void OnAddPage()
         {
+            IsRenameMode = false;
+
             var newPage = new DeckPageInfo
             {
                 Name = $"Page {Profile.Pages.List.Count + 1}"
             };
 
             Profile.Pages.List.Add(newPage);
-            Profile.Pages.SelectedPageId = newPage.Id;
+            SelectedPage = newPage;
 
             _storage.Save();
         }
@@ -58,8 +72,15 @@ namespace StreamBoard.Features.Decks.ViewModels
             _storage.Save();
         }
 
+        public void EndRename()
+        {
+            IsRenameMode = false;
+            _storage.Save();
+        }
+
         private void OnDeletePage()
         {
+            IsRenameMode = false;
             if (SelectedPage == null || Profile.Pages.List.Count == 1) return;
 
             var pageToDelete = SelectedPage;

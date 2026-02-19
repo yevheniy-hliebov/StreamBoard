@@ -24,7 +24,8 @@
                                BorderThickness="0"
                                Background="Transparent"
                                ToolTip="Add New Page"
-                               Margin="8,0,0,0">
+                               Margin="8,0,0,0"
+                               Command="{Binding DataContext.RenamePageCommand, RelativeSource={RelativeSource AncestorType=Page}}">
                         <controls:FluentIcon IconType="Rename" FontSize="14" />
                     </ui:Button>
                     
@@ -48,19 +49,7 @@
                             Mode=TwoWay}">
                 <ui:ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="0,2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
-
-                            <controls:FluentIcon Grid.Column="1" 
-                                     IconType="GripperBarHorizontal" 
-                                     FontSize="14"
-                                     Cursor="SizeAll"/>
-                        </Grid>
+                        <local:DeckPageItem Title="{Binding Name, Mode=TwoWay}" Margin="0,2"/>
                     </DataTemplate>
                 </ui:ListView.ItemTemplate>
             </ui:ListView>
