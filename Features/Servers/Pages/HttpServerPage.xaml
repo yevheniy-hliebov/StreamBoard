@@ -27,7 +27,7 @@
                 <ui:Button Content="{Binding ActionButtonText}"
                            Command="{Binding ToggleServerCommand}">
                     <ui:Button.Icon>
-                        <ui:SymbolIcon Symbol="{Binding ActionButtonIcon}" />
+                        <controls:FluentIcon IconType="{Binding ActionButtonIcon}" FontSize="12" />
                     </ui:Button.Icon>
                 </ui:Button>
             </cards:CardControl.ActionContent>

@@ -1,4 +1,5 @@
-﻿using StreamBoard.Core;
+﻿using StreamBoard.Components.Controls;
+using StreamBoard.Core;
 using StreamBoard.Features.Servers.Models;
 using StreamBoard.Features.Servers.Services;
 using System.Collections.ObjectModel;
@@ -70,13 +71,13 @@ namespace StreamBoard.Features.Servers.ViewModels
             _ => "Status Unknown"
         };
 
-        public SymbolRegular ActionButtonIcon => _server.Status switch
+        public FluentIconType ActionButtonIcon => _server.Status switch
         {
-            ServerStatus.Running => SymbolRegular.RecordStop24,
-            ServerStatus.Stopped => SymbolRegular.Power24,
-            ServerStatus.Starting => SymbolRegular.ArrowSync24,
-            ServerStatus.Stopping => SymbolRegular.ArrowSync24,
-            _ => SymbolRegular.Question24
+            ServerStatus.Running => FluentIconType.Stop,
+            ServerStatus.Stopped => FluentIconType.PowerButton,
+            ServerStatus.Starting => FluentIconType.Sync,
+            ServerStatus.Stopping => FluentIconType.Sync,
+            _ => FluentIconType.Help
         };
 
         public bool IsProcessing => _server.Status == ServerStatus.Starting || _server.Status == ServerStatus.Stopping;

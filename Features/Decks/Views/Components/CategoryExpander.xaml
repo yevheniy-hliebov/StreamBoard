@@ -79,17 +79,17 @@
                                        FontSize="14"
                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
 
-                            <ui:SymbolIcon x:Name="ChevronIcon"
-                                           Grid.Column="2"
-                                           Symbol="ChevronDown24"
-                                           FontSize="12"
-                                           VerticalAlignment="Center"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           RenderTransformOrigin="0.5,0.5">
-                                <ui:SymbolIcon.RenderTransform>
+                            <controls:FluentIcon x:Name="ChevronIcon"
+                                                 Grid.Column="2"
+                                                 IconType="ChevronDown"
+                                                 FontSize="12"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                                 RenderTransformOrigin="0.5,0.5">
+                                <controls:FluentIcon.RenderTransform>
                                     <RotateTransform Angle="0"/>
-                                </ui:SymbolIcon.RenderTransform>
-                            </ui:SymbolIcon>
+                                </controls:FluentIcon.RenderTransform>
+                            </controls:FluentIcon>
                         </Grid>
                     </Border>
 

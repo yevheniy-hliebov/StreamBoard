@@ -6,7 +6,7 @@ using Wpf.Ui.Controls;
 namespace StreamBoard.Features.Decks.Models
 {
     //[ActionCategory("System", ImagePath = "/Assets/Images/Integrations/twitch.png")]
-    [ActionCategory("System", FluentIconType.Delete)]
+    [ActionCategory("System", FluentIconType.System)]
     public abstract class SystemDeckAction : DeckAction { }
 
     public abstract class DeckAction : ObservableObject
