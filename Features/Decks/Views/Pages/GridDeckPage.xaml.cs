@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Features.GridDeck.ViewModels;
+using StreamBoard.Features.Decks.ViewModels;
 using System.Windows.Controls;
 
 namespace StreamBoard.Features.Decks.Views.Pages

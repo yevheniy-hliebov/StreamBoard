@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="StreamBoard.Features.Decks.Views.Components.DeckProfilyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components"
+             xmlns:controls="clr-namespace:StreamBoard.Components.Controls">
+    
+    <StackPanel>
+        <local:DeckSidebarHeader Title="Pages">
+            <local:DeckSidebarHeader.RightContent>
+                <StackPanel Orientation="Horizontal">
+                    <ui:Button Appearance="Transparent"
+                               Padding="4"
+                               BorderThickness="0"
+                               Background="Transparent"
+                               ToolTip="Add New Page"
+                               Command="{Binding DataContext.AddPageCommand, RelativeSource={RelativeSource AncestorType=Page}}">
+                        <controls:FluentIcon IconType="Add" FontSize="14" />
+                    </ui:Button>
+
+                    <ui:Button Appearance="Transparent"
+                               Padding="4"
+                               BorderThickness="0"
+                               Background="Transparent"
+                               ToolTip="Add New Page"
+                               Margin="8,0,0,0">
+                        <controls:FluentIcon IconType="Rename" FontSize="14" />
+                    </ui:Button>
+                    
+                    <ui:Button Appearance="Transparent"
+                               Padding="4"
+                               BorderThickness="0"
+                               Background="Transparent"
+                               ToolTip="Add New Page"
+                               Margin="8,0,0,0"
+                               Command="{Binding DataContext.DeletePageCommand, RelativeSource={RelativeSource AncestorType=Page}}">
+                        <controls:FluentIcon IconType="Delete" FontSize="14" />
+                    </ui:Button>
+                </StackPanel>
+            </local:DeckSidebarHeader.RightContent>
+        </local:DeckSidebarHeader>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="5">
+            <ui:ListView ItemsSource="{Binding List}"
+                         SelectedItem="{Binding DataContext.SelectedPage, 
+                            RelativeSource={RelativeSource AncestorType=Page}, 
+                            Mode=TwoWay}">
+                <ui:ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+
+                            <controls:FluentIcon Grid.Column="1" 
+                                     IconType="GripperBarHorizontal" 
+                                     FontSize="14"
+                                     Cursor="SizeAll"/>
+                        </Grid>
+                    </DataTemplate>
+                </ui:ListView.ItemTemplate>
+            </ui:ListView>
+        </ScrollViewer>
+    </StackPanel>
+</UserControl>

@@ -25,7 +25,7 @@ namespace StreamBoard.Features.Decks.Models
         }
 
         [JsonPropertyName("list")]
-        public ObservableCollection<DeckPageInfo> List { get; set; } = new();
+        public ObservableCollection<DeckPageInfo> List { get; set; } = [];
     }
 
     public class DeckPageInfo : ObservableObject
