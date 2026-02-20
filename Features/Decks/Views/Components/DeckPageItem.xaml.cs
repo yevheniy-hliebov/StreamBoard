@@ -15,7 +15,6 @@ namespace StreamBoard.Features.Decks.Views.Components
 
             EditBox.KeyDown += OnEditBoxKeyDown;
 
-            // Автофокус: коли TextBox стає видимим, фокусуємося на ньому
             EditBox.IsVisibleChanged += (s, e) =>
             {
                 if ((bool)e.NewValue)
@@ -40,11 +39,14 @@ namespace StreamBoard.Features.Decks.Views.Components
             if (e.Key == Key.Enter || e.Key == Key.Escape)
             {
                 var parentPage = FindParent<Page>(this);
+
                 if (parentPage?.DataContext is GridDeckViewModel vm)
                 {
-                    vm.EndRename();
+                    vm.Pages.EndRename();
 
                     Keyboard.ClearFocus();
+
+                    e.Handled = true;
                 }
             }
         }

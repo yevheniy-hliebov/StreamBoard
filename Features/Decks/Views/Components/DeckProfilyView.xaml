@@ -58,7 +58,7 @@
         </local:DeckSidebarHeader>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="5">
-            <ui:ListView ItemsSource="{Binding Profile.Pages.List}"
+            <ui:ListView ItemsSource="{Binding List}"
                          SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
                          dd:DragDrop.IsDragSource="True"
                          dd:DragDrop.IsDropTarget="True"
