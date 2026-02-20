@@ -4,22 +4,22 @@ using System.IO;
 
 namespace StreamBoard.Features.Decks.Services
 {
-    public class GridDeckStorage : DeckStorage
+    public class GridDeckStorage : DeckStorage<GridCanvasConfig>
     {
         public GridDeckStorage() : base("grid_deck.json") { }
     }
     
-    public class KeyboardDeckStorage : DeckStorage
+    public class KeyboardDeckStorage : DeckStorage<GridCanvasConfig>
     {
         public KeyboardDeckStorage() : base("keyboard_deck.json") { }
     }
 
 
-    public class DeckStorage
+    public class DeckStorage<TCanvasConfig> where TCanvasConfig : new()
     {
         private readonly string _filePath;
 
-        public DeckProfile CurrentProfile { get; private set; } = new();
+        public DeckProfile<TCanvasConfig> CurrentProfile { get; private set; } = new();
 
         public DeckStorage(String fileName)
         {
@@ -32,7 +32,7 @@ namespace StreamBoard.Features.Decks.Services
         {
             if (File.Exists(_filePath))
             {
-                CurrentProfile = JsonHelper.Load<DeckProfile>(_filePath);
+                CurrentProfile = JsonHelper.Load<DeckProfile<TCanvasConfig>>(_filePath);
             }
             else
             {
@@ -43,9 +43,9 @@ namespace StreamBoard.Features.Decks.Services
 
         public void Save() => JsonHelper.Save(_filePath, CurrentProfile);
 
-        private DeckProfile CreateDefaultProfile()
+        private DeckProfile<TCanvasConfig> CreateDefaultProfile()
         {
-            var profile = new DeckProfile();
+            var profile = new DeckProfile<TCanvasConfig>();
 
             var mainPage = new DeckPageInfo { Name = "Default Page" };
 

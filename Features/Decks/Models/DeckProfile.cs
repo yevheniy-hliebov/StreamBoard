@@ -4,20 +4,23 @@ using System.Text.Json.Serialization;
 
 namespace StreamBoard.Features.Decks.Models
 {
-    public class DeckProfile : ObservableObject
+    public class DeckProfile<TCanvasConfig> : ObservableObject where TCanvasConfig : new()
     {
         [JsonPropertyName("pages")]
         public DeckPagesConfig Pages { get; set; } = new();
 
         [JsonPropertyName("page_and_button_map")]
         public Dictionary<string, Dictionary<string, DeckButton>> PageButtonMap { get; set; } = [];
+
+        [JsonPropertyName("canvas_config")]
+        public TCanvasConfig CanvasConfig { get; set; } = new();
     }
 
     public class DeckPagesConfig : ObservableObject
     {
         private string _selectedPageId = "";
 
-        [JsonPropertyName("selected")]
+        [JsonPropertyName("selected_page")]
         public string SelectedPageId
         {
             get => _selectedPageId;
