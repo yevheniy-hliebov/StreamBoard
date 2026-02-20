@@ -7,9 +7,10 @@
       xmlns:components="clr-namespace:StreamBoard.Features.Decks.Views.Components"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="GridDeckPage">
+      Title="GridDeckPage"
+      ScrollViewer.CanContentScroll="False">
 
-    <components:DeckEditorLayout>
+    <components:DeckEditorLayout VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
         <components:DeckEditorLayout.LeftBarContent>
             <components:DeckProfilyView DataContext="{Binding Pages}"/>

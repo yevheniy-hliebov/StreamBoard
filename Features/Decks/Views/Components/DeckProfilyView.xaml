@@ -21,8 +21,13 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <StackPanel>
-        <local:DeckSidebarHeader Title="Pages">
+    <Grid VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <local:DeckSidebarHeader Grid.Row="0" Title="Pages">
             <local:DeckSidebarHeader.RightContent>
                 <StackPanel Orientation="Horizontal">
                     <ui:Button Appearance="Transparent"
@@ -57,7 +62,11 @@
             </local:DeckSidebarHeader.RightContent>
         </local:DeckSidebarHeader>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="5">
+        <ScrollViewer Grid.Row="1" 
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled"
+                  CanContentScroll="True"
+                      Padding="5">
             <ui:ListView ItemsSource="{Binding List}"
                          SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
                          dd:DragDrop.IsDragSource="True"
@@ -72,5 +81,5 @@
                 </ui:ListView.ItemTemplate>
             </ui:ListView>
         </ScrollViewer>
-    </StackPanel>
+    </Grid>
 </UserControl>
