@@ -17,7 +17,7 @@
         </components:DeckEditorLayout.LeftBarContent>
 
         <components:DeckEditorLayout.CanvasContent>
-            <TextBlock Text="GRID BUTTONS HERE" Foreground="{DynamicResource TextFillColorPrimaryBrush}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <components:GridCanvasView DataContext="{Binding CanvasConfig}"/>
         </components:DeckEditorLayout.CanvasContent>
 
         <components:DeckEditorLayout.PropertiesContent>
