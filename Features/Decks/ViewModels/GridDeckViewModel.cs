@@ -1,11 +1,14 @@
-﻿using StreamBoard.Core;
+﻿using GongSolutions.Wpf.DragDrop;
+using StreamBoard.Core;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
+using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace StreamBoard.Features.Decks.ViewModels
 {
-    public partial class GridDeckViewModel : ObservableObject
+    public partial class GridDeckViewModel : ObservableObject, IDropTarget
     {
         private readonly GridDeckStorage _storage;
         
@@ -101,6 +104,32 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
 
             _storage.Save();
+        }
+
+        void IDropTarget.DragOver(IDropInfo dropInfo)
+        {
+            if (dropInfo.Data is DeckPageInfo && !IsRenameMode)
+            {
+                dropInfo.Effects = DragDropEffects.Move;
+                dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
+            }
+        }
+
+        void IDropTarget.Drop(IDropInfo dropInfo)
+        {
+            if (dropInfo.Data is DeckPageInfo item &&
+                dropInfo.TargetCollection is ObservableCollection<DeckPageInfo> list)
+            {
+                int oldIndex = list.IndexOf(item);
+                int newIndex = dropInfo.InsertIndex;
+
+                if (oldIndex < newIndex) newIndex--;
+                if (oldIndex != newIndex)
+                {
+                    list.Move(oldIndex, newIndex);
+                    _storage.Save();
+                }
+            }
         }
     }
 }

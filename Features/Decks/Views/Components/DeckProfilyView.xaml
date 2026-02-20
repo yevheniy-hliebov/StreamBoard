@@ -3,9 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
              xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components"
              xmlns:controls="clr-namespace:StreamBoard.Components.Controls">
-    
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="DragAdorner">
+            <Border Background="{DynamicResource ControlFillColorDefaultBrush}" 
+                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="4" 
+                    Opacity="0.7"
+                    Padding="12,6"
+                    MinWidth="150">
+                <TextBlock Text="{Binding Name}" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+
     <StackPanel>
         <local:DeckSidebarHeader Title="Pages">
             <local:DeckSidebarHeader.RightContent>
@@ -15,7 +30,7 @@
                                BorderThickness="0"
                                Background="Transparent"
                                ToolTip="Add New Page"
-                               Command="{Binding DataContext.AddPageCommand, RelativeSource={RelativeSource AncestorType=Page}}">
+                               Command="{Binding AddPageCommand}">
                         <controls:FluentIcon IconType="Add" FontSize="14" />
                     </ui:Button>
 
@@ -25,7 +40,7 @@
                                Background="Transparent"
                                ToolTip="Add New Page"
                                Margin="8,0,0,0"
-                               Command="{Binding DataContext.RenamePageCommand, RelativeSource={RelativeSource AncestorType=Page}}">
+                               Command="{Binding RenamePageCommand}">
                         <controls:FluentIcon IconType="Rename" FontSize="14" />
                     </ui:Button>
                     
@@ -35,7 +50,7 @@
                                Background="Transparent"
                                ToolTip="Add New Page"
                                Margin="8,0,0,0"
-                               Command="{Binding DataContext.DeletePageCommand, RelativeSource={RelativeSource AncestorType=Page}}">
+                               Command="{Binding DeletePageCommand}">
                         <controls:FluentIcon IconType="Delete" FontSize="14" />
                     </ui:Button>
                 </StackPanel>
@@ -43,10 +58,13 @@
         </local:DeckSidebarHeader>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="5">
-            <ui:ListView ItemsSource="{Binding List}"
-                         SelectedItem="{Binding DataContext.SelectedPage, 
-                            RelativeSource={RelativeSource AncestorType=Page}, 
-                            Mode=TwoWay}">
+            <ui:ListView ItemsSource="{Binding Profile.Pages.List}"
+                         SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.DropHandler="{Binding}"
+                         dd:DragDrop.DragAdornerTemplate="{DynamicResource DragAdorner}">
+                
                 <ui:ListView.ItemTemplate>
                     <DataTemplate>
                         <local:DeckPageItem Title="{Binding Name, Mode=TwoWay}" Margin="0,2"/>

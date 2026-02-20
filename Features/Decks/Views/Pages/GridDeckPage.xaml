@@ -12,7 +12,7 @@
     <components:DeckEditorLayout>
 
         <components:DeckEditorLayout.LeftBarContent>
-            <components:DeckProfilyView DataContext="{Binding Profile.Pages}"/>
+            <components:DeckProfilyView />
         </components:DeckEditorLayout.LeftBarContent>
 
         <components:DeckEditorLayout.CanvasContent>
