@@ -37,13 +37,6 @@
                 </ui:NavigationViewItem.Icon>
             </ui:NavigationViewItem>
 
-            <ui:NavigationViewItem Content="Keyboard Deck"
-                                   TargetPageType="{x:Type decks:KeyboardDeckPage}">
-                <ui:NavigationViewItem.Icon>
-                    <controls:FluentIcon IconType="Keyboard" FontSize="16" />
-                </ui:NavigationViewItem.Icon>
-            </ui:NavigationViewItem>
-
             <ui:NavigationViewItemSeparator />
 
             <ui:NavigationViewItem Content="Servers / Clients">

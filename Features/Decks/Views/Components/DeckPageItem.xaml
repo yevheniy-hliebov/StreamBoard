@@ -43,7 +43,7 @@
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListViewItem}}" Value="True" />
-                                <Condition Binding="{Binding DataContext.IsRenameMode, RelativeSource={RelativeSource AncestorType=Page}}" Value="True" />
+                                <Condition Binding="{Binding DataContext.IsRenameMode, RelativeSource={RelativeSource AncestorType=ListView}}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Visible" />
                         </MultiDataTrigger>

@@ -1,4 +1,5 @@
-﻿using StreamBoard.Core;
+﻿using StreamBoard.Components.Controls;
+using StreamBoard.Core;
 using StreamBoard.Features.Decks.Attributes;
 using System.Text.Json.Serialization;
 using Wpf.Ui.Controls;
