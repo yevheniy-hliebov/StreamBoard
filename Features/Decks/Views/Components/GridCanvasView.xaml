@@ -1,6 +1,8 @@
 ﻿<UserControl x:Class="StreamBoard.Features.Decks.Views.Components.GridCanvasView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components"
+             x:Name="Root">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
@@ -30,24 +32,26 @@
                 </Border.RenderTransform>
 
 
-                <ItemsControl ItemsSource="{Binding Cells}">
+                <ItemsControl ItemsSource="{Binding Buttons}">
 
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Rows="{Binding SelectedGrid.Rows}"
-                                 Columns="{Binding SelectedGrid.Columns}"/>
+                            <UniformGrid Rows="{Binding CanvasConfig.SelectedGrid.Rows}"
+                                         Columns="{Binding CanvasConfig.SelectedGrid.Columns}"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Width="45"
-                                    Height="45"
-                                    Margin="4"
-                                    Background="#2B2B2B"
-                                    BorderBrush="#555"
-                                    BorderThickness="1"
-                                    CornerRadius="4"/>
+                            <local:DeckButtonSlotView IsSelected="{Binding IsSelected}"
+                                                      ButtonIndex="{Binding Index}"
+                                                      ButtonName="{Binding Config.Name}"
+                                                      ImagePath="{Binding Config.ImagePath}"
+                                                      ButtonBackground="{Binding Config.BackgroundColor, FallbackValue=#2B2B2B}"
+                                                      Command="{Binding DataContext.SelectButtonCommand, ElementName=Root}"
+                                                      CommandParameter="{Binding}"
+                                                      Margin="4"
+                                                      Cursor="Hand"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
 
@@ -56,8 +60,8 @@
         </Canvas>
 
         <ComboBox Grid.Row="0" 
-                  ItemsSource="{Binding Grids}"
-                  SelectedItem="{Binding SelectedGrid, Mode=TwoWay}"
+                  ItemsSource="{Binding CanvasConfig.Grids}"
+                  SelectedItem="{Binding CanvasConfig.SelectedGrid, Mode=TwoWay}"
                   DisplayMemberPath="Name"
                   Width="110"
                   VerticalAlignment="Top"

@@ -17,7 +17,7 @@
         </components:DeckEditorLayout.LeftBarContent>
 
         <components:DeckEditorLayout.CanvasContent>
-            <components:GridCanvasView DataContext="{Binding CanvasConfig}"/>
+            <components:GridCanvasView DataContext="{Binding}"/>
         </components:DeckEditorLayout.CanvasContent>
 
         <components:DeckEditorLayout.PropertiesContent>
