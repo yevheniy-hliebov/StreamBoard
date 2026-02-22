@@ -10,10 +10,27 @@ namespace StreamBoard.Features.Decks.Models
         public DeckPagesConfig Pages { get; set; } = new();
 
         [JsonPropertyName("page_and_button_map")]
-        public Dictionary<string, Dictionary<string, DeckButton>> PageButtonMap { get; set; } = [];
+        public Dictionary<string, Dictionary<string, DeckButtonConfig>> PageButtonMap { get; set; } = [];
 
         [JsonPropertyName("canvas_config")]
         public TCanvasConfig CanvasConfig { get; set; } = new();
+
+        [JsonIgnore]
+        public Dictionary<string, DeckButtonConfig> CurrentPageButtonMap
+        {
+            get
+            {
+                string selectedPageId = Pages.SelectedPageId ?? "";
+
+                if (!PageButtonMap.TryGetValue(selectedPageId, out var map))
+                {
+                    map = new Dictionary<string, DeckButtonConfig>();
+                    PageButtonMap[selectedPageId] = map;
+                }
+
+                return map;
+            }
+        }
     }
 
     public class DeckPagesConfig : ObservableObject

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace StreamBoard.Features.Decks.Models
 {
-    public class DeckButton : ObservableObject
+    public class DeckButtonConfig : ObservableObject
     {
         private string _name = "";
         [JsonPropertyName("name")]
