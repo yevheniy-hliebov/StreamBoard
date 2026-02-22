@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="StreamBoard.Features.Decks.Views.Components.ColorPreview"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:controls="clr-namespace:StreamBoard.Components.Controls">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="35" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0"
+                Width="35" Height="35"
+                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                BorderThickness="1,1,0,1"
+                Background="{Binding SelectedColor, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=#2B2B2B}"
+                CornerRadius="4,0,0,4"/>
+
+        <ui:Button Grid.Column="1"
+                   Width="35" Height="35"
+                   Padding="0"
+                   Appearance="Secondary"
+                   CornerRadius="0,4,4,0"
+                   BorderThickness="1"
+                   Click="OnPickColorClick">
+            <controls:FluentIcon IconType="Color" FontSize="16" />
+        </ui:Button>
+    </Grid>
+</UserControl>

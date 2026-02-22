@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="StreamBoard.Features.Decks.Views.Components.ImagePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components"
+             xmlns:controls="clr-namespace:StreamBoard.Components.Controls">
+    
+    <Grid Background="Transparent" 
+          MouseLeftButtonDown="OnPickerClicked" 
+          Cursor="Hand"
+          Width="80" Height="80">
+        <Rectangle Stroke="#888" 
+                   StrokeThickness="2" 
+                   StrokeDashArray="3 3" 
+                   StrokeDashCap="Round" 
+                   RadiusX="8" RadiusY="8" />
+
+        <controls:FluentIcon IconType="Photo" 
+                             FontSize="24" 
+                             Foreground="#888" 
+                             HorizontalAlignment="Center" 
+                             VerticalAlignment="Center">
+            <controls:FluentIcon.Style>
+                <Style TargetType="controls:FluentIcon">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:FluentIcon.Style>
+        </controls:FluentIcon>
+
+        <Border CornerRadius="6" Margin="3" ClipToBounds="True">
+            <Image Source="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                   Stretch="UniformToFill">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+        </Border>
+
+    </Grid>
+</UserControl>

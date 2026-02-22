@@ -21,7 +21,7 @@
         </components:DeckEditorLayout.CanvasContent>
 
         <components:DeckEditorLayout.PropertiesContent>
-            <TextBlock Text="PROPERTIES EDITOR" Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <components:PropertyEditorView DataContext="{Binding}"/>
         </components:DeckEditorLayout.PropertiesContent>
 
         <components:DeckEditorLayout.LibraryContent>

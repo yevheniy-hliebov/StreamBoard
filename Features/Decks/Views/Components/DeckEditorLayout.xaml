@@ -17,13 +17,13 @@
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="220" MinWidth="200" MaxWidth="500"/>
+            <ColumnDefinition Width="200" MinWidth="200" MaxWidth="500"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" MinHeight="0" />
             <RowDefinition Height="5" />
-            <RowDefinition Height="200" MinHeight="100" MaxHeight="400"/>
+            <RowDefinition Height="237" MinHeight="237" MaxHeight="400"/>
         </Grid.RowDefinitions>
 
         <Border Grid.Column="0" Grid.Row="0" 
