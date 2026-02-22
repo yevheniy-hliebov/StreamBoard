@@ -1,7 +1,9 @@
 ﻿using StreamBoard.Core;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace StreamBoard.Features.Decks.ViewModels
 {
@@ -14,6 +16,10 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         public GridCanvasConfig CanvasConfig { get; }
 
+        public ObservableCollection<DeckButtonSlot> Buttons { get; } = [];
+
+        public ICommand SelectButtonCommand { get; }
+
         public GridDeckViewModel(GridDeckStorage storage, ActionRegistry registry)
         {
             _storage = storage;
@@ -23,11 +29,98 @@ namespace StreamBoard.Features.Decks.ViewModels
             CanvasConfig = storage.CurrentProfile.CanvasConfig;
 
             CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
+            Pages.PropertyChanged += OnPagesPropertyChanged;
+
+            RebuildButtons();
+
+            SelectButtonCommand = new RelayCommand(p =>
+            {
+                if (p is DeckButtonSlot slot)
+                    SelectedButton = slot;
+            });
+        }
+
+        private DeckButtonSlot? _selectedButton;
+        public DeckButtonSlot? SelectedButton
+        {
+            get => _selectedButton;
+            set
+            {
+                if (_selectedButton != null)
+                {
+                    _selectedButton.IsSelected = false;
+                    if (_selectedButton.Config != null)
+                    {
+                        _selectedButton.Config.PropertyChanged -= OnConfigPropertyChanged;
+                    }
+                }
+
+                if (SetProperty(ref _selectedButton, value))
+                {
+                    if (_selectedButton != null)
+                    {
+                        _selectedButton.IsSelected = true;
+
+                        if (_selectedButton.Config == null)
+                        {
+                            var newConfig = new DeckButtonConfig();
+                            _selectedButton.Config = newConfig;
+
+                            var map = _storage.CurrentProfile.CurrentPageButtonMap;
+                            if (map != null)
+                            {
+                                map[_selectedButton.Index.ToString()] = newConfig;
+                            }
+                        }
+
+                        _selectedButton.Config.PropertyChanged += OnConfigPropertyChanged;
+                    }
+                }
+            }
         }
 
         private void OnCanvasConfigPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(GridCanvasConfig.SelectedGrid))
+            {
+                RebuildButtons();
+                _storage.Save();
+            }
+        }
+
+        private void OnPagesPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Pages.SelectedPage))
+            {
+                RebuildButtons();
+                SelectedButton = null;
+            }
+        }
+
+        private void RebuildButtons()
+        {
+            Buttons.Clear();
+
+            var map = _storage.CurrentProfile.CurrentPageButtonMap;
+
+            foreach (var index in CanvasConfig.Cells)
+            {
+                DeckButtonConfig? config = null;
+
+                if (map != null && map.TryGetValue(index.ToString(), out var btn))
+                {
+                    config = btn;
+                }
+
+                Buttons.Add(new DeckButtonSlot(index, config));
+            }
+        }
+
+        private void OnConfigPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(DeckButtonConfig.Name)
+                || e.PropertyName == nameof(DeckButtonConfig.ImagePath)
+                || e.PropertyName == nameof(DeckButtonConfig.BackgroundColor))
             {
                 _storage.Save();
             }
