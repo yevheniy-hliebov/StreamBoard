@@ -30,34 +30,9 @@
         <local:DeckSidebarHeader Grid.Row="0" Title="Pages">
             <local:DeckSidebarHeader.RightContent>
                 <StackPanel Orientation="Horizontal">
-                    <ui:Button Appearance="Transparent"
-                               Padding="4"
-                               BorderThickness="0"
-                               Background="Transparent"
-                               ToolTip="Add New Page"
-                               Command="{Binding AddPageCommand}">
-                        <controls:FluentIcon IconType="Add" FontSize="14" />
-                    </ui:Button>
-
-                    <ui:Button Appearance="Transparent"
-                               Padding="4"
-                               BorderThickness="0"
-                               Background="Transparent"
-                               ToolTip="Add New Page"
-                               Margin="8,0,0,0"
-                               Command="{Binding RenamePageCommand}">
-                        <controls:FluentIcon IconType="Rename" FontSize="14" />
-                    </ui:Button>
-                    
-                    <ui:Button Appearance="Transparent"
-                               Padding="4"
-                               BorderThickness="0"
-                               Background="Transparent"
-                               ToolTip="Add New Page"
-                               Margin="8,0,0,0"
-                               Command="{Binding DeletePageCommand}">
-                        <controls:FluentIcon IconType="Delete" FontSize="14" />
-                    </ui:Button>
+                    <controls:IconButton TooltipText="Add New Page" Command="{Binding AddPageCommand}" IconType="Add" />                    
+                    <controls:IconButton TooltipText="Rename Page" Command="{Binding RenamePageCommand}" IconType="Rename" Margin="8,0,0,0"/>
+                    <controls:IconButton TooltipText="Delete Page" Command="{Binding DeletePageCommand}" IconType="Delete" Margin="8,0,0,0"/>
                 </StackPanel>
             </local:DeckSidebarHeader.RightContent>
         </local:DeckSidebarHeader>

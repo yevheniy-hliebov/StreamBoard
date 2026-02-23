@@ -54,14 +54,7 @@
                 <local:DeckSidebarHeader Grid.Row="0"
                                          Title="{Binding SelectedButton.Index, StringFormat='Button Properties | Key: {0}'}">
                     <local:DeckSidebarHeader.RightContent>
-                        <ui:Button Appearance="Transparent"
-                                   Padding="4"
-                                   BorderThickness="0"
-                                   Background="Transparent"
-                                   ToolTip="Clear"
-                                   Command="{Binding ClearButtonCommand}">
-                            <controls:FluentIcon IconType="ClearAllInk" FontSize="14" />
-                        </ui:Button>
+                        <controls:IconButton TooltipText="Clear" Command="{Binding ClearButtonCommand}" IconType="ClearAllInk"/>
                     </local:DeckSidebarHeader.RightContent>
                 </local:DeckSidebarHeader>
 
