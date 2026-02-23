@@ -36,5 +36,9 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
 		<PackageReference Include="WPF-UI" Version="4.2.0" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Core\Styles\" />
+	</ItemGroup>
 	
 </Project>
