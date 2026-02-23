@@ -19,6 +19,7 @@ namespace StreamBoard.Features.Decks.ViewModels
         public ObservableCollection<DeckButtonSlot> Buttons { get; } = [];
 
         public ICommand SelectButtonCommand { get; }
+        public ICommand ClearButtonCommand { get; }
 
         public GridDeckViewModel(GridDeckStorage storage, ActionRegistry registry)
         {
@@ -38,6 +39,14 @@ namespace StreamBoard.Features.Decks.ViewModels
                 if (p is DeckButtonSlot slot)
                     SelectedButton = slot;
             });
+
+            ClearButtonCommand = new RelayCommand(_ =>
+            {
+                if (SelectedButton?.Config != null)
+                {
+                    SelectedButton.Config.ResetAppearance();
+                }
+            }, _ => SelectedButton?.Config != null);
         }
 
         private DeckButtonSlot? _selectedButton;
