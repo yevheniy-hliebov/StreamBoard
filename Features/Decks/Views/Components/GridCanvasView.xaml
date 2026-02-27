@@ -2,6 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components"
+             xmlns:models="clr-namespace:StreamBoard.Features.Decks.Models"
+             xmlns:dd="clr-namespace:CustomDragDropLib;assembly=CustomDragDropLib"
              x:Name="Root">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -43,15 +45,28 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <local:DeckButtonSlotView IsSelected="{Binding IsSelected}"
-                                                      ButtonIndex="{Binding Index}"
-                                                      ButtonName="{Binding Config.Name}"
-                                                      ImagePath="{Binding Config.ImagePath}"
-                                                      ButtonBackground="{Binding Config.BackgroundColor, FallbackValue=#2B2B2B}"
-                                                      Command="{Binding DataContext.SelectButtonCommand, ElementName=Root}"
-                                                      CommandParameter="{Binding}"
-                                                      Margin="4"
-                                                      Cursor="Hand"/>
+                            <dd:DropWrapper DropCommand="{Binding ReceiveDropCommand}"
+                                            
+                                            Margin="0"
+                                            Padding="2"
+                                            
+                                            DragOverBorderBrush="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                                            DragOverBackground="Transparent">
+
+                                <dd:DraggableWrapper Payload="{Binding}">
+
+                                    <local:DeckButtonSlotView IsSelected="{Binding IsSelected}"
+                                          ButtonIndex="{Binding Index}"
+                                          ButtonName="{Binding Config.Name}"
+                                          ImagePath="{Binding Config.ImagePath}"
+                                          ButtonBackground="{Binding Config.BackgroundColor, FallbackValue=#2B2B2B}"
+                                          Command="{Binding DataContext.SelectButtonCommand, ElementName=Root}"
+                                          CommandParameter="{Binding}"
+                                          Margin="4"
+                                          Cursor="Hand"/>
+
+                                </dd:DraggableWrapper>
+                            </dd:DropWrapper>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
 

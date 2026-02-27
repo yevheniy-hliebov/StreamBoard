@@ -38,7 +38,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Core\Styles\" />
+	  <Reference Include="CustomDragDropLib">
+	    <HintPath>Libs\CustomDragDropLib.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 	
 </Project>

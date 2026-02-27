@@ -1,7 +1,6 @@
 ﻿using StreamBoard.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Windows.Input;
+using Wpf.Ui.Input;
 
 namespace StreamBoard.Features.Decks.Models
 {
@@ -23,10 +22,26 @@ namespace StreamBoard.Features.Decks.Models
             set => SetProperty(ref _isSelected, value);
         }
 
-        public DeckButtonSlot(int index, DeckButtonConfig? config)
+        public ICommand ReceiveDropCommand { get; }
+
+        public DeckButtonSlot(int index, DeckButtonConfig? config, Action<DeckButtonSlot, DeckButtonSlot> onDropAction)
         {
             Index = index;
             _config = config;
+
+            ReceiveDropCommand = new RelayCommand<object>(
+                execute: payload =>
+                {
+                    if (payload is DeckButtonSlot sourceSlot)
+                    {
+                        onDropAction(sourceSlot, this);
+                    }
+                },
+                canExecute: payload =>
+                {
+                    return payload is DeckButtonSlot;
+                }
+            );
         }
     }
 }

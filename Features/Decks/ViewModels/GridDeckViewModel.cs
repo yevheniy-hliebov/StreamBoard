@@ -4,6 +4,7 @@ using StreamBoard.Features.Decks.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using Wpf.Ui.Input;
 
 namespace StreamBoard.Features.Decks.ViewModels
 {
@@ -121,7 +122,10 @@ namespace StreamBoard.Features.Decks.ViewModels
                     config = btn;
                 }
 
-                Buttons.Add(new DeckButtonSlot(index, config));
+                // МАГІЯ ТУТ: Просто передаємо метод SwapButtons як третій параметр!
+                var slot = new DeckButtonSlot(index, config, SwapButtons);
+
+                Buttons.Add(slot);
             }
         }
 
@@ -131,6 +135,38 @@ namespace StreamBoard.Features.Decks.ViewModels
                 || e.PropertyName == nameof(DeckButtonConfig.ImagePath)
                 || e.PropertyName == nameof(DeckButtonConfig.BackgroundColor))
             {
+                _storage.Save();
+            }
+        }
+        private void SwapButtons(DeckButtonSlot source, DeckButtonSlot target)
+        {
+            if (source == null || target == null || source == target) return;
+
+            // Скидаємо виділення, щоб уникнути багів з підпискою OnConfigPropertyChanged
+            SelectedButton = null;
+
+            // Свапаємо конфіги місцями
+            var tempConfig = source.Config;
+            source.Config = target.Config;
+            target.Config = tempConfig;
+
+            // Оновлюємо збереження (Map)
+            var map = _storage.CurrentProfile.CurrentPageButtonMap;
+            if (map != null)
+            {
+                // Оновлюємо джерело
+                if (source.Config != null)
+                    map[source.Index.ToString()] = source.Config;
+                else
+                    map.Remove(source.Index.ToString()); // Якщо кнопка стала порожньою
+
+                // Оновлюємо ціль
+                if (target.Config != null)
+                    map[target.Index.ToString()] = target.Config;
+                else
+                    map.Remove(target.Index.ToString());
+
+                // Зберігаємо профіль
                 _storage.Save();
             }
         }
