@@ -4,11 +4,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:dd="clr-namespace:CustomDragDropLib;assembly=CustomDragDropLib"
              xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components"
              xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
              xmlns:vm="clr-namespace:StreamBoard.Features.Decks.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="ActionGhostTemplate">
+            <Border Background="#2B2B2B" 
+                    BorderBrush="{DynamicResource AccentTextFillColorPrimaryBrush}" 
+                    BorderThickness="1"
+                    CornerRadius="6"
+                    Padding="4,2"
+                    Opacity="0.95">
+
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="4" Opacity="0.4" Direction="315" />
+                </Border.Effect>
+
+                <local:ActionLibraryItem Text="{Binding Metadata.Name}" 
+                                         Icon="{Binding Metadata.Icon}" />
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -44,8 +64,12 @@
                                 <ItemsControl ItemsSource="{Binding Actions}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <local:ActionLibraryItem Text="{Binding Metadata.Name}" 
-                                                                     Icon="{Binding Metadata.Icon}" />
+                                            <dd:DraggableWrapper Payload="{Binding}"
+                                                                 GhostTemplate="{StaticResource ActionGhostTemplate}">
+                                                <local:ActionLibraryItem Text="{Binding Metadata.Name}" 
+                                                                         Icon="{Binding Metadata.Icon}"
+                                                                         Margin="12,0,0,0"/>
+                                            </dd:DraggableWrapper>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>

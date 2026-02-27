@@ -110,21 +110,18 @@ namespace StreamBoard.Features.Decks.ViewModels
         private void RebuildButtons()
         {
             Buttons.Clear();
-
             var map = _storage.CurrentProfile.CurrentPageButtonMap;
 
             foreach (var index in CanvasConfig.Cells)
             {
                 DeckButtonConfig? config = null;
-
                 if (map != null && map.TryGetValue(index.ToString(), out var btn))
                 {
                     config = btn;
                 }
 
-                // МАГІЯ ТУТ: Просто передаємо метод SwapButtons як третій параметр!
-                var slot = new DeckButtonSlot(index, config, SwapButtons);
-
+                // Передаємо HandleDrop замість SwapButtons
+                var slot = new DeckButtonSlot(index, config, HandleDrop);
                 Buttons.Add(slot);
             }
         }
@@ -138,35 +135,63 @@ namespace StreamBoard.Features.Decks.ViewModels
                 _storage.Save();
             }
         }
+
+        private void HandleDrop(object payload, DeckButtonSlot target)
+        {
+            if (payload is DeckButtonSlot sourceSlot)
+            {
+                SwapButtons(sourceSlot, target);
+            }
+            else if (payload is ActionDescriptor descriptor)
+            {
+                AddActionToSlot(descriptor, target);
+            }
+        }
+
+        private void AddActionToSlot(ActionDescriptor descriptor, DeckButtonSlot target)
+        {
+            if (target.Config == null)
+            {
+                var newConfig = new DeckButtonConfig();
+                target.Config = newConfig;
+
+                var map = _storage.CurrentProfile.CurrentPageButtonMap;
+                if (map != null)
+                {
+                    map[target.Index.ToString()] = newConfig;
+                }
+            }
+
+            var newActionInstance = descriptor.CreateInstance();
+
+            target.Config.Actions.Add(newActionInstance);
+
+            _storage.Save();
+        }
+
         private void SwapButtons(DeckButtonSlot source, DeckButtonSlot target)
         {
             if (source == null || target == null || source == target) return;
 
-            // Скидаємо виділення, щоб уникнути багів з підпискою OnConfigPropertyChanged
             SelectedButton = null;
 
-            // Свапаємо конфіги місцями
             var tempConfig = source.Config;
             source.Config = target.Config;
             target.Config = tempConfig;
 
-            // Оновлюємо збереження (Map)
             var map = _storage.CurrentProfile.CurrentPageButtonMap;
             if (map != null)
             {
-                // Оновлюємо джерело
                 if (source.Config != null)
                     map[source.Index.ToString()] = source.Config;
                 else
-                    map.Remove(source.Index.ToString()); // Якщо кнопка стала порожньою
+                    map.Remove(source.Index.ToString());
 
-                // Оновлюємо ціль
                 if (target.Config != null)
                     map[target.Index.ToString()] = target.Config;
                 else
                     map.Remove(target.Index.ToString());
 
-                // Зберігаємо профіль
                 _storage.Save();
             }
         }

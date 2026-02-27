@@ -7,9 +7,8 @@
              Cursor="Hand">
     
     <Border x:Name="ItemBorder"
-            Background="Transparent"
             CornerRadius="4"
-            Padding="24,8,12,8"
+            Padding="12,8"
             Margin="0">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -40,6 +39,8 @@
 
         <Border.Style>
             <Style TargetType="Border">
+                <Setter Property="Background" Value="Transparent"/>
+
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}"/>
