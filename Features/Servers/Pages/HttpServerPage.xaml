@@ -61,7 +61,8 @@
         <cards:CardExpander Title="Requests"
                             Description="View a real-time log of incoming connection requests">
             <controls:ConstrainedScrollBorder MinHeight="150"
-                                              MaxHeight="300">
+                                              MaxHeight="300"
+                                              ContentPadding="8">
                 <page_components:HttpRequestLogList Logs="{Binding RequestLogs}" />
             </controls:ConstrainedScrollBorder>
         </cards:CardExpander>

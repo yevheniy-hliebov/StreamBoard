@@ -16,5 +16,15 @@ namespace StreamBoard.Components.Controls
         }
         public static readonly DependencyProperty InnerContentProperty =
             DependencyProperty.Register(nameof(InnerContent), typeof(object), typeof(ConstrainedScrollBorder), new PropertyMetadata(null));
+
+
+        public int ContentPadding
+        {
+            get { return (int)GetValue(ContentPaddingProperty); }
+            set { SetValue(ContentPaddingProperty, value); }
+        }
+
+        public static readonly DependencyProperty ContentPaddingProperty =
+            DependencyProperty.Register(nameof(ContentPadding), typeof(int), typeof(ConstrainedScrollBorder), new PropertyMetadata(0));
     }
 }
