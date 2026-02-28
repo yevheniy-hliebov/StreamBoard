@@ -10,7 +10,8 @@
            BorderThickness="0"
            Background="Transparent"
            ToolTip="{Binding TooltipText, ElementName=Root}"
-           Command="{Binding Command, ElementName=Root}">
+           Command="{Binding Command, ElementName=Root}"
+           CommandParameter="{Binding CommandParameter, ElementName=Root}">
         <local:FluentIcon IconType="{Binding IconType, ElementName=Root}" FontSize="14" />
     </ui:Button>
 </UserControl>
