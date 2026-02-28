@@ -1,9 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 
-namespace StreamBoard.Features.Decks.Views.Components
+namespace StreamBoard.Features.Decks.Views.Components.PropertyEditor
 {
     public partial class ColorPreview : UserControl
     {

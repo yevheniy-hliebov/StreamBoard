@@ -1,9 +1,8 @@
 ﻿using StreamBoard.Components.Controls;
 using System.Windows;
 using System.Windows.Controls;
-using Wpf.Ui.Controls;
 
-namespace StreamBoard.Features.Decks.Views.Components
+namespace StreamBoard.Features.Decks.Views.Components.ActionLibrary
 {
     public partial class CategoryExpander : UserControl
     {

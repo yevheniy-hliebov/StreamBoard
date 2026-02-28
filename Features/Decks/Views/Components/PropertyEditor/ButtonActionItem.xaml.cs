@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace StreamBoard.Features.Decks.Views.Components
+namespace StreamBoard.Features.Decks.Views.Components.PropertyEditor
 {
     public partial class ButtonActionItem : UserControl
     {

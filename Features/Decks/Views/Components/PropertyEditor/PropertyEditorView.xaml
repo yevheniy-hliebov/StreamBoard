@@ -1,8 +1,9 @@
-﻿<UserControl x:Class="StreamBoard.Features.Decks.Views.Components.PropertyEditorView"
+﻿<UserControl x:Class="StreamBoard.Features.Decks.Views.Components.PropertyEditor.PropertyEditorView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components"
+             xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components.PropertyEditor"
+             xmlns:layout="clr-namespace:StreamBoard.Features.Decks.Views.Components.Layout"
              xmlns:controls="clr-namespace:StreamBoard.Components.Controls">
 
     <Grid Background="Transparent">
@@ -51,12 +52,12 @@
                 </Grid.RowDefinitions>
 
                 <!--Header-->
-                <local:DeckSidebarHeader Grid.Row="0"
+                <layout:DeckSidebarHeader Grid.Row="0"
                                          Title="{Binding SelectedButton.Index, StringFormat='Button Properties | Key: {0}'}">
-                    <local:DeckSidebarHeader.RightContent>
-                        <controls:IconButton TooltipText="Clear" Command="{Binding ClearButtonCommand}" IconType="ClearAllInk"/>
-                    </local:DeckSidebarHeader.RightContent>
-                </local:DeckSidebarHeader>
+                    <layout:DeckSidebarHeader.RightContent>
+                        <controls:IconButton TooltipText="Reset Appearance" Command="{Binding ClearButtonCommand}" IconType="ClearAllInk"/>
+                    </layout:DeckSidebarHeader.RightContent>
+                </layout:DeckSidebarHeader>
 
                 <!--Form-->
                 <Grid Grid.Row="1">

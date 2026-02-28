@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace StreamBoard.Features.Decks.Views.Components
+namespace StreamBoard.Features.Decks.Views.Components.PropertyEditor
 {
     public partial class PropertyEditorView : UserControl
     {

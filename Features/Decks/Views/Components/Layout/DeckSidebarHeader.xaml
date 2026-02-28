@@ -1,9 +1,7 @@
-﻿<UserControl x:Class="StreamBoard.Features.Decks.Views.Components.DeckSidebarHeader"
+﻿<UserControl x:Class="StreamBoard.Features.Decks.Views.Components.Layout.DeckSidebarHeader"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components"
              x:Name="Root">
     <Grid>
         <Grid.RowDefinitions>

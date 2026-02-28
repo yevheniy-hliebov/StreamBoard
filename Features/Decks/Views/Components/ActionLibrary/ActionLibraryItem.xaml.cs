@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace StreamBoard.Features.Decks.Views.Components
+namespace StreamBoard.Features.Decks.Views.Components.ActionLibrary
 {
     public partial class ActionLibraryItem : UserControl
     {
