@@ -21,6 +21,8 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         public ICommand SelectButtonCommand { get; }
         public ICommand ClearButtonCommand { get; }
+        public ICommand DeleteActionCommand { get; }
+        public ICommand ClearActionsCommand { get; }
 
         public GridDeckViewModel(GridDeckStorage storage, ActionRegistry registry)
         {
@@ -48,6 +50,17 @@ namespace StreamBoard.Features.Decks.ViewModels
                     SelectedButton.Config.ResetAppearance();
                 }
             }, _ => SelectedButton?.Config != null);
+
+            DeleteActionCommand = new RelayCommand<string>(DeleteActionInSelectedButton);
+
+            ClearActionsCommand = new RelayCommand(_ =>
+            {
+                if (SelectedButton?.Config?.Actions != null)
+                {
+                    SelectedButton.Config.Actions.Clear();
+                    _storage.Save();
+                }
+            }, _ => SelectedButton?.Config?.Actions?.Count > 0);
         }
 
         private DeckButtonSlot? _selectedButton;
@@ -120,7 +133,6 @@ namespace StreamBoard.Features.Decks.ViewModels
                     config = btn;
                 }
 
-                // Передаємо HandleDrop замість SwapButtons
                 var slot = new DeckButtonSlot(index, config, HandleDrop);
                 Buttons.Add(slot);
             }
@@ -194,6 +206,26 @@ namespace StreamBoard.Features.Decks.ViewModels
 
                 _storage.Save();
             }
+        }
+
+        private void DeleteActionInSelectedButton(string? id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return;
+
+            var selectedButton = SelectedButton;
+
+            if (selectedButton?.Config?.Actions == null)
+                return;
+
+            var actionToRemove = selectedButton.Config.Actions.FirstOrDefault(action => action.Id == id);
+
+            if (actionToRemove != null)
+            {
+                selectedButton.Config.Actions.Remove(actionToRemove);
+            }
+
+            _storage.Save();
         }
     }
 }

@@ -114,6 +114,22 @@
             <Separator Grid.Column="1"/>
 
             <!--Actions-->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <layout:DeckSidebarHeader Grid.Row="0" Title="Actions">
+                    <layout:DeckSidebarHeader.RightContent>
+                        <controls:IconButton TooltipText="Clear Actions" Command="{Binding ClearActionsCommand}" IconType="ClearAllInk"/>
+                    </layout:DeckSidebarHeader.RightContent>
+
+                </layout:DeckSidebarHeader>
+                <local:ButtonActionListView Grid.Row="1"
+                                            DataContext="{Binding}"
+                                            Margin="8"/>
+            </Grid>
         </Grid>
     </Grid>
 
