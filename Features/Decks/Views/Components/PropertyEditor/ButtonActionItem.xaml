@@ -6,7 +6,7 @@
     
     <Border CornerRadius="4"
             Padding="5">
-        
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -42,17 +42,5 @@
                                  Command="{Binding DeleteCommand, ElementName=Root}"
                                  CommandParameter="{Binding ActionId, ElementName=Root}"/>
         </Grid>
-
-        <Border.Style>
-            <Style TargetType="Border">
-                <Setter Property="Background" Value="Transparent"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-        </Border.Style>
-
     </Border>
 </UserControl>

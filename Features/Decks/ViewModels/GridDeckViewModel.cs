@@ -1,4 +1,5 @@
-﻿using StreamBoard.Core;
+﻿using GongSolutions.Wpf.DragDrop;
+using StreamBoard.Core;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
 using System.Collections.ObjectModel;
@@ -6,9 +7,10 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Wpf.Ui.Input;
 
+
 namespace StreamBoard.Features.Decks.ViewModels
 {
-    public partial class GridDeckViewModel : ObservableObject
+    public partial class GridDeckViewModel : ObservableObject, IDropTarget
     {
         private readonly GridDeckStorage _storage;
 
@@ -226,6 +228,43 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
 
             _storage.Save();
+        }
+
+        void IDropTarget.DragOver(IDropInfo dropInfo)
+        {
+            if (dropInfo.Data == null) return;
+
+            if (dropInfo.DragInfo?.SourceCollection != null &&
+                dropInfo.DragInfo.SourceCollection == dropInfo.TargetCollection)
+            {
+                dropInfo.Effects = System.Windows.DragDropEffects.Move;
+                dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
+            }
+            else if (dropInfo.TargetCollection is ObservableCollection<DeckAction>)
+            {
+                dropInfo.Effects = System.Windows.DragDropEffects.Move;
+                dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
+            }
+        }
+
+        void IDropTarget.Drop(IDropInfo dropInfo)
+        {
+            if (dropInfo.DragInfo?.SourceCollection == dropInfo.TargetCollection && dropInfo.Data != null)
+            {
+                var list = (System.Collections.IList)dropInfo.DragInfo.SourceCollection;
+
+                int oldIndex = list.IndexOf(dropInfo.Data);
+                int newIndex = dropInfo.InsertIndex;
+
+                if (oldIndex < newIndex) newIndex--;
+
+                if (oldIndex != newIndex)
+                {
+                    dynamic observableCollection = dropInfo.TargetCollection;
+                    observableCollection.Move(oldIndex, newIndex);
+                    _storage.Save();
+                }
+            }
         }
     }
 }
