@@ -20,8 +20,8 @@
         </Grid.RowDefinitions>
         
         <tray:TrayIconView />
-        
-        <titlebar:MainTitleBar Grid.Row="0" />
+
+        <titlebar:MainTitleBar Grid.Row="0" Title="StreamBoard" Subtitle="(v0.1.0)" />
 
         <navigation:MainNavView Grid.Row="1" x:Name="RootNavView"/>
     </Grid>
