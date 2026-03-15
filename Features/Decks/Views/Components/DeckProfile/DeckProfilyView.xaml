@@ -6,21 +6,8 @@
              xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
              xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components.DeckProfile"
              xmlns:layout="clr-namespace:StreamBoard.Features.Decks.Views.Components.Layout"
-             xmlns:controls="clr-namespace:StreamBoard.Components.Controls">
-
-    <UserControl.Resources>
-        <DataTemplate x:Key="DragAdorner">
-            <Border Background="{DynamicResource ControlFillColorDefaultBrush}" 
-                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" 
-                    BorderThickness="1" 
-                    CornerRadius="4" 
-                    Opacity="0.7"
-                    Padding="12,6"
-                    MinWidth="150">
-                <TextBlock Text="{Binding Name}" Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
-            </Border>
-        </DataTemplate>
-    </UserControl.Resources>
+             xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+             xmlns:reorder="clr-namespace:StreamBoard.Components.Controls.ReorderList">
 
     <Grid VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
@@ -31,7 +18,7 @@
         <layout:DeckSidebarHeader Grid.Row="0" Title="Pages">
             <layout:DeckSidebarHeader.RightContent>
                 <StackPanel Orientation="Horizontal">
-                    <controls:IconButton TooltipText="Add New Page" Command="{Binding AddPageCommand}" IconType="Add" />                    
+                    <controls:IconButton TooltipText="Add New Page" Command="{Binding AddPageCommand}" IconType="Add" />
                     <controls:IconButton TooltipText="Rename Page" Command="{Binding RenamePageCommand}" IconType="Rename" Margin="8,0,0,0"/>
                     <controls:IconButton TooltipText="Delete Page" Command="{Binding DeletePageCommand}" IconType="Delete" Margin="8,0,0,0"/>
                 </StackPanel>
@@ -42,20 +29,18 @@
                   VerticalScrollBarVisibility="Auto"
                   HorizontalScrollBarVisibility="Disabled"
                   CanContentScroll="True"
-                      Padding="5">
-            <ui:ListView ItemsSource="{Binding List}"
-                         SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
-                         dd:DragDrop.IsDragSource="True"
-                         dd:DragDrop.IsDropTarget="True"
-                         dd:DragDrop.DropHandler="{Binding}"
-                         dd:DragDrop.DragAdornerTemplate="{DynamicResource DragAdorner}">
-                
-                <ui:ListView.ItemTemplate>
+                  Padding="5">
+            <reorder:ReorderListView ItemsSource="{Binding List}"
+                                     SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
+                                     dd:DragDrop.DropHandler="{Binding}">
+                <reorder:ReorderListView.ItemTemplate>
                     <DataTemplate>
-                        <local:DeckPageItem Title="{Binding Name, Mode=TwoWay}" Margin="0,2"/>
+                        <reorder:ReorderListItemWrapper ShowDragHandle="True" UseDragHandle="True">
+                            <local:DeckPageItem Title="{Binding Name, Mode=TwoWay}" Margin="0,2"/>
+                        </reorder:ReorderListItemWrapper>
                     </DataTemplate>
-                </ui:ListView.ItemTemplate>
-            </ui:ListView>
+                </reorder:ReorderListView.ItemTemplate>
+            </reorder:ReorderListView>
         </ScrollViewer>
     </Grid>
 </UserControl>

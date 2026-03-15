@@ -9,7 +9,6 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <TextBlock x:Name="TitleLabel" 
@@ -51,12 +50,5 @@
                 </Style>
             </ui:TextBox.Style>
         </ui:TextBox>
-
-        <controls:FluentIcon Grid.Column="1" 
-                             IconType="GripperBarHorizontal" 
-                             FontSize="14" 
-                             Cursor="Hand"
-                             Margin="5,0,0,0"
-                             dd:DragDrop.IsDragSource="True"/>
     </Grid>
 </UserControl>
