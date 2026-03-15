@@ -8,7 +8,7 @@
              xmlns:reorder="clr-namespace:StreamBoard.Components.Controls.ReorderList">
 
     <controls:ConstrainedScrollBorder>
-        <reorder:ReorderListView ItemsSource="{Binding SelectedButton.Config.Actions}"
+        <reorder:ReorderListView ItemsSource="{Binding Canvas.SelectedButton.Config.Actions}"
                                  dd:DragDrop.DropHandler="{Binding}"
                                  dd:DragDrop.IsDropTarget="True" 
                                  dd:DragDrop.IsDragSource="True"

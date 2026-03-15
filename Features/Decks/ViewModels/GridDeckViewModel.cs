@@ -1,194 +1,40 @@
 ﻿using StreamBoard.Core;
-using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Input;
-using Wpf.Ui.Input;
 
 namespace StreamBoard.Features.Decks.ViewModels
 {
     public partial class GridDeckViewModel : ObservableObject
     {
-        private readonly GridDeckStorage _storage;
-
         public DeckPagesViewModel Pages { get; }
         public ActionLibraryViewModel Library { get; }
-
         public DeckButtonEditorViewModel Editor { get; }
-
-        public GridCanvasConfig CanvasConfig { get; }
-
-        public ObservableCollection<DeckButtonSlot> Buttons { get; } = [];
-
-        public ICommand SelectButtonCommand { get; }
+        public DeckCanvasViewModel Canvas { get; }
 
         public GridDeckViewModel(GridDeckStorage storage, ActionRegistry registry)
         {
-            _storage = storage;
-
             Pages = new DeckPagesViewModel(storage);
             Library = new ActionLibraryViewModel(registry);
             Editor = new DeckButtonEditorViewModel(storage);
+            Canvas = new DeckCanvasViewModel(storage);
 
-            CanvasConfig = storage.CurrentProfile.CanvasConfig;
-
-            CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
+            Canvas.PropertyChanged += OnCanvasPropertyChanged;
             Pages.PropertyChanged += OnPagesPropertyChanged;
-
-            RebuildButtons();
-
-            SelectButtonCommand = new RelayCommand(p =>
-            {
-                if (p is DeckButtonSlot slot)
-                    SelectedButton = slot;
-            });
         }
 
-        private DeckButtonSlot? _selectedButton;
-        public DeckButtonSlot? SelectedButton
+        private void OnCanvasPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            get => _selectedButton;
-            set
+            if (e.PropertyName == nameof(DeckCanvasViewModel.SelectedButton))
             {
-                if (_selectedButton != null)
-                {
-                    _selectedButton.IsSelected = false;
-                    if (_selectedButton.Config != null)
-                    {
-                        _selectedButton.Config.PropertyChanged -= OnConfigPropertyChanged;
-                    }
-                }
-
-                if (SetProperty(ref _selectedButton, value))
-                {
-                    if (_selectedButton != null)
-                    {
-                        _selectedButton.IsSelected = true;
-
-                        if (_selectedButton.Config == null)
-                        {
-                            var newConfig = new DeckButtonConfig();
-                            _selectedButton.Config = newConfig;
-
-                            var map = _storage.CurrentProfile.CurrentPageButtonMap;
-                            if (map != null)
-                            {
-                                map[_selectedButton.Index.ToString()] = newConfig;
-                            }
-                        }
-
-                        _selectedButton.Config.PropertyChanged += OnConfigPropertyChanged;
-                    }
-
-                    Editor.EditingSlot = _selectedButton;
-                }
-            }
-        }
-
-        private void OnCanvasConfigPropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(GridCanvasConfig.SelectedGrid))
-            {
-                RebuildButtons();
-                _storage.Save();
+                Editor.EditingSlot = Canvas.SelectedButton;
             }
         }
 
         private void OnPagesPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Pages.SelectedPage))
+            if (e.PropertyName == nameof(DeckPagesViewModel.SelectedPage))
             {
-                RebuildButtons();
-                SelectedButton = null;
-            }
-        }
-
-        private void RebuildButtons()
-        {
-            Buttons.Clear();
-            var map = _storage.CurrentProfile.CurrentPageButtonMap;
-
-            foreach (var index in CanvasConfig.Cells)
-            {
-                DeckButtonConfig? config = null;
-                if (map != null && map.TryGetValue(index.ToString(), out var btn))
-                {
-                    config = btn;
-                }
-
-                var slot = new DeckButtonSlot(index, config, HandleDrop);
-                Buttons.Add(slot);
-            }
-        }
-
-        private void OnConfigPropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(DeckButtonConfig.Name)
-                || e.PropertyName == nameof(DeckButtonConfig.ImagePath)
-                || e.PropertyName == nameof(DeckButtonConfig.BackgroundColor))
-            {
-                _storage.Save();
-            }
-        }
-
-        private void HandleDrop(object payload, DeckButtonSlot target)
-        {
-            if (payload is DeckButtonSlot sourceSlot)
-            {
-                SwapButtons(sourceSlot, target);
-            }
-            else if (payload is ActionDescriptor descriptor)
-            {
-                AddActionToSlot(descriptor, target);
-            }
-        }
-
-        private void AddActionToSlot(ActionDescriptor descriptor, DeckButtonSlot target)
-        {
-            if (target.Config == null)
-            {
-                var newConfig = new DeckButtonConfig();
-                target.Config = newConfig;
-
-                var map = _storage.CurrentProfile.CurrentPageButtonMap;
-                if (map != null)
-                {
-                    map[target.Index.ToString()] = newConfig;
-                }
-            }
-
-            var newActionInstance = descriptor.CreateInstance();
-
-            target.Config.Actions.Add(newActionInstance);
-
-            _storage.Save();
-        }
-
-        private void SwapButtons(DeckButtonSlot source, DeckButtonSlot target)
-        {
-            if (source == null || target == null || source == target) return;
-
-            SelectedButton = null;
-
-            var tempConfig = source.Config;
-            source.Config = target.Config;
-            target.Config = tempConfig;
-
-            var map = _storage.CurrentProfile.CurrentPageButtonMap;
-            if (map != null)
-            {
-                if (source.Config != null)
-                    map[source.Index.ToString()] = source.Config;
-                else
-                    map.Remove(source.Index.ToString());
-
-                if (target.Config != null)
-                    map[target.Index.ToString()] = target.Config;
-                else
-                    map.Remove(target.Index.ToString());
-
-                _storage.Save();
+                Canvas.RebuildButtons();
             }
         }
     }

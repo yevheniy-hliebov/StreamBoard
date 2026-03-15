@@ -17,7 +17,7 @@
                     <Setter Property="Visibility" Value="Collapsed"/>
 
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedButton}" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding Canvas.SelectedButton}" Value="{x:Null}">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -31,7 +31,7 @@
                     <Setter Property="Visibility" Value="Visible" />
 
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedButton}" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding Canvas.SelectedButton}" Value="{x:Null}">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -53,7 +53,7 @@
 
                 <!--Header-->
                 <layout:DeckSidebarHeader Grid.Row="0"
-                                         Title="{Binding SelectedButton.Index, StringFormat='Button Properties | Key: {0}'}">
+                                         Title="{Binding Canvas.SelectedButton.Index, StringFormat='Button Properties | Key: {0}'}">
                     <layout:DeckSidebarHeader.RightContent>
                         <controls:IconButton TooltipText="Reset Appearance" Command="{Binding Editor.ClearButtonCommand}" IconType="ClearAllInk"/>
                     </layout:DeckSidebarHeader.RightContent>
@@ -79,14 +79,14 @@
                         <Label Content="Name" Margin="0,0,0,4"/>
 
                         <ui:TextBox PlaceholderText="Enter a name..."
-                                    Text="{Binding SelectedButton.Config.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                                    Text="{Binding Canvas.SelectedButton.Config.Name, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 
                     <!--Button Image-->
                     <StackPanel Grid.Row="1" Grid.Column="0" Margin="8">
                         <Label Content="Button Image" Margin="0,0,0,4"/>
 
-                        <local:ImagePicker ImagePath="{Binding SelectedButton.Config.ImagePath}" HorizontalAlignment="Left"/>
+                        <local:ImagePicker ImagePath="{Binding Canvas.SelectedButton.Config.ImagePath}" HorizontalAlignment="Left"/>
                     </StackPanel>
 
                     <!--Backgroudn Color-->
@@ -101,11 +101,11 @@
 
                             <ui:TextBox Grid.Column="0" PlaceholderText="Enter a hex..."
                                         Height="35"
-                                        Text="{Binding SelectedButton.Config.BackgroundColor, UpdateSourceTrigger=PropertyChanged}"
+                                        Text="{Binding Canvas.SelectedButton.Config.BackgroundColor, UpdateSourceTrigger=PropertyChanged}"
                                         Margin="0,0,4,0"/>
 
                             <local:ColorPreview Grid.Column="1"
-                                                SelectedColor="{Binding SelectedButton.Config.BackgroundColor}" />
+                                                SelectedColor="{Binding Canvas.SelectedButton.Config.BackgroundColor}" />
                         </Grid>
                     </StackPanel>
                 </Grid>
