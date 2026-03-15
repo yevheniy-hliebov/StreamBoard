@@ -55,7 +55,7 @@
                 <layout:DeckSidebarHeader Grid.Row="0"
                                          Title="{Binding SelectedButton.Index, StringFormat='Button Properties | Key: {0}'}">
                     <layout:DeckSidebarHeader.RightContent>
-                        <controls:IconButton TooltipText="Reset Appearance" Command="{Binding ClearButtonCommand}" IconType="ClearAllInk"/>
+                        <controls:IconButton TooltipText="Reset Appearance" Command="{Binding Editor.ClearButtonCommand}" IconType="ClearAllInk"/>
                     </layout:DeckSidebarHeader.RightContent>
                 </layout:DeckSidebarHeader>
 
@@ -122,7 +122,7 @@
 
                 <layout:DeckSidebarHeader Grid.Row="0" Title="Actions">
                     <layout:DeckSidebarHeader.RightContent>
-                        <controls:IconButton TooltipText="Clear Actions" Command="{Binding ClearActionsCommand}" IconType="ClearAllInk"/>
+                        <controls:IconButton TooltipText="Clear Actions" Command="{Binding Editor.ClearActionsCommand}" IconType="ClearAllInk"/>
                     </layout:DeckSidebarHeader.RightContent>
 
                 </layout:DeckSidebarHeader>

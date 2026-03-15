@@ -1,5 +1,4 @@
-﻿using GongSolutions.Wpf.DragDrop;
-using StreamBoard.Core;
+﻿using StreamBoard.Core;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
 using System.Collections.ObjectModel;
@@ -7,31 +6,31 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Wpf.Ui.Input;
 
-
 namespace StreamBoard.Features.Decks.ViewModels
 {
-    public partial class GridDeckViewModel : ObservableObject, IDropTarget
+    public partial class GridDeckViewModel : ObservableObject
     {
         private readonly GridDeckStorage _storage;
 
         public DeckPagesViewModel Pages { get; }
         public ActionLibraryViewModel Library { get; }
 
+        public DeckButtonEditorViewModel Editor { get; }
+
         public GridCanvasConfig CanvasConfig { get; }
 
         public ObservableCollection<DeckButtonSlot> Buttons { get; } = [];
 
         public ICommand SelectButtonCommand { get; }
-        public ICommand ClearButtonCommand { get; }
-        public ICommand DeleteActionCommand { get; }
-        public ICommand ClearActionsCommand { get; }
 
         public GridDeckViewModel(GridDeckStorage storage, ActionRegistry registry)
         {
             _storage = storage;
-            
+
             Pages = new DeckPagesViewModel(storage);
             Library = new ActionLibraryViewModel(registry);
+            Editor = new DeckButtonEditorViewModel(storage);
+
             CanvasConfig = storage.CurrentProfile.CanvasConfig;
 
             CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
@@ -44,25 +43,6 @@ namespace StreamBoard.Features.Decks.ViewModels
                 if (p is DeckButtonSlot slot)
                     SelectedButton = slot;
             });
-
-            ClearButtonCommand = new RelayCommand(_ =>
-            {
-                if (SelectedButton?.Config != null)
-                {
-                    SelectedButton.Config.ResetAppearance();
-                }
-            }, _ => SelectedButton?.Config != null);
-
-            DeleteActionCommand = new RelayCommand<string>(DeleteActionInSelectedButton);
-
-            ClearActionsCommand = new RelayCommand(_ =>
-            {
-                if (SelectedButton?.Config?.Actions != null)
-                {
-                    SelectedButton.Config.Actions.Clear();
-                    _storage.Save();
-                }
-            }, _ => SelectedButton?.Config?.Actions?.Count > 0);
         }
 
         private DeckButtonSlot? _selectedButton;
@@ -100,6 +80,8 @@ namespace StreamBoard.Features.Decks.ViewModels
 
                         _selectedButton.Config.PropertyChanged += OnConfigPropertyChanged;
                     }
+
+                    Editor.EditingSlot = _selectedButton;
                 }
             }
         }
@@ -207,63 +189,6 @@ namespace StreamBoard.Features.Decks.ViewModels
                     map.Remove(target.Index.ToString());
 
                 _storage.Save();
-            }
-        }
-
-        private void DeleteActionInSelectedButton(string? id)
-        {
-            if (string.IsNullOrEmpty(id))
-                return;
-
-            var selectedButton = SelectedButton;
-
-            if (selectedButton?.Config?.Actions == null)
-                return;
-
-            var actionToRemove = selectedButton.Config.Actions.FirstOrDefault(action => action.Id == id);
-
-            if (actionToRemove != null)
-            {
-                selectedButton.Config.Actions.Remove(actionToRemove);
-            }
-
-            _storage.Save();
-        }
-
-        void IDropTarget.DragOver(IDropInfo dropInfo)
-        {
-            if (dropInfo.Data == null) return;
-
-            if (dropInfo.DragInfo?.SourceCollection != null &&
-                dropInfo.DragInfo.SourceCollection == dropInfo.TargetCollection)
-            {
-                dropInfo.Effects = System.Windows.DragDropEffects.Move;
-                dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
-            }
-            else if (dropInfo.TargetCollection is ObservableCollection<DeckAction>)
-            {
-                dropInfo.Effects = System.Windows.DragDropEffects.Move;
-                dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
-            }
-        }
-
-        void IDropTarget.Drop(IDropInfo dropInfo)
-        {
-            if (dropInfo.DragInfo?.SourceCollection == dropInfo.TargetCollection && dropInfo.Data != null)
-            {
-                var list = (System.Collections.IList)dropInfo.DragInfo.SourceCollection;
-
-                int oldIndex = list.IndexOf(dropInfo.Data);
-                int newIndex = dropInfo.InsertIndex;
-
-                if (oldIndex < newIndex) newIndex--;
-
-                if (oldIndex != newIndex)
-                {
-                    dynamic observableCollection = dropInfo.TargetCollection;
-                    observableCollection.Move(oldIndex, newIndex);
-                    _storage.Save();
-                }
             }
         }
     }

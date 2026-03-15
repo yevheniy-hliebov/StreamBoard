@@ -20,7 +20,7 @@
                             Icon="{Binding Metadata.Icon}"
                             Text="{Binding Label}"
                             ActionId="{Binding Id}"
-                            DeleteCommand="{Binding DataContext.DeleteActionCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"/>
+                            DeleteCommand="{Binding DataContext.Editor.DeleteActionCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"/>
                     </reorder:ReorderListItemWrapper>
                 </DataTemplate>
             </reorder:ReorderListView.ItemTemplate>
