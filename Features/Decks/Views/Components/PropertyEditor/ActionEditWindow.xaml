@@ -1,0 +1,47 @@
+﻿<ui:FluentWindow x:Class="StreamBoard.Features.Decks.Views.Components.PropertyEditor.ActionEditWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:titlebar="clr-namespace:StreamBoard.Components.TitleBar"
+                 xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components.PropertyEditor"
+                 Width="400"
+                 MaxWidth="400"
+                 MinHeight="200"
+                 MaxHeight="500"
+                 SizeToContent="Height"
+                 WindowStartupLocation="CenterOwner"
+                 ShowInTaskbar="False"
+                 ResizeMode="NoResize"
+                 WindowBackdropType="Mica"
+                 ExtendsContentIntoTitleBar="True"
+                 Background="{DynamicResource ApplicationBackgroundBrush}"
+                 Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+
+    <Grid VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <titlebar:MainTitleBar Grid.Row="0" Title="{Binding EditingActionCopy.Metadata.DialogTitle, FallbackValue='Edit Action'}" />
+
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <local:ActionPropertiesView Grid.Row="0" DataContext="{Binding}" />
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,24,0,0">
+                <ui:Button Content="Cancel" 
+                           Click="Cancel_Click"
+                           Margin="0,0,8,0"/>
+
+                <ui:Button Content="Save" 
+                           Appearance="Primary"
+                           Click="Save_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

@@ -7,6 +7,7 @@
              xmlns:controls="clr-namespace:StreamBoard.Components.Controls">
 
     <Grid Background="Transparent">
+
         <TextBlock Text="Select a key button"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
@@ -15,7 +16,6 @@
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Visibility" Value="Collapsed"/>
-
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Canvas.SelectedButton}" Value="{x:Null}">
                             <Setter Property="Visibility" Value="Visible"/>
@@ -29,7 +29,6 @@
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible" />
-
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Canvas.SelectedButton}" Value="{x:Null}">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -44,14 +43,12 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!--Button Properties-->
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <!--Header-->
                 <layout:DeckSidebarHeader Grid.Row="0"
                                          Title="{Binding Canvas.SelectedButton.Index, StringFormat='Button Properties | Key: {0}'}">
                     <layout:DeckSidebarHeader.RightContent>
@@ -59,7 +56,6 @@
                     </layout:DeckSidebarHeader.RightContent>
                 </layout:DeckSidebarHeader>
 
-                <!--Form-->
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -71,28 +67,19 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <!--Name-->
-                    <StackPanel Grid.Row="0"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                Margin="8">
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="8">
                         <Label Content="Name" Margin="0,0,0,4"/>
-
                         <ui:TextBox PlaceholderText="Enter a name..."
                                     Text="{Binding Canvas.SelectedButton.Config.Name, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
 
-                    <!--Button Image-->
                     <StackPanel Grid.Row="1" Grid.Column="0" Margin="8">
                         <Label Content="Button Image" Margin="0,0,0,4"/>
-
                         <local:ImagePicker ImagePath="{Binding Canvas.SelectedButton.Config.ImagePath}" HorizontalAlignment="Left"/>
                     </StackPanel>
 
-                    <!--Backgroudn Color-->
                     <StackPanel Grid.Row="1" Grid.Column="1" Margin="8">
-                        <Label Content="Backgroudn Color" Margin="0,0,0,4"/>
-
+                        <Label Content="Background Color" Margin="0,0,0,4"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -113,7 +100,6 @@
 
             <Separator Grid.Column="1"/>
 
-            <!--Actions-->
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -124,13 +110,12 @@
                     <layout:DeckSidebarHeader.RightContent>
                         <controls:IconButton TooltipText="Clear Actions" Command="{Binding Editor.ClearActionsCommand}" IconType="ClearAllInk"/>
                     </layout:DeckSidebarHeader.RightContent>
-
                 </layout:DeckSidebarHeader>
+
                 <local:ButtonActionListView Grid.Row="1"
-                                            DataContext="{Binding}"
+                                            DataContext="{Binding}" 
                                             Margin="8"/>
             </Grid>
         </Grid>
     </Grid>
-
 </UserControl>

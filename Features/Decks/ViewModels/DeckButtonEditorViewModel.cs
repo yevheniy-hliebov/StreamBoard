@@ -2,7 +2,9 @@
 using StreamBoard.Core;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
+using StreamBoard.Features.Decks.Views.Components.PropertyEditor;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using Wpf.Ui.Input;
 
@@ -19,9 +21,30 @@ namespace StreamBoard.Features.Decks.ViewModels
             set => SetProperty(ref _editingSlot, value);
         }
 
+        public ObservableCollection<ActionSettingViewModel> ActionSettings { get; } = new();
+
+        private bool _isActionDialogOpen;
+        public bool IsActionDialogOpen
+        {
+            get => _isActionDialogOpen;
+            set => SetProperty(ref _isActionDialogOpen, value);
+        }
+
+        private DeckAction? _originalActionToEdit;
+        private DeckAction? _editingActionCopy;
+        public DeckAction? EditingActionCopy
+        {
+            get => _editingActionCopy;
+            set => SetProperty(ref _editingActionCopy, value);
+        }
+
         public ICommand ClearButtonCommand { get; }
         public ICommand DeleteActionCommand { get; }
         public ICommand ClearActionsCommand { get; }
+
+        public ICommand OpenEditDialogCommand { get; }
+        public ICommand SaveSettingsCommand { get; }
+        public ICommand CancelSettingsCommand { get; }
 
         public DeckButtonEditorViewModel(GridDeckStorage storage)
         {
@@ -56,6 +79,56 @@ namespace StreamBoard.Features.Decks.ViewModels
                     _storage.Save();
                 }
             });
+
+            OpenEditDialogCommand = new RelayCommand<string>(id =>
+            {
+                if (EditingSlot?.Config?.Actions == null) return;
+
+                _originalActionToEdit = EditingSlot.Config.Actions.FirstOrDefault(a => a.Id == id);
+
+                if (_originalActionToEdit != null)
+                {
+                    EditingActionCopy = _originalActionToEdit.Copy();
+
+                    GenerateSettingsForAction(EditingActionCopy);
+
+                    var dialog = new ActionEditWindow
+                    {
+                        DataContext = this, 
+                        Owner = Application.Current.MainWindow
+                    };
+
+                    if (dialog.ShowDialog() == true)
+                    {
+                        int index = EditingSlot.Config.Actions.IndexOf(_originalActionToEdit);
+                        if (index >= 0)
+                        {
+                            EditingSlot.Config.Actions[index] = EditingActionCopy;
+                            _storage.Save();
+                        }
+                    }
+
+                    _originalActionToEdit = null;
+                    EditingActionCopy = null;
+                    ActionSettings.Clear();
+                }
+            });
+
+            SaveSettingsCommand = new RelayCommand(_ =>
+            {
+                if (_originalActionToEdit != null && EditingActionCopy != null && EditingSlot?.Config?.Actions != null)
+                {
+                    int index = EditingSlot.Config.Actions.IndexOf(_originalActionToEdit);
+                    if (index >= 0)
+                    {
+                        EditingSlot.Config.Actions[index] = EditingActionCopy;
+                        _storage.Save();
+                    }
+                }
+                CloseDialog();
+            });
+
+            CancelSettingsCommand = new RelayCommand(_ => CloseDialog());
         }
 
         void IDropTarget.DragOver(IDropInfo dropInfo)
@@ -92,6 +165,25 @@ namespace StreamBoard.Features.Decks.ViewModels
                     observableCollection.Move(oldIndex, newIndex);
                     _storage.Save();
                 }
+            }
+        }
+
+        private void CloseDialog()
+        {
+            IsActionDialogOpen = false;
+            _originalActionToEdit = null;
+            EditingActionCopy = null;
+            ActionSettings.Clear();
+        }
+
+        private void GenerateSettingsForAction(DeckAction action)
+        {
+            ActionSettings.Clear();
+            var settings = ActionSettingsGenerator.GenerateSettings(action);
+
+            foreach (var setting in settings)
+            {
+                ActionSettings.Add(setting);
             }
         }
     }

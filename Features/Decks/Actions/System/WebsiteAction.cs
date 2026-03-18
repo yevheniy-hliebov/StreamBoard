@@ -20,6 +20,7 @@ namespace StreamBoard.Features.Decks.Actions.System
 
         private string _url = "";
 
+        [ActionSetting("Website URL", "Enter url...")]
         [JsonPropertyName("url")]
         public string Url
         {
@@ -57,6 +58,10 @@ namespace StreamBoard.Features.Decks.Actions.System
             return Task.CompletedTask;
         }
 
-        public override DeckAction Copy() => new WebsiteAction { Url = Url };
+        public override DeckAction Copy() => new WebsiteAction
+        {
+            Id = this.Id,
+            Url = this.Url
+        };
     }
 }

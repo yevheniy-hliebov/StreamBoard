@@ -2,7 +2,6 @@
 using StreamBoard.Core;
 using StreamBoard.Features.Decks.Attributes;
 using System.Text.Json.Serialization;
-using Wpf.Ui.Controls;
 
 namespace StreamBoard.Features.Decks.Models
 {
