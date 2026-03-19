@@ -1,22 +1,15 @@
-﻿using StreamBoard.Features.Home.Pages;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StreamBoard.Features.Home.Pages;
+using StreamBoard.Features.Settings.Pages;
+using StreamBoard.Features.Servers.Pages;
+using StreamBoard.Features.Decks.Views.Pages; 
+using StreamBoard.Features.Settings.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace StreamBoard.Components.Navigation
 {
-    /// <summary>
-    /// Interaction logic for MainNavView.xaml
-    /// </summary>
     public partial class MainNavView : UserControl
     {
         public Wpf.Ui.Controls.NavigationView GetNavigation() => RootNavigation;
@@ -24,7 +17,6 @@ namespace StreamBoard.Components.Navigation
         public MainNavView()
         {
             InitializeComponent();
-
             Loaded += OnLoaded;
         }
 
@@ -32,7 +24,19 @@ namespace StreamBoard.Components.Navigation
         {
             Loaded -= OnLoaded;
             
-            RootNavigation.Navigate(typeof(HomePage));
+            var settings = App.ServiceProvider.GetRequiredService<SettingsStorage>();
+            var startupPage = settings.Current.StartupPage;
+
+            Type pageToNavigate = startupPage switch
+            {
+                "Grid Deck" => typeof(GridDeckPage),
+                "HTTP Server" => typeof(HttpServerPage),
+                "Settings" => typeof(SettingsPage),
+                _ => typeof(HomePage)
+            };
+
+            // Виконуємо перехід
+            RootNavigation.Navigate(pageToNavigate);
         }
     }
 }

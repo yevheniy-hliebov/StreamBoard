@@ -88,5 +88,25 @@ namespace StreamBoard.Features.Settings.ViewModels
         public bool IsRunAsAdmin => _privilegeService.IsRunAsAdmin();
 
         public ICommand RestartAsAdminCommand => new RelayCommand<object>(_ => _privilegeService.RestartAsAdmin());
+
+        public List<string> AvailableStartupPages { get; } = new()
+        {
+            "Home",
+            "Grid Deck",
+            "HTTP Server",
+            "Settings"
+        };
+
+        public string StartupPage
+        {
+            get => _storage.Current.StartupPage;
+            set
+            {
+                if (_storage.Current.StartupPage == value) return;
+                _storage.Current.StartupPage = value;
+                _storage.Save();
+                OnPropertyChanged();
+            }
+        }
     }
 }
