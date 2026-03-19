@@ -14,6 +14,19 @@ namespace StreamBoard.Features.Decks.ViewModels
         public GridCanvasConfig CanvasConfig { get; }
         public ObservableCollection<DeckButtonSlot> Buttons { get; } = [];
 
+        private bool _isClickMode;
+        public bool IsClickMode
+        {
+            get => _isClickMode;
+            set
+            {
+                if (SetProperty(ref _isClickMode, value))
+                {
+                    if (_isClickMode) SelectedButton = null;
+                }
+            }
+        }
+
         public ICommand SelectButtonCommand { get; }
 
         private DeckButtonSlot? _selectedButton;
@@ -62,10 +75,30 @@ namespace StreamBoard.Features.Decks.ViewModels
 
             CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
 
-            SelectButtonCommand = new RelayCommand(p =>
+            SelectButtonCommand = new RelayCommand(async p =>
             {
-                if (p is DeckButtonSlot slot)
+                if (p is not DeckButtonSlot slot) return;
+
+                if (!IsClickMode)
+                {
                     SelectedButton = slot;
+                }
+                else
+                {
+                    if (slot.Config?.Actions != null)
+                    {
+                        foreach (var action in slot.Config.Actions)
+                        {
+                            try
+                            {
+                                await action.ExecuteAsync();
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+                }
             });
 
             RebuildButtons();
