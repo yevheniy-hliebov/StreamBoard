@@ -1,15 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using StreamBoard.Features.Settings.Services;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Wpf.Ui.Controls;
 
 namespace StreamBoard
@@ -22,7 +15,7 @@ namespace StreamBoard
         {
             InitializeComponent();
 
-            WindowBackdropType = Wpf.Ui.Controls.WindowBackdropType.Mica;
+            WindowBackdropType = WindowBackdropType.Mica;
 
             _settings = App.ServiceProvider.GetRequiredService<SettingsStorage>();
 
@@ -43,6 +36,37 @@ namespace StreamBoard
             if (_settings.Current.MinimizeToTray && WindowState == WindowState.Minimized)
             {
                 Hide();
+            }
+        }
+
+        protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnPreviewMouseDown(e);
+
+            if (Keyboard.FocusedElement is System.Windows.Controls.Primitives.TextBoxBase focusedTextBox)
+            {
+                DependencyObject? clickedElement = e.OriginalSource as DependencyObject;
+                bool clickedInsideAnyTextBox = false;
+                var current = clickedElement;
+
+                while (current != null)
+                {
+                    if (current is System.Windows.Controls.Primitives.TextBoxBase)
+                    {
+                        clickedInsideAnyTextBox = true;
+                        break;
+                    }
+                    current = VisualTreeHelper.GetParent(current);
+                }
+
+                if (!clickedInsideAnyTextBox)
+                {
+                    Keyboard.ClearFocus();
+
+                    FocusManager.SetFocusedElement(FocusManager.GetFocusScope(focusedTextBox), null);
+
+                    this.Focus();
+                }
             }
         }
     }

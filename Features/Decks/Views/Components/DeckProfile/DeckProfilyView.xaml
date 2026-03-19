@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="StreamBoard.Features.Decks.Views.Components.DeckProfile.DeckProfilyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+             xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components.DeckProfile"
+             xmlns:layout="clr-namespace:StreamBoard.Features.Decks.Views.Components.Layout"
+             xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+             xmlns:reorder="clr-namespace:StreamBoard.Components.Controls.ReorderList">
+
+    <Grid VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <layout:DeckSidebarHeader Grid.Row="0" Title="Pages">
+            <layout:DeckSidebarHeader.RightContent>
+                <StackPanel Orientation="Horizontal">
+                    <controls:IconButton TooltipText="Add New Page" Command="{Binding AddPageCommand}" IconType="Add" />
+                    <controls:IconButton TooltipText="Rename Page" Command="{Binding RenamePageCommand}" IconType="Rename" Margin="8,0,0,0"/>
+                    <controls:IconButton TooltipText="Delete Page" Command="{Binding DeletePageCommand}" IconType="Delete" Margin="8,0,0,0"/>
+                </StackPanel>
+            </layout:DeckSidebarHeader.RightContent>
+        </layout:DeckSidebarHeader>
+
+        <ScrollViewer Grid.Row="1" 
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled"
+                  CanContentScroll="True"
+                  Padding="5">
+            <reorder:ReorderListView ItemsSource="{Binding List}"
+                                     SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
+                                     dd:DragDrop.DropHandler="{Binding}">
+                <reorder:ReorderListView.ItemTemplate>
+                    <DataTemplate>
+                        <reorder:ReorderListItemWrapper ShowDragHandle="True" UseDragHandle="True">
+                            <local:DeckPageItem Title="{Binding Name, Mode=TwoWay}" Margin="0,2"/>
+                        </reorder:ReorderListItemWrapper>
+                    </DataTemplate>
+                </reorder:ReorderListView.ItemTemplate>
+            </reorder:ReorderListView>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -1,18 +1,18 @@
-﻿using StreamBoard.Features.Decks.Attributes;
+﻿using StreamBoard.Components.Controls;
+using StreamBoard.Features.Decks.Attributes;
 using StreamBoard.Features.Decks.Models;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace StreamBoard.Features.Decks.Actions.System
 {
-    //[ActionCategory("System")]
     [ActionDiscriminator("website")]
-    public class WebsiteAction : DeckAction
+    public class WebsiteAction : SystemDeckAction
     {
         public static readonly ActionMetadata StaticMetadata = new(
             Name: "Open Website",
             DialogTitle: "Enter URL",
-            IconKey: "Globe24"
+            Icon: FluentIconType.Globe
         );
 
         [JsonIgnore]
@@ -20,6 +20,7 @@ namespace StreamBoard.Features.Decks.Actions.System
 
         private string _url = "";
 
+        [ActionSetting("Website URL", "Enter url...")]
         [JsonPropertyName("url")]
         public string Url
         {
@@ -57,6 +58,10 @@ namespace StreamBoard.Features.Decks.Actions.System
             return Task.CompletedTask;
         }
 
-        public override DeckAction Copy() => new WebsiteAction { Url = Url };
+        public override DeckAction Copy() => new WebsiteAction
+        {
+            Id = this.Id,
+            Url = this.Url
+        };
     }
 }

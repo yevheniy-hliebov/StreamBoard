@@ -12,7 +12,8 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock VerticalAlignment="Center">
+        <TextBlock VerticalAlignment="Center"
+                   Foreground="{DynamicResource TextFillColorPrimaryBrush}">
             <TextBlock.Style>
                 <Style TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
                     <Setter Property="Text" Value="{Binding ToggleOffText, ElementName=Root}" />

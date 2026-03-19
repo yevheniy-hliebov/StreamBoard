@@ -8,7 +8,7 @@
         xmlns:navigation="clr-namespace:StreamBoard.Components.Navigation"
         xmlns:tray="clr-namespace:StreamBoard.Components.Tray"
         mc:Ignorable="d"
-        Title="StreamBoard" Height="600" Width="1000"
+        Title="StreamBoard" Height="800" Width="1252"
         WindowBackdropType="Mica"
         WindowStartupLocation="CenterScreen"
         ExtendsContentIntoTitleBar="True">
@@ -20,8 +20,8 @@
         </Grid.RowDefinitions>
         
         <tray:TrayIconView />
-        
-        <titlebar:MainTitleBar Grid.Row="0" />
+
+        <titlebar:MainTitleBar Grid.Row="0" Title="StreamBoard" Subtitle="(v0.1.0)" />
 
         <navigation:MainNavView Grid.Row="1" x:Name="RootNavView"/>
     </Grid>

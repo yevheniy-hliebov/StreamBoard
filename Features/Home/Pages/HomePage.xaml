@@ -6,6 +6,7 @@
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:local="clr-namespace:StreamBoard.Features.Home.Pages"
       xmlns:cards="clr-namespace:StreamBoard.Components.Cards"
+      xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
       xmlns:components="clr-namespace:StreamBoard.Features.Home.Components"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -29,7 +30,7 @@
                                   Description="Configure touch layouts. Manage virtual buttons, customize grids and view action assignments for your devices."
                                   IconPosition="Top">
                 <cards:NavigationCard.Icon>
-                    <ui:SymbolIcon Symbol="Grid24" FontSize="28" />
+                    <controls:FluentIcon IconType="Grid" FontSize="28" />
                 </cards:NavigationCard.Icon>
             </cards:NavigationCard>
 
@@ -38,7 +39,7 @@
                                   Description="Configure input mappings. Manage physical keys, customize bindings and view action assignments for your keyboards."
                                   IconPosition="Top">
                 <cards:NavigationCard.Icon>
-                    <ui:SymbolIcon Symbol="Keyboard24" FontSize="28" />
+                    <controls:FluentIcon IconType="Keyboard" FontSize="28" />
                 </cards:NavigationCard.Icon>
             </cards:NavigationCard>
 

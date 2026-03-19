@@ -1,26 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace StreamBoard.Components.TitleBar
 {
-    /// <summary>
-    /// Interaction logic for MainTitleBar.xaml
-    /// </summary>
     public partial class MainTitleBar : UserControl
     {
-        public MainTitleBar()
+        public MainTitleBar() => InitializeComponent();
+
+        public string Title
         {
-            InitializeComponent();
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
         }
+
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register(nameof(Title), typeof(string), typeof(MainTitleBar), new PropertyMetadata("StreamBoard"));
+
+        public string Subtitle
+        {
+            get { return (string)GetValue(SubtitleProperty); }
+            set { SetValue(SubtitleProperty, value); }
+        }
+
+        public static readonly DependencyProperty SubtitleProperty =
+            DependencyProperty.Register(nameof(Subtitle), typeof(string), typeof(MainTitleBar), new PropertyMetadata(null));
     }
 }

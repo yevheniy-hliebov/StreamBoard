@@ -31,9 +31,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />
 		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
 		<PackageReference Include="WPF-UI" Version="4.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="CustomDragDropLib">
+	    <HintPath>Libs\CustomDragDropLib.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 	
 </Project>

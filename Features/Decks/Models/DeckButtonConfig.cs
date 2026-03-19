@@ -4,9 +4,9 @@ using System.Text.Json.Serialization;
 
 namespace StreamBoard.Features.Decks.Models
 {
-    public class DeckButton : ObservableObject
+    public class DeckButtonConfig : ObservableObject
     {
-        private string _name = "";
+        private string _name = string.Empty;
         [JsonPropertyName("name")]
         public string Name
         {
@@ -35,5 +35,12 @@ namespace StreamBoard.Features.Decks.Models
 
         [JsonIgnore]
         public bool HasName => !string.IsNullOrWhiteSpace(Name);
+
+        public void ResetAppearance()
+        {
+            Name = string.Empty;
+            BackgroundColor = "#FF2D2D2D";
+            ImagePath = null;
+        }
     }
 }

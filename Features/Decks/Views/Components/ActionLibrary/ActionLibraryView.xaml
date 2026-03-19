@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="StreamBoard.Features.Decks.Views.Components.ActionLibrary.ActionLibraryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:dd="clr-namespace:CustomDragDropLib;assembly=CustomDragDropLib"
+             xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components.ActionLibrary"
+             xmlns:layout="clr-namespace:StreamBoard.Features.Decks.Views.Components.Layout"
+             xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+             xmlns:vm="clr-namespace:StreamBoard.Features.Decks.ViewModels">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="ActionGhostTemplate">
+            <Border Background="#2B2B2B" 
+                    BorderBrush="{DynamicResource AccentTextFillColorPrimaryBrush}" 
+                    BorderThickness="1"
+                    CornerRadius="6"
+                    Padding="4,2"
+                    Opacity="0.95">
+
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="4" Opacity="0.4" Direction="315" />
+                </Border.Effect>
+
+                <local:ActionLibraryItem Text="{Binding Metadata.Name}" 
+                                         Icon="{Binding Metadata.Icon}" />
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <layout:DeckSidebarHeader Title="Action Library">
+            <layout:DeckSidebarHeader.BottomContent>
+                <ui:TextBox PlaceholderText="Search actions..." 
+                            Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="8,0,8,8"
+                            ClearButtonEnabled="True">
+                    <ui:TextBox.Icon>
+                        <controls:FluentIcon IconType="Search" />
+                    </ui:TextBox.Icon>
+                </ui:TextBox>
+            </layout:DeckSidebarHeader.BottomContent>
+        </layout:DeckSidebarHeader>
+
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto"
+                      Margin="0,4,0,0">
+            <ItemsControl ItemsSource="{Binding FilteredCategories}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:CategoryExpander Title="{Binding Name}" 
+                                                Icon="{Binding Icon}"
+                                                ImagePath="{Binding ImagePath}"
+                                                IsExpanded="{Binding IsExpanded}" 
+                                                Margin="0,0,0,4">
+                            <local:CategoryExpander.InnerContent>
+                                <ItemsControl ItemsSource="{Binding Actions}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <dd:DraggableWrapper Payload="{Binding}"
+                                                                 GhostTemplate="{StaticResource ActionGhostTemplate}">
+                                                <local:ActionLibraryItem Text="{Binding Metadata.Name}" 
+                                                                         Icon="{Binding Metadata.Icon}"
+                                                                         Margin="12,0,0,0"/>
+                                            </dd:DraggableWrapper>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </local:CategoryExpander.InnerContent>
+                        </local:CategoryExpander>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

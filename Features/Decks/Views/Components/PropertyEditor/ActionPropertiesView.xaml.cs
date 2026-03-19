@@ -11,14 +11,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace StreamBoard.Features.GridDeck.Pages
+namespace StreamBoard.Features.Decks.Views.Components.PropertyEditor
 {
     /// <summary>
-    /// Interaction logic for GridDeckPage.xaml
+    /// Interaction logic for ActionPropertiesView.xaml
     /// </summary>
-    public partial class GridDeckPage : Page
+    public partial class ActionPropertiesView : UserControl
     {
-        public GridDeckPage()
+        public ActionPropertiesView()
         {
             InitializeComponent();
         }
