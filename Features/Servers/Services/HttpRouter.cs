@@ -1,30 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace StreamBoard.Features.Servers.Services
 {
     public class HttpRouter
     {
-        private readonly Dictionary<string, IHttpController> _map;
+        private readonly List<IHttpController> _controllers;
 
         public HttpRouter(IEnumerable<IHttpController> controllers)
         {
-            _map = controllers.ToDictionary(
-                c => Normalize(c.RoutePrefix),
-                c => c);
+            _controllers = controllers
+                .OrderByDescending(c => c.RoutePrefix.Length)
+                .ToList();
         }
 
         public IHttpController? Resolve(string path)
         {
-            var key = Normalize(path);
-            return _map.TryGetValue(key, out var controller)
-                ? controller
-                : null;
+            var normalizedPath = Normalize(path);
+
+            return _controllers.FirstOrDefault(c => 
+                normalizedPath.StartsWith(Normalize(c.RoutePrefix), StringComparison.OrdinalIgnoreCase));
         }
 
         private static string Normalize(string path)
-            => path.TrimEnd('/').ToLowerInvariant();
+        {
+            if (string.IsNullOrEmpty(path)) return "/";
+            var normalized = path.ToLowerInvariant();
+            return normalized == "/" ? normalized : normalized.TrimEnd('/');
+        }
     }
-
 }

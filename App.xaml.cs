@@ -35,7 +35,9 @@ namespace StreamBoard
                 var storage = sp.GetRequiredService<ServerConfigsStorage>();
                 var homeController = new HomeController(storage.Current.Http);
 
-                var httpRouter = new HttpRouter([homeController]);
+                var gridDeckController = new GridDeckController();
+
+                var httpRouter = new HttpRouter([homeController, gridDeckController]);
 
                 return new HttpServer(storage.Current.Http, httpRouter);
             });
