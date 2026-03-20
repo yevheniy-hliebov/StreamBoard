@@ -1,10 +1,21 @@
+using StreamBoard.Features.Decks.Services;
+using StreamBoard.Features.Servers.Models;
+using StreamBoard.Features.Servers.Services;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 
 namespace StreamBoard.Features.Servers.Controllers
 {
     public class GridDeckController : IHttpController
     {
+        private readonly GridDeckStorage _storage;
+
+        public GridDeckController(GridDeckStorage storage)
+        {
+            _storage = storage;
+        }
+
         public string RoutePrefix => "/grid";
 
         public async Task HandleAsync(HttpListenerContext ctx)
@@ -42,15 +53,36 @@ namespace StreamBoard.Features.Servers.Controllers
 
         private async Task GetButtons(HttpListenerContext ctx)
         {
-            string responseText = "Grid Deck Buttons";
-            byte[] data = Encoding.UTF8.GetBytes(responseText);
+            var profile = _storage.CurrentProfile;
+            var map = profile.CurrentPageButtonMap;
 
-            ctx.Response.ContentType = "text/plain";
+            var responseObj = new
+            {
+                grid_template = profile.CanvasConfig.SelectedGrid,
+                current_page_id = profile.Pages.SelectedPageId,
+                
+                // Перебираємо словник кнопок і залишаємо лише потрібні поля для відображення
+                page_map = map?.ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => new
+                    {
+                        key_name = kvp.Value.Name,
+                        key_background_color = kvp.Value.BackgroundColor,
+                        key_image_path = kvp.Value.ImagePath
+                    }
+                )
+            };
+
+            // Серіалізуємо в JSON
+            var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+            string jsonResponse = JsonSerializer.Serialize(responseObj, jsonOptions);
+            byte[] data = Encoding.UTF8.GetBytes(jsonResponse);
+
+            ctx.Response.ContentType = "application/json";
             ctx.Response.ContentLength64 = data.Length;
             ctx.Response.StatusCode = (int)HttpStatusCode.OK;
 
             await ctx.Response.OutputStream.WriteAsync(data);
-            await Task.CompletedTask;
         }
 
         private async Task GetImage(HttpListenerContext ctx, string key)
