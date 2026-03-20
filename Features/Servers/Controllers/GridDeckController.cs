@@ -131,15 +131,37 @@ namespace StreamBoard.Features.Servers.Controllers
 
         private async Task ClickKey(HttpListenerContext ctx, string key)
         {
-            string responseText = $"Clicked button {key}";
-            byte[] data = Encoding.UTF8.GetBytes(responseText);
+            var profile = _storage.CurrentProfile;
+            var map = profile.CurrentPageButtonMap;
 
-            ctx.Response.ContentType = "text/plain";
-            ctx.Response.ContentLength64 = data.Length;
+            if (map == null || !map.TryGetValue(key, out var buttonConfig))
+            {
+                await WriteErrorAsync(ctx, HttpStatusCode.NotFound, "Key binding data not found");
+                return;
+            }
+
+            if (buttonConfig.Actions != null)
+            {
+                foreach (var action in buttonConfig.Actions)
+                {
+                    try
+                    {
+                        await action.ExecuteAsync();
+                    }
+                    catch
+                    {
+                        
+                    }
+                }
+            }
+
             ctx.Response.StatusCode = (int)HttpStatusCode.OK;
-
+            ctx.Response.ContentType = "text/plain";
+            
+            byte[] data = System.Text.Encoding.UTF8.GetBytes("Action executed");
+            ctx.Response.ContentLength64 = data.Length;
+            
             await ctx.Response.OutputStream.WriteAsync(data);
-            await Task.CompletedTask;
         }
 
         private static async Task WriteErrorAsync(HttpListenerContext ctx, HttpStatusCode statusCode, string message)
