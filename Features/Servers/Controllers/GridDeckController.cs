@@ -16,7 +16,7 @@ namespace StreamBoard.Features.Servers.Controllers
             _storage = storage;
         }
 
-        public string RoutePrefix => "/grid";
+        public string RoutePrefix => "/api/grid";
 
         public async Task HandleAsync(HttpListenerContext ctx)
         {
@@ -25,19 +25,19 @@ namespace StreamBoard.Features.Servers.Controllers
                 string path = ctx.Request.Url!.AbsolutePath;
                 string method = ctx.Request.HttpMethod;
 
-                if (method == "GET" && HttpRouteHelper.TryMatch(path, "/grid/buttons", out _))
+                if (method == "GET" && HttpRouteHelper.TryMatch(path, "/api/grid/buttons", out _))
                 {
                     await GetButtons(ctx);
                     return;
                 }
 
-                if (method == "GET" && HttpRouteHelper.TryMatch(path, "/grid/{key}/image", out var imgParams))
+                if (method == "GET" && HttpRouteHelper.TryMatch(path, "/api/grid/{key}/image", out var imgParams))
                 {
                     await GetImage(ctx, imgParams["key"]);
                     return;
                 }
 
-                if (method == "POST" && HttpRouteHelper.TryMatch(path, "/grid/{key}", out var postParams))
+                if (method == "POST" && HttpRouteHelper.TryMatch(path, "/api/grid/{key}", out var postParams))
                 {
                     await ClickKey(ctx, postParams["key"]);
                     return;
