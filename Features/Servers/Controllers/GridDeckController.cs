@@ -61,7 +61,6 @@ namespace StreamBoard.Features.Servers.Controllers
                 grid_template = profile.CanvasConfig.SelectedGrid,
                 current_page_id = profile.Pages.SelectedPageId,
                 
-                // Перебираємо словник кнопок і залишаємо лише потрібні поля для відображення
                 page_map = map?.ToDictionary(
                     kvp => kvp.Key,
                     kvp => new
@@ -73,7 +72,6 @@ namespace StreamBoard.Features.Servers.Controllers
                 )
             };
 
-            // Серіалізуємо в JSON
             var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
             string jsonResponse = JsonSerializer.Serialize(responseObj, jsonOptions);
             byte[] data = Encoding.UTF8.GetBytes(jsonResponse);
@@ -87,15 +85,48 @@ namespace StreamBoard.Features.Servers.Controllers
 
         private async Task GetImage(HttpListenerContext ctx, string key)
         {
-            string responseText = $"Button {key} Image";
-            byte[] data = Encoding.UTF8.GetBytes(responseText);
+            var profile = _storage.CurrentProfile;
+            var map = profile.CurrentPageButtonMap;
 
-            ctx.Response.ContentType = "text/plain";
-            ctx.Response.ContentLength64 = data.Length;
-            ctx.Response.StatusCode = (int)HttpStatusCode.OK;
+            if (map == null || !map.TryGetValue(key, out var buttonConfig))
+            {
+                await WriteErrorAsync(ctx, HttpStatusCode.BadRequest, "Key binding data not found");
+                return;
+            }
 
-            await ctx.Response.OutputStream.WriteAsync(data);
-            await Task.CompletedTask;
+            string? imagePath = buttonConfig.ImagePath;
+            if (string.IsNullOrEmpty(imagePath) || !System.IO.File.Exists(imagePath))
+            {
+                await WriteErrorAsync(ctx, HttpStatusCode.NotFound, "Image not found");
+                return;
+            }
+
+            string extension = System.IO.Path.GetExtension(imagePath).ToLowerInvariant();
+            string mimeType = extension switch
+            {
+                ".png" => "image/png",
+                ".jpg" or ".jpeg" => "image/jpeg",
+                ".gif" => "image/gif",
+                ".webp" => "image/webp",
+                ".svg" => "image/svg+xml",
+                ".bmp" => "image/bmp",
+                _ => "application/octet-stream"
+            };
+
+            try
+            {
+                byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(imagePath);
+                
+                ctx.Response.ContentType = mimeType;
+                ctx.Response.ContentLength64 = fileBytes.Length;
+                ctx.Response.StatusCode = (int)HttpStatusCode.OK;
+
+                await ctx.Response.OutputStream.WriteAsync(fileBytes);
+            }
+            catch (Exception)
+            {
+                await WriteErrorAsync(ctx, HttpStatusCode.InternalServerError, "Error reading image file");
+            }
         }
 
         private async Task ClickKey(HttpListenerContext ctx, string key)
@@ -109,6 +140,17 @@ namespace StreamBoard.Features.Servers.Controllers
 
             await ctx.Response.OutputStream.WriteAsync(data);
             await Task.CompletedTask;
+        }
+
+        private static async Task WriteErrorAsync(HttpListenerContext ctx, HttpStatusCode statusCode, string message)
+        {
+            ctx.Response.StatusCode = (int)statusCode;
+            ctx.Response.ContentType = "text/plain";
+            
+            byte[] data = Encoding.UTF8.GetBytes(message);
+            ctx.Response.ContentLength64 = data.Length;
+            
+            await ctx.Response.OutputStream.WriteAsync(data);
         }
     }
 }
