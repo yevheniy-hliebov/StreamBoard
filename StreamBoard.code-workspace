@@ -1,0 +1,33 @@
+{
+  "folders": [
+    {
+      "name": "🖥️ Desktop (C#)",
+      "path": "Desktop"
+    },
+    {
+      "name": "📱 Client (Flutter)",
+      "path": "Client"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/.vs": true
+    },
+    "search.exclude": {
+      "desktop/bin": true,
+      "desktop/obj": true,
+      "client/.dart_tool": true,
+      "client/build": true,
+      "client/windows": true,
+      "client/macos": true,
+      "client/linux": true
+    },
+    "editor.formatOnSave": true,
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+      "*.xaml": "${capture}.xaml.cs"
+    }
+  }
+}
