@@ -110,6 +110,16 @@ namespace StreamBoard.Features.Servers.Services
         {
             try
             {
+                ctx.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                ctx.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                ctx.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Accept, Host");
+
+                if (ctx.Request.HttpMethod.Equals("OPTIONS", StringComparison.OrdinalIgnoreCase))
+                {
+                    ctx.Response.StatusCode = (int)HttpStatusCode.OK;
+                    return;
+                }
+
                 await ProcessRequest(ctx);
             }
             catch

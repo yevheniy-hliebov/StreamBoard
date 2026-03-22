@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "📱 Запуск Flutter (Chrome)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "chrome"
+            ]
+        },
+        {
+            "name": "📱 Запуск Flutter (Обирає пристрій)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart"
+        }
+    ]
+}
