@@ -21,6 +21,10 @@ namespace StreamBoard.Features.Decks.Services
                 {
                     settings.Add(new StringSettingViewModel(attr.Label, attr.Hint, action, prop));
                 }
+                else if (prop.PropertyType == typeof(int))
+                {
+                    settings.Add(new IntSettingViewModel(attr.Label, attr.Hint, action, prop));
+                }
             }
 
             return settings;

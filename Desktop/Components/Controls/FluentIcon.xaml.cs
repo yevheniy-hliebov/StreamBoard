@@ -30,6 +30,7 @@ namespace StreamBoard.Components.Controls
         Stop,
         Sync,
         System,
+        Timer,
     }
 
     public partial class FluentIcon : FontIcon
@@ -93,6 +94,7 @@ namespace StreamBoard.Components.Controls
                 FluentIconType.Stop => "\uE71A",
                 FluentIconType.Sync => "\uE895",
                 FluentIconType.System => "\uE770",
+                FluentIconType.Timer => "\uE916",
                 _ => "\uE710"
             };
         }
