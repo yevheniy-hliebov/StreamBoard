@@ -6,10 +6,13 @@ namespace StreamBoard.Components.Controls
     public enum FluentIconType
     {
         Add,
+        Apps,
         Delete,
         Devices,
+        Document,
         Checkbox,
         ChevronDown,
+        ChromeClose,
         ClearAllInk,
         Color,
         Folder,
@@ -19,6 +22,8 @@ namespace StreamBoard.Components.Controls
         Help,
         Home,
         Keyboard,
+        Lock,
+        Moon,
         Network,
         Photo,
         PowerButton,
@@ -28,6 +33,7 @@ namespace StreamBoard.Components.Controls
         Stop,
         Sync,
         System,
+        Timer,
     }
 
     public partial class FluentIcon : FontIcon
@@ -67,10 +73,13 @@ namespace StreamBoard.Components.Controls
             this.Glyph = type switch
             {
                 FluentIconType.Add => "\uE710",
+                FluentIconType.Apps => "\uED35",
                 FluentIconType.Delete => "\uE74D",
                 FluentIconType.Devices => "\uEA6C",
+                FluentIconType.Document => "\uE8A5",
                 FluentIconType.Checkbox => "\uE739",
                 FluentIconType.ChevronDown => "\uE70D",
+                FluentIconType.ChromeClose => "\uE8BB",
                 FluentIconType.ClearAllInk => "\uED62",
                 FluentIconType.Color => "\uE790",
                 FluentIconType.Folder => "\uE8B7",
@@ -80,6 +89,8 @@ namespace StreamBoard.Components.Controls
                 FluentIconType.Help => "\uE897",
                 FluentIconType.Home => "\uE80F",
                 FluentIconType.Keyboard => "\uE92E",
+                FluentIconType.Lock => "\uE72E",
+                FluentIconType.Moon => "\uE708",
                 FluentIconType.Network => "\uE968",
                 FluentIconType.Photo => "\uE91B",
                 FluentIconType.PowerButton => "\uE7E8",
@@ -89,6 +100,7 @@ namespace StreamBoard.Components.Controls
                 FluentIconType.Stop => "\uE71A",
                 FluentIconType.Sync => "\uE895",
                 FluentIconType.System => "\uE770",
+                FluentIconType.Timer => "\uE916",
                 _ => "\uE710"
             };
         }

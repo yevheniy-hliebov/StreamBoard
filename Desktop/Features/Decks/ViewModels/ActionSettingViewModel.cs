@@ -34,4 +34,20 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
         }
     }
+
+    public class IntSettingViewModel : ActionSettingViewModel
+    {
+        public IntSettingViewModel(string label, string? hint, object targetAction, PropertyInfo property)
+            : base(label, hint, targetAction, property) { }
+
+        public int Value
+        {
+            get => Property.GetValue(TargetAction) is int val ? val : 0;
+            set
+            {
+                Property.SetValue(TargetAction, value);
+                OnPropertyChanged();
+            }
+        }
+    }
 }
