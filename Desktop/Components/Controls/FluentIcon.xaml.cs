@@ -6,6 +6,7 @@ namespace StreamBoard.Components.Controls
     public enum FluentIconType
     {
         Add,
+        Apps,
         Delete,
         Devices,
         Document,
@@ -68,6 +69,7 @@ namespace StreamBoard.Components.Controls
             this.Glyph = type switch
             {
                 FluentIconType.Add => "\uE710",
+                FluentIconType.Apps => "\uED35",
                 FluentIconType.Delete => "\uE74D",
                 FluentIconType.Devices => "\uEA6C",
                 FluentIconType.Document => "\uE8A5",
