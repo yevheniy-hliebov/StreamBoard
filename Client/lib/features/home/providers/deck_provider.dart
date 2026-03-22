@@ -5,7 +5,7 @@ import 'package:streamboard/features/home/data/models/grid_layout.dart';
 import 'package:streamboard/features/home/services/grid_service.dart';
 
 class DeckProvider extends ChangeNotifier {
-  final GridService _service;
+  GridService _service;
 
   GridLayout? gridLayout;
   Map<String, DeckButtonData> buttons = {};
@@ -51,6 +51,15 @@ class DeckProvider extends ChangeNotifier {
       await _service.clickButton(keyCode);
     } catch (e) {
       debugPrint('Error clicking button: $e');
+    }
+  }
+
+  void updateService(GridService newService) {
+    if (_service.baseUrl != newService.baseUrl) {
+      _service = newService;
+      fetchDeck();
+    } else {
+      _service = newService;
     }
   }
 }
