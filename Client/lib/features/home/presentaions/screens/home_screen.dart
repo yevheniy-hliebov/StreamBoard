@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:streamboard/common/widgets/orientation_adaptive_scaffold.dart';
+import 'package:streamboard/core/constants/app_colors.dart';
 import 'package:streamboard/core/constants/spacing.dart';
 import 'package:streamboard/features/home/presentaions/widgets/grid_deck_layout.dart';
 import 'package:streamboard/features/home/presentaions/widgets/setup_connection_prompt.dart';
@@ -18,14 +19,14 @@ class HomeScreen extends StatelessWidget {
     return OrientationAdaptiveScaffold(
       title: 'StreamBoard',
       leading: IconButton(
-        icon: const Icon(Icons.refresh),
+        icon: Icon(Icons.refresh, color: AppColors.of(context).onBackground),
         onPressed: isConfigured
             ? () => context.read<DeckProvider>().fetchDeck()
             : null,
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.settings),
+          icon: Icon(Icons.settings, color: AppColors.of(context).onBackground),
           onPressed: () => _openSettings(context),
         ),
       ],

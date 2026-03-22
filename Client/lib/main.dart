@@ -13,7 +13,6 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   final prefs = await SharedPreferences.getInstance();
-  await prefs.clear();
 
   runApp(
     MultiProvider(

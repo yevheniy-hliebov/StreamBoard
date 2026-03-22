@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:streamboard/core/constants/app_colors.dart';
 import 'package:streamboard/core/constants/spacing.dart';
 
 class SetupConnectionPrompt extends StatelessWidget {
@@ -15,7 +16,7 @@ class SetupConnectionPrompt extends StatelessWidget {
           Icon(
             Icons.wifi_off_rounded,
             size: 64,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            color: AppColors.of(context).onBackground,
           ),
           const SizedBox(height: Spacing.md),
           Text(

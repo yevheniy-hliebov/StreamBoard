@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:streamboard/common/widgets/orientation_adaptive_scaffold.dart';
+import 'package:streamboard/core/constants/app_colors.dart';
 import 'package:streamboard/core/constants/spacing.dart';
 import 'package:streamboard/features/settings/providers/settings_provider.dart';
 
@@ -66,8 +67,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(height: Spacing.md),
               TextFormField(
                 controller: _addressController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'IP Address / Hostname',
+                  hintStyle: TextStyle(color: AppColors.of(context).onPrimary),
+                  labelStyle: TextStyle(color: AppColors.of(context).onPrimary),
                   border: OutlineInputBorder(),
                   hintText: 'e.g., 192.168.1.2 or localhost',
                 ),
@@ -77,8 +80,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(height: Spacing.md),
               TextFormField(
                 controller: _portController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Port',
+                  hintStyle: TextStyle(color: AppColors.of(context).onPrimary),
+                  labelStyle: TextStyle(color: AppColors.of(context).onPrimary),
                   border: OutlineInputBorder(),
                   hintText: 'e.g., 13550',
                 ),
