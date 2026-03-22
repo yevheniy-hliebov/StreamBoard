@@ -58,16 +58,16 @@ namespace StreamBoard.Features.Servers.Controllers
 
             var responseObj = new
             {
-                grid_template = profile.CanvasConfig.SelectedGrid,
+                grid_layout = profile.CanvasConfig.SelectedGrid,
                 current_page_id = profile.Pages.SelectedPageId,
                 
                 page_map = map?.ToDictionary(
                     kvp => kvp.Key,
                     kvp => new
                     {
-                        key_name = kvp.Value.Name,
-                        key_background_color = kvp.Value.BackgroundColor,
-                        key_image_path = kvp.Value.ImagePath
+                        name = kvp.Value.Name,
+                        background_color = kvp.Value.BackgroundColor,
+                        image_path = kvp.Value.ImagePath
                     }
                 )
             };
