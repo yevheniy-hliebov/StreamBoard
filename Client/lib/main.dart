@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:streamboard/core/theme/app_theme.dart';
 
 void main() {
   runApp(const App());
@@ -11,6 +12,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'StreamBoard Application',
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.dark,
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
       home: const HomeScreen(),
     );
