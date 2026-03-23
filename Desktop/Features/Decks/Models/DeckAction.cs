@@ -9,6 +9,9 @@ namespace StreamBoard.Features.Decks.Models
     [ActionCategory("System", FluentIconType.System)]
     public abstract class SystemDeckAction : DeckAction { }
 
+    [ActionCategory("Input", FluentIconType.Rename)]
+    public abstract class InputDeckAction : DeckAction { }
+
     public abstract class DeckAction : ObservableObject
     {
         [JsonPropertyName("id")]
