@@ -50,4 +50,20 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
         }
     }
+
+    public class BoolSettingViewModel : ActionSettingViewModel
+    {
+        public BoolSettingViewModel(string label, string? hint, object targetAction, PropertyInfo property)
+            : base(label, hint, targetAction, property) { }
+
+        public bool Value
+        {
+            get => Property.GetValue(TargetAction) is bool val && val;
+            set
+            {
+                Property.SetValue(TargetAction, value);
+                OnPropertyChanged();
+            }
+        }
+    }
 }

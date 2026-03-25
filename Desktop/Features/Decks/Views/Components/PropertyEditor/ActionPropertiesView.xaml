@@ -52,6 +52,17 @@
                         </StackPanel>
                     </DataTemplate>
 
+                    <DataTemplate DataType="{x:Type settings:BoolSettingViewModel}">
+                        <StackPanel Margin="0,0,0,12" Orientation="Horizontal">
+                            <ui:ToggleSwitch IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="{Binding Label}" />
+                        </StackPanel>
+                    </DataTemplate>
+
                 </ItemsControl.Resources>
             </ItemsControl>
         </ScrollViewer>
