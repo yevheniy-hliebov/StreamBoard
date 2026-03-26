@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using StreamBoard.Features.Integrations.Common.ViewModels;
 using StreamBoard.Features.Settings.Services;
 using System.Windows;
 using System.Windows.Input;
@@ -10,6 +11,7 @@ namespace StreamBoard
     public partial class MainWindow : FluentWindow
     {
         private readonly SettingsStorage _settings;
+        private readonly IntegrationsViewModel _integrationsViewModel;
 
         public MainWindow()
         {
@@ -17,10 +19,14 @@ namespace StreamBoard
 
             WindowBackdropType = WindowBackdropType.Mica;
 
+            _integrationsViewModel = App.ServiceProvider.GetRequiredService<IntegrationsViewModel>();
+
             _settings = App.ServiceProvider.GetRequiredService<SettingsStorage>();
 
             Loaded += MainWindow_Loaded;
             StateChanged += MainWindow_StateChanged;
+
+            this.DataContext = _integrationsViewModel;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)

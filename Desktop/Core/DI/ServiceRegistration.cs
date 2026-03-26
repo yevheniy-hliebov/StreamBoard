@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using StreamBoard.Features.Decks.Services;
 using StreamBoard.Features.Decks.ViewModels;
+using StreamBoard.Features.Integrations.Common.ViewModels;
 using StreamBoard.Features.Servers.Controllers;
 using StreamBoard.Features.Servers.Services;
 using StreamBoard.Features.Servers.ViewModels;
@@ -21,6 +22,8 @@ namespace StreamBoard.Core.DI
             services.AddSingleton<KeyboardDeckStorage>();
             services.AddSingleton<HttpServerViewModel>();
             services.AddSingleton<ActionRegistry>();
+
+            services.AddSingleton<IntegrationsViewModel>();
 
             services.AddSingleton<HttpServer>(sp =>
             {

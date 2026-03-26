@@ -1,28 +1,47 @@
-﻿<ui:FluentWindow x:Class="StreamBoard.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-        xmlns:titlebar="clr-namespace:StreamBoard.Components.TitleBar"
-        xmlns:navigation="clr-namespace:StreamBoard.Components.Navigation"
-        xmlns:tray="clr-namespace:StreamBoard.Components.Tray"
-        mc:Ignorable="d"
-        Title="StreamBoard" Height="600" Width="1252"
-        WindowBackdropType="Mica"
-        WindowStartupLocation="CenterScreen"
-        ExtendsContentIntoTitleBar="True">
+﻿<ui:FluentWindow
+    x:Class="StreamBoard.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:integrations="clr-namespace:StreamBoard.Features.Integrations.Common.Views.Components"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:navigation="clr-namespace:StreamBoard.Components.Navigation"
+    xmlns:titlebar="clr-namespace:StreamBoard.Components.TitleBar"
+    xmlns:tray="clr-namespace:StreamBoard.Components.Tray"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="StreamBoard"
+    Width="1252"
+    Height="600"
+    ExtendsContentIntoTitleBar="True"
+    WindowBackdropType="Mica"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
 
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
+
         <tray:TrayIconView />
 
-        <titlebar:MainTitleBar Grid.Row="0" Title="StreamBoard" Subtitle="(v0.1.0)" />
+        <titlebar:MainTitleBar
+            Title="StreamBoard"
+            Grid.Row="0"
+            Subtitle="(v0.1.0)">
+            <titlebar:MainTitleBar.RightContent>
+                <StackPanel Orientation="Horizontal">
 
-        <navigation:MainNavView Grid.Row="1" x:Name="RootNavView"/>
+                    <integrations:ConnectionStateMenu Margin="0,0,8,0" Items="{Binding Integrations}">
+                        <integrations:ConnectionStateMenu.LayoutTransform>
+                            <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
+                        </integrations:ConnectionStateMenu.LayoutTransform>
+                    </integrations:ConnectionStateMenu>
+
+                </StackPanel>
+            </titlebar:MainTitleBar.RightContent>
+        </titlebar:MainTitleBar>
+
+        <navigation:MainNavView x:Name="RootNavView" Grid.Row="1" />
     </Grid>
 </ui:FluentWindow>
