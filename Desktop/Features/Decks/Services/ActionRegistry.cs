@@ -2,6 +2,7 @@
 using StreamBoard.Features.Decks.Attributes;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.ViewModels;
+using StreamBoard.Features.Integrations.Common.Models;
 using System.Reflection;
 using Wpf.Ui.Controls;
 
@@ -27,13 +28,13 @@ namespace StreamBoard.Features.Decks.Services
 
                 string categoryName = attribute?.Name ?? GetRawCategoryFromNamespace(type.Namespace);
                 FluentIconType icon = attribute?.FluentIcon ?? FluentIconType.Folder;
-                string? imagePath = attribute?.ImagePath;
+                IntegrationIconType? integrationIcon = attribute?.IntegrationIcon;
 
                 var descriptor = new ActionDescriptor(categoryName, tempInstance.Metadata, type);
 
                 if (!categoryMap.TryGetValue(categoryName, out var categoryVm))
                 {
-                    categoryVm = new ActionCategoryViewModel(categoryName, icon, imagePath);
+                    categoryVm = new ActionCategoryViewModel(categoryName, icon, integrationIcon);
                     categoryMap[categoryName] = categoryVm;
                 }
 

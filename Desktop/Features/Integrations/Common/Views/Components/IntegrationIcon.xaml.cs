@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Wpf.Ui.Controls;
@@ -5,7 +6,6 @@ using StreamBoard.Features.Integrations.Common.Models;
 
 namespace StreamBoard.Features.Integrations.Common.Views.Components
 {
-
     public partial class IntegrationIcon : ImageIcon
     {
         public IntegrationIcon()
@@ -17,39 +17,54 @@ namespace StreamBoard.Features.Integrations.Common.Views.Components
             Height = Size;
         }
 
-        public IntegrationIconType IconType
+        public IntegrationIconType? IconType
         {
-            get => (IntegrationIconType)GetValue(IconTypeProperty);
+            get => (IntegrationIconType?)GetValue(IconTypeProperty);
             set => SetValue(IconTypeProperty, value);
         }
 
         public static readonly DependencyProperty IconTypeProperty =
             DependencyProperty.Register(
                 nameof(IconType),
-                typeof(IntegrationIconType),
+                typeof(IntegrationIconType?),
                 typeof(IntegrationIcon),
-                new PropertyMetadata(default(IntegrationIconType), OnIconTypeChanged));
+                new PropertyMetadata(null, OnIconTypeChanged));
 
         private static void OnIconTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is IntegrationIcon control && e.NewValue is IntegrationIconType type)
+            if (d is IntegrationIcon control)
             {
-                control.UpdateIconSource(type);
+                control.UpdateIconSource(e.NewValue as IntegrationIconType?);
             }
         }
 
-        private void UpdateIconSource(IntegrationIconType type)
+        private void UpdateIconSource(IntegrationIconType? type)
         {
-            string fileName = type.ToString().ToLower();
+            if (type == null)
+            {
+                Source = null;
+                Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            string? fileName = type?.ToString().ToLower();
+            if (string.IsNullOrEmpty(fileName))
+            {
+                Visibility = Visibility.Collapsed;
+                return;
+            }
+
             string uriString = $"pack://application:,,,/Assets/Images/Integrations/{fileName}.png";
 
             try
             {
                 Source = new BitmapImage(new Uri(uriString));
+                Visibility = Visibility.Visible;
             }
             catch (Exception)
             {
                 Source = null;
+                Visibility = Visibility.Collapsed;
             }
         }
 

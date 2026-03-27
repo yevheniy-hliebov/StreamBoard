@@ -1,4 +1,5 @@
 ﻿using StreamBoard.Components.Controls;
+using StreamBoard.Features.Integrations.Common.Models;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -24,13 +25,13 @@ namespace StreamBoard.Features.Decks.Views.Components.ActionLibrary
         public static readonly DependencyProperty IconProperty =
             DependencyProperty.Register(nameof(Icon), typeof(FluentIconType), typeof(CategoryExpander), new PropertyMetadata(FluentIconType.Folder));
 
-        public string? ImagePath
+        public IntegrationIconType? IntegrationIcon
         {
-            get => (string?)GetValue(ImagePathProperty);
-            set => SetValue(ImagePathProperty, value);
+            get => (IntegrationIconType?)GetValue(IntegrationIconProperty);
+            set => SetValue(IntegrationIconProperty, value);
         }
-        public static readonly DependencyProperty ImagePathProperty =
-            DependencyProperty.Register(nameof(ImagePath), typeof(string), typeof(CategoryExpander), new PropertyMetadata(null));
+        public static readonly DependencyProperty IntegrationIconProperty =
+            DependencyProperty.Register(nameof(IntegrationIcon), typeof(IntegrationIconType?), typeof(CategoryExpander), new PropertyMetadata(null));
 
         public bool IsExpanded
         {
