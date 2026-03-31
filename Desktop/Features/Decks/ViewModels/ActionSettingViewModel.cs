@@ -1,5 +1,9 @@
 ﻿using StreamBoard.Core;
+using StreamBoard.Features.Decks.Models;
+using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Windows.Input;
+using Wpf.Ui.Input;
 
 namespace StreamBoard.Features.Decks.ViewModels
 {
@@ -65,5 +69,35 @@ namespace StreamBoard.Features.Decks.ViewModels
                 OnPropertyChanged();
             }
         }
+    }
+
+    public class DropdownSettingViewModel : ActionSettingViewModel
+    {
+        public ObservableCollection<string> Options { get; } = new();
+
+        public DropdownSettingViewModel(string label, string? hint, object targetAction, PropertyInfo property, IOptionsProvider provider)
+            : base(label, hint, targetAction, property)
+        {
+            var options = provider.GetOptions();
+            foreach (var opt in options) Options.Add(opt);
+        }
+
+        public string Value
+        {
+            get => Property.GetValue(TargetAction) as string ?? "";
+            set
+            {
+                Property.SetValue(TargetAction, value);
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand SelectOptionCommand => new RelayCommand<string>(option =>
+        {
+            if (option != null)
+            {
+                Value = option;
+            }
+        });
     }
 }
