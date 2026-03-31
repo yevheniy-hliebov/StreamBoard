@@ -1,7 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using StreamBoard.Features.Decks.Services;
 using StreamBoard.Features.Decks.ViewModels;
+using StreamBoard.Features.Integrations.Common.Services;
 using StreamBoard.Features.Integrations.Common.ViewModels;
+using StreamBoard.Features.Integrations.Obs.Services;
+using StreamBoard.Features.Integrations.Obs.ViewModels;
 using StreamBoard.Features.Servers.Controllers;
 using StreamBoard.Features.Servers.Services;
 using StreamBoard.Features.Servers.ViewModels;
@@ -23,6 +26,17 @@ namespace StreamBoard.Core.DI
             services.AddSingleton<HttpServerViewModel>();
             services.AddSingleton<ActionRegistry>();
 
+            services.AddSingleton<IntegrationConnectionStorage>();
+
+            services.AddSingleton<ObsService>(sp =>
+            {
+                var storage = sp.GetRequiredService<IntegrationConnectionStorage>();
+
+                var obsSettings = storage.Current.Obs;
+
+                return new ObsService(obsSettings);
+            });
+
             services.AddSingleton<IntegrationsViewModel>();
 
             services.AddSingleton<HttpServer>(sp =>
@@ -36,8 +50,9 @@ namespace StreamBoard.Core.DI
                 return new HttpServer(storage.Current.Http, httpRouter);
             });
 
-            services.AddTransient<SettingsViewModel>();
             services.AddTransient<GridDeckViewModel>();
+            services.AddTransient<ObsSettingsViewModel>();
+            services.AddTransient<SettingsViewModel>();
         }
     }
 }

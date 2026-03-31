@@ -93,6 +93,7 @@ namespace StreamBoard.Features.Settings.ViewModels
         {
             "Home",
             "Grid Deck",
+            "OBS Studio",
             "HTTP Server",
             "Settings"
         };

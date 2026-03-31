@@ -43,6 +43,7 @@
                                 VerticalAlignment="Center">
 
                                 <ic:IntegrationIcon
+                                    HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     IconType="{Binding IntegrationIcon, TargetNullValue={x:Null}, FallbackValue={x:Null}}"
                                     Size="20">

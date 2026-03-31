@@ -1,6 +1,7 @@
 ﻿using StreamBoard.Components.Cards;
 using StreamBoard.Components.Navigation;
 using StreamBoard.Features.Decks.Views.Pages;
+using StreamBoard.Features.Integrations.Obs.Views.Pages;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -41,7 +42,7 @@ namespace StreamBoard.Features.Home.Pages
                     // navigationControl.Navigate(new KeyboardDeckPage());
                     break;
                 case "OBS":
-                    // navigationControl.Navigate(new ObsSettingsPage());
+                    navigationControl.Navigate(typeof(ObsSettingsPage));
                     break;
                 case "Twitch":
                     // navigationControl.Navigate(new TwitchSettingsPage());
