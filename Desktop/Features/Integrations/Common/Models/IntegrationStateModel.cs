@@ -6,6 +6,7 @@ namespace StreamBoard.Features.Integrations.Common.Models
     {
         private string _name = string.Empty;
         private ConnectionState _state;
+        private Type? _targetPageType;
 
         public string Name
         {
@@ -23,6 +24,12 @@ namespace StreamBoard.Features.Integrations.Common.Models
                     OnPropertyChanged(nameof(State));
                 }
             }
+        }
+
+        public Type? TargetPageType
+        {
+            get => _targetPageType;
+            set => SetProperty(ref _targetPageType, value);
         }
     }
 }

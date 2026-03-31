@@ -37,7 +37,6 @@ namespace StreamBoard.Core.DI
                 return new ObsService(obsSettings);
             });
 
-            services.AddSingleton<IntegrationsViewModel>();
 
             services.AddSingleton<HttpServer>(sp =>
             {
@@ -50,6 +49,7 @@ namespace StreamBoard.Core.DI
                 return new HttpServer(storage.Current.Http, httpRouter);
             });
 
+            services.AddSingleton<IntegrationsViewModel>();
             services.AddTransient<GridDeckViewModel>();
             services.AddTransient<ObsSettingsViewModel>();
             services.AddTransient<SettingsViewModel>();

@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using StreamBoard.Components.Navigation;
 using StreamBoard.Features.Integrations.Common.Models;
 
 namespace StreamBoard.Features.Integrations.Common.Views.Components
@@ -49,6 +50,32 @@ namespace StreamBoard.Features.Integrations.Common.Views.Components
         }
         public static readonly DependencyProperty StateTextProperty =
             DependencyProperty.Register(nameof(StateText), typeof(string), typeof(ConnectionMenuItem), new PropertyMetadata("Unknown"));
+
+        public Type TargetPageType
+        {
+            get => (Type)GetValue(TargetPageTypeProperty);
+            set => SetValue(TargetPageTypeProperty, value);
+        }
+        public static readonly DependencyProperty TargetPageTypeProperty =
+            DependencyProperty.Register(nameof(TargetPageType), typeof(Type), typeof(ConnectionMenuItem));
+
+        protected override void OnClick()
+        {
+            base.OnClick();
+
+            if (TargetPageType != null)
+            {
+                var mainWindow = Window.GetWindow(this) as MainWindow;
+                if (mainWindow == null) return;
+
+                var navComponent = mainWindow.FindName("RootNavView") as MainNavView;
+                var navigationControl = navComponent?.GetNavigation();
+
+                if (navigationControl == null) return;
+
+                navigationControl.Navigate(TargetPageType);
+            }
+        }
 
         private void UpdateState()
         {

@@ -39,14 +39,38 @@ namespace StreamBoard.Features.Integrations.Common.Views.Components
         {
             if (d is ConnectionStateMenu control)
             {
-                if (e.OldValue is INotifyCollectionChanged oldList)
-                    oldList.CollectionChanged -= control.Items_CollectionChanged;
+                if (e.OldValue is IEnumerable<IntegrationStateModel> oldList)
+                {
+                    if (oldList is INotifyCollectionChanged notify)
+                        notify.CollectionChanged -= control.Items_CollectionChanged;
 
-                if (e.NewValue is INotifyCollectionChanged newList)
-                    newList.CollectionChanged += control.Items_CollectionChanged;
+                    foreach (var item in oldList)
+                        item.PropertyChanged -= control.OnItemPropertyChanged;
+                }
+
+                if (e.NewValue is IEnumerable<IntegrationStateModel> newList)
+                {
+                    if (newList is INotifyCollectionChanged notify)
+                        notify.CollectionChanged += control.Items_CollectionChanged;
+
+                    foreach (var item in newList)
+                        item.PropertyChanged += control.OnItemPropertyChanged;
+                }
 
                 control.UpdateSummary();
-                control.RebuildMenu(); // Оновлюємо список айтемів при зміні колекції
+                control.RebuildMenu();
+            }
+        }
+
+        private void OnItemPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(IntegrationStateModel.State))
+            {
+                Dispatcher.BeginInvoke(() =>
+                {
+                    UpdateSummary();
+                    RebuildMenu();
+                });
             }
         }
 
@@ -55,7 +79,13 @@ namespace StreamBoard.Features.Integrations.Common.Views.Components
             if (e.NewItems != null)
             {
                 foreach (IntegrationStateModel item in e.NewItems)
-                    item.PropertyChanged += (s, args) => { UpdateSummary(); RebuildMenu(); };
+                    item.PropertyChanged += OnItemPropertyChanged;
+            }
+
+            if (e.OldItems != null)
+            {
+                foreach (IntegrationStateModel item in e.OldItems)
+                    item.PropertyChanged -= OnItemPropertyChanged;
             }
 
             UpdateSummary();
@@ -75,7 +105,8 @@ namespace StreamBoard.Features.Integrations.Common.Views.Components
                 var menuItem = new ConnectionMenuItem
                 {
                     Title = item.Name,
-                    State = item.State
+                    State = item.State,
+                    TargetPageType = item.TargetPageType!,
                 };
                 MainContextMenu.Items.Add(menuItem);
             }

@@ -1,6 +1,8 @@
 using System.Collections.ObjectModel;
 using StreamBoard.Core;
 using StreamBoard.Features.Integrations.Common.Models;
+using StreamBoard.Features.Integrations.Obs.Models;
+using StreamBoard.Features.Integrations.Obs.Services;
 
 namespace StreamBoard.Features.Integrations.Common.ViewModels
 {
@@ -8,13 +10,10 @@ namespace StreamBoard.Features.Integrations.Common.ViewModels
     {
         public ObservableCollection<IntegrationStateModel> Integrations { get; set; }
 
-        public IntegrationsViewModel()
+        public IntegrationsViewModel(ObsService obsService)
         {
             Integrations = [
-                new IntegrationStateModel { Name = "OBS Studio", State = ConnectionState.Connected },
-                new IntegrationStateModel { Name = "Twitch", State = ConnectionState.Connecting },
-                new IntegrationStateModel { Name = "Streamer.bot", State = ConnectionState.Failed },
-                new IntegrationStateModel { Name = "YouTube", State = ConnectionState.NotConnected }
+                new ObsIntegrationState(obsService),
             ];
         }
     }

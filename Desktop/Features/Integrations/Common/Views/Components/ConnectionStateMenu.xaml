@@ -25,7 +25,11 @@
         </ui:DropDownButton.Content>
 
         <ui:DropDownButton.Flyout>
-            <ContextMenu x:Name="MainContextMenu" Placement="Bottom" />
+            <ContextMenu x:Name="MainContextMenu" Placement="Bottom">
+                <ContextMenu.LayoutTransform>
+                    <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
+                </ContextMenu.LayoutTransform>
+            </ContextMenu>
         </ui:DropDownButton.Flyout>
     </ui:DropDownButton>
 </UserControl>
