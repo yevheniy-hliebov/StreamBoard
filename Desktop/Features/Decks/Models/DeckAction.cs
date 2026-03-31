@@ -6,13 +6,6 @@ using System.Text.Json.Serialization;
 
 namespace StreamBoard.Features.Decks.Models
 {
-    //[ActionCategory("Twitch", IntegrationIconType.Twitch)]
-    [ActionCategory("System", FluentIconType.System)]
-    public abstract class SystemDeckAction : DeckAction { }
-
-    [ActionCategory("Input", FluentIconType.Rename)]
-    public abstract class InputDeckAction : DeckAction { }
-
     public abstract class DeckAction : ObservableObject
     {
         [JsonPropertyName("id")]
