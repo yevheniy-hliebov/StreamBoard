@@ -33,6 +33,7 @@ namespace StreamBoard.Components.Controls
         [IconGlyph("\uE92E")] Keyboard,
         [IconGlyph("\uE72E")] Lock,
         [IconGlyph("\uE708")] Moon,
+        [IconGlyph("\uE74F")] Mute,
         [IconGlyph("\uE968")] Network,
         [IconGlyph("\uE91B")] Photo,
         [IconGlyph("\uE7E8")] PowerButton,
