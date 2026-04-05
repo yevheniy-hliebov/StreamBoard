@@ -1,18 +1,13 @@
-using OBSWebsocketDotNet;
 using OBSWebsocketDotNet.Communication;
 using StreamBoard.Core;
 using StreamBoard.Features.Integrations.Common.Models;
 using StreamBoard.Features.Integrations.Obs.Models;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace StreamBoard.Features.Integrations.Obs.Services
 {
     public class ObsService : ObservableObject
     {
-        public readonly OBSWebsocket Obs;
+        public readonly ExtendedObsWebsocket Obs;
         private readonly ObsConnectionSettings _settings;
         private CancellationTokenSource? _reconnectCts;
 
@@ -33,7 +28,7 @@ namespace StreamBoard.Features.Integrations.Obs.Services
 
         public ObsService(ObsConnectionSettings settings)
         {
-            Obs = new OBSWebsocket();
+            Obs = new ExtendedObsWebsocket();
             _settings = settings;
 
             Obs.Connected += OnConnected;

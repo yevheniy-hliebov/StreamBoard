@@ -1,9 +1,8 @@
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection;
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
-using OBSWebsocketDotNet;
-using OBSWebsocketDotNet.Types;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Integrations.Obs.Services;
 
@@ -47,70 +46,14 @@ namespace StreamBoard.Features.Decks.Actions.Obs
 
             try
             {
-                var allSources = new List<string>();
-                var visited = new HashSet<string>();
+                var allSources = obsService.Obs.GetAllSourceNamesInScene(sceneName);
 
-                GetAllSourcesRecursive(obsService.Obs, sceneName, allSources, visited);
-
-                return allSources.Distinct().OrderBy(name => name).ToList();
+                return [.. allSources.Distinct().OrderBy(name => name)];
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"[ObsSourceOptionsProvider] Помилка: {ex.Message}");
                 return [$"Error: {ex.Message}"];
-            }
-        }
-
-        private void GetAllSourcesRecursive(OBSWebsocket obs, string targetName, List<string> allSources, HashSet<string> visited)
-        {
-            if (!visited.Add(targetName)) return;
-
-            List<SceneItemDetails> items = new List<SceneItemDetails>();
-
-            try
-            {
-                items = obs.GetSceneItemList(targetName);
-            }
-            catch
-            {
-                try
-                {
-                    var request = new JObject { { "sceneName", targetName } };
-
-                    var sendRequestMethod = obs.GetType().GetMethod(
-                        "SendRequest",
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
-                        null,
-                        [typeof(string), typeof(JObject)],
-                        null);
-
-                    if (sendRequestMethod != null)
-                    {
-                        var response = sendRequestMethod.Invoke(obs, ["GetGroupSceneItemList", request]) as JObject;
-
-
-                        if (response?["sceneItems"] is JArray sceneItemsArray)
-                        {
-                            var groupItems = sceneItemsArray.Select(m => (JObject)m).ToList();
-                            items = groupItems.Select(g => new SceneItemDetails(g)).ToList();
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"[ObsSourceOptionsProvider] Не вдалося прочитати групу {targetName}: {ex.Message}");
-                    return;
-                }
-            }
-
-            foreach (var item in items)
-            {
-                allSources.Add(item.SourceName);
-
-                if (item.SourceType == SceneItemSourceType.OBS_SOURCE_TYPE_SCENE)
-                {
-                    GetAllSourcesRecursive(obs, item.SourceName, allSources, visited);
-                }
             }
         }
     }
@@ -120,6 +63,14 @@ namespace StreamBoard.Features.Decks.Actions.Obs
         public List<string> GetOptions(DeckAction? action)
         {
             return ["Toggle", "Mute", "Unmute"];
+        }
+    }
+
+    public class ObsVisibilityStateOptionsProvider : IOptionsProvider
+    {
+        public List<string> GetOptions(DeckAction? action)
+        {
+            return ["Toggle", "Show", "Hide"];
         }
     }
 }
