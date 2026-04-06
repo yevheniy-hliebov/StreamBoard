@@ -29,6 +29,7 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
 
             request.Headers.Add("Authorization", $"Bearer {_context.AccessToken}");
             request.Headers.Add("Client-Id", _context.AppClientId);
+            request.Headers.Add("Content-Type", "application/json");
 
             if (body != null)
             {
@@ -46,6 +47,9 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
                 {
                     400 => new TwitchBadRequestException($"Bad Request: {errorContent}"),
                     401 => new TwitchUnauthorizedException("Unauthorized: Access token is invalid or expired."),
+                    403 => new TwitchForbiddenException($"Forbidden: You don't have permission for this action. {errorContent}"),
+                    409 => new TwitchConflictException($"Conflict/Too Many Requests: {errorContent}"),
+                    422 => new TwitchUnprocessableEntityException($"Unprocessable Entity: Message too long or failed validation. {errorContent}"),
                     500 => new TwitchInternalServerErrorException($"Twitch API Error: {errorContent}"),
                     _ => new TwitchApiException($"Twitch API Error: {errorContent}", statusCode)
                 };
