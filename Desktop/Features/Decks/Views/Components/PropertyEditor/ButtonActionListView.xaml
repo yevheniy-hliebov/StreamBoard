@@ -1,31 +1,34 @@
-﻿<UserControl x:Class="StreamBoard.Features.Decks.Views.Components.PropertyEditor.ButtonActionListView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
-             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
-             xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components.PropertyEditor"
-             xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
-             xmlns:reorder="clr-namespace:StreamBoard.Components.Controls.ReorderList">
+﻿<UserControl
+    x:Class="StreamBoard.Features.Decks.Views.Components.PropertyEditor.ButtonActionListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+    xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+    xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components.PropertyEditor"
+    xmlns:reorder="clr-namespace:StreamBoard.Components.Controls.ReorderList"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
     <controls:ConstrainedScrollBorder>
-        <reorder:ReorderListView ItemsSource="{Binding Canvas.SelectedButton.Config.Actions}"
-                                 dd:DragDrop.DropHandler="{Binding Editor}"
-                                 dd:DragDrop.IsDropTarget="True" 
-                                 dd:DragDrop.IsDragSource="True"
-                                 HorizontalContentAlignment="Stretch">
+        <reorder:ReorderListView
+            HorizontalContentAlignment="Stretch"
+            dd:DragDrop.DropHandler="{Binding Editor}"
+            dd:DragDrop.IsDragSource="True"
+            dd:DragDrop.IsDropTarget="True"
+            ItemsSource="{Binding Canvas.SelectedButton.Config.Actions}">
             <reorder:ReorderListView.ItemTemplate>
                 <DataTemplate>
                     <reorder:ReorderListItemWrapper ShowDragHandle="True" UseDragHandle="True">
                         <local:ButtonActionItem
-                            Icon="{Binding Metadata.Icon}"
-                            Text="{Binding Label}"
                             ActionId="{Binding Id}"
-                            DeleteCommand="{Binding DataContext.Editor.DeleteActionCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}">
+                            DeleteCommand="{Binding DataContext.Editor.DeleteActionCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
+                            Icon="{Binding Metadata.Icon}"
+                            Text="{Binding FullLabel}">
 
                             <local:ButtonActionItem.InputBindings>
-                                <MouseBinding MouseAction="LeftClick" 
-                                              Command="{Binding DataContext.Editor.OpenEditDialogCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
-                                              CommandParameter="{Binding Id}" />
+                                <MouseBinding
+                                    Command="{Binding DataContext.Editor.OpenEditDialogCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
+                                    CommandParameter="{Binding Id}"
+                                    MouseAction="LeftClick" />
                             </local:ButtonActionItem.InputBindings>
 
                         </local:ButtonActionItem>

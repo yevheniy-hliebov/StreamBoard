@@ -14,7 +14,7 @@ namespace StreamBoard.Features.Decks.Actions.Obs
         public static readonly ActionMetadata StaticMetadata = new(
             Name: "Mute Source",
             DialogTitle: "Mute Source Settings",
-            Icon: FluentIconType.Apps
+            Icon: FluentIconType.Mute
         );
 
         [JsonIgnore]
@@ -89,6 +89,7 @@ namespace StreamBoard.Features.Decks.Actions.Obs
 
         public override DeckAction Copy() => new MuteSourceAction
         {
+            Id = this.Id,
             SceneName = SceneName,
             SourceName = SourceName,
             MuteState = MuteState

@@ -104,6 +104,7 @@ namespace StreamBoard.Features.Decks.Actions.Obs
 
         public override DeckAction Copy() => new SourceVisibilityAction
         {
+            Id = this.Id,
             SceneName = SceneName,
             SourceName = SourceName,
             VisibilityState = VisibilityState
