@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using StreamBoard.Features.Integrations.Twitch.Models;
 using StreamBoard.Features.Integrations.Twitch.Models.Requests;
+using StreamBoard.Features.Integrations.Twitch.Models.Responses;
 
 namespace StreamBoard.Features.Integrations.Twitch.Services
 {
@@ -31,6 +32,33 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
             {
                 if (ex is Exceptions.TwitchApiException) throw;
                 throw new Exception($"Failed to create stream marker: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<TwitchCreateClipResponse?> CreateClip(string broadcasterId, string? title = null, float? duration = null)
+        {
+            var queryParams = new List<string> { $"broadcaster_id={broadcasterId}" };
+
+            if (!string.IsNullOrWhiteSpace(title))
+                queryParams.Add($"title={Uri.EscapeDataString(title)}");
+
+            if (duration.HasValue)
+                queryParams.Add($"duration={duration.Value.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)}");
+
+            string query = string.Join("&", queryParams);
+
+            try
+            {
+                var response = await SendRequestInternal(HttpMethod.Post, "/clips", query);
+
+                var result = await response.Content.ReadFromJsonAsync<TwitchResponse<TwitchCreateClipResponse>>();
+
+                return result?.Data?.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                if (ex is Exceptions.TwitchApiException) throw;
+                throw new Exception($"Failed to create clip: {ex.Message}", ex);
             }
         }
     }
