@@ -62,32 +62,6 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
             }
         }
 
-        public async Task DeleteChatMessages(string broadcasterId, string moderatorId, string? messageId = null)
-        {
-            var query = $"broadcaster_id={broadcasterId}&moderator_id={moderatorId}";
-
-            if (!string.IsNullOrWhiteSpace(messageId))
-            {
-                query += $"&message_id={messageId}";
-            }
-
-            try
-            {
-                await SendRequestInternal(HttpMethod.Delete, "/moderation/chat", query);
-            }
-            catch (Exception ex)
-            {
-                if (ex is Exceptions.TwitchApiException) throw;
-                throw new Exception($"Failed to delete chat messages: {ex.Message}", ex);
-            }
-        }
-
-        public async Task ClearChat(string broadcasterId, string moderatorId)
-            => await DeleteChatMessages(broadcasterId, moderatorId);
-
-        public async Task DeleteMessage(string broadcasterId, string moderatorId, string messageId)
-            => await DeleteChatMessages(broadcasterId, moderatorId, messageId);
-
         public async Task SendShoutout(string fromBroadcasterId, string toBroadcasterId, string moderatorId)
         {
             var query = $"from_broadcaster_id={fromBroadcasterId}&to_broadcaster_id={toBroadcasterId}&moderator_id={moderatorId}";
@@ -101,63 +75,6 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
                 if (ex is Exceptions.TwitchApiException) throw;
                 throw new Exception($"Failed to send shoutout: {ex.Message}", ex);
             }
-        }
-
-        public async Task<TwitchUpdateChatSettingsRequest?> UpdateChatSettings(
-            string broadcasterId,
-            string moderatorId,
-            TwitchUpdateChatSettingsRequest requestData
-        )
-        {
-            var query = $"broadcaster_id={broadcasterId}&moderator_id={moderatorId}";
-
-            try
-            {
-                var response = await SendRequestInternal(HttpMethod.Patch, "/chat/settings", query, requestData);
-
-                var result = await response.Content.ReadFromJsonAsync<TwitchResponse<TwitchUpdateChatSettingsRequest>>();
-
-                return result?.Data?.FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                if (ex is Exceptions.TwitchApiException) throw;
-                throw new Exception($"Failed to update chat settings: {ex.Message}", ex);
-            }
-        }
-
-        public async Task ToggleEmoteMode(string broadcasterId, string moderatorId, bool enabled)
-        {
-            await UpdateChatSettings(broadcasterId, moderatorId, new TwitchUpdateChatSettingsRequest
-            {
-                EmoteMode = enabled
-            });
-        }
-
-        public async Task ToggleFollowersMode(string broadcasterId, string moderatorId, bool enabled, int durationMinutes = 0)
-        {
-            await UpdateChatSettings(broadcasterId, moderatorId, new TwitchUpdateChatSettingsRequest
-            {
-                FollowerMode = enabled,
-                FollowerModeDuration = enabled ? durationMinutes : null
-            });
-        }
-
-        public async Task ToggleSubscribersMode(string broadcasterId, string moderatorId, bool enabled)
-        {
-            await UpdateChatSettings(broadcasterId, moderatorId, new TwitchUpdateChatSettingsRequest
-            {
-                SubscriberMode = enabled
-            });
-        }
-
-        public async Task ToggleSlowMode(string broadcasterId, string moderatorId, bool enabled, int waitTimeSeconds = 30)
-        {
-            await UpdateChatSettings(broadcasterId, moderatorId, new TwitchUpdateChatSettingsRequest
-            {
-                SlowMode = enabled,
-                SlowModeWaitTime = enabled ? waitTimeSeconds : null
-            });
         }
     }
 }
