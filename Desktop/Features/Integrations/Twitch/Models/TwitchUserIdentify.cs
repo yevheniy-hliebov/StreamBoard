@@ -2,46 +2,36 @@ using System.Text.Json.Serialization;
 
 namespace StreamBoard.Features.Integrations.Twitch.Models
 {
-    public class TwitchUserIdentify(
-        string id,
-        string login,
-        string displayName,
-        string type,
-        string broadcasterType,
-        string description,
-        string profileImageUrl,
-        string offlineImageUrl,
-        string email, string createdAt
-    )
+    public class TwitchUserIdentify()
     {
         [JsonPropertyName("id")]
-        string Id { get; } = id;
+        public required string Id { get; set; }
 
         [JsonPropertyName("login")]
-        string Login { get; } = login;
+        public required string Login { get; set; }
 
         [JsonPropertyName("display_name")]
-        string DisplayName { get; } = displayName;
+        public required string DisplayName { get; set; }
 
         [JsonPropertyName("type")]
-        string Type { get; } = type;
+        public required string Type { get; set; }
 
         [JsonPropertyName("broadcaster_type")]
-        string BroadcasterType { get; } = broadcasterType;
+        public required string BroadcasterType { get; set; }
 
         [JsonPropertyName("description")]
-        string Description { get; } = description;
+        public required string Description { get; set; }
 
         [JsonPropertyName("profile_image_url")]
-        string ProfileImageUrl { get; } = profileImageUrl;
+        public required string ProfileImageUrl { get; set; }
 
         [JsonPropertyName("offline_image_url")]
-        string OfflineImageUrl { get; } = offlineImageUrl;
+        public required string OfflineImageUrl { get; set; }
 
         [JsonPropertyName("email")]
-        string Email { get; } = email;
+        public required string Email { get; set; }
 
         [JsonPropertyName("created_at")]
-        string CreatedAt { get; } = createdAt;
+        public required string CreatedAt { get; set; }
     }
 }
