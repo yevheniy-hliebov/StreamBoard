@@ -47,6 +47,7 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
                 {
                     400 => new TwitchBadRequestException($"Bad Request: {errorContent}"),
                     401 => new TwitchUnauthorizedException("Unauthorized: Access token is invalid or expired."),
+                    404 => new TwitchNotFoundException($"Not Found: {errorContent}"),
                     403 => new TwitchForbiddenException($"Forbidden: You don't have permission for this action. {errorContent}"),
                     409 => new TwitchConflictException($"Conflict/Too Many Requests: {errorContent}"),
                     422 => new TwitchUnprocessableEntityException($"Unprocessable Entity: Message too long or failed validation. {errorContent}"),

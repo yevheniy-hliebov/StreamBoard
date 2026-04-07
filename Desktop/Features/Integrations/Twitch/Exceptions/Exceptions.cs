@@ -14,6 +14,9 @@ namespace StreamBoard.Features.Integrations.Twitch.Exceptions
     // 403 Forbidden
     public class TwitchForbiddenException(string message) : TwitchApiException(message, 403);
 
+    // 404 Not Found
+    public class TwitchNotFoundException(string message) : TwitchApiException(message, 404);
+
     // 409 Too Many Requests / Conflict
     public class TwitchConflictException(string message) : TwitchApiException(message, 409);
 
