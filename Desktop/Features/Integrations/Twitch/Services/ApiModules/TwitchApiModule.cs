@@ -28,7 +28,6 @@ namespace StreamBoard.Features.Integrations.Twitch.Services.ApiModules
             var request = new HttpRequestMessage(method, uriBuilder.Uri);
 
             request.Headers.Add("Authorization", $"Bearer {_context.AccessToken}");
-            request.Headers.Add("Client-Id", _context.AppClientId);
             request.Headers.Add("Content-Type", "application/json");
 
             if (body != null)
