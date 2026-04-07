@@ -15,7 +15,7 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
 
         private readonly HttpClient _http;
 
-        private TwitchAuthContext? _authContext;
+        public TwitchAuthContext? AuthContext { get; set; }
 
         public TwitchUserIdentify? User { get; private set; }
         public TwitchApiClient? Api { get; private set; }
@@ -41,7 +41,10 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
             _cache = cache;
             _http = http;
 
-            _http.DefaultRequestHeaders.Add("Client-Id", _appClientId);
+            if (!_http.DefaultRequestHeaders.Contains("Client-Id"))
+            {
+                _http.DefaultRequestHeaders.Add("Client-Id", _appClientId);
+            }
 
             _pollTimer = new System.Timers.Timer(60000);
             _pollTimer.Elapsed += async (sender, args) => await PollUser();
@@ -78,7 +81,7 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
 
         public async Task OnLoginSuccess(TwitchAuthContext context, string state)
         {
-            _authContext = context;
+            AuthContext = context;
 
             Api = new TwitchApiClient(context, _http, _cache);
 
@@ -93,7 +96,7 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
         public void Logout()
         {
             _pollTimer.Stop();
-            _authContext = null;
+            AuthContext = null;
             Api = null;
 
             if (User != null)

@@ -6,12 +6,18 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
 {
     public class TwitchAccountsGateway : IDisposable
     {
+        private readonly TwitchStorageService _storage;
         public TwitchAccountManager Broadcaster { get; }
         public TwitchAccountManager Bot { get; }
 
-        public TwitchAccountsGateway(IMemoryCache cache, HttpClient http)
+        public TwitchAccountsGateway(
+            IMemoryCache cache,
+            HttpClient http,
+            TwitchStorageService storage,
+            string appClientId
+        )
         {
-            string appClientId = "";
+            _storage = storage;
 
             var broadcasterScopes = new List<string> {
                 "user:read:email",                  // Email in Get Users
@@ -36,6 +42,7 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
             );
 
             var botScopes = new List<string> {
+                "user:read:email",                  // Email in Get Users
                 "user:write:chat",                  // Send Chat Message
                 "moderator:manage:announcements",   // Send Chat Announcement
             };
@@ -47,8 +54,39 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
                 http: http
             );
 
-            Broadcaster.UserChanged += CheckForDuplicateAccounts;
-            Bot.UserChanged += CheckForDuplicateAccounts;
+            RestoreSessions();
+
+            Broadcaster.UserChanged += () => SyncWithStorage(Broadcaster);
+            Bot.UserChanged += () => SyncWithStorage(Bot);
+        }
+
+        private void RestoreSessions()
+        {
+            var broadcasterContext = _storage.LoadContext(TwitchUserType.Broadcaster);
+            if (broadcasterContext != null)
+            {
+                _ = Broadcaster.OnLoginSuccess(broadcasterContext, "restored");
+            }
+
+            var botContext = _storage.LoadContext(TwitchUserType.Bot);
+            if (botContext != null)
+            {
+                _ = Bot.OnLoginSuccess(botContext, "restored");
+            }
+        }
+
+        private void SyncWithStorage(TwitchAccountManager manager)
+        {
+            if (manager.IsAuth && manager.AuthContext != null)
+            {
+                _storage.SaveContext(manager.Type, manager.AuthContext);
+            }
+            else
+            {
+                _storage.DeleteContext(manager.Type);
+            }
+
+            CheckForDuplicateAccounts();
         }
 
         private void CheckForDuplicateAccounts()
