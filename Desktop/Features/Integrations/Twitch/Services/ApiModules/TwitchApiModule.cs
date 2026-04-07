@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using StreamBoard.Features.Integrations.Twitch.Exceptions;
 using StreamBoard.Features.Integrations.Twitch.Models;
 
-namespace StreamBoard.Features.Integrations.Twitch.Services
+namespace StreamBoard.Features.Integrations.Twitch.Services.ApiModules
 {
     public abstract class TwitchApiModule(TwitchAuthContext context, HttpClient http)
     {

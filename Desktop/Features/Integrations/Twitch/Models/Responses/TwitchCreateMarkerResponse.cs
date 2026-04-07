@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace StreamBoard.Features.Integrations.Twitch.Models.Requests
+namespace StreamBoard.Features.Integrations.Twitch.Models.Responses
 {
     public class TwitchCreateMarkerResponse
     {

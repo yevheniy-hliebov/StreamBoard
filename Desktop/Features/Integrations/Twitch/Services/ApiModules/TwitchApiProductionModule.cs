@@ -4,7 +4,7 @@ using StreamBoard.Features.Integrations.Twitch.Models;
 using StreamBoard.Features.Integrations.Twitch.Models.Requests;
 using StreamBoard.Features.Integrations.Twitch.Models.Responses;
 
-namespace StreamBoard.Features.Integrations.Twitch.Services
+namespace StreamBoard.Features.Integrations.Twitch.Services.ApiModules
 {
     public class TwitchApiProductionModule(TwitchAuthContext context, HttpClient http)
         : TwitchApiModule(context, http)
