@@ -22,6 +22,8 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
 
         public bool IsAuth => User != null;
 
+        public event Action? UserChanged;
+
         private readonly System.Timers.Timer _pollTimer;
 
         private string? _cachedLoginState;
@@ -93,7 +95,12 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
             _pollTimer.Stop();
             _authContext = null;
             Api = null;
-            User = null;
+
+            if (User != null)
+            {
+                User = null;
+                UserChanged?.Invoke();
+            }
         }
 
         private async Task PollUser()
@@ -107,6 +114,7 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
                 if (fetchedUser != null)
                 {
                     User = fetchedUser;
+                    UserChanged?.Invoke();
                 }
                 else
                 {
