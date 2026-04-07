@@ -35,7 +35,11 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
             }
         }
 
-        public async Task<TwitchCreateClipResponse?> CreateClip(string broadcasterId, string? title = null, float? duration = null)
+        public async Task<TwitchCreateClipResponse?> CreateClip(
+            string broadcasterId,
+            string? title = null,
+            float? duration = null
+        )
         {
             var queryParams = new List<string> { $"broadcaster_id={broadcasterId}" };
 
@@ -59,6 +63,32 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
             {
                 if (ex is Exceptions.TwitchApiException) throw;
                 throw new Exception($"Failed to create clip: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<TwitchStartCommercialResponse?> StartCommercial(
+            string broadcasterId,
+            int lengthSeconds
+        )
+        {
+            var requestData = new TwitchStartCommercialRequest
+            {
+                BroadcasterId = broadcasterId,
+                Length = lengthSeconds
+            };
+
+            try
+            {
+                var response = await SendRequestInternal(HttpMethod.Post, "/channels/commercial", null, requestData);
+
+                var result = await response.Content.ReadFromJsonAsync<TwitchResponse<TwitchStartCommercialResponse>>();
+
+                return result?.Data?.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                if (ex is Exceptions.TwitchApiException) throw;
+                throw new Exception($"Failed to start commercial: {ex.Message}", ex);
             }
         }
     }
