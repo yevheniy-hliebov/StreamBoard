@@ -87,5 +87,20 @@ namespace StreamBoard.Features.Integrations.Twitch.Services
 
         public async Task DeleteMessage(string broadcasterId, string moderatorId, string messageId)
             => await DeleteChatMessages(broadcasterId, moderatorId, messageId);
+
+        public async Task SendShoutout(string fromBroadcasterId, string toBroadcasterId, string moderatorId)
+        {
+            var query = $"from_broadcaster_id={fromBroadcasterId}&to_broadcaster_id={toBroadcasterId}&moderator_id={moderatorId}";
+
+            try
+            {
+                await SendRequestInternal(HttpMethod.Post, "/chat/shoutouts", query);
+            }
+            catch (Exception ex)
+            {
+                if (ex is Exceptions.TwitchApiException) throw;
+                throw new Exception($"Failed to send shoutout: {ex.Message}", ex);
+            }
+        }
     }
 }
