@@ -1,0 +1,89 @@
+<UserControl
+    x:Class="StreamBoard.Features.Integrations.Twitch.Views.Components.TwitchAccountCardControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cards="clr-namespace:StreamBoard.Components.Cards"
+    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+    xmlns:local="clr-namespace:StreamBoard.Features.Integrations.Twitch.Views"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+
+    <Grid>
+        <cards:CardControl Title="{Binding AccountRole}" Description="Підключіть акаунт Twitch для доступу до інтеграцій.">
+            <cards:CardControl.Style>
+                <Style TargetType="cards:CardControl">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAuth}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </cards:CardControl.Style>
+            <cards:CardControl.ActionContent>
+                <ui:Button
+                    Command="{Binding LoginCommand}"
+                    Content="Login"
+                    Icon="{ui:SymbolIcon PersonAdd24}" />
+            </cards:CardControl.ActionContent>
+        </cards:CardControl>
+
+        <ui:Card Padding="16">
+            <ui:Card.Style>
+                <Style TargetType="ui:Card">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAuth}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ui:Card.Style>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Ellipse
+                    Grid.Column="0"
+                    Width="48"
+                    Height="48"
+                    Margin="0,0,16,0">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{Binding ProfileImageUrl}" Stretch="UniformToFill" />
+                    </Ellipse.Fill>
+                </Ellipse>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock
+                        Margin="0,0,0,4"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Text="{Binding DisplayName}" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <ui:Badge Margin="0,0,8,0" Appearance="Info">
+                            <TextBlock FontWeight="SemiBold" Text="{Binding AccountRole}" />
+                        </ui:Badge>
+
+                        <ui:Badge Appearance="Success">
+                            <TextBlock FontWeight="SemiBold" Text="{Binding BroadcasterType}" />
+                        </ui:Badge>
+                    </StackPanel>
+                </StackPanel>
+
+                <ui:Button
+                    Grid.Column="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Appearance="Danger"
+                    Command="{Binding LogoutCommand}"
+                    Content="Logout"
+                    Icon="{ui:SymbolIcon SignOut24}" />
+            </Grid>
+        </ui:Card>
+    </Grid>
+
+</UserControl>

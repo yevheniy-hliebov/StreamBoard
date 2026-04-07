@@ -1,0 +1,25 @@
+<Page
+    x:Class="StreamBoard.Features.Integrations.Twitch.Views.Pages.TwitchSettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cards="clr-namespace:StreamBoard.Components.Cards"
+    xmlns:components="clr-namespace:StreamBoard.Features.Integrations.Twitch.Views.Components"
+    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+    xmlns:local="clr-namespace:StreamBoard.Features.Integrations.Twitch.Views.Pages"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+
+    <StackPanel Margin="16">
+        <StackPanel.Resources>
+            <Style TargetType="cards:CardControl">
+                <Setter Property="Margin" Value="0,0,0,12" />
+            </Style>
+        </StackPanel.Resources>
+
+        <controls:PageTitle Text="Twitch" />
+
+        <components:TwitchAccountCardControl Margin="0,0,0,12" DataContext="{Binding BroadcasterAccount}" />
+
+        <components:TwitchAccountCardControl DataContext="{Binding BotAccount}" />
+
+    </StackPanel>
+</Page>

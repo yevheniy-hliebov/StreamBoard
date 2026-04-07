@@ -1,11 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using StreamBoard.Features.Decks.Services;
 using StreamBoard.Features.Decks.ViewModels;
+using StreamBoard.Features.Integrations.Twitch.Services;
+using StreamBoard.Features.Integrations.Twitch.ViewModels;
 using StreamBoard.Features.Servers.Controllers;
+using StreamBoard.Features.Servers.Models;
 using StreamBoard.Features.Servers.Services;
 using StreamBoard.Features.Servers.ViewModels;
 using StreamBoard.Features.Settings.Services;
 using StreamBoard.Features.Settings.ViewModels;
+using System.Net.Http;
 using System.Windows;
 using Wpf.Ui.Appearance;
 
@@ -48,8 +53,23 @@ namespace StreamBoard
             services.AddSingleton<GridDeckStorage>();
             services.AddSingleton<KeyboardDeckStorage>();
 
+            services.AddMemoryCache();
+            services.AddSingleton<HttpClient>();
+            services.AddSingleton<TwitchStorageService>();
+            services.AddSingleton<TwitchAccountsGateway>(sp =>
+            {
+                var cache = sp.GetRequiredService<IMemoryCache>();
+                var http = sp.GetRequiredService<HttpClient>();
+                var storage = sp.GetRequiredService<TwitchStorageService>();
+
+                string clientId = "0sn4idtk1x80yrrej0cd66nsapzv86";
+
+                return new TwitchAccountsGateway(cache, http, storage, clientId);
+            });
+
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<GridDeckViewModel>();
+            services.AddSingleton<TwitchSettingsViewModel>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
@@ -78,6 +98,14 @@ namespace StreamBoard
             {
                 await httpServer.Start();
             }
+
+            var twitchAccountsGateway = ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
+            var twitchController = new TwitchAuthController(twitchAccountsGateway);
+            var httpRouter = new HttpRouter([twitchController]);
+            var serverConfig = new HttpServerConfig { Port = 13551 };
+            var systemServer = new HttpServer(serverConfig, httpRouter);
+
+            await systemServer.Start();
 
             registry.RegisterActions();
 
