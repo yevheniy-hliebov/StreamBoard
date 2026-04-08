@@ -94,6 +94,14 @@ namespace StreamBoard.Features.Decks.Actions.Obs
         }
     }
 
+    public class ObsStreamStateOptionsProvider : IOptionsProvider
+    {
+        public List<string> GetOptions(DeckAction? action)
+        {
+            return ["Toggle", "Start", "Stop"];
+        }
+    }
+
     public class ObsRecordStateOptionsProvider : IOptionsProvider
     {
         public List<string> GetOptions(DeckAction action)
