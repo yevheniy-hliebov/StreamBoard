@@ -8,6 +8,7 @@ using StreamBoard.Components.Controls;
 using StreamBoard.Features.Decks.Attributes;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Integrations.Obs.Services;
+using StreamBoard.Helpers;
 
 namespace StreamBoard.Features.Decks.Actions.Obs
 {
@@ -68,6 +69,10 @@ namespace StreamBoard.Features.Decks.Actions.Obs
             set => SetProperty(ref _playSoundOnComplete, value);
         }
 
+        [ActionSetting("Sound Volume", "Volume level (0-100%)")]
+        [JsonPropertyName("sound_volume")]
+        public int SoundVolume { get; set; } = 50;
+
         [JsonIgnore]
         public override string Label
         {
@@ -115,10 +120,7 @@ namespace StreamBoard.Features.Decks.Actions.Obs
 
                     if (PlaySoundOnComplete)
                     {
-                        Debug.WriteLine("[OBS Screenshot] *Chirik-chirik* (Sound played)");
-
-                        // Приклад для майбутнього (потребує System.Media):
-                        // System.Media.SystemSounds.Exclamation.Play();
+                        AudioPlayerService.Play("Assets/Sounds/shutter.mp3", SoundVolume);
                     }
                 }
             }

@@ -11,6 +11,7 @@
 		<ApplicationIcon>Assets\Images\logo.ico</ApplicationIcon>
 	</PropertyGroup>
 
+	<!-- Assets/Images -->
 	<ItemGroup>
 		<Resource Include="Assets\Images\banner_background.png" />
 		<Resource Include="Assets\Images\Integrations\obs.png">
@@ -30,6 +31,17 @@
 		</Resource>
 	</ItemGroup>
 
+	<!-- Assets/Sounds -->
+	<ItemGroup>
+		<Content Include="Assets\Sounds\shutter.mp3">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Sounds\tick.mp3">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<!-- Library -->
 	<ItemGroup>
 		<PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />
 		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
@@ -38,6 +50,7 @@
 		<PackageReference Include="obs-websocket-dotnet" Version="5.0.1" />
 	</ItemGroup>
 
+	<!-- Custom Library -->
 	<ItemGroup>
 		<Reference Include="CustomDragDropLib">
 			<HintPath>Libs\CustomDragDropLib.dll</HintPath>
