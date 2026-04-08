@@ -14,7 +14,7 @@ namespace StreamBoard.Features.Decks.Actions.Obs
         public static readonly ActionMetadata StaticMetadata = new(
             Name: "Stream",
             DialogTitle: "Stream Settings",
-            Icon: FluentIconType.Record
+            Icon: FluentIconType.Streaming
         );
 
         [JsonIgnore]

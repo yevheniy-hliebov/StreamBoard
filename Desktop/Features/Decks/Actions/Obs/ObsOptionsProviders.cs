@@ -33,19 +33,21 @@ namespace StreamBoard.Features.Decks.Actions.Obs
             }
         }
 
-        private string? GetSceneName(DeckAction action) => action switch
+        private static string? GetSceneName(DeckAction action) => action switch
         {
             SourceVisibilityAction a => a.SceneName,
             MuteSourceAction a => a.SceneName,
             SwitchSceneAction a => a.SceneName,
+            ScreenshotAction a => a.SceneName,
             _ => null
         };
 
-        private void SetSceneName(DeckAction action, string value)
+        private static void SetSceneName(DeckAction action, string value)
         {
             if (action is SourceVisibilityAction v) v.SceneName = value;
             else if (action is MuteSourceAction m) m.SceneName = value;
             else if (action is SwitchSceneAction s) s.SceneName = value;
+            else if (action is ScreenshotAction sc) sc.SceneName = value;
         }
     }
 
