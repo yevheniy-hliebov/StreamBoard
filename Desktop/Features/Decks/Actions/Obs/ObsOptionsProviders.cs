@@ -96,7 +96,7 @@ namespace StreamBoard.Features.Decks.Actions.Obs
         }
     }
 
-    public class ObsStreamStateOptionsProvider : IOptionsProvider
+    public class ObsOutputStateOptionsProvider : IOptionsProvider
     {
         public List<string> GetOptions(DeckAction? action)
         {

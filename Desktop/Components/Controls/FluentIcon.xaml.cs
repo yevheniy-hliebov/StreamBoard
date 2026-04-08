@@ -48,7 +48,8 @@ namespace StreamBoard.Components.Controls
         [IconGlyph("\uE895")] Sync,
         [IconGlyph("\uE770")] System,
         [IconGlyph("\uE916")] Timer,
-        [IconGlyph("\uE890")] View
+        [IconGlyph("\uE714")] Video,
+        [IconGlyph("\uE890")] View,
     }
 
     public partial class FluentIcon : FontIcon

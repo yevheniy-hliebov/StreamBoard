@@ -8,30 +8,30 @@ using StreamBoard.Features.Integrations.Obs.Services;
 
 namespace StreamBoard.Features.Decks.Actions.Obs
 {
-    [ActionDiscriminator("obs_stream")]
-    public class StreamAction : ObsDeckAction
+    [ActionDiscriminator("obs_virtual_camera")]
+    public class VirtualCameraAction : ObsDeckAction
     {
         public static readonly ActionMetadata StaticMetadata = new(
-            Name: "Stream",
-            DialogTitle: "Stream Settings",
-            Icon: FluentIconType.Streaming
+            Name: "Virtual Camera",
+            DialogTitle: "Virtual Camera Settings",
+            Icon: FluentIconType.Video
         );
 
         [JsonIgnore]
         public override ActionMetadata Metadata => StaticMetadata;
 
-        private string _streamState = "Toggle";
+        private string _cameraState = "Toggle";
 
-        [ActionSetting("State", "Select stream state...", typeof(ObsOutputStateOptionsProvider))]
-        [JsonPropertyName("stream_state")]
-        public string StreamState
+        [ActionSetting("State", "Select camera state...", typeof(ObsOutputStateOptionsProvider))]
+        [JsonPropertyName("camera_state")]
+        public string CameraState
         {
-            get => _streamState;
-            set => SetProperty(ref _streamState, value);
+            get => _cameraState;
+            set => SetProperty(ref _cameraState, value);
         }
 
         [JsonIgnore]
-        public override string Label => $"{Metadata.Name} ({StreamState})";
+        public override string Label => $"{Metadata.Name} ({CameraState})";
 
         public override async Task ExecuteAsync(object? data = null)
         {
@@ -40,32 +40,32 @@ namespace StreamBoard.Features.Decks.Actions.Obs
 
             try
             {
-                switch (StreamState)
+                switch (CameraState)
                 {
                     case "Start":
-                        obsService.Obs.StartStream();
+                        obsService.Obs.StartVirtualCam();
                         break;
                     case "Stop":
-                        obsService.Obs.StopStream();
+                        obsService.Obs.StopVirtualCam();
                         break;
                     case "Toggle":
                     default:
-                        obsService.Obs.ToggleStream();
+                        obsService.Obs.ToggleVirtualCam();
                         break;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[OBS Stream] {ex.Message}");
+                Debug.WriteLine($"[OBS VirtualCam] {ex.Message}");
             }
 
             await Task.CompletedTask;
         }
 
-        public override DeckAction Copy() => new StreamAction
+        public override DeckAction Copy() => new VirtualCameraAction
         {
             Id = this.Id,
-            StreamState = StreamState
+            CameraState = CameraState
         };
     }
 }
