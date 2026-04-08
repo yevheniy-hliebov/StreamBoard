@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Integrations.Obs.Services;
@@ -94,6 +91,21 @@ namespace StreamBoard.Features.Decks.Actions.Obs
         public List<string> GetOptions(DeckAction? action)
         {
             return ["Toggle", "Show", "Hide"];
+        }
+    }
+
+    public class ObsRecordStateOptionsProvider : IOptionsProvider
+    {
+        public List<string> GetOptions(DeckAction action)
+        {
+            return [
+                "Toggle",
+                "Start",
+                "Stop",
+                "Pause",
+                "Resume",
+                "Toggle Pause"
+            ];
         }
     }
 }

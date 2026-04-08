@@ -38,6 +38,7 @@ namespace StreamBoard.Components.Controls
         [IconGlyph("\uE91B")] Photo,
         [IconGlyph("\uE7E8")] PowerButton,
         [IconGlyph("\uEA86")] Puzzle,
+        [IconGlyph("\uE7C8")] Record,
         [IconGlyph("\uE8AC")] Rename,
         [IconGlyph("\uE71E")] Search,
         [IconGlyph("\uE713")] Settings,
