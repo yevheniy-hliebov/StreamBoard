@@ -20,12 +20,35 @@ namespace StreamBoard.Features.Decks.Actions.Obs
             try
             {
                 var sceneList = obsService.Obs.GetSceneList();
-                return sceneList.Scenes.Select(s => s.Name).ToList();
+                var options = sceneList.Scenes.Select(s => s.Name).ToList();
+
+                if (string.IsNullOrEmpty(GetSceneName(action)))
+                {
+                    var first = options.FirstOrDefault();
+                    if (first != null) SetSceneName(action, first);
+                }
+
+                return options;
             }
             catch
             {
                 return ["Error loading scenes"];
             }
+        }
+
+        private string? GetSceneName(DeckAction action) => action switch
+        {
+            SourceVisibilityAction a => a.SceneName,
+            MuteSourceAction a => a.SceneName,
+            SwitchSceneAction a => a.SceneName,
+            _ => null
+        };
+
+        private void SetSceneName(DeckAction action, string value)
+        {
+            if (action is SourceVisibilityAction v) v.SceneName = value;
+            else if (action is MuteSourceAction m) m.SceneName = value;
+            else if (action is SwitchSceneAction s) s.SceneName = value;
         }
     }
 

@@ -48,14 +48,17 @@ namespace StreamBoard.Features.Decks.Actions.Obs
             set => SetProperty(ref _visibilityState, value);
         }
 
-        public SourceVisibilityAction()
+        [JsonIgnore]
+        public override string Label
         {
-            var obs = App.ServiceProvider.GetService<ObsService>();
-            if (obs?.IsConnected == true)
+            get
             {
-                var scenes = obs.Obs.GetSceneList();
-                var firstScene = scenes.Scenes.FirstOrDefault()?.Name;
-                if (firstScene != null) _sceneName = firstScene;
+                if (string.IsNullOrEmpty(SceneName) || string.IsNullOrEmpty(SourceName))
+                {
+                    return Metadata.Name;
+                }
+
+                return $"{VisibilityState} '{SourceName}' ({SceneName})";
             }
         }
 
