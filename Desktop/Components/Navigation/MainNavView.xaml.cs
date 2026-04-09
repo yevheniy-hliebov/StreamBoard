@@ -2,11 +2,12 @@
 using StreamBoard.Features.Home.Pages;
 using StreamBoard.Features.Settings.Pages;
 using StreamBoard.Features.Servers.Pages;
-using StreamBoard.Features.Decks.Views.Pages; 
+using StreamBoard.Features.Decks.Views.Pages;
 using StreamBoard.Features.Settings.Services;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using StreamBoard.Features.Integrations.Obs.Views.Pages;
 
 namespace StreamBoard.Components.Navigation
 {
@@ -23,13 +24,14 @@ namespace StreamBoard.Components.Navigation
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             Loaded -= OnLoaded;
-            
+
             var settings = App.ServiceProvider.GetRequiredService<SettingsStorage>();
             var startupPage = settings.Current.StartupPage;
 
             Type pageToNavigate = startupPage switch
             {
                 "Grid Deck" => typeof(GridDeckPage),
+                "OBS Studio" => typeof(ObsSettingsPage),
                 "HTTP Server" => typeof(HttpServerPage),
                 "Settings" => typeof(SettingsPage),
                 _ => typeof(HomePage)

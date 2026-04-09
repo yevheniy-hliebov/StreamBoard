@@ -1,0 +1,17 @@
+{
+	"Dependency Property Simple": {
+		"prefix": "propdp",
+		"body": [
+			"public ${1:int} ${2:MyProperty}",
+			"{",
+			"    get => (${1:int})GetValue(${2:MyProperty}Property);",
+			"    set => SetValue(${2:MyProperty}Property, value);",
+			"}",
+			"",
+			"public static readonly DependencyProperty ${2:MyProperty}Property =",
+			"    DependencyProperty.Register(nameof(${2:MyProperty}), typeof(${1:int}), typeof(${3:${TM_FILENAME_BASE}}), new PropertyMetadata(${4:default}));",
+			"$0"
+		],
+		"description": "WPF Simple Dependency Property"
+	}
+}

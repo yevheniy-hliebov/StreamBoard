@@ -1,30 +1,36 @@
-﻿<UserControl x:Class="StreamBoard.Components.TitleBar.MainTitleBar"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:StreamBoard.Components.TitleBar"
-             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             x:Name="Root">
-    
+﻿<UserControl
+    x:Class="StreamBoard.Components.TitleBar.MainTitleBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:StreamBoard.Components.TitleBar"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    x:Name="Root">
+
     <ui:TitleBar Height="32" Padding="12,0,0,0">
         <ui:TitleBar.Icon>
-            <ui:ImageIcon Source="pack://application:,,,/StreamBoard;component/Assets/Images/logo.ico" 
-                          Margin="0,0,16,0" />
+            <ui:ImageIcon Margin="0,0,16,0" Source="pack://application:,,,/StreamBoard;component/Assets/Images/logo.ico" />
         </ui:TitleBar.Icon>
 
         <ui:TitleBar.Header>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="{Binding Title, ElementName=Root}"
-                           FontWeight="Regular" 
-                           FontSize="12" 
-                           VerticalAlignment="Center"/>
+            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    FontWeight="Regular"
+                    Text="{Binding Title, ElementName=Root}" />
 
-                <TextBlock Text="{Binding Subtitle, ElementName=Root}"
-                           Margin="8,0,0,0" 
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
-                           FontSize="12" 
-                           FontWeight="Regular"
-                           VerticalAlignment="Center"/>
+                <TextBlock
+                    Margin="8,0,0,0"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    FontWeight="Regular"
+                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                    Text="{Binding Subtitle, ElementName=Root}" />
             </StackPanel>
         </ui:TitleBar.Header>
+
+        <ui:TitleBar.TrailingContent>
+            <ContentPresenter Content="{Binding RightContent, ElementName=Root}" />
+        </ui:TitleBar.TrailingContent>
     </ui:TitleBar>
 </UserControl>

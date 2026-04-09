@@ -6,8 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:decks="clr-namespace:StreamBoard.Features.Decks.Views.Pages"
     xmlns:home="clr-namespace:StreamBoard.Features.Home.Pages"
+    xmlns:ic="clr-namespace:StreamBoard.Features.Integrations.Common.Views.Components"
     xmlns:local="clr-namespace:StreamBoard.Components.Navigation"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:obs="clr-namespace:StreamBoard.Features.Integrations.Obs.Views.Pages"
     xmlns:servers="clr-namespace:StreamBoard.Features.Servers.Pages"
     xmlns:settings="clr-namespace:StreamBoard.Features.Settings.Pages"
     xmlns:twitch="clr-namespace:StreamBoard.Features.Integrations.Twitch.Views.Pages"
@@ -43,10 +45,25 @@
 
             <ui:NavigationViewItemSeparator />
 
-            <ui:NavigationViewItem Content="Twitch" TargetPageType="{x:Type twitch:TwitchSettingsPage}">
+            <ui:NavigationViewItem Content="Integrations">
                 <ui:NavigationViewItem.Icon>
-                    <controls:FluentIcon FontSize="16" IconType="Grid" />
+                    <controls:FluentIcon FontSize="16" IconType="Puzzle" />
                 </ui:NavigationViewItem.Icon>
+
+                <ui:NavigationViewItem.MenuItems>
+                    <ui:NavigationViewItem Content="OBS Studio" TargetPageType="{x:Type obs:ObsSettingsPage}">
+                        <ui:NavigationViewItem.Icon>
+                            <ic:IntegrationIcon IconType="Obs" Size="16" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+
+                    <ui:NavigationViewItem Content="Twitch" TargetPageType="{x:Type twitch:TwitchSettingsPage}">
+                        <ui:NavigationViewItem.Icon>
+                            <ic:IntegrationIcon IconType="Twitch" Size="16" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+
+                </ui:NavigationViewItem.MenuItems>
             </ui:NavigationViewItem>
 
             <ui:NavigationViewItemSeparator />

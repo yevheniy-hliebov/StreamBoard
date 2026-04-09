@@ -66,7 +66,7 @@ namespace StreamBoard.Features.Decks.ViewModels
                         var tempCategory = new ActionCategoryViewModel(
                             category.Name,
                             category.Icon,
-                            category.ImagePath
+                            category.IntegrationIcon
                         );
 
                         tempCategory.IsExpanded = true;

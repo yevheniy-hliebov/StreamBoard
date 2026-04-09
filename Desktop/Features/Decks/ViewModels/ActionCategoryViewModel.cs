@@ -1,6 +1,7 @@
 ﻿using StreamBoard.Components.Controls;
 using StreamBoard.Core;
 using StreamBoard.Features.Decks.Services;
+using StreamBoard.Features.Integrations.Common.Models;
 using System.Collections.ObjectModel;
 using Wpf.Ui.Controls;
 
@@ -10,7 +11,7 @@ namespace StreamBoard.Features.Decks.ViewModels
     {
         public string Name { get; }
         public FluentIconType Icon { get; }
-        public string? ImagePath { get; }
+        public IntegrationIconType? IntegrationIcon { get; }
 
         public ObservableCollection<ActionDescriptor> Actions { get; } = [];
 
@@ -21,11 +22,11 @@ namespace StreamBoard.Features.Decks.ViewModels
             set => SetProperty(ref _isExpanded, value);
         }
 
-        public ActionCategoryViewModel(string name, FluentIconType icon, string? imagePath = null)
+        public ActionCategoryViewModel(string name, FluentIconType icon, IntegrationIconType? integrationIcon = null)
         {
             Name = name;
             Icon = icon;
-            ImagePath = imagePath;
+            IntegrationIcon = integrationIcon;
         }
     }
 }
