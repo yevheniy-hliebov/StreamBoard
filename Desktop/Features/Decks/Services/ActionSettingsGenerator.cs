@@ -17,7 +17,12 @@ namespace StreamBoard.Features.Decks.Services
                 var attr = prop.GetCustomAttribute<ActionSettingAttribute>();
                 if (attr == null) continue;
 
-                if (prop.PropertyType == typeof(string))
+                if (attr.OptionsProvider != null && typeof(IOptionsProvider).IsAssignableFrom(attr.OptionsProvider))
+                {
+                    var provider = (IOptionsProvider)Activator.CreateInstance(attr.OptionsProvider)!;
+                    settings.Add(new DropdownSettingViewModel(attr.Label, attr.Hint, action, prop, provider));
+                }
+                else if (prop.PropertyType == typeof(string))
                 {
                     settings.Add(new StringSettingViewModel(attr.Label, attr.Hint, action, prop));
                 }

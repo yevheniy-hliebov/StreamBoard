@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
@@ -11,36 +11,54 @@
 		<ApplicationIcon>Assets\Images\logo.ico</ApplicationIcon>
 	</PropertyGroup>
 
+	<!-- Assets/Images -->
 	<ItemGroup>
 		<Resource Include="Assets\Images\banner_background.png" />
 		<Resource Include="Assets\Images\Integrations\obs.png">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Assets\Images\Integrations\streamerbot.png">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Assets\Images\Integrations\twitch.png">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Assets\Images\logo.ico">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Assets\Images\logo.png">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
 	</ItemGroup>
 
+	<!-- Assets/Sounds -->
+	<ItemGroup>
+		<Content Include="Assets\Sounds\shutter.mp3">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Sounds\tick.mp3">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<!-- Library -->
 	<ItemGroup>
 		<PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />
 		<PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
 		<PackageReference Include="WPF-UI" Version="4.2.0" />
+		<PackageReference Include="obs-websocket-dotnet" Version="5.0.1" />
+	</ItemGroup>
+
+	<!-- Custom Library -->
+	<ItemGroup>
+		<Reference Include="CustomDragDropLib">
+			<HintPath>Libs\CustomDragDropLib.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="CustomDragDropLib">
-	    <HintPath>Libs\CustomDragDropLib.dll</HintPath>
-	  </Reference>
+		<Watch Include="**\*.xaml" />
 	</ItemGroup>
-	
+
 </Project>

@@ -1,5 +1,10 @@
 ﻿using StreamBoard.Core;
+using StreamBoard.Features.Decks.Models;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Reflection;
+using System.Windows.Input;
+using Wpf.Ui.Input;
 
 namespace StreamBoard.Features.Decks.ViewModels
 {
@@ -63,6 +68,72 @@ namespace StreamBoard.Features.Decks.ViewModels
             {
                 Property.SetValue(TargetAction, value);
                 OnPropertyChanged();
+            }
+        }
+    }
+
+    public class DropdownSettingViewModel : ActionSettingViewModel
+    {
+        private readonly IOptionsProvider _provider;
+        private readonly DeckAction _action;
+
+        public ObservableCollection<string> Options { get; } = new();
+
+        public DropdownSettingViewModel(
+            string label,
+            string? hint,
+            DeckAction targetAction,
+            PropertyInfo property,
+            IOptionsProvider provider)
+            : base(label, hint, targetAction, property)
+        {
+            _action = targetAction;
+            _provider = provider;
+
+            _action.PropertyChanged += OnActionPropertyChanged;
+
+            RefreshOptions();
+        }
+
+        public string Value
+        {
+            get => Property.GetValue(TargetAction) as string ?? "";
+            set
+            {
+                if (Value != value)
+                {
+                    Property.SetValue(TargetAction, value);
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public ICommand SelectOptionCommand => new RelayCommand<string>(option =>
+        {
+            if (option != null)
+            {
+                Value = option;
+            }
+        });
+
+        private void OnActionPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            RefreshOptions();
+        }
+
+        private void RefreshOptions()
+        {
+            var newOptions = _provider.GetOptions(_action) ?? [];
+
+            if (!Options.SequenceEqual(newOptions))
+            {
+                Options.Clear();
+                foreach (var opt in newOptions)
+                {
+                    Options.Add(opt);
+                }
+
+                OnPropertyChanged(nameof(Options));
             }
         }
     }

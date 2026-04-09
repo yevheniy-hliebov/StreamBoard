@@ -24,5 +24,14 @@ namespace StreamBoard.Components.TitleBar
 
         public static readonly DependencyProperty SubtitleProperty =
             DependencyProperty.Register(nameof(Subtitle), typeof(string), typeof(MainTitleBar), new PropertyMetadata(null));
+
+        public object? RightContent
+        {
+            get => GetValue(RightContentProperty);
+            set => SetValue(RightContentProperty, value);
+        }
+
+        public static readonly DependencyProperty RightContentProperty =
+            DependencyProperty.Register(nameof(RightContent), typeof(object), typeof(MainTitleBar), new PropertyMetadata(null));
     }
 }
