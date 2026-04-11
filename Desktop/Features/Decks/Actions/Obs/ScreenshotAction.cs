@@ -76,7 +76,7 @@ namespace StreamBoard.Features.Decks.Actions.Obs
         {
             get
             {
-                string target = CaptureActiveScene ? "Live Scene" : (string.IsNullOrEmpty(SceneName) ? "Unknown" : SceneName);
+                string target = CaptureActiveScene ? "Active Scene" : (string.IsNullOrEmpty(SceneName) ? "Unknown" : SceneName);
                 return $"{Metadata.Name} ({target})";
             }
         }

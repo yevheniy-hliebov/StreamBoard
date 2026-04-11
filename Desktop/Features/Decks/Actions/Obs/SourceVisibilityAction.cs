@@ -58,7 +58,7 @@ namespace StreamBoard.Features.Decks.Actions.Obs
                     return Metadata.Name;
                 }
 
-                return $"{VisibilityState} '{SourceName}' ({SceneName})";
+                return $"{Metadata.Name} ({SceneName}, {SourceName}, {VisibilityState})";
             }
         }
 
