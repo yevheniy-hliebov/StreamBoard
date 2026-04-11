@@ -14,4 +14,7 @@ namespace StreamBoard.Features.Decks.Actions
 
     [ActionCategory("OBS Studio", IntegrationIconType.Obs)]
     public abstract class ObsDeckAction : DeckAction { }
+
+    [ActionCategory("Twitch", IntegrationIconType.Twitch)]
+    public abstract class TwitchDeckAction : DeckAction { }
 }

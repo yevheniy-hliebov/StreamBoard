@@ -6,12 +6,19 @@
         public string Label { get; }
         public string? Hint { get; }
         public Type? OptionsProvider { get; }
+        public Type? ValueProvider { get; }
 
-        public ActionSettingAttribute(string label, string? hint = null, Type? optionsProvider = null)
+        public ActionSettingAttribute(
+            string label,
+            string? hint = null,
+            Type? optionsProvider = null,
+            Type? valueProvider = null
+        )
         {
             Label = label;
             Hint = hint;
             OptionsProvider = optionsProvider;
+            ValueProvider = valueProvider;
         }
     }
 }
