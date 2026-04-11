@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using StreamBoard.Core;
+using StreamBoard.Features.Integrations.Twitch.Models;
 using StreamBoard.Features.Integrations.Twitch.Services;
 
 namespace StreamBoard.Features.Integrations.Twitch.ViewModels
@@ -15,25 +16,11 @@ namespace StreamBoard.Features.Integrations.Twitch.ViewModels
             set => SetProperty(ref _isAuth, value);
         }
 
-        private string? _displayName;
-        public string? DisplayName
+        private TwitchUserIdentify? _user;
+        public TwitchUserIdentify? User
         {
-            get => _displayName;
-            set => SetProperty(ref _displayName, value);
-        }
-
-        private string? _profileImageUrl;
-        public string? ProfileImageUrl
-        {
-            get => _profileImageUrl;
-            set => SetProperty(ref _profileImageUrl, value);
-        }
-
-        private string? _broadcasterType;
-        public string? BroadcasterType
-        {
-            get => _broadcasterType;
-            set => SetProperty(ref _broadcasterType, value);
+            get => _user;
+            set => SetProperty(ref _user, value);
         }
 
         public string AccountRole { get; }
@@ -56,22 +43,7 @@ namespace StreamBoard.Features.Integrations.Twitch.ViewModels
         private void UpdateState()
         {
             IsAuth = _manager.IsAuth;
-
-            if (IsAuth && _manager.User != null)
-            {
-                DisplayName = _manager.User.DisplayName;
-                ProfileImageUrl = _manager.User.ProfileImageUrl;
-
-                BroadcasterType = string.IsNullOrEmpty(_manager.User.BroadcasterType)
-                    ? "Standard"
-                    : char.ToUpper(_manager.User.BroadcasterType[0]) + _manager.User.BroadcasterType.Substring(1);
-            }
-            else
-            {
-                DisplayName = null;
-                ProfileImageUrl = null;
-                BroadcasterType = null;
-            }
+            User = IsAuth ? _manager.User : null;
         }
 
         private void Login() => _manager.Login();

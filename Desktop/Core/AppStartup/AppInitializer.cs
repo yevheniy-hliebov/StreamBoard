@@ -57,6 +57,8 @@ namespace StreamBoard.Core.AppStartup
             var serverConfig = new HttpServerConfig { Port = 13551 };
             var systemServer = new HttpServer(serverConfig, httpRouter);
 
+            await systemServer.Start();
+
             // Actions
             registry.RegisterActions();
 
