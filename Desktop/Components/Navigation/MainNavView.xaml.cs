@@ -8,6 +8,8 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using StreamBoard.Features.Integrations.Obs.Views.Pages;
+using StreamBoard.Features.Integrations.Twitch.Views.Pages;
+using StreamBoard.Core.Services;
 
 namespace StreamBoard.Components.Navigation
 {
@@ -26,18 +28,11 @@ namespace StreamBoard.Components.Navigation
             Loaded -= OnLoaded;
 
             var settings = App.ServiceProvider.GetRequiredService<SettingsStorage>();
+            var pageService = App.ServiceProvider.GetRequiredService<PageService>();
+
             var startupPage = settings.Current.StartupPage;
+            Type pageToNavigate = pageService.GetPageTypeByName(startupPage);
 
-            Type pageToNavigate = startupPage switch
-            {
-                "Grid Deck" => typeof(GridDeckPage),
-                "OBS Studio" => typeof(ObsSettingsPage),
-                "HTTP Server" => typeof(HttpServerPage),
-                "Settings" => typeof(SettingsPage),
-                _ => typeof(HomePage)
-            };
-
-            // Виконуємо перехід
             RootNavigation.Navigate(pageToNavigate);
         }
     }

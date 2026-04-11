@@ -1,6 +1,7 @@
 using System.Net.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using StreamBoard.Core.Services;
 using StreamBoard.Features.Decks.Services;
 using StreamBoard.Features.Decks.ViewModels;
 using StreamBoard.Features.Integrations.Common.Services;
@@ -21,6 +22,8 @@ namespace StreamBoard.Core.DI
     {
         public static void AddApplicationServices(this IServiceCollection services)
         {
+            services.AddSingleton<PageService>();
+
             services.AddSingleton<SettingsStorage>();
             services.AddSingleton<ServerConfigsStorage>();
             services.AddSingleton<StartupService>();
