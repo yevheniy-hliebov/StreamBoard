@@ -41,7 +41,7 @@ namespace StreamBoard.Features.Integrations.Twitch.Services.ApiModules
             string broadcasterId,
             string moderatorId,
             string message,
-            TwitchAnnouncementColor color = TwitchAnnouncementColor.Primary
+            TwitchAnnouncementColor color = TwitchAnnouncementColor.primary
         )
         {
             var query = $"broadcaster_id={broadcasterId}&moderator_id={moderatorId}";
@@ -49,7 +49,7 @@ namespace StreamBoard.Features.Integrations.Twitch.Services.ApiModules
             var requestData = new TwitchSendAnnouncementRequest
             {
                 Message = message,
-                Color = color
+                Color = color.ToString().ToLower(),
             };
 
             try
