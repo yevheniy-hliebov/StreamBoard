@@ -1,28 +1,31 @@
-﻿<UserControl x:Class="StreamBoard.Components.Cards.CardControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:local="clr-namespace:StreamBoard.Components.Cards"
-             x:Name="Root">
+﻿<UserControl
+    x:Class="StreamBoard.Components.Cards.CardControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:StreamBoard.Components.Cards"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
     <ui:CardControl>
         <ui:CardControl.Header>
             <StackPanel>
-                <TextBlock Text="{Binding Title, ElementName=Root}" 
-                       FontSize="18" 
-                       FontWeight="SemiBold" />
+                <TextBlock
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Text="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}}" />
 
-                <TextBlock Text="{Binding Description, ElementName=Root}" 
-                       FontSize="14" 
-                       FontWeight="Regular"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" 
-                       TextWrapping="Wrap"/>
+                <TextBlock
+                    FontSize="14"
+                    FontWeight="Regular"
+                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                    Text="{Binding Description, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    TextWrapping="Wrap" />
             </StackPanel>
         </ui:CardControl.Header>
 
-        <ContentPresenter Content="{Binding ActionContent, ElementName=Root}" 
-                          VerticalAlignment="Center"
-                          HorizontalAlignment="Right" />
+        <ContentPresenter
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Content="{Binding ActionContent, RelativeSource={RelativeSource AncestorType=UserControl}}" />
     </ui:CardControl>
 </UserControl>
