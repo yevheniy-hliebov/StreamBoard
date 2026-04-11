@@ -4,17 +4,18 @@ using Microsoft.Extensions.DependencyInjection;
 using StreamBoard.Core.Models;
 using StreamBoard.Features.Decks.Attributes;
 using StreamBoard.Features.Decks.Models;
+using StreamBoard.Features.Integrations.Twitch.Models;
 using StreamBoard.Features.Integrations.Twitch.Services;
 
 namespace StreamBoard.Features.Decks.Actions.Twitch
 {
-    [ActionDiscriminator("twitch_send_chat_message")]
-    public class TwitchSendChatMessage : TwitchDeckAction
+    [ActionDiscriminator("twitch_send_announcement")]
+    public class TwitchSendAnnouncement : TwitchDeckAction
     {
         public static readonly ActionMetadata StaticMetadata = new(
-            Name: "Send Chat Message",
-            DialogTitle: "Send Chat Message Settings",
-            Icon: FluentIconType.Message
+            Name: "Send Announcement",
+            DialogTitle: "Send Announcement Settings",
+            Icon: FluentIconType.Megaphone
         );
 
         [JsonIgnore]
@@ -30,24 +31,34 @@ namespace StreamBoard.Features.Decks.Actions.Twitch
             set => SetProperty(ref _username, value);
         }
 
-        private string _message = string.Empty;
+        private string _announcement = string.Empty;
 
-        [ActionSetting("Chat Message", "Enter message...")]
+        [ActionSetting("Announcement", "Enter message...")]
         [JsonPropertyName("message")]
-        public string Message
+        public string Announcement
         {
-            get => _message;
+            get => _announcement;
             set
             {
-                _message = value;
+                _announcement = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Label));
             }
         }
 
+        private string _color = "primary";
+
+        [ActionSetting("Color", "Select announcement color...", typeof(AnnouncementColorsOptionsProvider))]
+        [JsonPropertyName("record_state")]
+        public string Color
+        {
+            get => _color;
+            set => SetProperty(ref _color, value);
+        }
+
         private bool _useBot = false;
 
-        [ActionSetting("send message via bot", "")]
+        [ActionSetting("send announcement via bot", "")]
         [JsonPropertyName("use_bot")]
         public bool UseBot
         {
@@ -60,19 +71,19 @@ namespace StreamBoard.Features.Decks.Actions.Twitch
         {
             get
             {
-                if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Message))
+                if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Announcement))
                 {
                     return Metadata.Name;
                 }
 
                 string isBot = UseBot ? ", via Bot" : "";
-                return $"{Metadata.Name} ({Username}, {Message}{isBot})";
+                return $"{Metadata.Name} ({Username}, {Announcement}{isBot})";
             }
         }
 
         public override async Task ExecuteAsync(object? data = null)
         {
-            if (string.IsNullOrWhiteSpace(Message) || string.IsNullOrWhiteSpace(Username))
+            if (string.IsNullOrWhiteSpace(Announcement) || string.IsNullOrWhiteSpace(Username))
                 return;
 
             try
@@ -84,7 +95,7 @@ namespace StreamBoard.Features.Decks.Actions.Twitch
                 {
                     string? broadcasterId = null;
                     string? broadcasterLogin = gateway.Broadcaster.User?.Login;
-                    string senderId = moderator.User.Id;
+                    string moderatorId = moderator.User.Id;
 
                     if (Username == broadcasterLogin)
                     {
@@ -100,22 +111,24 @@ namespace StreamBoard.Features.Decks.Actions.Twitch
 
                     if (broadcasterId != null && moderator.Api != null)
                     {
-                        await moderator.Api.Chat.SendMessage(broadcasterId, senderId, Message);
+                        Enum.TryParse<TwitchAnnouncementColor>(_color, true, out var colorEnum);
+                        await moderator.Api.Chat.SendAnnouncement(broadcasterId, moderatorId, Announcement, colorEnum);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Twitch send message error: {ex.Message}");
+                Debug.WriteLine($"Twitch send announcement error: {ex.Message}");
                 throw;
             }
         }
 
-        public override DeckAction Copy() => new TwitchSendChatMessage
+        public override DeckAction Copy() => new TwitchSendAnnouncement
         {
             Id = this.Id,
             Username = this.Username,
-            Message = this.Message,
+            Announcement = this.Announcement,
+            Color = this.Color,
             UseBot = this.UseBot,
         };
     }

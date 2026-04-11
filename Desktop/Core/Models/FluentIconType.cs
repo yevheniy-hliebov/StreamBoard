@@ -24,6 +24,7 @@ namespace StreamBoard.Core.Models
         [IconGlyph("\uE80F")] Home,
         [IconGlyph("\uE92E")] Keyboard,
         [IconGlyph("\uE72E")] Lock,
+        [IconGlyph("\uE789")] Megaphone,
         [IconGlyph("\uE8BD")] Message,
         [IconGlyph("\uE708")] Moon,
         [IconGlyph("\uE74F")] Mute,
