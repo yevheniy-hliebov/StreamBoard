@@ -1,9 +1,7 @@
-using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using StreamBoard.Components.Controls;
+using StreamBoard.Core.Models;
 using StreamBoard.Features.Decks.Attributes;
 using StreamBoard.Features.Decks.Models;
 
@@ -15,7 +13,7 @@ namespace StreamBoard.Features.Decks.Actions.Input
         public static readonly ActionMetadata StaticMetadata = new(
             Name: "Text String",
             DialogTitle: "Enter Text to Type",
-            Icon: FluentIconType.Rename // Вкажи відповідну іконку для тексту
+            Icon: FluentIconType.Rename
         );
 
         [JsonIgnore]
@@ -37,8 +35,8 @@ namespace StreamBoard.Features.Decks.Actions.Input
         }
 
         [JsonIgnore]
-        public override string Label => string.IsNullOrEmpty(TextToType) 
-            ? Metadata.Name 
+        public override string Label => string.IsNullOrEmpty(TextToType)
+            ? Metadata.Name
             : $"{Metadata.Name} (\"{TextToType}\")";
 
         // --- Win32 API Константи та Структури ---

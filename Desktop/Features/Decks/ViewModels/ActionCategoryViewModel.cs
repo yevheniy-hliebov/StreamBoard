@@ -1,9 +1,8 @@
-﻿using StreamBoard.Components.Controls;
-using StreamBoard.Core;
+﻿using StreamBoard.Core;
+using StreamBoard.Core.Models;
 using StreamBoard.Features.Decks.Services;
 using StreamBoard.Features.Integrations.Common.Models;
 using System.Collections.ObjectModel;
-using Wpf.Ui.Controls;
 
 namespace StreamBoard.Features.Decks.ViewModels
 {

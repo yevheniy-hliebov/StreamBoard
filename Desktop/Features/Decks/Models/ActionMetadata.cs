@@ -1,4 +1,4 @@
-﻿using StreamBoard.Components.Controls;
+﻿using StreamBoard.Core.Models;
 
 namespace StreamBoard.Features.Decks.Models
 {

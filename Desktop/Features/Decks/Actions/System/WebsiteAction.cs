@@ -1,4 +1,4 @@
-﻿using StreamBoard.Components.Controls;
+﻿using StreamBoard.Core.Models;
 using StreamBoard.Features.Decks.Attributes;
 using StreamBoard.Features.Decks.Models;
 using System.Diagnostics;

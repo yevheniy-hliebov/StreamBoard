@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using StreamBoard.Core.Models;
 
 namespace StreamBoard.Components.Controls
 {

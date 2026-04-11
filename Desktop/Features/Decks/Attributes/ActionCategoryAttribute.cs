@@ -1,5 +1,4 @@
-﻿using StreamBoard.Components.Controls;
-using Wpf.Ui.Controls;
+﻿using StreamBoard.Core.Models;
 using StreamBoard.Features.Integrations.Common.Models;
 
 namespace StreamBoard.Features.Decks.Attributes

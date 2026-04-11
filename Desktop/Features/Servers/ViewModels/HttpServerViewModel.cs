@@ -1,5 +1,5 @@
-﻿using StreamBoard.Components.Controls;
-using StreamBoard.Core;
+﻿using StreamBoard.Core;
+using StreamBoard.Core.Models;
 using StreamBoard.Features.Servers.Models;
 using StreamBoard.Features.Servers.Services;
 using System.Collections.ObjectModel;
