@@ -54,4 +54,12 @@ namespace StreamBoard.Features.Decks.Actions.Twitch
             ];
         }
     }
+
+    public class TwitchShieldModeStateOptionsProvider : IOptionsProvider
+    {
+        public List<string> GetOptions(DeckAction action)
+        {
+            return ["Toggle", "Enable", "Disable"];
+        }
+    }
 }
