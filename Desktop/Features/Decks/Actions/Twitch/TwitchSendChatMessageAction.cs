@@ -9,7 +9,7 @@ using StreamBoard.Features.Integrations.Twitch.Services;
 namespace StreamBoard.Features.Decks.Actions.Twitch
 {
     [ActionDiscriminator("twitch_send_chat_message")]
-    public class TwitchSendChatMessage : TwitchDeckAction
+    public class TwitchSendChatMessageAction : TwitchDeckAction
     {
         public static readonly ActionMetadata StaticMetadata = new(
             Name: "Send Chat Message",
@@ -111,7 +111,7 @@ namespace StreamBoard.Features.Decks.Actions.Twitch
             }
         }
 
-        public override DeckAction Copy() => new TwitchSendChatMessage
+        public override DeckAction Copy() => new TwitchSendChatMessageAction
         {
             Id = this.Id,
             Username = this.Username,

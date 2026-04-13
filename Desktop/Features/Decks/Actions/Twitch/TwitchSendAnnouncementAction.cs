@@ -10,7 +10,7 @@ using StreamBoard.Features.Integrations.Twitch.Services;
 namespace StreamBoard.Features.Decks.Actions.Twitch
 {
     [ActionDiscriminator("twitch_send_announcement")]
-    public class TwitchSendAnnouncement : TwitchDeckAction
+    public class TwitchSendAnnouncementAction : TwitchDeckAction
     {
         public static readonly ActionMetadata StaticMetadata = new(
             Name: "Send Announcement",
@@ -123,7 +123,7 @@ namespace StreamBoard.Features.Decks.Actions.Twitch
             }
         }
 
-        public override DeckAction Copy() => new TwitchSendAnnouncement
+        public override DeckAction Copy() => new TwitchSendAnnouncementAction
         {
             Id = this.Id,
             Username = this.Username,
