@@ -21,4 +21,23 @@ namespace StreamBoard.Features.Decks.Actions.Twitch
             return Enum.GetNames<TwitchAnnouncementColor>().ToList();
         }
     }
+
+    public class TwitchCategorySearchProvider : IAsyncSearchProvider
+    {
+        public async Task<IEnumerable<SearchResult>> SearchAsync(string query)
+        {
+            var gateway = App.ServiceProvider.GetService<TwitchAccountsGateway>();
+            if (gateway?.Broadcaster.Api == null) return [];
+
+            try
+            {
+                var categories = await gateway.Broadcaster.Api.Channel.GetCategories(query);
+                return categories.Select(c => new SearchResult { Id = c.Id, DisplayName = c.Name });
+            }
+            catch
+            {
+                return [];
+            }
+        }
+    }
 }

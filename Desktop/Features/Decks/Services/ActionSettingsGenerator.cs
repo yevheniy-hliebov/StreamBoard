@@ -33,6 +33,14 @@ namespace StreamBoard.Features.Decks.Services
                     }
                 }
 
+                if (attr.SearchProvider != null && typeof(IAsyncSearchProvider).IsAssignableFrom(attr.SearchProvider))
+                {
+                    var provider = (IAsyncSearchProvider)Activator.CreateInstance(attr.SearchProvider)!;
+                    // Передаємо attr.DisplayProperty у конструктор
+                    settings.Add(new SearchSettingViewModel(attr.Label, attr.Hint, action, prop, provider, attr.DisplayProperty));
+                    continue;
+                }
+
                 if (attr.OptionsProvider != null && typeof(IOptionsProvider).IsAssignableFrom(attr.OptionsProvider))
                 {
                     var provider = (IOptionsProvider)Activator.CreateInstance(attr.OptionsProvider)!;
