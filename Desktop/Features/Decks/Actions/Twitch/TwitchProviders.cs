@@ -40,4 +40,18 @@ namespace StreamBoard.Features.Decks.Actions.Twitch
             }
         }
     }
+
+    public class TwitchChatModeOptionsProvider : IOptionsProvider
+    {
+        public List<string> GetOptions(DeckAction action)
+        {
+            return
+            [
+                "Emote-Only",
+                "Followers-Only",
+                "Subscribers-Only",
+                "Slow Mode"
+            ];
+        }
+    }
 }
