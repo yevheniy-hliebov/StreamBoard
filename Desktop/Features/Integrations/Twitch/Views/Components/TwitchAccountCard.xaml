@@ -1,0 +1,40 @@
+<UserControl
+    x:Class="StreamBoard.Features.Integrations.Twitch.Views.Components.TwitchAccountCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:StreamBoard.Features.Integrations.Twitch.Views.Components"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    x:Name="Root">
+
+    <Grid DataContext="{Binding ElementName=Root}">
+        <local:TwitchLoginCard AccountRole="{Binding AccountRole}" LoginCommand="{Binding LoginCommand}">
+            <local:TwitchLoginCard.Style>
+                <Style TargetType="local:TwitchLoginCard">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAuth}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </local:TwitchLoginCard.Style>
+        </local:TwitchLoginCard>
+
+        <local:TwitchProfileCard
+            AccountRole="{Binding AccountRole}"
+            LogoutCommand="{Binding LogoutCommand}"
+            User="{Binding User}">
+            <local:TwitchProfileCard.Style>
+                <Style TargetType="local:TwitchProfileCard">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAuth}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </local:TwitchProfileCard.Style>
+        </local:TwitchProfileCard>
+    </Grid>
+
+</UserControl>

@@ -17,6 +17,30 @@ namespace StreamBoard.Features.Decks.Services
                 var attr = prop.GetCustomAttribute<ActionSettingAttribute>();
                 if (attr == null) continue;
 
+                if (attr.ValueProvider != null && typeof(IValueProvider).IsAssignableFrom(attr.ValueProvider))
+                {
+                    var currentValue = prop.GetValue(action) as string;
+
+                    if (string.IsNullOrEmpty(currentValue))
+                    {
+                        var valueProvider = (IValueProvider)Activator.CreateInstance(attr.ValueProvider)!;
+                        var newValue = valueProvider.GetValue(action);
+
+                        if (!string.IsNullOrEmpty(newValue))
+                        {
+                            prop.SetValue(action, newValue);
+                        }
+                    }
+                }
+
+                if (attr.SearchProvider != null && typeof(IAsyncSearchProvider).IsAssignableFrom(attr.SearchProvider))
+                {
+                    var provider = (IAsyncSearchProvider)Activator.CreateInstance(attr.SearchProvider)!;
+                    // Передаємо attr.DisplayProperty у конструктор
+                    settings.Add(new SearchSettingViewModel(attr.Label, attr.Hint, action, prop, provider, attr.DisplayProperty));
+                    continue;
+                }
+
                 if (attr.OptionsProvider != null && typeof(IOptionsProvider).IsAssignableFrom(attr.OptionsProvider))
                 {
                     var provider = (IOptionsProvider)Activator.CreateInstance(attr.OptionsProvider)!;

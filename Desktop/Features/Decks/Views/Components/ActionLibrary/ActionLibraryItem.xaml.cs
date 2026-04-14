@@ -1,4 +1,4 @@
-﻿using StreamBoard.Components.Controls;
+﻿using StreamBoard.Core.Models;
 using System.Windows;
 using System.Windows.Controls;
 

@@ -12,6 +12,7 @@
     xmlns:obs="clr-namespace:StreamBoard.Features.Integrations.Obs.Views.Pages"
     xmlns:servers="clr-namespace:StreamBoard.Features.Servers.Pages"
     xmlns:settings="clr-namespace:StreamBoard.Features.Settings.Pages"
+    xmlns:twitch="clr-namespace:StreamBoard.Features.Integrations.Twitch.Views.Pages"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     d:Background="White"
     d:DesignHeight="450"
@@ -53,6 +54,12 @@
                     <ui:NavigationViewItem Content="OBS Studio" TargetPageType="{x:Type obs:ObsSettingsPage}">
                         <ui:NavigationViewItem.Icon>
                             <ic:IntegrationIcon IconType="Obs" Size="16" />
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
+
+                    <ui:NavigationViewItem Content="Twitch" TargetPageType="{x:Type twitch:TwitchSettingsPage}">
+                        <ui:NavigationViewItem.Icon>
+                            <ic:IntegrationIcon IconType="Twitch" Size="16" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
 

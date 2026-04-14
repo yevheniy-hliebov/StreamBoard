@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
-using StreamBoard.Components.Controls;
+using StreamBoard.Core.Models;
 using StreamBoard.Features.Decks.Attributes;
 using StreamBoard.Features.Decks.Models;
 

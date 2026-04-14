@@ -6,6 +6,10 @@ using StreamBoard.Features.Decks.Services;
 using System.Windows;
 using StreamBoard.Features.Integrations.Obs.Services;
 using StreamBoard.Features.Integrations.Common.Services;
+using StreamBoard.Features.Integrations.Twitch.Services;
+using StreamBoard.Features.Servers.Controllers;
+using StreamBoard.Features.Servers.Models;
+
 
 namespace StreamBoard.Core.AppStartup
 {
@@ -40,10 +44,20 @@ namespace StreamBoard.Core.AppStartup
             if (httpServer != null && httpServer.ShouldAutoStart && !httpServer.IsRunning)
                 await httpServer.Start();
 
+            // OBS Connection
             if (integrationStorage.Current.Obs.AutoConnectOnStartup && !obsService.IsConnected)
             {
                 obsService.Connect();
             }
+
+            // System Http Server
+            var twitchAccountsGateway = serviceProvider.GetRequiredService<TwitchAccountsGateway>();
+            var twitchController = new TwitchAuthController(twitchAccountsGateway);
+            var httpRouter = new HttpRouter([twitchController]);
+            var serverConfig = new HttpServerConfig { Port = 13551 };
+            var systemServer = new HttpServer(serverConfig, httpRouter);
+
+            await systemServer.Start();
 
             // Actions
             registry.RegisterActions();

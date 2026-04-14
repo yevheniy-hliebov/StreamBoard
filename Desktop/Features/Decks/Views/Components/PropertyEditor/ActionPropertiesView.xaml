@@ -120,6 +120,21 @@
                         </StackPanel>
                     </DataTemplate>
 
+                    <DataTemplate DataType="{x:Type settings:SearchSettingViewModel}">
+                        <StackPanel Margin="0,0,0,12">
+                            <TextBlock
+                                Margin="0,0,0,8"
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="{Binding Label}" />
+
+                            <ui:AutoSuggestBox
+                                DisplayMemberPath="DisplayName"
+                                OriginalItemsSource="{Binding SearchResults}"
+                                PlaceholderText="{Binding Hint}"
+                                Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </DataTemplate>
+
                 </ItemsControl.Resources>
             </ItemsControl>
         </ScrollViewer>

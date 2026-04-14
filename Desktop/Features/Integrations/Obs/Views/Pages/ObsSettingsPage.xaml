@@ -16,26 +16,10 @@
             </Style>
         </StackPanel.Resources>
 
-        <StackPanel Margin="0,0,0,8" Orientation="Horizontal">
-            <ic:IntegrationIcon
-                Margin="0,0,8,0"
-                VerticalAlignment="Center"
-                IconType="Obs"
-                Size="25" />
-
-            <controls:PageTitle
-                Margin="0,0,0,-12"
-                VerticalAlignment="Center"
-                Text="OBS Studio" />
-        </StackPanel>
-
-        <TextBlock
-            Margin="0,0,0,12"
-            FontSize="14"
-            FontWeight="SemiBold"
-            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-            LineHeight="20"
-            Text="Supported since version v5.0.0" />
+        <ic:IntegrationPageHeader
+            Title="OBS Studio"
+            IconType="Obs"
+            Subtitle="Supported since version v5.0.0" />
 
         <cards:CardControl Title="Connection Status" Description="{Binding ConnectionStateString}">
             <cards:CardControl.ActionContent>

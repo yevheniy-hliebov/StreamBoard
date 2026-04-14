@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using StreamBoard.Core.AppStartup;
 using StreamBoard.Core.DI;
 using System.Windows;

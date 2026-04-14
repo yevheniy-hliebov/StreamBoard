@@ -31,8 +31,7 @@
             <cards:NavigationCard
                 Title="Grid Deck"
                 Description="Configure touch layouts. Manage virtual buttons, customize grids and view action assignments for your devices."
-                IconPosition="Top"
-                Tag="GridDeck">
+                IconPosition="Top">
                 <cards:NavigationCard.Icon>
                     <controls:FluentIcon FontSize="28" IconType="Grid" />
                 </cards:NavigationCard.Icon>
@@ -41,8 +40,7 @@
             <cards:NavigationCard
                 Title="Keyboard Deck"
                 Description="Configure input mappings. Manage physical keys, customize bindings and view action assignments for your keyboards."
-                IconPosition="Top"
-                Tag="KeyboardDeck">
+                IconPosition="Top">
                 <cards:NavigationCard.Icon>
                     <controls:FluentIcon FontSize="28" IconType="Keyboard" />
                 </cards:NavigationCard.Icon>
@@ -51,8 +49,7 @@
             <cards:NavigationCard
                 Title="OBS Studio"
                 Description="Configure WebSocket connection settings with OBS and view current status."
-                IconPosition="Top"
-                Tag="OBS">
+                IconPosition="Top">
                 <cards:NavigationCard.Icon>
                     <ic:IntegrationIcon IconType="Obs" Size="28" />
                 </cards:NavigationCard.Icon>
@@ -61,8 +58,7 @@
             <cards:NavigationCard
                 Title="Twitch"
                 Description="Manage account authentications and view connection status."
-                IconPosition="Top"
-                Tag="Twitch">
+                IconPosition="Top">
                 <cards:NavigationCard.Icon>
                     <ic:IntegrationIcon IconType="Twitch" Size="28" />
                 </cards:NavigationCard.Icon>

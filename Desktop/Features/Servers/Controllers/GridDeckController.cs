@@ -1,5 +1,4 @@
 using StreamBoard.Features.Decks.Services;
-using StreamBoard.Features.Servers.Models;
 using StreamBoard.Features.Servers.Services;
 using System.Net;
 using System.Text;
@@ -42,7 +41,7 @@ namespace StreamBoard.Features.Servers.Controllers
                     await ClickKey(ctx, postParams["key"]);
                     return;
                 }
-                
+
                 ctx.Response.StatusCode = (int)HttpStatusCode.NotFound;
             }
             catch (Exception)
@@ -60,7 +59,7 @@ namespace StreamBoard.Features.Servers.Controllers
             {
                 grid_layout = profile.CanvasConfig.SelectedGrid,
                 current_page_id = profile.Pages.SelectedPageId,
-                
+
                 page_map = map?.ToDictionary(
                     kvp => kvp.Key,
                     kvp => new
@@ -116,7 +115,7 @@ namespace StreamBoard.Features.Servers.Controllers
             try
             {
                 byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(imagePath);
-                
+
                 ctx.Response.ContentType = mimeType;
                 ctx.Response.ContentLength64 = fileBytes.Length;
                 ctx.Response.StatusCode = (int)HttpStatusCode.OK;
@@ -150,17 +149,17 @@ namespace StreamBoard.Features.Servers.Controllers
                     }
                     catch
                     {
-                        
+
                     }
                 }
             }
 
             ctx.Response.StatusCode = (int)HttpStatusCode.OK;
             ctx.Response.ContentType = "text/plain";
-            
+
             byte[] data = System.Text.Encoding.UTF8.GetBytes("Action executed");
             ctx.Response.ContentLength64 = data.Length;
-            
+
             await ctx.Response.OutputStream.WriteAsync(data);
         }
 
@@ -168,10 +167,10 @@ namespace StreamBoard.Features.Servers.Controllers
         {
             ctx.Response.StatusCode = (int)statusCode;
             ctx.Response.ContentType = "text/plain";
-            
+
             byte[] data = Encoding.UTF8.GetBytes(message);
             ctx.Response.ContentLength64 = data.Length;
-            
+
             await ctx.Response.OutputStream.WriteAsync(data);
         }
     }

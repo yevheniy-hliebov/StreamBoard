@@ -1,4 +1,4 @@
-using StreamBoard.Components.Controls;
+using StreamBoard.Core.Models;
 using StreamBoard.Features.Decks.Attributes;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Integrations.Common.Models;
@@ -14,4 +14,7 @@ namespace StreamBoard.Features.Decks.Actions
 
     [ActionCategory("OBS Studio", IntegrationIconType.Obs)]
     public abstract class ObsDeckAction : DeckAction { }
+
+    [ActionCategory("Twitch", IntegrationIconType.Twitch)]
+    public abstract class TwitchDeckAction : DeckAction { }
 }

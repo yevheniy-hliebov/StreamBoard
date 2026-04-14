@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Components.Controls;
+using StreamBoard.Core.Models;
 using StreamBoard.Features.Decks.Attributes;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Integrations.Obs.Services;
@@ -58,7 +58,7 @@ namespace StreamBoard.Features.Decks.Actions.Obs
                     return Metadata.Name;
                 }
 
-                return $"{VisibilityState} '{SourceName}' ({SceneName})";
+                return $"{Metadata.Name} ({SceneName}, {SourceName}, {VisibilityState})";
             }
         }
 

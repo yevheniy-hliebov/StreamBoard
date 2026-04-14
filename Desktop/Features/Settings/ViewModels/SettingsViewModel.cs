@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using StreamBoard.Core;
+using StreamBoard.Core.Services;
 using StreamBoard.Features.Settings.Services;
 using System.Windows.Input;
 using Wpf.Ui.Appearance;
@@ -13,11 +14,13 @@ namespace StreamBoard.Features.Settings.ViewModels
         private readonly StartupService _startupService;
         private readonly PrivilegeService _privilegeService;
 
-        public SettingsViewModel(SettingsStorage storage, StartupService startupService, PrivilegeService privilegeService)
+        public SettingsViewModel(SettingsStorage storage, StartupService startupService, PrivilegeService privilegeService, PageService pageService)
         {
             _storage = storage;
             _startupService = startupService;
             _privilegeService = privilegeService;
+
+            AvailableStartupPages = pageService.AllPages.Select(p => p.Name).ToList();
         }
 
         public bool IsDarkTheme
@@ -89,14 +92,7 @@ namespace StreamBoard.Features.Settings.ViewModels
 
         public ICommand RestartAsAdminCommand => new RelayCommand<object>(_ => _privilegeService.RestartAsAdmin());
 
-        public List<string> AvailableStartupPages { get; } = new()
-        {
-            "Home",
-            "Grid Deck",
-            "OBS Studio",
-            "HTTP Server",
-            "Settings"
-        };
+        public List<string> AvailableStartupPages { get; }
 
         public string StartupPage
         {
