@@ -1,0 +1,50 @@
+﻿<UserControl
+    x:Class="StreamBoard.Features.Actions.Views.Components.Editor.ActionListItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+    x:Name="Root">
+
+    <Border Padding="5" CornerRadius="4">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Grid
+                Grid.Column="0"
+                Width="22"
+                Height="22"
+                Margin="0,0,4,0"
+                VerticalAlignment="Center">
+
+                <controls:FluentIcon
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                    IconType="{Binding Icon, ElementName=Root}" />
+            </Grid>
+
+            <TextBlock
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                FontSize="14"
+                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                Text="{Binding Text, ElementName=Root}"
+                TextTrimming="CharacterEllipsis" />
+
+            <controls:IconButton
+                Grid.Column="2"
+                Margin="4,0,0,0"
+                VerticalAlignment="Center"
+                Command="{Binding DeleteCommand, ElementName=Root}"
+                CommandParameter="{Binding ActionId, ElementName=Root}"
+                IconType="Delete"
+                TooltipText="Delete Action" />
+        </Grid>
+    </Border>
+</UserControl>

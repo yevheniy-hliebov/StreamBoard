@@ -1,8 +1,11 @@
 ﻿using GongSolutions.Wpf.DragDrop;
 using StreamBoard.Core;
+using StreamBoard.Features.Actions.Models;
+using StreamBoard.Features.Actions.Services;
+using StreamBoard.Features.Actions.ViewModels;
+using StreamBoard.Features.Actions.Views.Components.Editor;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
-using StreamBoard.Features.Decks.Views.Components.PropertyEditor;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
@@ -21,7 +24,7 @@ namespace StreamBoard.Features.Decks.ViewModels
             set => SetProperty(ref _editingSlot, value);
         }
 
-        public ObservableCollection<ActionSettingViewModel> ActionSettings { get; } = new();
+        public ObservableCollection<ActionSettingViewModel> ActionSettings { get; } = [];
 
         private bool _isActionDialogOpen;
         public bool IsActionDialogOpen
@@ -30,9 +33,9 @@ namespace StreamBoard.Features.Decks.ViewModels
             set => SetProperty(ref _isActionDialogOpen, value);
         }
 
-        private DeckAction? _originalActionToEdit;
-        private DeckAction? _editingActionCopy;
-        public DeckAction? EditingActionCopy
+        private BaseAction? _originalActionToEdit;
+        private BaseAction? _editingActionCopy;
+        public BaseAction? EditingActionCopy
         {
             get => _editingActionCopy;
             set => SetProperty(ref _editingActionCopy, value);
@@ -94,7 +97,7 @@ namespace StreamBoard.Features.Decks.ViewModels
 
                     var dialog = new ActionEditWindow
                     {
-                        DataContext = this, 
+                        DataContext = this,
                         Owner = Application.Current.MainWindow
                     };
 
@@ -141,7 +144,7 @@ namespace StreamBoard.Features.Decks.ViewModels
                 dropInfo.Effects = System.Windows.DragDropEffects.Move;
                 dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
             }
-            else if (dropInfo.TargetCollection is ObservableCollection<DeckAction>)
+            else if (dropInfo.TargetCollection is ObservableCollection<BaseAction>)
             {
                 dropInfo.Effects = System.Windows.DragDropEffects.Move;
                 dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
@@ -176,7 +179,7 @@ namespace StreamBoard.Features.Decks.ViewModels
             ActionSettings.Clear();
         }
 
-        private void GenerateSettingsForAction(DeckAction action)
+        private void GenerateSettingsForAction(BaseAction action)
         {
             ActionSettings.Clear();
             var settings = ActionSettingsGenerator.GenerateSettings(action);

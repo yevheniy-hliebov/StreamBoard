@@ -9,6 +9,7 @@ using StreamBoard.Features.Integrations.Common.Services;
 using StreamBoard.Features.Integrations.Twitch.Services;
 using StreamBoard.Features.Servers.Controllers;
 using StreamBoard.Features.Servers.Models;
+using StreamBoard.Features.Actions.Services;
 
 
 namespace StreamBoard.Core.AppStartup

@@ -1,0 +1,40 @@
+﻿<UserControl
+    x:Class="StreamBoard.Features.Actions.Views.Components.Editor.ActionListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+    xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+    xmlns:local="clr-namespace:StreamBoard.Features.Actions.Views.Components.Editor"
+    xmlns:reorder="clr-namespace:StreamBoard.Components.Controls.ReorderList"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+
+    <controls:ConstrainedScrollBorder>
+        <reorder:ReorderListView
+            HorizontalContentAlignment="Stretch"
+            dd:DragDrop.DropHandler="{Binding Editor}"
+            dd:DragDrop.IsDragSource="True"
+            dd:DragDrop.IsDropTarget="True"
+            ItemsSource="{Binding Canvas.SelectedButton.Config.Actions}">
+            <reorder:ReorderListView.ItemTemplate>
+                <DataTemplate>
+                    <reorder:ReorderListItemWrapper ShowDragHandle="True" UseDragHandle="True">
+                        <local:ActionListItem
+                            ActionId="{Binding Id}"
+                            DeleteCommand="{Binding DataContext.Editor.DeleteActionCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
+                            Icon="{Binding Metadata.Icon}"
+                            Text="{Binding FullLabel}">
+
+                            <local:ActionListItem.InputBindings>
+                                <MouseBinding
+                                    Command="{Binding DataContext.Editor.OpenEditDialogCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
+                                    CommandParameter="{Binding Id}"
+                                    MouseAction="LeftClick" />
+                            </local:ActionListItem.InputBindings>
+
+                        </local:ActionListItem>
+                    </reorder:ReorderListItemWrapper>
+                </DataTemplate>
+            </reorder:ReorderListView.ItemTemplate>
+        </reorder:ReorderListView>
+    </controls:ConstrainedScrollBorder>
+</UserControl>

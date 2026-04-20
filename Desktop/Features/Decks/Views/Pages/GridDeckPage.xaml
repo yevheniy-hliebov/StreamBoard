@@ -7,7 +7,7 @@
       xmlns:layout="clr-namespace:StreamBoard.Features.Decks.Views.Components.Layout"
       xmlns:deck_profile="clr-namespace:StreamBoard.Features.Decks.Views.Components.DeckProfile"
       xmlns:canvas="clr-namespace:StreamBoard.Features.Decks.Views.Components.Canvas"
-      xmlns:action_library="clr-namespace:StreamBoard.Features.Decks.Views.Components.ActionLibrary"
+      xmlns:action_library="clr-namespace:StreamBoard.Features.Actions.Views.Components.Library"
       xmlns:property_editor="clr-namespace:StreamBoard.Features.Decks.Views.Components.PropertyEditor"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
