@@ -41,6 +41,7 @@ namespace StreamBoard.Features.Actions.ViewModels
         public ICommand DeleteActionCommand { get; }
         public ICommand ClearActionsCommand { get; }
         public ICommand OpenEditDialogCommand { get; }
+        public ICommand ReceiveActionDropCommand { get; }
 
         public ActionListViewModel(Action onSaveRequested)
         {
@@ -95,6 +96,18 @@ namespace StreamBoard.Features.Actions.ViewModels
                     }
 
                     CloseDialog();
+                }
+            });
+
+            ReceiveActionDropCommand = new RelayCommand<object>(payload =>
+            {
+                Actions ??= [];
+
+                if (payload is ActionDescriptor descriptor)
+                {
+                    var newAction = descriptor.CreateInstance();
+                    Actions.Add(newAction);
+                    _onSaveRequested.Invoke();
                 }
             });
         }
