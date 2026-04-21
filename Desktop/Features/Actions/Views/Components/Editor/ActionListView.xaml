@@ -14,7 +14,8 @@
             dd:DragDrop.DropHandler="{Binding}"
             dd:DragDrop.IsDragSource="True"
             dd:DragDrop.IsDropTarget="True"
-            ItemsSource="{Binding Actions}">
+            ItemsSource="{Binding Actions}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <reorder:ReorderListView.ItemTemplate>
                 <DataTemplate>
                     <reorder:ReorderListItemWrapper ShowDragHandle="True" UseDragHandle="True">
