@@ -17,6 +17,7 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         public ICommand AddPageCommand { get; }
         public ICommand RenamePageCommand { get; }
+        public ICommand EndRenameCommand { get; }
         public ICommand DeletePageCommand { get; }
 
         private bool _isRenameMode;
@@ -48,9 +49,11 @@ namespace StreamBoard.Features.Decks.ViewModels
 
             AddPageCommand = new RelayCommand(_ => OnAddPage());
             DeletePageCommand = new RelayCommand(_ => OnDeletePage(), _ => List.Count > 1);
-            RenamePageCommand = new RelayCommand(_ => {
+            RenamePageCommand = new RelayCommand(_ =>
+            {
                 if (SelectedPage != null) IsRenameMode = true;
             }, _ => SelectedPage != null);
+            EndRenameCommand = new RelayCommand(_ => OnEndRename());
         }
 
         private void OnAddPage()
@@ -75,7 +78,7 @@ namespace StreamBoard.Features.Decks.ViewModels
             _storage.Save();
         }
 
-        public void EndRename()
+        public void OnEndRename()
         {
             IsRenameMode = false;
             _storage.Save();
