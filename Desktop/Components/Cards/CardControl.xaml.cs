@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace StreamBoard.Components.Cards
 {
@@ -8,6 +9,10 @@ namespace StreamBoard.Components.Cards
         public CardControl()
         {
             InitializeComponent();
+
+            TitleText.SetBinding(TextBlock.TextProperty, new Binding(nameof(Title)) { Source = this });
+            DescText.SetBinding(TextBlock.TextProperty, new Binding(nameof(Description)) { Source = this });
+            ActionPresenter.SetBinding(ContentPresenter.ContentProperty, new Binding(nameof(ActionContent)) { Source = this });
         }
 
         public string Title
