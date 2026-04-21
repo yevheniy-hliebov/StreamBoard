@@ -11,22 +11,22 @@
     <controls:ConstrainedScrollBorder>
         <reorder:ReorderListView
             HorizontalContentAlignment="Stretch"
-            dd:DragDrop.DropHandler="{Binding Editor}"
+            dd:DragDrop.DropHandler="{Binding}"
             dd:DragDrop.IsDragSource="True"
             dd:DragDrop.IsDropTarget="True"
-            ItemsSource="{Binding Canvas.SelectedButton.Config.Actions}">
+            ItemsSource="{Binding Actions}">
             <reorder:ReorderListView.ItemTemplate>
                 <DataTemplate>
                     <reorder:ReorderListItemWrapper ShowDragHandle="True" UseDragHandle="True">
                         <local:ActionListItem
                             ActionId="{Binding Id}"
-                            DeleteCommand="{Binding DataContext.Editor.DeleteActionCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
+                            DeleteCommand="{Binding DataContext.DeleteActionCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
                             Icon="{Binding Metadata.Icon}"
                             Text="{Binding FullLabel}">
 
                             <local:ActionListItem.InputBindings>
                                 <MouseBinding
-                                    Command="{Binding DataContext.Editor.OpenEditDialogCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
+                                    Command="{Binding DataContext.OpenEditDialogCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
                                     CommandParameter="{Binding Id}"
                                     MouseAction="LeftClick" />
                             </local:ActionListItem.InputBindings>

@@ -1,57 +1,37 @@
-﻿using GongSolutions.Wpf.DragDrop;
-using StreamBoard.Core;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Actions.Services;
+﻿using StreamBoard.Core;
 using StreamBoard.Features.Actions.ViewModels;
-using StreamBoard.Features.Actions.Views.Components.Editor;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
-using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Input;
-using Wpf.Ui.Input;
 
 namespace StreamBoard.Features.Decks.ViewModels
 {
-    public class DeckButtonEditorViewModel : ObservableObject, IDropTarget
+    public class DeckButtonEditorViewModel : ObservableObject
     {
         private readonly GridDeckStorage _storage;
+
+        public ActionListViewModel ActionList { get; }
 
         private DeckButtonSlot? _editingSlot;
         public DeckButtonSlot? EditingSlot
         {
             get => _editingSlot;
-            set => SetProperty(ref _editingSlot, value);
-        }
-
-        public ObservableCollection<ActionFieldViewModel> ActionFields { get; } = [];
-
-        private bool _isActionDialogOpen;
-        public bool IsActionDialogOpen
-        {
-            get => _isActionDialogOpen;
-            set => SetProperty(ref _isActionDialogOpen, value);
-        }
-
-        private BaseAction? _originalActionToEdit;
-        private BaseAction? _editingActionCopy;
-        public BaseAction? EditingActionCopy
-        {
-            get => _editingActionCopy;
-            set => SetProperty(ref _editingActionCopy, value);
+            set
+            {
+                if (SetProperty(ref _editingSlot, value))
+                {
+                    ActionList.Actions = _editingSlot?.Config?.Actions;
+                }
+            }
         }
 
         public ICommand ClearButtonCommand { get; }
-        public ICommand DeleteActionCommand { get; }
-        public ICommand ClearActionsCommand { get; }
-
-        public ICommand OpenEditDialogCommand { get; }
-        public ICommand SaveSettingsCommand { get; }
-        public ICommand CancelSettingsCommand { get; }
 
         public DeckButtonEditorViewModel(GridDeckStorage storage)
         {
             _storage = storage;
+
+            ActionList = new ActionListViewModel(() => _storage.Save());
 
             ClearButtonCommand = new RelayCommand(_ =>
             {
@@ -61,133 +41,6 @@ namespace StreamBoard.Features.Decks.ViewModels
                     _storage.Save();
                 }
             });
-
-            DeleteActionCommand = new RelayCommand<string>(id =>
-            {
-                if (string.IsNullOrEmpty(id) || EditingSlot?.Config?.Actions == null) return;
-
-                var actionToRemove = EditingSlot.Config.Actions.FirstOrDefault(action => action.Id == id);
-                if (actionToRemove != null)
-                {
-                    EditingSlot.Config.Actions.Remove(actionToRemove);
-                    _storage.Save();
-                }
-            });
-
-            ClearActionsCommand = new RelayCommand(_ =>
-            {
-                if (EditingSlot?.Config?.Actions != null)
-                {
-                    EditingSlot.Config.Actions.Clear();
-                    _storage.Save();
-                }
-            });
-
-            OpenEditDialogCommand = new RelayCommand<string>(id =>
-            {
-                if (EditingSlot?.Config?.Actions == null) return;
-
-                _originalActionToEdit = EditingSlot.Config.Actions.FirstOrDefault(a => a.Id == id);
-
-                if (_originalActionToEdit != null)
-                {
-                    EditingActionCopy = _originalActionToEdit.Copy();
-
-                    GenerateSettingsForAction(EditingActionCopy);
-
-                    var dialog = new ActionEditWindow
-                    {
-                        DataContext = this,
-                        Owner = Application.Current.MainWindow
-                    };
-
-                    if (dialog.ShowDialog() == true)
-                    {
-                        int index = EditingSlot.Config.Actions.IndexOf(_originalActionToEdit);
-                        if (index >= 0)
-                        {
-                            EditingSlot.Config.Actions[index] = EditingActionCopy;
-                            _storage.Save();
-                        }
-                    }
-
-                    _originalActionToEdit = null;
-                    EditingActionCopy = null;
-                    ActionFields.Clear();
-                }
-            });
-
-            SaveSettingsCommand = new RelayCommand(_ =>
-            {
-                if (_originalActionToEdit != null && EditingActionCopy != null && EditingSlot?.Config?.Actions != null)
-                {
-                    int index = EditingSlot.Config.Actions.IndexOf(_originalActionToEdit);
-                    if (index >= 0)
-                    {
-                        EditingSlot.Config.Actions[index] = EditingActionCopy;
-                        _storage.Save();
-                    }
-                }
-                CloseDialog();
-            });
-
-            CancelSettingsCommand = new RelayCommand(_ => CloseDialog());
-        }
-
-        void IDropTarget.DragOver(IDropInfo dropInfo)
-        {
-            if (dropInfo.Data == null) return;
-
-            if (dropInfo.DragInfo?.SourceCollection != null &&
-                dropInfo.DragInfo.SourceCollection == dropInfo.TargetCollection)
-            {
-                dropInfo.Effects = System.Windows.DragDropEffects.Move;
-                dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
-            }
-            else if (dropInfo.TargetCollection is ObservableCollection<BaseAction>)
-            {
-                dropInfo.Effects = System.Windows.DragDropEffects.Move;
-                dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
-            }
-        }
-
-        void IDropTarget.Drop(IDropInfo dropInfo)
-        {
-            if (dropInfo.DragInfo?.SourceCollection == dropInfo.TargetCollection && dropInfo.Data != null)
-            {
-                var list = (System.Collections.IList)dropInfo.DragInfo.SourceCollection;
-
-                int oldIndex = list.IndexOf(dropInfo.Data);
-                int newIndex = dropInfo.InsertIndex;
-
-                if (oldIndex < newIndex) newIndex--;
-
-                if (oldIndex != newIndex)
-                {
-                    dynamic observableCollection = dropInfo.TargetCollection;
-                    observableCollection.Move(oldIndex, newIndex);
-                    _storage.Save();
-                }
-            }
-        }
-
-        private void CloseDialog()
-        {
-            IsActionDialogOpen = false;
-            _originalActionToEdit = null;
-            EditingActionCopy = null;
-            ActionFields.Clear();
-        }
-
-        private void GenerateSettingsForAction(BaseAction action)
-        {
-            ActionFields.Clear();
-            var fields = ActionFieldsGenerator.GenerateFields(action);
-
-            foreach (var field in fields)
-            {
-                ActionFields.Add(field);
-            }
         }
     }
 }
