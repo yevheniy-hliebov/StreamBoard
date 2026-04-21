@@ -21,7 +21,7 @@ namespace StreamBoard.Features.Actions.Library.System
 
         private string _appPath = "";
 
-        [InputField("Application Path", Hint = "Enter .exe or shortcut path...")]
+        [PathField("Application Path", PathSelectionType.File, Filter = "Executables (*.exe)|*.exe|Shortcuts (*.lnk)|*.lnk|All files (*.*)|*.*", Hint = "Select .exe or shortcut...")]
         [JsonPropertyName("app_path")]
         public string AppPath
         {

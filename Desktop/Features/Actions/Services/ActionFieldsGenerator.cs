@@ -59,6 +59,17 @@ namespace StreamBoard.Features.Actions.Services
                             fields.Add(new BoolFieldViewModel(inputAttr.Label, inputAttr.Hint, action, prop));
                         }
                         break;
+
+                    case PathFieldAttribute pathAttr:
+                        fields.Add(new PathFieldViewModel(
+                            pathAttr.Label,
+                            pathAttr.Hint,
+                            action,
+                            prop,
+                            pathAttr.SelectionType,
+                            pathAttr.Filter
+                        ));
+                        break;
                 }
             }
 

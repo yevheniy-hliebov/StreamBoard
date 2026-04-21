@@ -51,7 +51,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
             }
         }
 
-        [InputField("Save Path", Hint = "Directory path to save the screenshot.")]
+        [PathField("Save Path", PathSelectionType.Folder, Hint = "Directory path to save the screenshot.")]
         [JsonPropertyName("save_path")]
         public string SavePath
         {

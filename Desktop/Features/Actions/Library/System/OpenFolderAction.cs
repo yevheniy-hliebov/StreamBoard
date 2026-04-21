@@ -20,7 +20,7 @@ namespace StreamBoard.Features.Actions.Library.System
 
         private string _folderPath = "";
 
-        [InputField("Folder Path", Hint = "Enter folder path...")]
+        [PathField("Folder Path", PathSelectionType.Folder, Hint = "Enter folder path...")]
         [JsonPropertyName("folder_path")]
         public string FolderPath
         {
