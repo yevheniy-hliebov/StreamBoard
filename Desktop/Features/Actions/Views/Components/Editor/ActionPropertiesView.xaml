@@ -2,7 +2,7 @@
     x:Class="StreamBoard.Features.Actions.Views.Components.Editor.ActionPropertiesView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:settings="clr-namespace:StreamBoard.Features.Actions.ViewModels"
+    xmlns:avm="clr-namespace:StreamBoard.Features.Actions.ViewModels"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
     <Grid>
@@ -15,7 +15,7 @@
                 <Style TargetType="TextBlock">
                     <Setter Property="Visibility" Value="Collapsed" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ActionSettings.Count}" Value="0">
+                        <DataTrigger Binding="{Binding ActionFields.Count}" Value="0">
                             <Setter Property="Visibility" Value="Visible" />
                         </DataTrigger>
                     </Style.Triggers>
@@ -24,10 +24,10 @@
         </TextBlock>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding ActionSettings}">
+            <ItemsControl ItemsSource="{Binding ActionFields}">
                 <ItemsControl.Resources>
 
-                    <DataTemplate DataType="{x:Type settings:StringSettingViewModel}">
+                    <DataTemplate DataType="{x:Type avm:StringFieldViewModel}">
                         <StackPanel Margin="0,0,0,12">
                             <TextBlock
                                 Margin="0,0,0,8"
@@ -38,7 +38,7 @@
                         </StackPanel>
                     </DataTemplate>
 
-                    <DataTemplate DataType="{x:Type settings:IntSettingViewModel}">
+                    <DataTemplate DataType="{x:Type avm:IntFieldViewModel}">
                         <StackPanel Margin="0,0,0,12">
                             <TextBlock
                                 Margin="0,0,0,8"
@@ -52,7 +52,7 @@
                         </StackPanel>
                     </DataTemplate>
 
-                    <DataTemplate DataType="{x:Type settings:BoolSettingViewModel}">
+                    <DataTemplate DataType="{x:Type avm:BoolFieldViewModel}">
                         <StackPanel Margin="0,0,0,12" Orientation="Horizontal">
                             <ui:ToggleSwitch IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock
@@ -63,7 +63,7 @@
                         </StackPanel>
                     </DataTemplate>
 
-                    <DataTemplate DataType="{x:Type settings:DropdownSettingViewModel}">
+                    <DataTemplate DataType="{x:Type avm:DropdownFieldViewModel}">
                         <StackPanel Margin="0,0,0,12">
                             <TextBlock
                                 Margin="0,0,0,8"
@@ -120,7 +120,7 @@
                         </StackPanel>
                     </DataTemplate>
 
-                    <DataTemplate DataType="{x:Type settings:SearchSettingViewModel}">
+                    <DataTemplate DataType="{x:Type avm:SearchFieldViewModel}">
                         <StackPanel Margin="0,0,0,12">
                             <TextBlock
                                 Margin="0,0,0,8"

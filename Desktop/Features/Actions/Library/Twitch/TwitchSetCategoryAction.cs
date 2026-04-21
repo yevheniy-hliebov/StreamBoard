@@ -23,7 +23,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
         private string _categoryId = string.Empty;
         private string _categoryName = string.Empty;
 
-        [ActionSetting("Category", "Type to search...", searchProvider: typeof(TwitchCategorySearchProvider), displayProperty: "Category")]
+        [SearchField("Category", typeof(TwitchCategorySearchProvider), DisplayProperty = "Category", Hint = "Type to search...")]
         [JsonPropertyName("category_id")]
         public string CategoryId
         {

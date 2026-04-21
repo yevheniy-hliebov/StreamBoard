@@ -23,7 +23,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
         private string _clipTitle = string.Empty;
         private int _durationSeconds = 0;
 
-        [ActionSetting("Title", "Optional. Title for the clip.")]
+        [InputField("Title", Hint = "Optional. Title for the clip.")]
         [JsonPropertyName("clip_title")]
         public string ClipTitle
         {
@@ -35,7 +35,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
             }
         }
 
-        [ActionSetting("Duration", "Optional. Duration in seconds (0 = default).")]
+        [InputField("Duration", Hint = "Optional. Duration in seconds (0 = default).")]
         [JsonPropertyName("duration_seconds")]
         public int DurationSeconds
         {

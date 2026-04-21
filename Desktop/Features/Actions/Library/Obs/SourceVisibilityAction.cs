@@ -24,7 +24,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
         private string _sourceName = string.Empty;
         private string _visibilityState = "Toggle";
 
-        [ActionSetting("Scene", "Select scene...", typeof(ObsSceneOptionsProvider))]
+        [DropdownField("Scene", typeof(ObsSceneOptionsProvider), Hint = "Select scene...")]
         [JsonPropertyName("scene_name")]
         public string SceneName
         {
@@ -32,7 +32,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
             set => SetProperty(ref _sceneName, value);
         }
 
-        [ActionSetting("Source", "Select source...", typeof(ObsSourceOptionsProvider))]
+        [DropdownField("Source", typeof(ObsSourceOptionsProvider), Hint = "Select source...")]
         [JsonPropertyName("source_name")]
         public string SourceName
         {
@@ -40,7 +40,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
             set => SetProperty(ref _sourceName, value);
         }
 
-        [ActionSetting("State", "Select state...", typeof(ObsVisibilityStateOptionsProvider))]
+        [DropdownField("State", typeof(ObsVisibilityStateOptionsProvider), Hint = "Select state...")]
         [JsonPropertyName("visibility_state")]
         public string VisibilityState
         {
@@ -108,9 +108,9 @@ namespace StreamBoard.Features.Actions.Library.Obs
         public override BaseAction Copy() => new SourceVisibilityAction
         {
             Id = this.Id,
-            SceneName = SceneName,
-            SourceName = SourceName,
-            VisibilityState = VisibilityState
+            SceneName = this.SceneName,
+            SourceName = this.SourceName,
+            VisibilityState = this.VisibilityState
         };
     }
 }

@@ -22,7 +22,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
 
         private string _sceneName = string.Empty;
 
-        [ActionSetting("Select Scene", "Choose a scene from the list...", typeof(ObsSceneOptionsProvider))]
+        [DropdownField("Select Scene", typeof(ObsSceneOptionsProvider), Hint = "Choose a scene from the list...")]
         [JsonPropertyName("scene_name")]
         public string SceneName
         {

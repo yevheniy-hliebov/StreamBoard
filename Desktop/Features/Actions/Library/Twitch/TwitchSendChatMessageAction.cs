@@ -22,7 +22,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
 
         private string _username = string.Empty;
 
-        [ActionSetting("Channel Name", "Target username...", valueProvider: typeof(TwitchUsernameProvider))]
+        [InputField("Channel Name", Hint = "Target username...", DefaultValueProvider = typeof(TwitchUsernameProvider))]
         [JsonPropertyName("username")]
         public string Username
         {
@@ -32,7 +32,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
 
         private string _message = string.Empty;
 
-        [ActionSetting("Chat Message", "Enter message...")]
+        [InputField("Chat Message", Hint = "Enter message...")]
         [JsonPropertyName("message")]
         public string Message
         {
@@ -47,7 +47,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
 
         private bool _useBot = false;
 
-        [ActionSetting("send message via bot", "")]
+        [InputField("send message via bot")]
         [JsonPropertyName("use_bot")]
         public bool UseBot
         {

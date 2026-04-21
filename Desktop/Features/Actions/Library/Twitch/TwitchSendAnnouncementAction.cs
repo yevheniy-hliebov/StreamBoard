@@ -23,7 +23,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
 
         private string _username = string.Empty;
 
-        [ActionSetting("Channel Name", "Target username...", valueProvider: typeof(TwitchUsernameProvider))]
+        [InputField("Channel Name", Hint = "Target username...", DefaultValueProvider = typeof(TwitchUsernameProvider))]
         [JsonPropertyName("username")]
         public string Username
         {
@@ -33,7 +33,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
 
         private string _announcement = string.Empty;
 
-        [ActionSetting("Announcement", "Enter message...")]
+        [InputField("Announcement", Hint = "Enter message...")]
         [JsonPropertyName("message")]
         public string Announcement
         {
@@ -48,7 +48,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
 
         private string _color = "primary";
 
-        [ActionSetting("Color", "Select announcement color...", typeof(AnnouncementColorsOptionsProvider))]
+        [DropdownField("Color", typeof(AnnouncementColorsOptionsProvider), Hint = "Select announcement color...")]
         [JsonPropertyName("record_state")]
         public string Color
         {
@@ -58,7 +58,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
 
         private bool _useBot = false;
 
-        [ActionSetting("send announcement via bot", "")]
+        [InputField("send announcement via bot")]
         [JsonPropertyName("use_bot")]
         public bool UseBot
         {

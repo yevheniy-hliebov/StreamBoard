@@ -24,7 +24,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
         private string _sourceName = string.Empty;
         private string _muteState = "Toggle";
 
-        [ActionSetting("Scene", "Select scene...", typeof(ObsSceneOptionsProvider))]
+        [DropdownField("Scene", typeof(ObsSceneOptionsProvider), Hint = "Select scene...")]
         [JsonPropertyName("scene_name")]
         public string SceneName
         {
@@ -32,7 +32,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
             set => SetProperty(ref _sceneName, value);
         }
 
-        [ActionSetting("Source", "Select source...", typeof(ObsSourceOptionsProvider))]
+        [DropdownField("Source", typeof(ObsSourceOptionsProvider), Hint = "Select source...")]
         [JsonPropertyName("source_name")]
         public string SourceName
         {
@@ -40,7 +40,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
             set => SetProperty(ref _sourceName, value);
         }
 
-        [ActionSetting("State", "Select state...", typeof(ObsMuteStateOptionsProvider))]
+        [DropdownField("State", typeof(ObsMuteStateOptionsProvider), Hint = "Select state...")]
         [JsonPropertyName("mute_state")]
         public string MuteState
         {
@@ -93,9 +93,9 @@ namespace StreamBoard.Features.Actions.Library.Obs
         public override BaseAction Copy() => new MuteSourceAction
         {
             Id = this.Id,
-            SceneName = SceneName,
-            SourceName = SourceName,
-            MuteState = MuteState
+            SceneName = this.SceneName,
+            SourceName = this.SourceName,
+            MuteState = this.MuteState
         };
     }
 }

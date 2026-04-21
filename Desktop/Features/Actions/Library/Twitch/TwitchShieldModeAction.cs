@@ -22,7 +22,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
 
         private string _shieldModeState = "Toggle";
 
-        [ActionSetting("State", "Select action...", typeof(TwitchShieldModeStateOptionsProvider))]
+        [DropdownField("State", typeof(TwitchShieldModeStateOptionsProvider), Hint = "Select action...")]
         [JsonPropertyName("shield_mode_state")]
         public string ShieldModeState
         {
@@ -50,7 +50,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
                 }
 
                 string broadcasterId = broadcaster.User.Id;
-                string moderatorId = broadcasterId; // Мовник може модерувати свій власний канал
+                string moderatorId = broadcasterId;
 
                 bool targetState = false;
 

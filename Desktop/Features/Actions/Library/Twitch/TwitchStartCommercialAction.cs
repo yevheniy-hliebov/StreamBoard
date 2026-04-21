@@ -22,7 +22,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
 
         private int _commercialLength = 30;
 
-        [ActionSetting("Length (Seconds)", "Valid: 30, 60, 90, 120, 150, 180")]
+        [InputField("Length (Seconds)", Hint = "Valid: 30, 60, 90, 120, 150, 180")]
         [JsonPropertyName("commercial_length")]
         public int CommercialLength
         {

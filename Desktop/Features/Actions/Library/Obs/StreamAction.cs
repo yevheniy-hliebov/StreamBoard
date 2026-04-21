@@ -22,7 +22,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
 
         private string _streamState = "Toggle";
 
-        [ActionSetting("State", "Select stream state...", typeof(ObsOutputStateOptionsProvider))]
+        [DropdownField("State", typeof(ObsOutputStateOptionsProvider), Hint = "Select stream state...")]
         [JsonPropertyName("stream_state")]
         public string StreamState
         {
@@ -65,7 +65,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
         public override BaseAction Copy() => new StreamAction
         {
             Id = this.Id,
-            StreamState = StreamState
+            StreamState = this.StreamState
         };
     }
 }

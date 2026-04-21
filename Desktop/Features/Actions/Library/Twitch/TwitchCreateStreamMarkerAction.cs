@@ -22,7 +22,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
 
         private string _description = string.Empty;
 
-        [ActionSetting("Description", "Optional. Max 140 chars.")]
+        [InputField("Description", Hint = "Optional. Max 140 chars.")]
         [JsonPropertyName("description")]
         public string Description
         {

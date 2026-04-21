@@ -20,7 +20,7 @@ namespace StreamBoard.Features.Actions.Library.System
 
         private string _url = "";
 
-        [ActionSetting("Website URL", "Enter url...")]
+        [InputField("Website URL", Hint = "Enter url...")]
         [JsonPropertyName("url")]
         public string Url
         {

@@ -27,7 +27,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
         private string _savePath = string.Empty;
         private bool _playSoundOnComplete = false;
 
-        [ActionSetting("Capture Active Scene", "If true, takes a screenshot of the current live scene.")]
+        [InputField("Capture Active Scene", Hint = "If true, takes a screenshot of the current live scene.")]
         [JsonPropertyName("capture_active_scene")]
         public bool CaptureActiveScene
         {
@@ -39,7 +39,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
             }
         }
 
-        [ActionSetting("Scene", "Select scene if not capturing active...", typeof(ObsSceneOptionsProvider))]
+        [DropdownField("Scene", typeof(ObsSceneOptionsProvider), Hint = "Select scene if not capturing active...")]
         [JsonPropertyName("scene_name")]
         public string SceneName
         {
@@ -51,7 +51,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
             }
         }
 
-        [ActionSetting("Save Path", "Directory path to save the screenshot.")]
+        [InputField("Save Path", Hint = "Directory path to save the screenshot.")]
         [JsonPropertyName("save_path")]
         public string SavePath
         {
@@ -59,7 +59,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
             set => SetProperty(ref _savePath, value);
         }
 
-        [ActionSetting("Play Sound", "Play a notification sound when done.")]
+        [InputField("Play Sound", Hint = "Play a notification sound when done.")]
         [JsonPropertyName("play_sound_on_complete")]
         public bool PlaySoundOnComplete
         {
@@ -67,7 +67,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
             set => SetProperty(ref _playSoundOnComplete, value);
         }
 
-        [ActionSetting("Sound Volume", "Volume level (0-100%)")]
+        [InputField("Sound Volume", Hint = "Volume level (0-100%)")]
         [JsonPropertyName("sound_volume")]
         public int SoundVolume { get; set; } = 50;
 
@@ -131,10 +131,10 @@ namespace StreamBoard.Features.Actions.Library.Obs
         public override BaseAction Copy() => new ScreenshotAction
         {
             Id = this.Id,
-            CaptureActiveScene = CaptureActiveScene,
-            SceneName = SceneName,
-            SavePath = SavePath,
-            PlaySoundOnComplete = PlaySoundOnComplete
+            CaptureActiveScene = this.CaptureActiveScene,
+            SceneName = this.SceneName,
+            SavePath = this.SavePath,
+            PlaySoundOnComplete = this.PlaySoundOnComplete
         };
     }
 }

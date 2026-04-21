@@ -24,7 +24,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
         private bool _enableMode = true;
         private int _parameterValue = 0;
 
-        [ActionSetting("Mode", "Select chat mode...", typeof(TwitchChatModeOptionsProvider))]
+        [DropdownField("Mode", typeof(TwitchChatModeOptionsProvider), Hint = "Select chat mode...")]
         [JsonPropertyName("chat_mode")]
         public string ChatMode
         {
@@ -36,7 +36,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
             }
         }
 
-        [ActionSetting("Enable", "Enable or disable the selected mode")]
+        [InputField("Enable", Hint = "Enable or disable the selected mode")]
         [JsonPropertyName("enable_mode")]
         public bool EnableMode
         {
@@ -48,7 +48,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
             }
         }
 
-        [ActionSetting("Duration / Wait Time", "Followers: 0-129600 mins. Slow: 3-120 secs. 0 = default.")]
+        [InputField("Duration / Wait Time", Hint = "Followers: 0-129600 mins. Slow: 3-120 secs. 0 = default.")]
         [JsonPropertyName("parameter_value")]
         public int ParameterValue
         {
@@ -59,6 +59,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
                 SetProperty(ref _parameterValue, val);
             }
         }
+
         [JsonIgnore]
         public override string Label => $"{Metadata.Name} ({ChatMode}: {(EnableMode ? "On" : "Off")})";
 

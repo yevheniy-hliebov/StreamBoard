@@ -22,7 +22,7 @@ namespace StreamBoard.Features.Actions.Library.System
         private bool _playTickEverySecond = false;
         private int _soundVolume = 50;
 
-        [ActionSetting("Delay (milliseconds)", "Enter delay in ms (e.g., 1000)")]
+        [InputField("Delay (milliseconds)", Hint = "Enter delay in ms (e.g., 1000)")]
         [JsonPropertyName("delay_ms")]
         public int DelayMs
         {
@@ -35,7 +35,7 @@ namespace StreamBoard.Features.Actions.Library.System
             }
         }
 
-        [ActionSetting("Play Tick Sound", "Play a sound every second during the delay")]
+        [InputField("Play Tick Sound", Hint = "Play a sound every second during the delay")]
         [JsonPropertyName("play_tick_every_second")]
         public bool PlayTickEverySecond
         {
@@ -43,7 +43,7 @@ namespace StreamBoard.Features.Actions.Library.System
             set => SetProperty(ref _playTickEverySecond, value);
         }
 
-        [ActionSetting("Sound Volume", "Volume for the tick sound (0-100)")]
+        [InputField("Sound Volume", Hint = "Volume for the tick sound (0-100)")]
         [JsonPropertyName("sound_volume")]
         public int SoundVolume
         {

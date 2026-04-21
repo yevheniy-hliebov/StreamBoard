@@ -21,7 +21,7 @@ namespace StreamBoard.Features.Actions.Library.System
 
         private string _appPath = "";
 
-        [ActionSetting("Application Path", "Enter .exe or shortcut path...")]
+        [InputField("Application Path", Hint = "Enter .exe or shortcut path...")]
         [JsonPropertyName("app_path")]
         public string AppPath
         {
@@ -36,7 +36,7 @@ namespace StreamBoard.Features.Actions.Library.System
 
         private string _arguments = "";
 
-        [ActionSetting("Arguments", "Enter startup arguments (optional)...")]
+        [InputField("Arguments", Hint = "Enter startup arguments (optional)...")]
         [JsonPropertyName("arguments")]
         public string Arguments
         {

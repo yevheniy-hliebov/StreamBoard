@@ -22,7 +22,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
 
         private string _recordState = "Toggle";
 
-        [ActionSetting("State", "Select record state...", typeof(ObsRecordStateOptionsProvider))]
+        [DropdownField("State", typeof(ObsRecordStateOptionsProvider), Hint = "Select record state...")]
         [JsonPropertyName("record_state")]
         public string RecordState
         {
@@ -80,7 +80,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
         public override BaseAction Copy() => new RecordAction
         {
             Id = this.Id,
-            RecordState = RecordState
+            RecordState = this.RecordState
         };
     }
 }

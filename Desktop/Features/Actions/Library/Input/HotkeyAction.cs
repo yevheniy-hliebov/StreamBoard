@@ -7,7 +7,7 @@ using StreamBoard.Features.Actions.Models;
 using StreamBoard.Features.Actions.Attributes;
 using StreamBoard.Helpers;
 
-namespace StreamBoard.Features.Actions.Library.System
+namespace StreamBoard.Features.Actions.Library.Input
 {
     [ActionDiscriminator("hotkey")]
     public class HotkeyAction : InputBaseAction
@@ -22,7 +22,8 @@ namespace StreamBoard.Features.Actions.Library.System
         public override ActionMetadata Metadata => StaticMetadata;
 
         private bool _ctrl;
-        [ActionSetting("Ctrl", "Press Ctrl")]
+
+        [InputField("Ctrl", Hint = "Press Ctrl")]
         [JsonPropertyName("ctrl")]
         public bool Ctrl
         {
@@ -31,7 +32,8 @@ namespace StreamBoard.Features.Actions.Library.System
         }
 
         private bool _shift;
-        [ActionSetting("Shift", "Press Shift")]
+
+        [InputField("Shift", Hint = "Press Shift")]
         [JsonPropertyName("shift")]
         public bool Shift
         {
@@ -40,7 +42,8 @@ namespace StreamBoard.Features.Actions.Library.System
         }
 
         private bool _alt;
-        [ActionSetting("Alt", "Press Alt")]
+
+        [InputField("Alt", Hint = "Press Alt")]
         [JsonPropertyName("alt")]
         public bool Alt
         {
@@ -49,7 +52,8 @@ namespace StreamBoard.Features.Actions.Library.System
         }
 
         private bool _win;
-        [ActionSetting("Win", "Press Windows Key")]
+
+        [InputField("Win", Hint = "Press Windows Key")]
         [JsonPropertyName("win")]
         public bool Win
         {
@@ -58,7 +62,8 @@ namespace StreamBoard.Features.Actions.Library.System
         }
 
         private string _keyToPress = "";
-        [ActionSetting("Main Key", "e.g., C, Enter, F5, Tab")]
+
+        [InputField("Main Key", Hint = "e.g., C, Enter, F5, Tab")]
         [JsonPropertyName("key_to_press")]
         public string KeyToPress
         {
@@ -130,7 +135,7 @@ namespace StreamBoard.Features.Actions.Library.System
             return Task.CompletedTask;
         }
 
-        private ushort GetVirtualKeyCode(string keyStr)
+        private static ushort GetVirtualKeyCode(string keyStr)
         {
             if (Enum.TryParse<Key>(keyStr, true, out Key wpfKey))
             {

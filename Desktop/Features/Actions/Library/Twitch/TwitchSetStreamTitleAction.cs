@@ -22,7 +22,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
 
         private string _title = string.Empty;
 
-        [ActionSetting("Title", "Enter title...")]
+        [InputField("Title", Hint = "Enter title...")]
         [JsonPropertyName("title")]
         public string Title
         {

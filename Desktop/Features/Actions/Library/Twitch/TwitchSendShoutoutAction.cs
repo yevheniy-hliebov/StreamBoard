@@ -22,7 +22,7 @@ namespace StreamBoard.Features.Actions.Library.Twitch
 
         private string _username = string.Empty;
 
-        [ActionSetting("Username", "Enter username...")]
+        [InputField("Username", Hint = "Enter username...")]
         [JsonPropertyName("title")]
         public string Username
         {

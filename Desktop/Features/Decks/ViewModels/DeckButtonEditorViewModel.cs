@@ -24,7 +24,7 @@ namespace StreamBoard.Features.Decks.ViewModels
             set => SetProperty(ref _editingSlot, value);
         }
 
-        public ObservableCollection<ActionSettingViewModel> ActionSettings { get; } = [];
+        public ObservableCollection<ActionFieldViewModel> ActionFields { get; } = [];
 
         private bool _isActionDialogOpen;
         public bool IsActionDialogOpen
@@ -113,7 +113,7 @@ namespace StreamBoard.Features.Decks.ViewModels
 
                     _originalActionToEdit = null;
                     EditingActionCopy = null;
-                    ActionSettings.Clear();
+                    ActionFields.Clear();
                 }
             });
 
@@ -176,17 +176,17 @@ namespace StreamBoard.Features.Decks.ViewModels
             IsActionDialogOpen = false;
             _originalActionToEdit = null;
             EditingActionCopy = null;
-            ActionSettings.Clear();
+            ActionFields.Clear();
         }
 
         private void GenerateSettingsForAction(BaseAction action)
         {
-            ActionSettings.Clear();
-            var settings = ActionSettingsGenerator.GenerateSettings(action);
+            ActionFields.Clear();
+            var fields = ActionFieldsGenerator.GenerateFields(action);
 
-            foreach (var setting in settings)
+            foreach (var field in fields)
             {
-                ActionSettings.Add(setting);
+                ActionFields.Add(field);
             }
         }
     }

@@ -21,7 +21,7 @@ namespace StreamBoard.Features.Actions.Library.Input
 
         private string _textToType = "";
 
-        [ActionSetting("Text", "Enter text to type...")]
+        [InputField("Text", Hint = "Enter text to type...")]
         [JsonPropertyName("text_to_type")]
         public string TextToType
         {
@@ -39,7 +39,6 @@ namespace StreamBoard.Features.Actions.Library.Input
             ? Metadata.Name
             : $"{Metadata.Name} (\"{TextToType}\")";
 
-        // --- Win32 API Константи та Структури ---
         private const int INPUT_KEYBOARD = 1;
         private const uint KEYEVENTF_UNICODE = 0x0004;
         private const uint KEYEVENTF_KEYUP = 0x0002;
@@ -85,7 +84,6 @@ namespace StreamBoard.Features.Actions.Library.Input
 
             try
             {
-                // Створюємо масив дій: для кожного символу потрібне натискання (Down) та відпускання (Up)
                 INPUT[] inputs = new INPUT[TextToType.Length * 2];
 
                 for (int i = 0; i < TextToType.Length; i++)

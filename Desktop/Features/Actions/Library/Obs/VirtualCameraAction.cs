@@ -23,7 +23,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
 
         private string _cameraState = "Toggle";
 
-        [ActionSetting("State", "Select camera state...", typeof(ObsOutputStateOptionsProvider))]
+        [DropdownField("State", typeof(ObsOutputStateOptionsProvider), Hint = "Select camera state...")]
         [JsonPropertyName("camera_state")]
         public string CameraState
         {
@@ -66,7 +66,7 @@ namespace StreamBoard.Features.Actions.Library.Obs
         public override BaseAction Copy() => new VirtualCameraAction
         {
             Id = this.Id,
-            CameraState = CameraState
+            CameraState = this.CameraState
         };
     }
 }
