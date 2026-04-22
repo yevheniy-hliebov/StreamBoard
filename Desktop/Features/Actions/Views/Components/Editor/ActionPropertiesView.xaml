@@ -79,8 +79,8 @@
                                     Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <ui:Button
-                                    Margin="0,0,4,0"
-                                    Padding="6"
+                                    Margin="0,0,0,0"
+                                    Padding="7"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Appearance="Transparent"
