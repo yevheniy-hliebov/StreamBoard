@@ -1,8 +1,6 @@
-﻿using StreamBoard.Features.Decks.ViewModels;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace StreamBoard.Features.Decks.Views.Components.DeckProfile
 {
@@ -33,31 +31,36 @@ namespace StreamBoard.Features.Decks.Views.Components.DeckProfile
             set => SetValue(TitleProperty, value);
         }
 
+        public static readonly DependencyProperty IsEditingProperty =
+            DependencyProperty.Register(nameof(IsEditing), typeof(bool), typeof(DeckPageItem), new PropertyMetadata(false));
+
+        public bool IsEditing
+        {
+            get => (bool)GetValue(IsEditingProperty);
+            set => SetValue(IsEditingProperty, value);
+        }
+
+        public static readonly DependencyProperty EndEditCommandProperty =
+            DependencyProperty.Register(nameof(EndEditCommand), typeof(ICommand), typeof(DeckPageItem));
+
+        public ICommand EndEditCommand
+        {
+            get => (ICommand)GetValue(EndEditCommandProperty);
+            set => SetValue(EndEditCommandProperty, value);
+        }
+
         private void OnEditBoxKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter || e.Key == Key.Escape)
             {
-                var parentPage = FindParent<Page>(this);
-
-                if (parentPage?.DataContext is GridDeckViewModel vm)
+                if (EndEditCommand?.CanExecute(null) == true)
                 {
-                    vm.Pages.EndRename();
-
-                    Keyboard.ClearFocus();
-
-                    e.Handled = true;
+                    EndEditCommand.Execute(null);
                 }
+
+                Keyboard.ClearFocus();
+                e.Handled = true;
             }
-        }
-
-        private T? FindParent<T>(DependencyObject child) where T : DependencyObject
-        {
-            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
-            if (parentObject == null) return null;
-
-            if (parentObject is T parent) return parent;
-
-            return FindParent<T>(parentObject);
         }
     }
 }

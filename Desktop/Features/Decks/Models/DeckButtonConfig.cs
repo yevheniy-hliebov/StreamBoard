@@ -1,4 +1,5 @@
 ﻿using StreamBoard.Core;
+using StreamBoard.Features.Actions.Models;
 using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 
@@ -31,7 +32,7 @@ namespace StreamBoard.Features.Decks.Models
         }
 
         [JsonPropertyName("actions")]
-        public ObservableCollection<DeckAction> Actions { get; set; } = [];
+        public ObservableCollection<BaseAction> Actions { get; set; } = [];
 
         [JsonIgnore]
         public bool HasName => !string.IsNullOrWhiteSpace(Name);

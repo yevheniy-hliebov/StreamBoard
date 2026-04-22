@@ -1,75 +1,116 @@
-﻿<UserControl x:Class="StreamBoard.Features.Decks.Views.Components.Layout.DeckEditorLayout"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components"
-             mc:Ignorable="d"
-             x:Name="Root"
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl
+    x:Class="StreamBoard.Features.Decks.Views.Components.Layout.DeckEditorLayout"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Root"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
-    <Grid Background="Transparent"
-          VerticalAlignment="Stretch" 
-          HorizontalAlignment="Stretch"
-          SnapsToDevicePixels="True">
+    <Grid
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        Background="Transparent"
+        SnapsToDevicePixels="True">
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="170" MinWidth="150" MaxWidth="350"/>
+            <ColumnDefinition
+                Width="170"
+                MinWidth="150"
+                MaxWidth="350" />
             <ColumnDefinition Width="5" />
+
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="200" MinWidth="200" MaxWidth="500"/>
+
+            <ColumnDefinition x:Name="ColLibrarySplitter" Width="5" />
+            <ColumnDefinition
+                x:Name="ColLibrary"
+                Width="200"
+                MinWidth="200"
+                MaxWidth="500" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" MinHeight="0" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="237" MinHeight="237" MaxHeight="400"/>
+
+            <RowDefinition x:Name="RowPropertiesSplitter" Height="5" />
+            <RowDefinition
+                x:Name="RowProperties"
+                Height="237"
+                MinHeight="237"
+                MaxHeight="400" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Column="0" Grid.Row="0" 
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
             Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-            CornerRadius="8" 
-            ClipToBounds="True">
-            <ContentPresenter Content="{Binding LeftBarContent, ElementName=Root}" 
-                          VerticalAlignment="Stretch" />
+            ClipToBounds="True"
+            CornerRadius="8">
+            <ContentPresenter VerticalAlignment="Stretch" Content="{Binding LeftBarContent, ElementName=Root}" />
         </Border>
 
-        <GridSplitter Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
-                      Width="5" VerticalAlignment="Stretch"
-                      HorizontalAlignment="Center" Background="Transparent"
-                      ResizeBehavior="PreviousAndNext" />
+        <GridSplitter
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            Width="5"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Stretch"
+            Background="Transparent"
+            ResizeBehavior="PreviousAndNext" />
 
-        <Border Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1">
-            <ContentPresenter Content="{Binding CanvasContent, ElementName=Root}" 
-                              VerticalAlignment="Stretch" />
+        <Border
+            Grid.Row="0"
+            Grid.Column="2"
+            Grid.ColumnSpan="1">
+            <ContentPresenter VerticalAlignment="Stretch" Content="{Binding CanvasContent, ElementName=Root}" />
         </Border>
 
+        <GridSplitter
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Height="5"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"
+            Background="Transparent"
+            ResizeBehavior="PreviousAndNext" />
 
-        <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
-                  Height="5" HorizontalAlignment="Stretch" 
-                  VerticalAlignment="Center" Background="Transparent"
-                  ResizeBehavior="PreviousAndNext" />
-
-        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
-                CornerRadius="8" 
-                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" 
-                ClipToBounds="True">
-            <ContentPresenter Content="{Binding PropertiesContent, ElementName=Root}" 
-                  VerticalAlignment="Stretch" />
+        <Border
+            x:Name="PropertiesBorder"
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+            ClipToBounds="True"
+            CornerRadius="8">
+            <ContentPresenter VerticalAlignment="Stretch" Content="{Binding PropertiesContent, ElementName=Root}" />
         </Border>
 
-        <GridSplitter Grid.Row="0" Grid.Column="3" Grid.RowSpan="3"
-                      Width="5" VerticalAlignment="Stretch"
-                      HorizontalAlignment="Center" Background="Transparent"
-                      ResizeBehavior="PreviousAndNext" />
+        <GridSplitter
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            Grid.Column="3"
+            Width="5"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Stretch"
+            Background="Transparent"
+            ResizeBehavior="PreviousAndNext" />
 
-
-        <Border Grid.Column="4" Grid.Row="0" Grid.RowSpan="3"
-                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                CornerRadius="8" 
-                ClipToBounds="True">
-            <ContentPresenter Content="{Binding LibraryContent, ElementName=Root}"
-                              VerticalAlignment="Stretch" />
+        <Border
+            x:Name="LibraryBorder"
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            Grid.Column="4"
+            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+            ClipToBounds="True"
+            CornerRadius="8">
+            <ContentPresenter VerticalAlignment="Stretch" Content="{Binding LibraryContent, ElementName=Root}" />
         </Border>
+
     </Grid>
 </UserControl>

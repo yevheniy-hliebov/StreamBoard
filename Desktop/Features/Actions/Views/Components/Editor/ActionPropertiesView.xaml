@@ -1,0 +1,170 @@
+﻿<UserControl
+    x:Class="StreamBoard.Features.Actions.Views.Components.Editor.ActionPropertiesView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:avm="clr-namespace:StreamBoard.Features.Actions.ViewModels"
+    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+
+    <Grid>
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+            Text="No settings available for this action.">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ActionFields.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding ActionFields}">
+                <ItemsControl.Resources>
+
+                    <DataTemplate DataType="{x:Type avm:StringFieldViewModel}">
+                        <StackPanel Margin="0,0,0,12">
+                            <TextBlock
+                                Margin="0,0,0,8"
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="{Binding Label}" />
+
+                            <ui:TextBox PlaceholderText="{Binding Hint}" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type avm:IntFieldViewModel}">
+                        <StackPanel Margin="0,0,0,12">
+                            <TextBlock
+                                Margin="0,0,0,8"
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="{Binding Label}" />
+
+                            <ui:NumberBox
+                                ClearButtonEnabled="False"
+                                PlaceholderText="{Binding Hint}"
+                                Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type avm:BoolFieldViewModel}">
+                        <StackPanel Margin="0,0,0,12" Orientation="Horizontal">
+                            <ui:ToggleSwitch IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="{Binding Label}" />
+                        </StackPanel>
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type avm:PathFieldViewModel}">
+                        <StackPanel Margin="0,0,0,12">
+                            <TextBlock
+                                Margin="0,0,0,8"
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="{Binding Label}" />
+
+                            <Grid>
+                                <ui:TextBox
+                                    Padding="10,5,36,5"
+                                    ClearButtonEnabled="False"
+                                    PlaceholderText="{Binding Hint}"
+                                    Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <ui:Button
+                                    Margin="0,0,0,0"
+                                    Padding="7"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Appearance="Transparent"
+                                    Command="{Binding BrowseCommand}">
+                                    <controls:FluentIcon FontSize="14" IconType="Folder" />
+                                </ui:Button>
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type avm:DropdownFieldViewModel}">
+                        <StackPanel Margin="0,0,0,12">
+                            <TextBlock
+                                Margin="0,0,0,8"
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="{Binding Label}" />
+
+                            <ui:DropDownButton
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                Icon="FitPage24">
+
+                                <ui:DropDownButton.Content>
+                                    <TextBlock
+                                        HorizontalAlignment="Stretch"
+                                        Text="{Binding Value, TargetNullValue='Select scene...'}"
+                                        TextAlignment="Left" />
+                                </ui:DropDownButton.Content>
+
+                                <ui:DropDownButton.Flyout>
+                                    <ContextMenu
+                                        MaxHeight="300"
+                                        Padding="0"
+                                        ItemsSource="{Binding Options}">
+                                        <ContextMenu.Template>
+                                            <ControlTemplate TargetType="{x:Type ContextMenu}">
+                                                <Border
+                                                    Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+                                                    BorderBrush="{DynamicResource SurfaceStrokeColorDefaultBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="8">
+                                                    <ScrollViewer
+                                                        Margin="2"
+                                                        CanContentScroll="True"
+                                                        Focusable="False"
+                                                        PanningMode="VerticalOnly"
+                                                        VerticalScrollBarVisibility="Auto">
+                                                        <ItemsPresenter VerticalAlignment="Top" />
+                                                    </ScrollViewer>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </ContextMenu.Template>
+
+                                        <ContextMenu.ItemContainerStyle>
+                                            <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
+                                                <Setter Property="Command" Value="{Binding DataContext.SelectOptionCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
+                                                <Setter Property="CommandParameter" Value="{Binding}" />
+                                                <Setter Property="Header" Value="{Binding}" />
+                                                <Setter Property="Padding" Value="8,6" />
+                                            </Style>
+                                        </ContextMenu.ItemContainerStyle>
+                                    </ContextMenu>
+                                </ui:DropDownButton.Flyout>
+                            </ui:DropDownButton>
+                        </StackPanel>
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type avm:SearchFieldViewModel}">
+                        <StackPanel Margin="0,0,0,12">
+                            <TextBlock
+                                Margin="0,0,0,8"
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="{Binding Label}" />
+
+                            <ui:AutoSuggestBox
+                                DisplayMemberPath="DisplayName"
+                                OriginalItemsSource="{Binding SearchResults}"
+                                PlaceholderText="{Binding Hint}"
+                                Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </DataTemplate>
+
+                </ItemsControl.Resources>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

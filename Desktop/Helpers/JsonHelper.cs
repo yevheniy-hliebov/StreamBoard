@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Text.Json;
-using StreamBoard.Features.Decks.Serialization;
+using StreamBoard.Features.Actions.Serialization;
 
 namespace StreamBoard.Helpers
 {

@@ -1,12 +1,13 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using StreamBoard.Components.Navigation;
 using StreamBoard.Features.Integrations.Common.Models;
 
 namespace StreamBoard.Features.Integrations.Common.Views.Components
 {
-    public partial class ConnectionMenuItem : MenuItem
+    public partial class ConnectionMenuItem : UserControl
     {
         public ConnectionMenuItem()
         {
@@ -35,6 +36,7 @@ namespace StreamBoard.Features.Integrations.Common.Views.Components
         {
             if (d is ConnectionMenuItem control) control.UpdateState();
         }
+
         public Brush StateColor
         {
             get => (Brush)GetValue(StateColorProperty);
@@ -59,22 +61,26 @@ namespace StreamBoard.Features.Integrations.Common.Views.Components
         public static readonly DependencyProperty TargetPageTypeProperty =
             DependencyProperty.Register(nameof(TargetPageType), typeof(Type), typeof(ConnectionMenuItem));
 
-        protected override void OnClick()
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            base.OnClick();
+            base.OnMouseLeftButtonUp(e);
 
             if (TargetPageType != null)
             {
-                var mainWindow = Window.GetWindow(this) as MainWindow;
-                if (mainWindow == null) return;
+                if (Window.GetWindow(this) is MainWindow mainWindow)
+                {
+                    var navComponent = mainWindow.FindName("RootNavView") as MainNavView;
+                    var navigationControl = navComponent?.GetNavigation();
 
-                var navComponent = mainWindow.FindName("RootNavView") as MainNavView;
-                var navigationControl = navComponent?.GetNavigation();
-
-                if (navigationControl == null) return;
-
-                navigationControl.Navigate(TargetPageType);
+                    navigationControl?.Navigate(TargetPageType);
+                }
             }
+
+            // 3. ДОДАНО: Закриваємо контекстне меню після кліку
+            CloseParentContextMenu(this);
+
+            // Кажемо WPF, що ми обробили клік
+            e.Handled = true;
         }
 
         private void UpdateState()
@@ -94,6 +100,21 @@ namespace StreamBoard.Features.Integrations.Common.Views.Components
 
             SetValue(StateColorProperty, brush);
             SetValue(StateTextProperty, text);
+        }
+
+        // Хелпер для пошуку батьківського ContextMenu і його закриття
+        private void CloseParentContextMenu(DependencyObject current)
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(current);
+            while (parent != null)
+            {
+                if (parent is ContextMenu menu)
+                {
+                    menu.IsOpen = false;
+                    return;
+                }
+                parent = VisualTreeHelper.GetParent(parent);
+            }
         }
     }
 }

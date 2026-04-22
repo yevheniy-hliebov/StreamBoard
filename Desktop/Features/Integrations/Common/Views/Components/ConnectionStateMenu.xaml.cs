@@ -58,7 +58,6 @@ namespace StreamBoard.Features.Integrations.Common.Views.Components
                 }
 
                 control.UpdateSummary();
-                control.RebuildMenu();
             }
         }
 
@@ -69,7 +68,6 @@ namespace StreamBoard.Features.Integrations.Common.Views.Components
                 Dispatcher.BeginInvoke(() =>
                 {
                     UpdateSummary();
-                    RebuildMenu();
                 });
             }
         }
@@ -89,27 +87,6 @@ namespace StreamBoard.Features.Integrations.Common.Views.Components
             }
 
             UpdateSummary();
-            RebuildMenu();
-        }
-
-        public void RebuildMenu()
-        {
-            if (MainContextMenu == null) return;
-
-            MainContextMenu.Items.Clear();
-
-            if (Items == null) return;
-
-            foreach (var item in Items)
-            {
-                var menuItem = new ConnectionMenuItem
-                {
-                    Title = item.Name,
-                    State = item.State,
-                    TargetPageType = item.TargetPageType!,
-                };
-                MainContextMenu.Items.Add(menuItem);
-            }
         }
 
         public void UpdateSummary()
