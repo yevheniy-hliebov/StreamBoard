@@ -9,6 +9,9 @@
 		<AssemblyName>StreamBoard</AssemblyName>
 		<RootNamespace>StreamBoard</RootNamespace>
 		<ApplicationIcon>Assets\Images\logo.ico</ApplicationIcon>
+
+		<Version>0.1.0-beta.1</Version>
+		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 	</PropertyGroup>
 
 	<!-- Assets/Images -->
