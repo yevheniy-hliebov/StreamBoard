@@ -10,6 +10,7 @@ using StreamBoard.Features.Integrations.Twitch.Services;
 using StreamBoard.Features.Servers.Controllers;
 using StreamBoard.Features.Servers.Models;
 using StreamBoard.Features.Actions.Services;
+using StreamBoard.Features.Updater.ViewModels;
 
 
 namespace StreamBoard.Core.AppStartup
@@ -20,13 +21,6 @@ namespace StreamBoard.Core.AppStartup
         {
             var settingStorage = serviceProvider.GetRequiredService<SettingsStorage>();
             var privilegeService = serviceProvider.GetRequiredService<PrivilegeService>();
-            var httpServer = serviceProvider.GetRequiredService<HttpServer>();
-            var registry = serviceProvider.GetRequiredService<ActionRegistry>();
-            var gridDeckStorage = serviceProvider.GetRequiredService<GridDeckStorage>();
-            var keyboardDeckStorage = serviceProvider.GetRequiredService<KeyboardDeckStorage>();
-
-            var integrationStorage = serviceProvider.GetRequiredService<IntegrationConnectionStorage>();
-            var obsService = serviceProvider.GetRequiredService<ObsService>();
 
             // Theme
             ApplicationThemeManager.Apply(
@@ -41,11 +35,18 @@ namespace StreamBoard.Core.AppStartup
                 return;
             }
 
+            // Check for updates
+            var updater = serviceProvider.GetRequiredService<UpdaterViewModel>();
+            _ = updater.CheckForUpdatesOnStartupAsync();
+
             // HttpServer start
+            var httpServer = serviceProvider.GetRequiredService<HttpServer>();
             if (httpServer != null && httpServer.ShouldAutoStart && !httpServer.IsRunning)
                 await httpServer.Start();
 
             // OBS Connection
+            var integrationStorage = serviceProvider.GetRequiredService<IntegrationConnectionStorage>();
+            var obsService = serviceProvider.GetRequiredService<ObsService>();
             if (integrationStorage.Current.Obs.AutoConnectOnStartup && !obsService.IsConnected)
             {
                 obsService.Connect();
@@ -61,11 +62,12 @@ namespace StreamBoard.Core.AppStartup
             await systemServer.Start();
 
             // Actions
+            var registry = serviceProvider.GetRequiredService<ActionRegistry>();
             registry.RegisterActions();
 
             // Decks
+            var gridDeckStorage = serviceProvider.GetRequiredService<GridDeckStorage>();
             gridDeckStorage.Initialize();
-            keyboardDeckStorage.Initialize();
         }
     }
 }

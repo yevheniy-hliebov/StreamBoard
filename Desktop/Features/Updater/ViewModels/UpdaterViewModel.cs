@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using StreamBoard.Core;
@@ -89,6 +90,52 @@ namespace StreamBoard.Features.Updater.ViewModels
             else
             {
                 DialogState = "UpToDate";
+            }
+        }
+
+        public async Task CheckForUpdatesOnStartupAsync()
+        {
+            try
+            {
+                var receiveBetaUpdates = _settingsStorage.Current.UpdateChannel == "Beta releases";
+                var releaseInfo = await _updateService.CheckForUpdatesAsync(AppInfo, receiveBetaUpdates);
+
+                if (releaseInfo != null)
+                {
+                    if (_settingsStorage.Current.SkippedVersion == releaseInfo.TagName)
+                    {
+                        return;
+                    }
+
+                    LatestReleaseInfo = releaseInfo;
+                    DialogState = "UpdateAvailable";
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        var updateDialog = new UpdateDialogWindow
+                        {
+                            DataContext = this
+                        };
+
+                        var mainWindow = Application.Current.MainWindow;
+                        if (mainWindow != null && mainWindow.IsVisible)
+                        {
+                            updateDialog.Owner = mainWindow;
+                            updateDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                        }
+                        else
+                        {
+                            updateDialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                            updateDialog.Topmost = true;
+                        }
+
+                        updateDialog.ShowDialog();
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Startup update check failed: {ex.Message}");
             }
         }
     }
