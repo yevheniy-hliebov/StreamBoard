@@ -73,6 +73,7 @@ namespace StreamBoard.Core.DI
             });
 
             services.AddSingleton<AppInfoService>();
+            services.AddSingleton<UpdateService>();
 
             services.AddTransient<GridDeckViewModel>();
             services.AddSingleton<IntegrationsViewModel>();

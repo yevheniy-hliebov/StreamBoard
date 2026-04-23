@@ -81,9 +81,12 @@
             </cards:CardControl.ActionContent>
         </cards:CardControl>
 
-        <cards:CardControl Title="Check for updates" Description="Current version: v0.1.0-beta.1">
+        <cards:CardControl Title="Check for updates" Description="{Binding CurrentVersion}">
             <cards:CardControl.ActionContent>
-                <ui:Button Appearance="Secondary" Content="Check for update">
+                <ui:Button
+                    Appearance="Secondary"
+                    Command="{Binding CheckForUpdatesCommand}"
+                    Content="Check for update">
                     <ui:Button.Icon>
                         <controls:FluentIcon FontSize="12" IconType="UpdateRestore" />
                     </ui:Button.Icon>

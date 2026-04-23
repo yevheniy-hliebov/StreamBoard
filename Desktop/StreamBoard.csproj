@@ -52,6 +52,7 @@
 		<PackageReference Include="WPF-UI" Version="4.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.5" />
 		<PackageReference Include="obs-websocket-dotnet" Version="5.0.1" />
+		<PackageReference Include="NuGet.Versioning" Version="7.3.1" />
 	</ItemGroup>
 
 	<!-- Custom Library -->

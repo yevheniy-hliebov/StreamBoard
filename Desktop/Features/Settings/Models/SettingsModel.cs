@@ -24,5 +24,8 @@ namespace StreamBoard.Features.Settings.Models
 
         [JsonPropertyName("update_channel")]
         public string UpdateChannel { get; set; } = "Stable releases";
+
+        [JsonPropertyName("skipped_version")]
+        public string? SkippedVersion { get; set; } = null;
     }
 }

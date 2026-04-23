@@ -2,17 +2,25 @@
 using StreamBoard.Core;
 using StreamBoard.Core.Services;
 using StreamBoard.Features.Settings.Services;
+using StreamBoard.Features.Updater.ViewModels;
 using System.Windows.Input;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Input;
 
 namespace StreamBoard.Features.Settings.ViewModels
 {
-    public class SettingsViewModel(SettingsStorage storage, StartupService startupService, PrivilegeService privilegeService, PageService pageService) : ObservableObject
+    public class SettingsViewModel(
+        SettingsStorage storage,
+        StartupService startupService,
+        PrivilegeService privilegeService,
+        PageService pageService,
+        UpdaterViewModel updaterViewModel
+    ) : ObservableObject
     {
         private readonly SettingsStorage _storage = storage;
         private readonly StartupService _startupService = startupService;
         private readonly PrivilegeService _privilegeService = privilegeService;
+        private readonly UpdaterViewModel _updaterViewModel = updaterViewModel;
 
         public bool IsDarkTheme
         {
@@ -110,5 +118,9 @@ namespace StreamBoard.Features.Settings.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public string CurrentVersion => $"Current version: v{_updaterViewModel.AppInfo.CurrentVersion}";
+
+        public ICommand CheckForUpdatesCommand => _updaterViewModel.OpenUpdateDialogCommand;
     }
 }

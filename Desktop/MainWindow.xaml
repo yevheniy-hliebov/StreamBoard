@@ -26,9 +26,9 @@
         <tray:TrayIconView />
 
         <titlebar:MainTitleBar
-            Title="StreamBoard"
+            Title="{Binding AppInfo.AppName, RelativeSource={RelativeSource AncestorType=Window}}"
             Grid.Row="0"
-            Subtitle="(v0.1.0)">
+            Subtitle="{Binding AppVersion, RelativeSource={RelativeSource AncestorType=Window}}">
             <titlebar:MainTitleBar.RightContent>
                 <StackPanel Orientation="Horizontal">
 
