@@ -29,7 +29,7 @@ namespace StreamBoard.Features.Updater.ViewModels
 
             UpdateNowCommand = new RelayCommand(_ =>
             {
-                MessageBox.Show("Start downloading...", "Update", MessageBoxButton.OK, MessageBoxImage.Information);
+                _ = StartUpdateProcessAsync();
             });
 
             SkipVersionCommand = new RelayCommand(_ =>
@@ -56,6 +56,20 @@ namespace StreamBoard.Features.Updater.ViewModels
         {
             get => _latestReleaseInfo;
             set => SetProperty(ref _latestReleaseInfo, value);
+        }
+
+        private double _downloadProgress;
+        public double DownloadProgress
+        {
+            get => _downloadProgress;
+            set => SetProperty(ref _downloadProgress, value);
+        }
+
+        private string _downloadStatusText = "Preparing to download...";
+        public string DownloadStatusText
+        {
+            get => _downloadStatusText;
+            set => SetProperty(ref _downloadStatusText, value);
         }
 
         private void OpenUpdateDialog()
@@ -136,6 +150,35 @@ namespace StreamBoard.Features.Updater.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine($"Startup update check failed: {ex.Message}");
+            }
+        }
+
+        private async Task StartUpdateProcessAsync()
+        {
+            if (LatestReleaseInfo == null) return;
+
+            DialogState = "Downloading";
+
+            var progressIndicator = new Progress<double>(percent =>
+            {
+                DownloadProgress = percent;
+                DownloadStatusText = "Downloading update archive...";
+            });
+
+            try
+            {
+                // Викликаємо наш новий метод
+                string downloadedFilePath = await _updateService.DownloadUpdateArchiveAsync(LatestReleaseInfo, AppInfo, progressIndicator);
+
+                // Для тесту можемо просто показати, куди він завантажився
+                MessageBox.Show($"File downloaded successfully to:\n{downloadedFilePath}");
+
+                // Тут пізніше буде виклик методу розпакування та бекапу
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to download update: {ex.Message}");
+                DialogState = "UpdateAvailable";
             }
         }
     }

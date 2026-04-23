@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -56,6 +57,61 @@ namespace StreamBoard.Features.Updater.Services
             {
                 Debug.WriteLine($"[UpdateService] Error checking for updates: {ex.Message}");
                 return null;
+            }
+        }
+
+        public async Task<string> DownloadUpdateArchiveAsync(
+            GithubReleaseInfo releaseInfo,
+            AppInfoModel appInfo,
+            IProgress<double> progress)
+        {
+            var asset = releaseInfo.Assets?.FirstOrDefault(a => a.Name.EndsWith(".zip"));
+            if (asset == null)
+                throw new Exception("No .zip asset found in the release.");
+
+            string tempPath = Path.GetTempPath();
+            string zipPath = Path.Combine(tempPath, $"StreamBoard_Windows_{releaseInfo.TagName}.zip");
+
+            using var request = new HttpRequestMessage(HttpMethod.Get, asset.BrowserDownloadUrl);
+            request.Headers.UserAgent.Add(new ProductInfoHeaderValue(appInfo.AppName.Replace(" ", ""), appInfo.CurrentVersion));
+
+            try
+            {
+                using var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+                response.EnsureSuccessStatusCode();
+
+                var totalBytes = response.Content.Headers.ContentLength ?? 1L;
+
+                using var contentStream = await response.Content.ReadAsStreamAsync();
+                using var fileStream = new FileStream(zipPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
+
+                var buffer = new byte[8192];
+                var isMoreToRead = true;
+                var bytesReadTotal = 0L;
+
+                do
+                {
+                    var bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length);
+                    if (bytesRead == 0)
+                    {
+                        isMoreToRead = false;
+                        progress.Report(100);
+                        continue;
+                    }
+
+                    await fileStream.WriteAsync(buffer, 0, bytesRead);
+                    bytesReadTotal += bytesRead;
+
+                    progress.Report((double)bytesReadTotal / totalBytes * 100);
+                }
+                while (isMoreToRead);
+
+                return zipPath;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[UpdateService] Error downloading update: {ex.Message}");
+                throw;
             }
         }
     }
