@@ -133,7 +133,6 @@
                     <ui:Button
                         Margin="0,0,8,0"
                         Appearance="Primary"
-                        Click="Close_Click"
                         Command="{Binding UpdateNowCommand}"
                         Content="Update now" />
                     <ui:Button
@@ -143,6 +142,55 @@
                         Content="Skip this version" />
                     <ui:Button Click="Close_Click" Content="Later" />
                 </StackPanel>
+            </StackPanel>
+
+            <StackPanel
+                Margin="0,16"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DialogState}" Value="Downloading">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <controls:FluentIcon
+                    Margin="0,0,0,16"
+                    HorizontalAlignment="Center"
+                    FontSize="48"
+                    IconType="Download" />
+
+                <TextBlock
+                    Margin="0,0,0,8"
+                    HorizontalAlignment="Center"
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Text="Updating StreamBoard..." />
+
+                <TextBlock
+                    Margin="0,0,0,16"
+                    HorizontalAlignment="Center"
+                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                    Text="{Binding DownloadStatusText}" />
+
+                <ProgressBar
+                    Width="280"
+                    Height="8"
+                    Margin="0,0,0,4"
+                    Maximum="100"
+                    Minimum="0"
+                    Value="{Binding DownloadProgress}" />
+
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    FontSize="12"
+                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                    Text="{Binding DownloadProgress, StringFormat={}{0:F1}%}" />
             </StackPanel>
 
         </Grid>

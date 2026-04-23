@@ -162,22 +162,23 @@ namespace StreamBoard.Features.Updater.ViewModels
             var progressIndicator = new Progress<double>(percent =>
             {
                 DownloadProgress = percent;
-                DownloadStatusText = "Downloading update archive...";
+                DownloadStatusText = percent < 100
+                    ? "Downloading update archive..."
+                    : "Extracting and installing update...";
             });
 
             try
             {
-                // Викликаємо наш новий метод
-                string downloadedFilePath = await _updateService.DownloadUpdateArchiveAsync(LatestReleaseInfo, AppInfo, progressIndicator);
+                string downloadedZipPath = await _updateService.DownloadUpdateArchiveAsync(LatestReleaseInfo, AppInfo, progressIndicator);
 
-                // Для тесту можемо просто показати, куди він завантажився
-                MessageBox.Show($"File downloaded successfully to:\n{downloadedFilePath}");
+                await Task.Delay(500);
 
-                // Тут пізніше буде виклик методу розпакування та бекапу
+                _updateService.ExtractAndInstallUpdateAsync(downloadedZipPath, AppInfo.CurrentVersion);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to download update: {ex.Message}");
+                Debug.WriteLine($"[Updater] Error: {ex.Message}");
+                MessageBox.Show($"Failed to install update: {ex.Message}", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 DialogState = "UpdateAvailable";
             }
         }

@@ -6,6 +6,8 @@ using System.Text.Json;
 using NuGet.Versioning;
 using StreamBoard.Core.Constants;
 using StreamBoard.Features.Updater.Models;
+using System.IO.Compression;
+using System.Windows;
 
 namespace StreamBoard.Features.Updater.Services
 {
@@ -113,6 +115,74 @@ namespace StreamBoard.Features.Updater.Services
                 Debug.WriteLine($"[UpdateService] Error downloading update: {ex.Message}");
                 throw;
             }
+        }
+
+        public void ExtractAndInstallUpdateAsync(string zipPath, string currentVersion)
+        {
+            string tempPath = Path.GetTempPath();
+            string extractPath = Path.Combine(tempPath, $"StreamBoard_Extracted_{Guid.NewGuid()}");
+
+            string currentAppDir = AppDomain.CurrentDomain.BaseDirectory;
+            string exeName = Process.GetCurrentProcess().MainModule?.ModuleName ?? "StreamBoard.exe";
+
+            if (Directory.Exists(extractPath)) Directory.Delete(extractPath, true);
+            ZipFile.ExtractToDirectory(zipPath, extractPath);
+
+            string backupsDir = Path.Combine(currentAppDir, "Backups");
+            string thisBackupDir = Path.Combine(backupsDir, $"StreamBoard_Backup_v{currentVersion}_{DateTime.Now:yyyyMMdd_HHmmss}");
+            Directory.CreateDirectory(thisBackupDir);
+
+            foreach (var dirPath in Directory.GetDirectories(currentAppDir, "*", SearchOption.AllDirectories))
+            {
+                if (dirPath.StartsWith(backupsDir, StringComparison.OrdinalIgnoreCase)) continue;
+
+                string relativePath = Path.GetRelativePath(currentAppDir, dirPath);
+                string targetDir = Path.Combine(thisBackupDir, relativePath);
+
+                Directory.CreateDirectory(targetDir);
+            }
+
+            foreach (var filePath in Directory.GetFiles(currentAppDir, "*.*", SearchOption.AllDirectories))
+            {
+                if (filePath.StartsWith(backupsDir, StringComparison.OrdinalIgnoreCase)) continue;
+
+                string relativePath = Path.GetRelativePath(currentAppDir, filePath);
+                string targetFile = Path.Combine(thisBackupDir, relativePath);
+
+                File.Copy(filePath, targetFile, true);
+            }
+
+            string batPath = Path.Combine(tempPath, "updater.bat");
+            string batContent = $@"
+            @echo off
+            echo Updating StreamBoard... Please wait.
+            :: Wait 3 seconds for the WPF application to completely close (release files)
+            timeout /t 3 /nobreak > NUL
+
+            :: Copy new files over old ones (/Y - replace without questions, /S - subfolders)
+            xcopy /s /y /e ""{extractPath}\*"" ""{currentAppDir}\""
+
+            :: Run the updated StreamBoard
+            cd /d ""{currentAppDir}""
+            start """" ""{exeName}""
+
+            :: Delete temporary folders and archive
+            rmdir /s /q ""{extractPath}""
+            del ""{zipPath}""
+
+            :: Script self-destruct
+            del ""%~f0""
+            ";
+            File.WriteAllText(batPath, batContent);
+
+            var processInfo = new ProcessStartInfo("cmd.exe", $"/c \"{batPath}\"")
+            {
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+            Process.Start(processInfo);
+
+            Application.Current.Dispatcher.Invoke(() => Application.Current.Shutdown());
         }
     }
 }
