@@ -8,20 +8,11 @@ using Wpf.Ui.Input;
 
 namespace StreamBoard.Features.Settings.ViewModels
 {
-    public class SettingsViewModel : ObservableObject
+    public class SettingsViewModel(SettingsStorage storage, StartupService startupService, PrivilegeService privilegeService, PageService pageService) : ObservableObject
     {
-        private readonly SettingsStorage _storage;
-        private readonly StartupService _startupService;
-        private readonly PrivilegeService _privilegeService;
-
-        public SettingsViewModel(SettingsStorage storage, StartupService startupService, PrivilegeService privilegeService, PageService pageService)
-        {
-            _storage = storage;
-            _startupService = startupService;
-            _privilegeService = privilegeService;
-
-            AvailableStartupPages = pageService.AllPages.Select(p => p.Name).ToList();
-        }
+        private readonly SettingsStorage _storage = storage;
+        private readonly StartupService _startupService = startupService;
+        private readonly PrivilegeService _privilegeService = privilegeService;
 
         public bool IsDarkTheme
         {
@@ -92,7 +83,7 @@ namespace StreamBoard.Features.Settings.ViewModels
 
         public ICommand RestartAsAdminCommand => new RelayCommand<object>(_ => _privilegeService.RestartAsAdmin());
 
-        public List<string> AvailableStartupPages { get; }
+        public List<string> AvailableStartupPages { get; } = pageService.AllPages.Select(p => p.Name).ToList();
 
         public string StartupPage
         {
@@ -101,6 +92,20 @@ namespace StreamBoard.Features.Settings.ViewModels
             {
                 if (_storage.Current.StartupPage == value) return;
                 _storage.Current.StartupPage = value;
+                _storage.Save();
+                OnPropertyChanged();
+            }
+        }
+
+        public List<string> AvailableUpdateChannels { get; } = ["Stable releases", "Beta releases"];
+
+        public string UpdateChannel
+        {
+            get => _storage.Current.UpdateChannel;
+            set
+            {
+                if (_storage.Current.UpdateChannel == value) return;
+                _storage.Current.UpdateChannel = value;
                 _storage.Save();
                 OnPropertyChanged();
             }
