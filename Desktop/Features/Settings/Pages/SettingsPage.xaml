@@ -1,55 +1,56 @@
-﻿<Page x:Class="StreamBoard.Features.Settings.Pages.SettingsPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-      xmlns:local="clr-namespace:StreamBoard.Features.Settings.Pages"
-      xmlns:cards="clr-namespace:StreamBoard.Components.Cards"
-      xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
-      xmlns:components="clr-namespace:StreamBoard.Features.Settings.Components"
-      Title="SettingsPage">
+﻿<Page
+    x:Class="StreamBoard.Features.Settings.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cards="clr-namespace:StreamBoard.Components.Cards"
+    xmlns:components="clr-namespace:StreamBoard.Features.Settings.Components"
+    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+    xmlns:local="clr-namespace:StreamBoard.Features.Settings.Pages"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="SettingsPage">
 
     <StackPanel Margin="16">
         <StackPanel.Resources>
             <Style TargetType="cards:CardControl">
-                <Setter Property="Margin" Value="0,0,0,12"/>
+                <Setter Property="Margin" Value="0,0,0,12" />
             </Style>
         </StackPanel.Resources>
 
         <controls:PageTitle Text="Settings" />
 
-        <cards:CardControl Title="Startup page"
-                           Description="Choose which page to open when the app starts">
+        <controls:SectionHeader Text="General" />
+
+        <cards:CardControl Title="Startup page" Description="Choose which page to open when the app starts">
             <cards:CardControl.ActionContent>
-                <ComboBox ItemsSource="{Binding AvailableStartupPages}"
-                          SelectedItem="{Binding StartupPage, Mode=TwoWay}"
-                          Width="150" 
-                          VerticalAlignment="Center"/>
+                <ComboBox
+                    Width="150"
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding AvailableStartupPages}"
+                    SelectedItem="{Binding StartupPage, Mode=TwoWay}" />
             </cards:CardControl.ActionContent>
         </cards:CardControl>
-        
-        <cards:CardControl Title="Minimize to Tray"
-                           Description="Hide to system tray when minimized">
+
+        <cards:CardControl Title="Minimize to Tray" Description="Hide to system tray when minimized">
             <cards:CardControl.ActionContent>
                 <controls:LabeledToggle IsChecked="{Binding MinimizeToTray, Mode=TwoWay}" />
             </cards:CardControl.ActionContent>
         </cards:CardControl>
 
-        <cards:CardControl Title="Start minimized"
-                           Description="Launch the app hidden in the background on startup">
+        <cards:CardControl Title="Start minimized" Description="Launch the app hidden in the background on startup">
             <cards:CardControl.ActionContent>
                 <controls:LabeledToggle IsChecked="{Binding StartMinimized, Mode=TwoWay}" />
             </cards:CardControl.ActionContent>
         </cards:CardControl>
 
-        <cards:CardControl Title="Startup with Windows"
-                           Description="Launch StreamBoard automatically when Windows starts up">
+        <controls:SectionHeader Text="System" />
+
+        <cards:CardControl Title="Startup with Windows" Description="Launch StreamBoard automatically when Windows starts up">
             <cards:CardControl.ActionContent>
                 <controls:LabeledToggle IsChecked="{Binding StartupWithWindows, Mode=TwoWay}" />
             </cards:CardControl.ActionContent>
         </cards:CardControl>
 
-        <cards:CardControl Title="Run as an administrator"
-                           Description="Grant permission to intercept and block input from specific keyboards">
+        <cards:CardControl Title="Run as an administrator" Description="Grant permission to intercept and block input from specific keyboards">
             <cards:CardControl.ActionContent>
                 <controls:LabeledToggle IsChecked="{Binding RunAsAdmin, Mode=TwoWay}" />
             </cards:CardControl.ActionContent>
@@ -57,12 +58,39 @@
 
         <components:PrivilegeStatusInfo />
 
-        <cards:CardControl Title="Theme"
-                           Description="Switch between light and dark appearance">
+        <controls:SectionHeader Text="Appearance" />
+
+        <cards:CardControl Title="Theme" Description="Switch between light and dark appearance">
             <cards:CardControl.ActionContent>
-                <controls:LabeledToggle ToggleOffText="Light" 
-                                        ToggleOnText="Dark"
-                                        IsChecked="{Binding IsDarkTheme, Mode=TwoWay}" />
+                <controls:LabeledToggle
+                    IsChecked="{Binding IsDarkTheme, Mode=TwoWay}"
+                    ToggleOffText="Light"
+                    ToggleOnText="Dark" />
+            </cards:CardControl.ActionContent>
+        </cards:CardControl>
+
+        <controls:SectionHeader Text="Updates" />
+
+        <cards:CardControl Title="Update channel" Description="Select which application updates you would like to receive">
+            <cards:CardControl.ActionContent>
+                <ComboBox
+                    Width="150"
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding AvailableUpdateChannels}"
+                    SelectedItem="{Binding UpdateChannel, Mode=TwoWay}" />
+            </cards:CardControl.ActionContent>
+        </cards:CardControl>
+
+        <cards:CardControl Title="Check for updates" Description="{Binding CurrentVersion}">
+            <cards:CardControl.ActionContent>
+                <ui:Button
+                    Appearance="Secondary"
+                    Command="{Binding CheckForUpdatesCommand}"
+                    Content="Check for update">
+                    <ui:Button.Icon>
+                        <controls:FluentIcon FontSize="12" IconType="UpdateRestore" />
+                    </ui:Button.Icon>
+                </ui:Button>
             </cards:CardControl.ActionContent>
         </cards:CardControl>
     </StackPanel>

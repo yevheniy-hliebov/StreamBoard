@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:streamboard/common/widgets/orientation_adaptive_scaffold.dart';
 import 'package:streamboard/core/constants/app_colors.dart';
 import 'package:streamboard/core/constants/spacing.dart';
@@ -9,8 +10,26 @@ import 'package:streamboard/features/home/providers/deck_provider.dart';
 import 'package:streamboard/features/settings/presentations/screens/settings_screen.dart';
 import 'package:streamboard/features/settings/providers/settings_provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  
+  @override
+  void initState() {
+    super.initState();
+    WakelockPlus.enable();
+  }
+
+  @override
+  void dispose() {
+    WakelockPlus.disable();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

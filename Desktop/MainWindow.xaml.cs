@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using StreamBoard.Features.Integrations.Common.ViewModels;
 using StreamBoard.Features.Settings.Services;
+using StreamBoard.Features.Updater.Models;
+using StreamBoard.Features.Updater.Services;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -13,6 +15,10 @@ namespace StreamBoard
         private readonly SettingsStorage _settings;
         private readonly IntegrationsViewModel _integrationsViewModel;
 
+        public AppInfoModel AppInfo { get; }
+
+        public string AppVersion => $"(v{AppInfo.CurrentVersion})";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -22,6 +28,10 @@ namespace StreamBoard
             _integrationsViewModel = App.ServiceProvider.GetRequiredService<IntegrationsViewModel>();
 
             _settings = App.ServiceProvider.GetRequiredService<SettingsStorage>();
+
+            var appInfoService = App.ServiceProvider.GetRequiredService<AppInfoService>();
+
+            AppInfo = appInfoService.AppInfo;
 
             Loaded += MainWindow_Loaded;
             StateChanged += MainWindow_StateChanged;

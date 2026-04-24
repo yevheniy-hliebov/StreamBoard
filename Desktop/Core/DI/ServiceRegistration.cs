@@ -16,6 +16,8 @@ using StreamBoard.Features.Servers.Services;
 using StreamBoard.Features.Servers.ViewModels;
 using StreamBoard.Features.Settings.Services;
 using StreamBoard.Features.Settings.ViewModels;
+using StreamBoard.Features.Updater.Services;
+using StreamBoard.Features.Updater.ViewModels;
 
 namespace StreamBoard.Core.DI
 {
@@ -70,12 +72,16 @@ namespace StreamBoard.Core.DI
                 return new HttpServer(storage.Current.Http, httpRouter);
             });
 
+            services.AddSingleton<AppInfoService>();
+            services.AddSingleton<UpdateService>();
+
             services.AddTransient<GridDeckViewModel>();
             services.AddSingleton<IntegrationsViewModel>();
             services.AddTransient<ObsSettingsViewModel>();
             services.AddSingleton<TwitchSettingsViewModel>();
             services.AddSingleton<HttpServerViewModel>();
             services.AddTransient<SettingsViewModel>();
+            services.AddTransient<UpdaterViewModel>();
         }
     }
 }

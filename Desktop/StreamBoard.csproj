@@ -9,6 +9,13 @@
 		<AssemblyName>StreamBoard</AssemblyName>
 		<RootNamespace>StreamBoard</RootNamespace>
 		<ApplicationIcon>Assets\Images\logo.ico</ApplicationIcon>
+
+		<Version>0.1.0-beta.1</Version>
+		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+
+		<RuntimeIdentifier>win-x86</RuntimeIdentifier>
+		<SelfContained>true</SelfContained>
+		<PublishSingleFile>true</PublishSingleFile>
 	</PropertyGroup>
 
 	<!-- Assets/Images -->
@@ -49,6 +56,7 @@
 		<PackageReference Include="WPF-UI" Version="4.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.5" />
 		<PackageReference Include="obs-websocket-dotnet" Version="5.0.1" />
+		<PackageReference Include="NuGet.Versioning" Version="7.3.1" />
 	</ItemGroup>
 
 	<!-- Custom Library -->
