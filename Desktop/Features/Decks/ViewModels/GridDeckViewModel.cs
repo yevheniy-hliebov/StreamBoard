@@ -35,6 +35,7 @@ namespace StreamBoard.Features.Decks.ViewModels
             Pages.PropertyChanged += OnPagesPropertyChanged;
             Canvas.CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
             Canvas.ButtonAppearanceChanged += OnButtonAppearanceChanged;
+            Canvas.ButtonsSwapped += OnButtonsSwapped;
         }
 
         private void OnCanvasPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -108,6 +109,16 @@ namespace StreamBoard.Features.Decks.ViewModels
                 }
                 catch (OperationCanceledException) { }
             }, token);
+        }
+
+        private void OnButtonsSwapped(int indexA, int indexB)
+        {
+            _ = _wsManager.BroadcastAsync(WebsocketMessageType.ButtonsSwapped, new
+            {
+                deckType = _deckType,
+                index_a = indexA,
+                index_b = indexB
+            });
         }
     }
 }

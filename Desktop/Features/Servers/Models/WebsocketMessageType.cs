@@ -4,6 +4,7 @@
     {
         PageChanged,
         GridLayoutChanged,
-        ButtonAppearanceChanged
+        ButtonAppearanceChanged,
+        ButtonsSwapped
     }
 }

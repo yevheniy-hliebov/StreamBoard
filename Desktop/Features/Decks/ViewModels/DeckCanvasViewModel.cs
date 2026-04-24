@@ -185,6 +185,8 @@ namespace StreamBoard.Features.Decks.ViewModels
             _storage.Save();
         }
 
+        public event Action<int, int>? ButtonsSwapped;
+
         private void SwapButtons(DeckButtonSlot source, DeckButtonSlot target)
         {
             if (source == null || target == null || source == target) return;
@@ -207,6 +209,8 @@ namespace StreamBoard.Features.Decks.ViewModels
                     map.Remove(target.Index.ToString());
 
                 _storage.Save();
+
+                ButtonsSwapped?.Invoke(source.Index, target.Index);
             }
         }
     }
