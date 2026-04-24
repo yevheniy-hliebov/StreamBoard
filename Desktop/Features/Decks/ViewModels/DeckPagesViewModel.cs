@@ -2,15 +2,17 @@
 using StreamBoard.Core;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
+using StreamBoard.Features.Servers.Models;
+using StreamBoard.Features.Servers.Services;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 
 namespace StreamBoard.Features.Decks.ViewModels
 {
-    public partial class DeckPagesViewModel : ObservableObject, IDropTarget
+    public partial class DeckPagesViewModel<TCanvasConfig> : ObservableObject, IDropTarget where TCanvasConfig : new()
     {
-        private readonly GridDeckStorage _storage;
+        private readonly DeckStorage<TCanvasConfig> _storage;
         private readonly DeckPagesConfig _config;
 
         public ObservableCollection<DeckPageInfo> List => _config.List;
@@ -42,7 +44,7 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
         }
 
-        public DeckPagesViewModel(GridDeckStorage storage)
+        public DeckPagesViewModel(DeckStorage<TCanvasConfig> storage)
         {
             _storage = storage;
             _config = storage.CurrentProfile.Pages;
