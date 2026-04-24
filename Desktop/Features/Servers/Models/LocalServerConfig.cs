@@ -2,7 +2,7 @@
 
 namespace StreamBoard.Features.Servers.Models
 {
-    public class HttpServerConfig
+    public class LocalServerConfig
     {
         [JsonPropertyName("address")]
         public string Address { get; set; } = "localhost";

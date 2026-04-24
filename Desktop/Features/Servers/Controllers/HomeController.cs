@@ -5,14 +5,9 @@ using System.Text;
 
 namespace StreamBoard.Features.Servers.Controllers
 {
-    public class HomeController : IHttpController
+    public class HomeController(LocalServerConfig config) : IHttpController
     {
-        private readonly HttpServerConfig _config;
-
-        public HomeController(HttpServerConfig config)
-        {
-            _config = config;
-        }
+        private readonly LocalServerConfig _config = config;
 
         public string RoutePrefix => "/";
 

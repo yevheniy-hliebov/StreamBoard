@@ -2,13 +2,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Debug (StreamBoard)",
+            "name": ".NET Core Debug (StreamBoard x86)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/net10.0-windows/StreamBoard.dll",
+            // 1. Вказуємо шлях у папку win-x86 і обов'язково файл .EXE
+            "program": "${workspaceFolder}/bin/Debug/net10.0-windows/win-x86/StreamBoard.exe",
             "args": [],
-            "cwd": "${workspaceFolder}",
+            // 2. Робоча папка теж має бути win-x86
+            "cwd": "${workspaceFolder}/bin/Debug/net10.0-windows/win-x86",
             "console": "internalConsole",
             "stopAtEntry": false
         }

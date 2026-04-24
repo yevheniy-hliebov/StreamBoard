@@ -5,9 +5,9 @@ using System.Text;
 
 namespace StreamBoard.Features.Servers.Services
 {
-    public class HttpServer(HttpServerConfig config, HttpRouter router)
+    public class LocalServer(LocalServerConfig config, HttpRouter router)
     {
-        private readonly HttpServerConfig _config = config;
+        private readonly LocalServerConfig _config = config;
         private readonly HttpRouter _router = router;
         private readonly Lock _statusLock = new();
 
