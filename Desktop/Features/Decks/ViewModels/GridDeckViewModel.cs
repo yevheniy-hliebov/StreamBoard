@@ -20,6 +20,8 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         private readonly string _deckType = "grid";
 
+        private CancellationTokenSource? _buttonDebounceCts;
+
         public GridDeckViewModel(GridDeckStorage storage, ActionRegistry registry, WebsocketManager wsManager)
         {
             Pages = new DeckPagesViewModel<GridCanvasConfig>(storage);
@@ -32,6 +34,7 @@ namespace StreamBoard.Features.Decks.ViewModels
             Canvas.PropertyChanged += OnCanvasPropertyChanged;
             Pages.PropertyChanged += OnPagesPropertyChanged;
             Canvas.CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
+            Canvas.ButtonAppearanceChanged += OnButtonAppearanceChanged;
         }
 
         private void OnCanvasPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -73,6 +76,38 @@ namespace StreamBoard.Features.Decks.ViewModels
                     grid_layout = newGrid,
                 });
             }
+        }
+
+        private void OnButtonAppearanceChanged(int index, DeckButtonConfig config)
+        {
+            _buttonDebounceCts?.Cancel();
+            _buttonDebounceCts = new CancellationTokenSource();
+            var token = _buttonDebounceCts.Token;
+
+            var name = config.Name;
+            var bgColor = config.BackgroundColor;
+            var imgPath = config.ImagePath;
+
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await Task.Delay(3000, token);
+
+                    if (!token.IsCancellationRequested)
+                    {
+                        await _wsManager.BroadcastAsync(WebsocketMessageType.ButtonAppearanceChanged, new
+                        {
+                            deckType = _deckType,
+                            index,
+                            name,
+                            background_color = bgColor,
+                            image_path = imgPath
+                        });
+                    }
+                }
+                catch (OperationCanceledException) { }
+            }, token);
         }
     }
 }

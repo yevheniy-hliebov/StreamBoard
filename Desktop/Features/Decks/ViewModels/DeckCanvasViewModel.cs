@@ -133,6 +133,8 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
         }
 
+        public event Action<int, DeckButtonConfig>? ButtonAppearanceChanged;
+
         private void OnConfigPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(DeckButtonConfig.Name)
@@ -140,6 +142,15 @@ namespace StreamBoard.Features.Decks.ViewModels
                 || e.PropertyName == nameof(DeckButtonConfig.BackgroundColor))
             {
                 _storage.Save();
+
+                if (sender is DeckButtonConfig config)
+                {
+                    var slot = Buttons.FirstOrDefault(b => b.Config == config);
+                    if (slot != null)
+                    {
+                        ButtonAppearanceChanged?.Invoke(slot.Index, config);
+                    }
+                }
             }
         }
 
