@@ -18,6 +18,8 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         private readonly WebsocketManager _wsManager;
 
+        private readonly string _deckType = "grid";
+
         public GridDeckViewModel(GridDeckStorage storage, ActionRegistry registry, WebsocketManager wsManager)
         {
             Pages = new DeckPagesViewModel<GridCanvasConfig>(storage);
@@ -29,6 +31,7 @@ namespace StreamBoard.Features.Decks.ViewModels
 
             Canvas.PropertyChanged += OnCanvasPropertyChanged;
             Pages.PropertyChanged += OnPagesPropertyChanged;
+            Canvas.CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
         }
 
         private void OnCanvasPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -50,11 +53,25 @@ namespace StreamBoard.Features.Decks.ViewModels
                 {
                     _ = _wsManager.BroadcastAsync(WebsocketMessageType.PageChanged, new
                     {
-                        deckType = "grid",
+                        deckType = _deckType,
                         pageId = selectedPage.Id,
                         pageName = selectedPage.Name
                     });
                 }
+            }
+        }
+
+        private void OnCanvasConfigPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(GridCanvasConfig.SelectedGrid))
+            {
+                var newGrid = ((GridCanvasConfig)sender!).SelectedGrid;
+
+                _ = _wsManager.BroadcastAsync(WebsocketMessageType.GridLayoutChanged, new
+                {
+                    deckType = _deckType,
+                    grid_layout = newGrid,
+                });
             }
         }
     }

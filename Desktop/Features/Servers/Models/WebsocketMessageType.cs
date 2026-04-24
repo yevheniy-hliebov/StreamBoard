@@ -3,6 +3,7 @@
     public enum WebsocketMessageType
     {
         PageChanged,
+        GridLayoutChanged,
         ButtonAppearanceChanged
     }
 }
