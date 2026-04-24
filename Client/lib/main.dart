@@ -6,6 +6,7 @@ import 'package:streamboard/core/theme/app_theme.dart';
 import 'package:streamboard/features/home/presentaions/screens/home_screen.dart';
 import 'package:streamboard/features/home/providers/deck_provider.dart';
 import 'package:streamboard/features/home/services/grid_service.dart';
+import 'package:streamboard/features/home/services/websocket_service.dart';
 import 'package:streamboard/features/settings/providers/settings_provider.dart';
 
 void main() async {
@@ -19,17 +20,40 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => SettingsProvider(prefs)),
 
+        // Надаємо GridService
         ProxyProvider<SettingsProvider, GridService>(
           update: (context, settings, previous) {
             return GridService(baseUrl: settings.baseUrl);
           },
         ),
 
-        ChangeNotifierProxyProvider<GridService, DeckProvider>(
-          create: (context) => DeckProvider(context.read<GridService>()),
-          update: (context, service, previous) {
-            if (previous == null) return DeckProvider(service);
-            previous.updateService(service);
+        ProxyProvider<SettingsProvider, WebSocketService>(
+          create: (_) => WebSocketService(),
+          update: (context, settings, previous) {
+            final ws = previous ?? WebSocketService();
+
+            if (settings.isConfigured) {
+              ws.connect(settings.baseUrl);
+            } else {
+              ws.disconnect();
+            }
+            return ws;
+          },
+          dispose: (context, ws) => ws.dispose(),
+        ),
+
+        ChangeNotifierProxyProvider2<
+          GridService,
+          WebSocketService,
+          DeckProvider
+        >(
+          create: (context) => DeckProvider(
+            context.read<GridService>(),
+            context.read<WebSocketService>(),
+          ),
+          update: (context, gridService, wsService, previous) {
+            if (previous == null) return DeckProvider(gridService, wsService);
+            previous.updateServices(gridService, wsService);
             return previous;
           },
         ),
