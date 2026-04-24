@@ -14,6 +14,6 @@ namespace StreamBoard.Features.Servers.Models
         public bool AutoStart { get; set; } = false;
 
         [JsonIgnore]
-        public string Prefix => $"http://{Address}:{Port}/";
+        public string HttpPrefix => $"http://{Address}:{Port}/";
     }
 }

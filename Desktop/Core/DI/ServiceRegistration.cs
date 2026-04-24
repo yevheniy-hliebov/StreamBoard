@@ -61,6 +61,7 @@ namespace StreamBoard.Core.DI
             });
 
 
+            services.AddSingleton<WebsocketManager>();
             services.AddSingleton<LocalServer>(sp =>
             {
                 var storage = sp.GetRequiredService<ServerConfigsStorage>();
@@ -68,8 +69,9 @@ namespace StreamBoard.Core.DI
                 var gridDeckStorage = sp.GetRequiredService<GridDeckStorage>();
                 var gridDeckController = new GridDeckController(gridDeckStorage);
                 var httpRouter = new HttpRouter([homeController, gridDeckController]);
+                var wsManager = sp.GetRequiredService<WebsocketManager>();
 
-                return new LocalServer(storage.Current.Local, httpRouter);
+                return new LocalServer(storage.Current.Local, httpRouter, wsManager);
             });
 
             services.AddSingleton<AppInfoService>();
