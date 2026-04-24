@@ -33,6 +33,7 @@ namespace StreamBoard.Features.Decks.ViewModels
 
             Canvas.PropertyChanged += OnCanvasPropertyChanged;
             Pages.PropertyChanged += OnPagesPropertyChanged;
+            Pages.PageRenamed += OnPageRenamed;
             Canvas.CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
             Canvas.ButtonAppearanceChanged += OnButtonAppearanceChanged;
             Canvas.ButtonsSwapped += OnButtonsSwapped;
@@ -63,6 +64,16 @@ namespace StreamBoard.Features.Decks.ViewModels
                     });
                 }
             }
+        }
+
+        private void OnPageRenamed(string pageId, string newName)
+        {
+            _ = _wsManager.BroadcastAsync(WebsocketMessageType.PageRenamed, new
+            {
+                deckType = _deckType,
+                pageId,
+                pageName = newName
+            });
         }
 
         private void OnCanvasConfigPropertyChanged(object? sender, PropertyChangedEventArgs e)

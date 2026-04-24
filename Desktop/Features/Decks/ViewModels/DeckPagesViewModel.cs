@@ -80,10 +80,17 @@ namespace StreamBoard.Features.Decks.ViewModels
             _storage.Save();
         }
 
+        public event Action<string, string>? PageRenamed;
+
         public void OnEndRename()
         {
             IsRenameMode = false;
             _storage.Save();
+
+            if (SelectedPage != null)
+            {
+                PageRenamed?.Invoke(SelectedPage.Id, SelectedPage.Name);
+            }
         }
 
         // --- Drag & Drop Implementation ---
