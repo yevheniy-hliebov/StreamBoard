@@ -133,6 +133,8 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
         }
 
+        public event Action<int, DeckButtonConfig>? ButtonAppearanceChanged;
+
         private void OnConfigPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(DeckButtonConfig.Name)
@@ -140,6 +142,15 @@ namespace StreamBoard.Features.Decks.ViewModels
                 || e.PropertyName == nameof(DeckButtonConfig.BackgroundColor))
             {
                 _storage.Save();
+
+                if (sender is DeckButtonConfig config)
+                {
+                    var slot = Buttons.FirstOrDefault(b => b.Config == config);
+                    if (slot != null)
+                    {
+                        ButtonAppearanceChanged?.Invoke(slot.Index, config);
+                    }
+                }
             }
         }
 
@@ -174,6 +185,8 @@ namespace StreamBoard.Features.Decks.ViewModels
             _storage.Save();
         }
 
+        public event Action<int, int>? ButtonsSwapped;
+
         private void SwapButtons(DeckButtonSlot source, DeckButtonSlot target)
         {
             if (source == null || target == null || source == target) return;
@@ -196,6 +209,8 @@ namespace StreamBoard.Features.Decks.ViewModels
                     map.Remove(target.Index.ToString());
 
                 _storage.Save();
+
+                ButtonsSwapped?.Invoke(source.Index, target.Index);
             }
         }
     }

@@ -18,7 +18,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  
   @override
   void initState() {
     super.initState();
@@ -36,7 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final isConfigured = context.watch<SettingsProvider>().isConfigured;
 
     return OrientationAdaptiveScaffold(
-      title: 'StreamBoard',
+      title: context.watch<DeckProvider>().currentPageName.isEmpty
+          ? 'StreamBoard'
+          : context.watch<DeckProvider>().currentPageName,
       leading: IconButton(
         icon: Icon(Icons.refresh, color: AppColors.of(context).onBackground),
         onPressed: isConfigured
