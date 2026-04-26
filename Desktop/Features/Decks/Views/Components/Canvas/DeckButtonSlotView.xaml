@@ -1,9 +1,10 @@
 ﻿<UserControl
     x:Class="StreamBoard.Features.Decks.Views.Components.Canvas.DeckButtonSlotView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:StreamBoard.Components.Controls">
 
-    <Border
+    <controls:ClippingBorder
         Width="45"
         Height="45"
         Background="{Binding ButtonBackground, RelativeSource={RelativeSource AncestorType=UserControl}}"
@@ -31,14 +32,14 @@
             </Image.Style>
         </Image>
 
-        <Border.InputBindings>
+        <controls:ClippingBorder.InputBindings>
             <MouseBinding
                 Command="{Binding Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
                 CommandParameter="{Binding CommandParameter, RelativeSource={RelativeSource AncestorType=UserControl}}"
                 MouseAction="LeftClick" />
-        </Border.InputBindings>
+        </controls:ClippingBorder.InputBindings>
 
-        <Border.Style>
+        <controls:ClippingBorder.Style>
             <Style TargetType="Border">
                 <Setter Property="BorderBrush" Value="#555" />
                 <Setter Property="ToolTip" Value="{Binding ButtonName, RelativeSource={RelativeSource AncestorType=UserControl}}" />
@@ -54,6 +55,6 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-        </Border.Style>
-    </Border>
+        </controls:ClippingBorder.Style>
+    </controls:ClippingBorder>
 </UserControl>
