@@ -56,6 +56,13 @@ namespace StreamBoard.Features.Decks.ViewModels
                 if (SelectedPage != null) IsRenameMode = true;
             }, _ => SelectedPage != null);
             EndRenameCommand = new RelayCommand(_ => OnEndRename());
+
+            if (typeof(TCanvasConfig) == typeof(GridCanvasConfig))
+            {
+                GridDeckNavigationBus.NextPageRequested += OnNextPage;
+                GridDeckNavigationBus.PreviousPageRequested += OnPreviousPage;
+                GridDeckNavigationBus.SwitchPageRequested += OnSwitchPage;
+            }
         }
 
         private void OnAddPage()
@@ -117,6 +124,45 @@ namespace StreamBoard.Features.Decks.ViewModels
                     _storage.Save();
                 }
             }
+        }
+
+        // DeckNabigationBus
+        private void OnNextPage()
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (List.Count <= 1) return;
+
+                int currentIndex = SelectedPage != null ? List.IndexOf(SelectedPage) : -1;
+                int nextIndex = (currentIndex + 1) % List.Count;
+
+                SelectedPage = List[nextIndex];
+            });
+        }
+
+        private void OnPreviousPage()
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (List.Count <= 1) return;
+
+                int currentIndex = SelectedPage != null ? List.IndexOf(SelectedPage) : -1;
+                int prevIndex = (currentIndex - 1 + List.Count) % List.Count;
+
+                SelectedPage = List[prevIndex];
+            });
+        }
+
+        private void OnSwitchPage(string pageId)
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                var targetPage = List.FirstOrDefault(p => p.Id == pageId);
+                if (targetPage != null)
+                {
+                    SelectedPage = targetPage;
+                }
+            });
         }
     }
 }
