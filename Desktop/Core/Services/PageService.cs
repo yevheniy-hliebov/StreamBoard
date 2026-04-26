@@ -15,7 +15,7 @@ namespace StreamBoard.Core.Services
             new("Grid Deck", typeof(GridDeckPage)),
             new("OBS Studio", typeof(ObsSettingsPage)),
             new("Twitch", typeof(TwitchSettingsPage)),
-            new("Local Server", typeof(LocalServerPage)),
+            new("HTTP Server", typeof(HttpServerPage)),
             new("Settings", typeof(SettingsPage))
         ];
 

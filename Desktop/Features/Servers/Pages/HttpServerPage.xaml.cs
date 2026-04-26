@@ -4,13 +4,13 @@ using System.Windows.Controls;
 
 namespace StreamBoard.Features.Servers.Pages
 {
-    public partial class LocalServerPage : Page
+    public partial class HttpServerPage : Page
     {
-        public LocalServerPage()
+        public HttpServerPage()
         {
             InitializeComponent();
 
-            this.DataContext = App.ServiceProvider.GetRequiredService<LocalServerViewModel>();
+            this.DataContext = App.ServiceProvider.GetRequiredService<HttpServerViewModel>();
         }
     }
 }

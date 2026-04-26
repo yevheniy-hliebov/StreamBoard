@@ -2,7 +2,7 @@
 
 namespace StreamBoard.Features.Servers.Models
 {
-    public class LocalServerConfig
+    public class HttpServerConfig
     {
         [JsonPropertyName("address")]
         public string Address { get; set; } = "localhost";
@@ -14,6 +14,6 @@ namespace StreamBoard.Features.Servers.Models
         public bool AutoStart { get; set; } = false;
 
         [JsonIgnore]
-        public string HttpPrefix => $"http://{Address}:{Port}/";
+        public string Prefix => $"http://{Address}:{Port}/";
     }
 }

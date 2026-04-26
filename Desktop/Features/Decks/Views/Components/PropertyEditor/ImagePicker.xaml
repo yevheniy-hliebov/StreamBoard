@@ -39,7 +39,7 @@
             </controls:FluentIcon.Style>
         </controls:FluentIcon>
 
-        <controls:ClippingBorder
+        <Border
             Margin="3"
             ClipToBounds="True"
             CornerRadius="6">
@@ -58,7 +58,7 @@
                     </Style>
                 </Image.Style>
             </Image>
-        </controls:ClippingBorder>
+        </Border>
 
     </Grid>
 </UserControl>

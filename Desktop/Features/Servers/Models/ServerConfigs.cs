@@ -4,8 +4,8 @@ namespace StreamBoard.Features.Servers.Models
 {
     public class ServerConfigs
     {
-        [JsonPropertyName("local_server")]
-        public LocalServerConfig Local { get; set; } = new();
+        [JsonPropertyName("http")]
+        public HttpServerConfig Http { get; set; } = new();
 
         // There will be other types of servers
     }

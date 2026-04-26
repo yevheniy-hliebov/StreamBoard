@@ -9,14 +9,14 @@ using Wpf.Ui.Input;
 
 namespace StreamBoard.Features.Servers.ViewModels
 {
-    public class LocalServerViewModel : ObservableObject
+    public class HttpServerViewModel : ObservableObject
     {
         private readonly ServerConfigsStorage _storage;
-        private readonly LocalServer _server;
+        private readonly HttpServer _server;
 
-        public ObservableCollection<HttpRequestLog> HttpRequestLogs { get; } = new();
+        public ObservableCollection<HttpRequestLog> RequestLogs { get; } = new();
 
-        public LocalServerViewModel(ServerConfigsStorage storage, LocalServer server)
+        public HttpServerViewModel(ServerConfigsStorage storage, HttpServer server)
         {
             _storage = storage;
             _server = server;
@@ -38,9 +38,9 @@ namespace StreamBoard.Features.Servers.ViewModels
         {
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
-                HttpRequestLogs.Insert(0, log);
+                RequestLogs.Insert(0, log);
 
-                if (HttpRequestLogs.Count > 50) HttpRequestLogs.RemoveAt(50);
+                if (RequestLogs.Count > 50) RequestLogs.RemoveAt(50);
             });
         }
 
@@ -119,11 +119,11 @@ namespace StreamBoard.Features.Servers.ViewModels
         // Auto Start Toggle
         public bool AutoStart
         {
-            get => _storage.Current.Local.AutoStart;
+            get => _storage.Current.Http.AutoStart;
             set
             {
-                if (_storage.Current.Local.AutoStart == value) return;
-                _storage.Current.Local.AutoStart = value;
+                if (_storage.Current.Http.AutoStart == value) return;
+                _storage.Current.Http.AutoStart = value;
                 _storage.Save();
                 OnPropertyChanged();
             }
@@ -132,12 +132,12 @@ namespace StreamBoard.Features.Servers.ViewModels
         // Address
         public string Address
         {
-            get => _storage.Current.Local.Address;
+            get => _storage.Current.Http.Address;
             set
             {
-                if (_storage.Current.Local.Address != value)
+                if (_storage.Current.Http.Address != value)
                 {
-                    _storage.Current.Local.Address = value;
+                    _storage.Current.Http.Address = value;
                     _storage.Save();
                     OnPropertyChanged();
                 }
@@ -147,12 +147,12 @@ namespace StreamBoard.Features.Servers.ViewModels
         // Port
         public int Port
         {
-            get => _storage.Current.Local.Port;
+            get => _storage.Current.Http.Port;
             set
             {
-                if (_storage.Current.Local.Port != value)
+                if (_storage.Current.Http.Port != value)
                 {
-                    _storage.Current.Local.Port = value;
+                    _storage.Current.Http.Port = value;
                     _storage.Save();
                     OnPropertyChanged();
                 }

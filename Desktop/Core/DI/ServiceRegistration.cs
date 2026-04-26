@@ -61,17 +61,15 @@ namespace StreamBoard.Core.DI
             });
 
 
-            services.AddSingleton<WebsocketManager>();
-            services.AddSingleton<LocalServer>(sp =>
+            services.AddSingleton<HttpServer>(sp =>
             {
                 var storage = sp.GetRequiredService<ServerConfigsStorage>();
-                var homeController = new HomeController(storage.Current.Local);
+                var homeController = new HomeController(storage.Current.Http);
                 var gridDeckStorage = sp.GetRequiredService<GridDeckStorage>();
                 var gridDeckController = new GridDeckController(gridDeckStorage);
                 var httpRouter = new HttpRouter([homeController, gridDeckController]);
-                var wsManager = sp.GetRequiredService<WebsocketManager>();
 
-                return new LocalServer(storage.Current.Local, httpRouter, wsManager);
+                return new HttpServer(storage.Current.Http, httpRouter);
             });
 
             services.AddSingleton<AppInfoService>();
@@ -81,7 +79,7 @@ namespace StreamBoard.Core.DI
             services.AddSingleton<IntegrationsViewModel>();
             services.AddTransient<ObsSettingsViewModel>();
             services.AddSingleton<TwitchSettingsViewModel>();
-            services.AddSingleton<LocalServerViewModel>();
+            services.AddSingleton<HttpServerViewModel>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<UpdaterViewModel>();
         }

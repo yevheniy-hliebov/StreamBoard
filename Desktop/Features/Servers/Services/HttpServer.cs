@@ -5,11 +5,10 @@ using System.Text;
 
 namespace StreamBoard.Features.Servers.Services
 {
-    public class LocalServer(LocalServerConfig config, HttpRouter router, WebsocketManager? wsManager = null)
+    public class HttpServer(HttpServerConfig config, HttpRouter router)
     {
-        private readonly LocalServerConfig _config = config;
+        private readonly HttpServerConfig _config = config;
         private readonly HttpRouter _router = router;
-        private readonly WebsocketManager? _wsManager = wsManager;
         private readonly Lock _statusLock = new();
 
         private HttpListener? _listener;
@@ -46,7 +45,7 @@ namespace StreamBoard.Features.Servers.Services
             try
             {
                 _listener = new HttpListener();
-                _listener.Prefixes.Add(_config.HttpPrefix);
+                _listener.Prefixes.Add(_config.Prefix);
                 _cts = new CancellationTokenSource();
 
                 _listener.Start();
@@ -111,16 +110,6 @@ namespace StreamBoard.Features.Servers.Services
         {
             try
             {
-                if (_wsManager != null && ctx.Request.IsWebSocketRequest)
-                {
-                    if (ctx.Request.Url?.AbsolutePath.Equals("/ws", StringComparison.OrdinalIgnoreCase) == true)
-                    {
-                        var wsContext = await ctx.AcceptWebSocketAsync(subProtocol: null);
-                        _wsManager?.AddClient(wsContext.WebSocket);
-                        return;
-                    }
-                }
-
                 ctx.Response.Headers.Add("Access-Control-Allow-Origin", "*");
                 ctx.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
                 ctx.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Accept, Host");
@@ -135,16 +124,12 @@ namespace StreamBoard.Features.Servers.Services
             }
             catch
             {
-                if (!ctx.Request.IsWebSocketRequest)
-                    await WriteTextResponse(ctx, HttpStatusCode.InternalServerError, "Internal Server Error");
+                await WriteTextResponse(ctx, HttpStatusCode.InternalServerError, "Internal Server Error");
             }
             finally
             {
-                if (!ctx.Request.IsWebSocketRequest)
-                {
-                    RequestProcessed?.Invoke(new HttpRequestLog(ctx));
-                    ctx.Response.OutputStream.Close();
-                }
+                RequestProcessed?.Invoke(new HttpRequestLog(ctx));
+                ctx.Response.OutputStream.Close();
             }
         }
 
