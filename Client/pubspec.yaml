@@ -13,8 +13,7 @@ dependencies:
   provider: ^6.1.5+1
   http: ^1.6.0
   shared_preferences: ^2.5.4
-  wakelock_plus: 1.5.2
-  web_socket_channel: ^3.0.3
+  wakelock_plus: ^1.6.0
 
 dev_dependencies:
   flutter_test:

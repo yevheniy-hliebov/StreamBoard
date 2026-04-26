@@ -48,7 +48,7 @@ class DeckButton extends StatelessWidget {
   }
 
   Widget _buildImage() {
-    if (data == null || data!.imagePath.isEmpty) {
+    if (data == null || data!.keyCode.isEmpty) {
       return const SizedBox.shrink();
     }
 

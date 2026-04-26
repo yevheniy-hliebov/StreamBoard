@@ -17,7 +17,4 @@ namespace StreamBoard.Features.Actions.Library
 
     [ActionCategory("Twitch", IntegrationIconType.Twitch)]
     public abstract class TwitchBaseAction : BaseAction { }
-
-    [ActionCategory("Deck Navigation", FluentIconType.Go)]
-    public abstract class DeckNavigationBaseAction : BaseAction { }
 }

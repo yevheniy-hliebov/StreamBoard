@@ -39,10 +39,10 @@ namespace StreamBoard.Core.AppStartup
             var updater = serviceProvider.GetRequiredService<UpdaterViewModel>();
             _ = updater.CheckForUpdatesOnStartupAsync();
 
-            // LocalServer start
-            var LocalServer = serviceProvider.GetRequiredService<LocalServer>();
-            if (LocalServer != null && LocalServer.ShouldAutoStart && !LocalServer.IsRunning)
-                await LocalServer.Start();
+            // HttpServer start
+            var httpServer = serviceProvider.GetRequiredService<HttpServer>();
+            if (httpServer != null && httpServer.ShouldAutoStart && !httpServer.IsRunning)
+                await httpServer.Start();
 
             // OBS Connection
             var integrationStorage = serviceProvider.GetRequiredService<IntegrationConnectionStorage>();
@@ -56,8 +56,8 @@ namespace StreamBoard.Core.AppStartup
             var twitchAccountsGateway = serviceProvider.GetRequiredService<TwitchAccountsGateway>();
             var twitchController = new TwitchAuthController(twitchAccountsGateway);
             var httpRouter = new HttpRouter([twitchController]);
-            var serverConfig = new LocalServerConfig { Port = 13551 };
-            var systemServer = new LocalServer(serverConfig, httpRouter);
+            var serverConfig = new HttpServerConfig { Port = 13551 };
+            var systemServer = new HttpServer(serverConfig, httpRouter);
 
             await systemServer.Start();
 

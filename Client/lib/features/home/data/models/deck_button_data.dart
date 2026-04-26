@@ -24,18 +24,4 @@ class DeckButtonData {
       imagePath: json["image_path"] ?? '',
     );
   }
-
-  DeckButtonData copyWith({
-    String? keyCode,
-    String? name,
-    Color? backgroundColor,
-    String? imagePath,
-  }) {
-    return DeckButtonData(
-      keyCode: keyCode ?? this.keyCode, // ТЕПЕР ОНОВЛЮЄТЬСЯ
-      name: name ?? this.name,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      imagePath: imagePath ?? this.imagePath,
-    );
-  }
 }
