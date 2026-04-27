@@ -6,14 +6,7 @@ namespace StreamBoard.Components.Controls
 {
     public class ClippingBorder : Border
     {
-        private readonly RectangleGeometry _clip = new();
-        private object? _oldClip;
-
-        protected override void OnRender(DrawingContext dc)
-        {
-            ApplyChildClip();
-            base.OnRender(dc);
-        }
+        private RectangleGeometry? _clip;
 
         public override UIElement? Child
         {
@@ -22,12 +15,19 @@ namespace StreamBoard.Components.Controls
             {
                 if (base.Child != value)
                 {
-                    base.Child?.SetValue(UIElement.ClipProperty, _oldClip);
+                    base.Child?.Clip = null;
 
-                    _oldClip = value?.ReadLocalValue(UIElement.ClipProperty);
                     base.Child = value;
+
+                    ApplyChildClip();
                 }
             }
+        }
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+            ApplyChildClip();
         }
 
         private void ApplyChildClip()
@@ -35,13 +35,17 @@ namespace StreamBoard.Components.Controls
             if (Child is null)
                 return;
 
+            if (_clip == null)
+            {
+                _clip = new RectangleGeometry();
+                Child.Clip = _clip;
+            }
+
             double radius = Math.Max(0.0, CornerRadius.TopLeft - (BorderThickness.Left * 0.5));
 
-            _clip.Rect = new Rect(Child.RenderSize);
+            _clip.Rect = new Rect(new Point(0, 0), this.RenderSize);
             _clip.RadiusX = radius;
             _clip.RadiusY = radius;
-
-            Child.Clip = _clip;
         }
     }
 }
