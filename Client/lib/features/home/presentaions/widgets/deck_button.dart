@@ -9,7 +9,9 @@ class DeckButton extends StatelessWidget {
   final String keyCode;
   final DeckButtonData? data;
   final void Function(String keyCode)? onTap;
-  final Future<Uint8List?> Function(String keyCode)? getImage;
+
+  final Future<Uint8List?> Function(String keyCode, String? imagePath)?
+  getImage;
 
   const DeckButton({
     super.key,
@@ -36,8 +38,13 @@ class DeckButton extends StatelessWidget {
         child: Container(
           width: size.width,
           height: size.height,
+          clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: data?.backgroundColor,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          // Рамка малюється ПОВЕРХ картинки
+          foregroundDecoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: AppColors.of(context).outline, width: 1),
           ),
@@ -53,14 +60,18 @@ class DeckButton extends StatelessWidget {
     }
 
     return FutureBuilder<Uint8List?>(
-      future: getImage?.call(keyCode),
+      future: getImage?.call(keyCode, data!.imagePath),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == null) {
           return const SizedBox.shrink();
         }
 
-        final bytes = snapshot.data!;
-        return Image.memory(bytes, fit: BoxFit.cover);
+        return Image.memory(
+          snapshot.data!,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+        );
       },
     );
   }
