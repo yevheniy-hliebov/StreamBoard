@@ -77,13 +77,13 @@ namespace StreamBoard.Core.DI
             services.AddSingleton<AppInfoService>();
             services.AddSingleton<UpdateService>();
 
-            services.AddTransient<GridDeckViewModel>();
+            services.AddSingleton<GridDeckViewModel>();
             services.AddSingleton<IntegrationsViewModel>();
-            services.AddTransient<ObsSettingsViewModel>();
+            services.AddSingleton<ObsSettingsViewModel>();
             services.AddSingleton<TwitchSettingsViewModel>();
             services.AddSingleton<LocalServerViewModel>();
-            services.AddTransient<SettingsViewModel>();
-            services.AddTransient<UpdaterViewModel>();
+            services.AddSingleton<SettingsViewModel>();
+            services.AddSingleton<UpdaterViewModel>();
         }
     }
 }
