@@ -8,6 +8,8 @@ namespace StreamBoard.Core.Services
     {
         private readonly string _filePath;
 
+        private readonly Lock _fileLock = new();
+
         public T Current { get; private set; } = new();
 
         protected JsonFileStorage(string fileName) : this("data", fileName) { }
@@ -21,8 +23,20 @@ namespace StreamBoard.Core.Services
             Load();
         }
 
-        public void Load() => Current = JsonHelper.Load<T>(_filePath);
+        public void Load()
+        {
+            lock (_fileLock)
+            {
+                Current = JsonHelper.Load<T>(_filePath);
+            }
+        }
 
-        public void Save() => JsonHelper.Save(_filePath, Current);
+        public void Save()
+        {
+            lock (_fileLock)
+            {
+                JsonHelper.Save(_filePath, Current);
+            }
+        }
     }
 }
