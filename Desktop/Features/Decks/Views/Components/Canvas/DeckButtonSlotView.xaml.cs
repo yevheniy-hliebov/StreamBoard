@@ -76,6 +76,5 @@ namespace StreamBoard.Features.Decks.Views.Components.Canvas
 
         public static readonly DependencyProperty ButtonBackgroundProperty =
             DependencyProperty.Register(nameof(ButtonBackground), typeof(string), typeof(DeckButtonSlotView), new PropertyMetadata("#2B2B2B"));
-
     }
 }

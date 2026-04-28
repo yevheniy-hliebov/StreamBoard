@@ -8,6 +8,44 @@
     xmlns:models="clr-namespace:StreamBoard.Features.Decks.Models"
     x:Name="Root">
 
+    <UserControl.Resources>
+        <DataTemplate x:Key="EditorModeTemplate">
+            <dd:DropWrapper
+                Margin="0"
+                Padding="2"
+                DragOverBackground="Transparent"
+                DragOverBorderBrush="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                DropCommand="{Binding ReceiveDropCommand}">
+
+                <dd:DraggableWrapper Payload="{Binding}">
+                    <local:DeckButtonSlotView
+                        Margin="4"
+                        ButtonBackground="{Binding Config.BackgroundColor, FallbackValue=#2B2B2B}"
+                        ButtonIndex="{Binding Index}"
+                        ButtonName="{Binding Config.Name}"
+                        Command="{Binding DataContext.SelectButtonCommand, ElementName=Root}"
+                        CommandParameter="{Binding}"
+                        Cursor="Hand"
+                        ImagePath="{Binding Config.ImagePath}"
+                        IsSelected="{Binding IsSelected}" />
+                </dd:DraggableWrapper>
+
+            </dd:DropWrapper>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ClickModeTemplate">
+            <local:DeckButtonSlotView
+                Margin="6" ButtonBackground="{Binding Config.BackgroundColor, FallbackValue=#2B2B2B}"
+                ButtonIndex="{Binding Index}"
+                ButtonName="{Binding Config.Name}"
+                Command="{Binding DataContext.SelectButtonCommand, ElementName=Root}"
+                CommandParameter="{Binding}"
+                Cursor="Hand"
+                ImagePath="{Binding Config.ImagePath}"
+                IsSelected="{Binding IsSelected}" />
+        </DataTemplate>
+    </UserControl.Resources>
+
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -40,7 +78,6 @@
 
 
                 <ItemsControl ItemsSource="{Binding Buttons}">
-
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="{Binding CanvasConfig.SelectedGrid.Columns}" Rows="{Binding CanvasConfig.SelectedGrid.Rows}" />
@@ -49,28 +86,18 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <dd:DropWrapper
-                                Margin="0"
-                                Padding="2"
-                                DragOverBackground="Transparent"
-                                DragOverBorderBrush="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                DropCommand="{Binding ReceiveDropCommand}">
-
-                                <dd:DraggableWrapper Payload="{Binding}">
-
-                                    <local:DeckButtonSlotView
-                                        Margin="4"
-                                        ButtonBackground="{Binding Config.BackgroundColor, FallbackValue=#2B2B2B}"
-                                        ButtonIndex="{Binding Index}"
-                                        ButtonName="{Binding Config.Name}"
-                                        Command="{Binding DataContext.SelectButtonCommand, ElementName=Root}"
-                                        CommandParameter="{Binding}"
-                                        Cursor="Hand"
-                                        ImagePath="{Binding Config.ImagePath}"
-                                        IsSelected="{Binding IsSelected}" />
-
-                                </dd:DraggableWrapper>
-                            </dd:DropWrapper>
+                            <ContentControl Content="{Binding}">
+                                <ContentControl.Style>
+                                    <Style TargetType="ContentControl">
+                                        <Setter Property="ContentTemplate" Value="{StaticResource EditorModeTemplate}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DataContext.IsClickMode, ElementName=Root}" Value="True">
+                                                <Setter Property="ContentTemplate" Value="{StaticResource ClickModeTemplate}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ContentControl.Style>
+                            </ContentControl>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
 

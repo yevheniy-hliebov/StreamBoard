@@ -79,6 +79,7 @@ namespace StreamBoard.Features.Decks.ViewModels
 
                 if (!IsClickMode)
                 {
+                    if (SelectedButton == slot) return;
                     SelectedButton = slot;
                 }
                 else
@@ -153,6 +154,8 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         private void HandleDrop(object payload, DeckButtonSlot target)
         {
+            if (IsClickMode) return;
+
             if (payload is DeckButtonSlot sourceSlot)
             {
                 SwapButtons(sourceSlot, target);
