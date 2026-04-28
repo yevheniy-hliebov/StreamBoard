@@ -7,6 +7,7 @@
     xmlns:decks="clr-namespace:StreamBoard.Features.Decks.Views.Pages"
     xmlns:home="clr-namespace:StreamBoard.Features.Home.Pages"
     xmlns:ic="clr-namespace:StreamBoard.Features.Integrations.Common.Views.Components"
+    xmlns:icp="clr-namespace:StreamBoard.Features.Integrations.Common.Views.Pages"
     xmlns:local="clr-namespace:StreamBoard.Components.Navigation"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:obs="clr-namespace:StreamBoard.Features.Integrations.Obs.Views.Pages"
@@ -45,7 +46,7 @@
 
             <ui:NavigationViewItemSeparator />
 
-            <ui:NavigationViewItem Content="Integrations">
+            <ui:NavigationViewItem Content="Integrations" TargetPageType="{x:Type icp:IntegrationsPage}">
                 <ui:NavigationViewItem.Icon>
                     <controls:FluentIcon FontSize="16" IconType="Puzzle" />
                 </ui:NavigationViewItem.Icon>

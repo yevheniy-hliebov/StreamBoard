@@ -1,6 +1,7 @@
 using StreamBoard.Core.Models;
 using StreamBoard.Features.Decks.Views.Pages;
 using StreamBoard.Features.Home.Pages;
+using StreamBoard.Features.Integrations.Common.Views.Pages;
 using StreamBoard.Features.Integrations.Obs.Views.Pages;
 using StreamBoard.Features.Integrations.Twitch.Views.Pages;
 using StreamBoard.Features.Servers.Pages;
@@ -13,6 +14,7 @@ namespace StreamBoard.Core.Services
         public IReadOnlyList<PageInfo> AllPages { get; } = [
             new("Home", typeof(HomePage)),
             new("Grid Deck", typeof(GridDeckPage)),
+            new("Integrations", typeof(IntegrationsPage)),
             new("OBS Studio", typeof(ObsSettingsPage)),
             new("Twitch", typeof(TwitchSettingsPage)),
             new("Local Server", typeof(LocalServerPage)),
