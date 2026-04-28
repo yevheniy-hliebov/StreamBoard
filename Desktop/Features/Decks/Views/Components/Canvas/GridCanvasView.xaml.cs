@@ -15,9 +15,9 @@ namespace StreamBoard.Features.Decks.Views.Components.Canvas
 
             Loaded += OnLoaded;
 
-            Viewport.MouseLeftButtonDown += OnMouseDown;
+            Viewport.MouseDown += OnMouseDown;
             Viewport.MouseMove += OnMouseMove;
-            Viewport.MouseLeftButtonUp += OnMouseUp;
+            Viewport.MouseUp += OnMouseUp;
 
             DeckSurface.SizeChanged += (_, __) => CenterSurface();
         }
@@ -29,9 +29,13 @@ namespace StreamBoard.Features.Decks.Views.Components.Canvas
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            _isDragging = true;
-            _start = e.GetPosition(Viewport);
-            Viewport.CaptureMouse();
+            if (e.ChangedButton == MouseButton.Middle)
+            {
+                _isDragging = true;
+                _start = e.GetPosition(Viewport);
+                Viewport.CaptureMouse();
+                Viewport.Cursor = Cursors.SizeAll;
+            }
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
@@ -65,8 +69,12 @@ namespace StreamBoard.Features.Decks.Views.Components.Canvas
 
         private void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            _isDragging = false;
-            Viewport.ReleaseMouseCapture();
+            if (e.ChangedButton == MouseButton.Middle)
+            {
+                _isDragging = false;
+                Viewport.ReleaseMouseCapture();
+                Viewport.Cursor = Cursors.Arrow;
+            }
         }
 
         private void CenterSurface()
