@@ -12,7 +12,7 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="StreamBoard"
     Width="1252"
-    Height="550"
+    Height="800"
     ExtendsContentIntoTitleBar="True"
     WindowBackdropType="Mica"
     WindowStartupLocation="CenterScreen"
@@ -39,7 +39,7 @@
                         </integrations:ConnectionStateMenu.LayoutTransform>
                     </integrations:ConnectionStateMenu>
 
-                    <controls:AdminStatusIcon Foreground="{DynamicResource SystemFillColorSuccessBrush}"/>
+                    <controls:AdminStatusIcon />
                 </StackPanel>
             </titlebar:MainTitleBar.RightContent>
         </titlebar:MainTitleBar>

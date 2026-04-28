@@ -3,12 +3,14 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
-    Visibility="Collapsed">
-
+    Visibility="Collapsed"
+    Foreground="{DynamicResource SystemFillColorSuccessBrush}">
+    
     <controls:FluentIcon
         Margin="10,0,10,0"
         FontSize="16"
-        Foreground="{DynamicResource SystemFillColorSuccessBrush}"
+        Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=UserControl}}"
         IconType="Admin"
         ToolTip="Running as Administrator" />
+
 </UserControl>
