@@ -17,6 +17,7 @@
 		<SelfContained>true</SelfContained>
 		<PublishSingleFile>true</PublishSingleFile>
 		<Platforms>AnyCPU;x86</Platforms>
+		<PublishDir>bin\x86\publish\</PublishDir>
 	</PropertyGroup>
 
 	<!-- Assets/Images -->

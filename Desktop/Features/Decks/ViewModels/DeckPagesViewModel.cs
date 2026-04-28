@@ -59,9 +59,7 @@ namespace StreamBoard.Features.Decks.ViewModels
 
             if (typeof(TCanvasConfig) == typeof(GridCanvasConfig))
             {
-                GridDeckNavigationBus.NextPageRequested += OnNextPage;
-                GridDeckNavigationBus.PreviousPageRequested += OnPreviousPage;
-                GridDeckNavigationBus.SwitchPageRequested += OnSwitchPage;
+                GridDeckNavigationBus.Register(OnNextPage, OnPreviousPage, OnSwitchPage);
             }
         }
 

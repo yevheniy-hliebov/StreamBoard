@@ -11,7 +11,8 @@ import 'package:streamboard/features/home/presentaions/widgets/deck_button.dart'
 class GridDeckLayout extends StatelessWidget {
   final GridLayout grid;
   final Map<String, DeckButtonData> buttons;
-  final Future<Uint8List?> Function(String keyCode)? getImage;
+  final Future<Uint8List?> Function(String keyCode, String? imagePath)?
+  getImage;
   final void Function(String keyCode)? onTap;
 
   const GridDeckLayout({
@@ -61,11 +62,16 @@ class GridDeckLayout extends StatelessWidget {
                       generator: (colIndex) {
                         final itemIndex = rowIndex * columns + colIndex;
                         final keyCode = itemIndex.toString();
+                        final buttonData = buttons[keyCode];
+
                         return [
                           DeckButton(
+                            key: ValueKey(
+                              '${keyCode}_${buttonData?.imagePath}',
+                            ),
                             size: buttonSize,
                             keyCode: keyCode,
-                            data: buttons[keyCode],
+                            data: buttonData,
                             getImage: getImage,
                             onTap: onTap,
                           ),

@@ -39,9 +39,18 @@ namespace StreamBoard.Features.Decks.ViewModels
                 if (_selectedButton != null)
                 {
                     _selectedButton.IsSelected = false;
-                    if (_selectedButton.Config != null)
+                    _selectedButton.Config?.PropertyChanged -= OnConfigPropertyChanged;
+                }
+
+                if (value != null && value.Config == null)
+                {
+                    var newConfig = new DeckButtonConfig();
+                    value.Config = newConfig;
+
+                    var map = _storage.CurrentProfile.CurrentPageButtonMap;
+                    if (map != null)
                     {
-                        _selectedButton.Config.PropertyChanged -= OnConfigPropertyChanged;
+                        map[value.Index.ToString()] = newConfig;
                     }
                 }
 
@@ -51,19 +60,7 @@ namespace StreamBoard.Features.Decks.ViewModels
                     {
                         _selectedButton.IsSelected = true;
 
-                        if (_selectedButton.Config == null)
-                        {
-                            var newConfig = new DeckButtonConfig();
-                            _selectedButton.Config = newConfig;
-
-                            var map = _storage.CurrentProfile.CurrentPageButtonMap;
-                            if (map != null)
-                            {
-                                map[_selectedButton.Index.ToString()] = newConfig;
-                            }
-                        }
-
-                        _selectedButton.Config.PropertyChanged += OnConfigPropertyChanged;
+                        _selectedButton.Config?.PropertyChanged += OnConfigPropertyChanged;
                     }
                 }
             }
@@ -174,10 +171,7 @@ namespace StreamBoard.Features.Decks.ViewModels
                 target.Config = newConfig;
 
                 var map = _storage.CurrentProfile.CurrentPageButtonMap;
-                if (map != null)
-                {
-                    map[target.Index.ToString()] = newConfig;
-                }
+                map?[target.Index.ToString()] = newConfig;
             }
 
             var newActionInstance = descriptor.CreateInstance();

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:streamboard/core/utils/color_helper.dart';
 import 'package:streamboard/features/home/data/models/deck_button_data.dart';
 import 'package:streamboard/features/home/data/models/grid_layout.dart';
 import 'package:streamboard/features/home/services/grid_service.dart';
@@ -11,6 +10,8 @@ class DeckProvider extends ChangeNotifier {
   GridService _gridService;
   WebSocketService _wsService;
   StreamSubscription? _wsSubscription;
+
+  final Map<String, Uint8List> _imageCache = {};
 
   GridLayout? gridLayout;
   Map<String, DeckButtonData> buttons = {};
@@ -31,7 +32,7 @@ class DeckProvider extends ChangeNotifier {
       if (type == null || data == null) return;
 
       switch (type) {
-        case 'ButtonAppearanceChanged': // ВИПРАВЛЕНО НАЗВУ ПОДІЇ
+        case 'ButtonAppearanceChanged':
           _handleButtonUpdated(data);
           break;
         case 'ButtonsSwapped':
@@ -42,7 +43,7 @@ class DeckProvider extends ChangeNotifier {
           break;
         case 'PageChanged':
         case 'GridLayoutChanged':
-          fetchDeck();
+          fetchDeck(showLoading: false);
           break;
       }
     });
@@ -87,10 +88,12 @@ class DeckProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchDeck() async {
-    isLoading = true;
-    error = null;
-    notifyListeners();
+  Future<void> fetchDeck({bool showLoading = true}) async {
+    if (showLoading) {
+      isLoading = true;
+      error = null;
+      notifyListeners();
+    }
 
     try {
       final data = await _gridService.getButtons();
@@ -106,14 +109,27 @@ class DeckProvider extends ChangeNotifier {
     } catch (e) {
       error = e.toString();
     } finally {
+      // Завжди вимикаємо лоадер в кінці
       isLoading = false;
       notifyListeners();
     }
   }
 
-  Future<Uint8List?> getImage(String keyCode) async {
+  Future<Uint8List?> getImage(String keyCode, String? imagePath) async {
+    if (imagePath == null || imagePath.isEmpty) return null;
+
+    if (_imageCache.containsKey(imagePath)) {
+      return _imageCache[imagePath];
+    }
+
     try {
-      return await _gridService.getImage(keyCode);
+      final bytes = await _gridService.getImage(keyCode);
+
+      if (bytes != null) {
+        _imageCache[imagePath] = bytes;
+      }
+
+      return bytes;
     } catch (e) {
       return null;
     }
@@ -135,6 +151,7 @@ class DeckProvider extends ChangeNotifier {
 
     if (_gridService.baseUrl != newGridService.baseUrl) {
       _gridService = newGridService;
+      _imageCache.clear();
       shouldFetch = true;
     }
 
