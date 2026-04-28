@@ -7,11 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navigation="clr-namespace:StreamBoard.Components.Navigation"
     xmlns:titlebar="clr-namespace:StreamBoard.Components.TitleBar"
+    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
     xmlns:tray="clr-namespace:StreamBoard.Components.Tray"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="StreamBoard"
     Width="1252"
-    Height="800"
+    Height="550"
     ExtendsContentIntoTitleBar="True"
     WindowBackdropType="Mica"
     WindowStartupLocation="CenterScreen"
@@ -38,6 +39,7 @@
                         </integrations:ConnectionStateMenu.LayoutTransform>
                     </integrations:ConnectionStateMenu>
 
+                    <controls:AdminStatusIcon Foreground="{DynamicResource SystemFillColorSuccessBrush}"/>
                 </StackPanel>
             </titlebar:MainTitleBar.RightContent>
         </titlebar:MainTitleBar>
