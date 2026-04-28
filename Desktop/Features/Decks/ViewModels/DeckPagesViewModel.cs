@@ -2,15 +2,17 @@
 using StreamBoard.Core;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
+using StreamBoard.Features.Servers.Models;
+using StreamBoard.Features.Servers.Services;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 
 namespace StreamBoard.Features.Decks.ViewModels
 {
-    public partial class DeckPagesViewModel : ObservableObject, IDropTarget
+    public partial class DeckPagesViewModel<TCanvasConfig> : ObservableObject, IDropTarget where TCanvasConfig : new()
     {
-        private readonly GridDeckStorage _storage;
+        private readonly DeckStorage<TCanvasConfig> _storage;
         private readonly DeckPagesConfig _config;
 
         public ObservableCollection<DeckPageInfo> List => _config.List;
@@ -42,7 +44,7 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
         }
 
-        public DeckPagesViewModel(GridDeckStorage storage)
+        public DeckPagesViewModel(DeckStorage<TCanvasConfig> storage)
         {
             _storage = storage;
             _config = storage.CurrentProfile.Pages;
@@ -54,6 +56,13 @@ namespace StreamBoard.Features.Decks.ViewModels
                 if (SelectedPage != null) IsRenameMode = true;
             }, _ => SelectedPage != null);
             EndRenameCommand = new RelayCommand(_ => OnEndRename());
+
+            if (typeof(TCanvasConfig) == typeof(GridCanvasConfig))
+            {
+                GridDeckNavigationBus.NextPageRequested += OnNextPage;
+                GridDeckNavigationBus.PreviousPageRequested += OnPreviousPage;
+                GridDeckNavigationBus.SwitchPageRequested += OnSwitchPage;
+            }
         }
 
         private void OnAddPage()
@@ -78,10 +87,17 @@ namespace StreamBoard.Features.Decks.ViewModels
             _storage.Save();
         }
 
+        public event Action<string, string>? PageRenamed;
+
         public void OnEndRename()
         {
             IsRenameMode = false;
             _storage.Save();
+
+            if (SelectedPage != null)
+            {
+                PageRenamed?.Invoke(SelectedPage.Id, SelectedPage.Name);
+            }
         }
 
         // --- Drag & Drop Implementation ---
@@ -108,6 +124,45 @@ namespace StreamBoard.Features.Decks.ViewModels
                     _storage.Save();
                 }
             }
+        }
+
+        // DeckNabigationBus
+        private void OnNextPage()
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (List.Count <= 1) return;
+
+                int currentIndex = SelectedPage != null ? List.IndexOf(SelectedPage) : -1;
+                int nextIndex = (currentIndex + 1) % List.Count;
+
+                SelectedPage = List[nextIndex];
+            });
+        }
+
+        private void OnPreviousPage()
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (List.Count <= 1) return;
+
+                int currentIndex = SelectedPage != null ? List.IndexOf(SelectedPage) : -1;
+                int prevIndex = (currentIndex - 1 + List.Count) % List.Count;
+
+                SelectedPage = List[prevIndex];
+            });
+        }
+
+        private void OnSwitchPage(string pageId)
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                var targetPage = List.FirstOrDefault(p => p.Id == pageId);
+                if (targetPage != null)
+                {
+                    SelectedPage = targetPage;
+                }
+            });
         }
     }
 }

@@ -68,19 +68,25 @@
 
             <ui:NavigationViewItemSeparator />
 
-            <ui:NavigationViewItem Content="Servers / Clients">
+            <!-- <ui:NavigationViewItem Content="Servers / Clients">
                 <ui:NavigationViewItem.Icon>
                     <controls:FluentIcon FontSize="16" IconType="Devices" />
                 </ui:NavigationViewItem.Icon>
 
                 <ui:NavigationViewItem.MenuItems>
-                    <ui:NavigationViewItem Content="HTTP Server" TargetPageType="{x:Type servers:HttpServerPage}">
+                    <ui:NavigationViewItem Content="HTTP Server" TargetPageType="{x:Type servers:LocalServerPage}">
                         <ui:NavigationViewItem.Icon>
                             <controls:FluentIcon FontSize="16" IconType="Network" />
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
 
                 </ui:NavigationViewItem.MenuItems>
+            </ui:NavigationViewItem>-->
+
+            <ui:NavigationViewItem Content="Local Server" TargetPageType="{x:Type servers:LocalServerPage}">
+                <ui:NavigationViewItem.Icon>
+                    <controls:FluentIcon FontSize="16" IconType="Network" />
+                </ui:NavigationViewItem.Icon>
             </ui:NavigationViewItem>
         </ui:NavigationView.MenuItems>
 
