@@ -55,10 +55,13 @@ namespace StreamBoard.Features.Servers.Controllers
             var profile = _storage.CurrentProfile;
             var map = profile.CurrentPageButtonMap;
 
+            var selectedPage = profile.Pages.List.FirstOrDefault(p => p.Id == profile.Pages.SelectedPageId);
+
             var responseObj = new
             {
                 grid_layout = profile.CanvasConfig.SelectedGrid,
                 current_page_id = profile.Pages.SelectedPageId,
+                current_page_name = selectedPage?.Name,
 
                 page_map = map?.ToDictionary(
                     kvp => kvp.Key,

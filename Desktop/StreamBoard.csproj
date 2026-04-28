@@ -16,6 +16,7 @@
 		<RuntimeIdentifier>win-x86</RuntimeIdentifier>
 		<SelfContained>true</SelfContained>
 		<PublishSingleFile>true</PublishSingleFile>
+		<Platforms>AnyCPU;x86</Platforms>
 	</PropertyGroup>
 
 	<!-- Assets/Images -->
