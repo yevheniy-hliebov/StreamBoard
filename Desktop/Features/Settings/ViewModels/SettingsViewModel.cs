@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 using StreamBoard.Core;
-using StreamBoard.Core.Services;
+using StreamBoard.Features.Navigation.Services;
 using StreamBoard.Features.Settings.Services;
 using StreamBoard.Features.Updater.ViewModels;
 using System.Windows.Input;
@@ -13,7 +13,7 @@ namespace StreamBoard.Features.Settings.ViewModels
         SettingsStorage storage,
         StartupService startupService,
         PrivilegeService privilegeService,
-        PageService pageService,
+        NavigationService pageService,
         UpdaterViewModel updaterViewModel
     ) : ObservableObject
     {

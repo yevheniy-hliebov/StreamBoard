@@ -18,6 +18,7 @@ namespace StreamBoard.Features.Decks.ViewModels
         public ObservableCollection<DeckPageInfo> List => _config.List;
 
         public ICommand AddPageCommand { get; }
+        public ICommand DuplicatePageCommand { get; }
         public ICommand RenamePageCommand { get; }
         public ICommand EndRenameCommand { get; }
         public ICommand DeletePageCommand { get; }

@@ -1,0 +1,38 @@
+﻿<nav:NavigationHubPage x:Class="StreamBoard.Features.Integrations.Common.Views.Pages.IntegrationsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="clr-namespace:StreamBoard.Features.Integrations.Common.Views.Components"
+      xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+      xmlns:cards="clr-namespace:StreamBoard.Components.Cards"
+      xmlns:nav="clr-namespace:StreamBoard.Features.Navigation.Views.Components"
+      Title="IntegrationsPage">
+
+    <StackPanel Margin="16">
+        <StackPanel.Resources>
+            <Style TargetType="cards:NavigationCard">
+                <Setter Property="Margin" Value="0,0,0,12" />
+                <EventSetter Event="PreviewMouseLeftButtonUp" Handler="OnCardClick" />
+            </Style>
+        </StackPanel.Resources>
+
+        <controls:PageTitle Text="Integrations" />
+
+        <cards:NavigationCard Title="OBS Studio"
+                              Description="Configure WebSocket server settings to control your scenes and sources"
+                              IsChevronVisible="True"
+                              IconPosition="Left">
+            <cards:NavigationCard.Icon>
+                <local:IntegrationIcon IconType="Obs" Size="25" />
+            </cards:NavigationCard.Icon>
+        </cards:NavigationCard>
+
+        <cards:NavigationCard Title="Twitch" 
+                              Description="Link your broadcaster and bot accounts to manage stream"
+                              IsChevronVisible="True"
+                              IconPosition="Left">
+            <cards:NavigationCard.Icon>
+                <local:IntegrationIcon IconType="Twitch" Size="25" />
+            </cards:NavigationCard.Icon>
+        </cards:NavigationCard>
+    </StackPanel>
+</nav:NavigationHubPage>
