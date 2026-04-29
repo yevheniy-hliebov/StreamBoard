@@ -1,0 +1,19 @@
+﻿<UserControl
+    x:Class="StreamBoard.Features.Navigation.Views.Components.MainNavView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    x:Name="Root">
+
+    <ui:NavigationView
+        x:Name="RootNavigation"
+        FrameMargin="0"
+        IsBackButtonVisible="Collapsed"
+        IsFooterSeparatorVisible="False"
+        IsPaneToggleVisible="True"
+        IsTopSeparatorVisible="False"
+        OpenPaneLength="200"
+        PaneDisplayMode="Left">
+    </ui:NavigationView>
+
+</UserControl>

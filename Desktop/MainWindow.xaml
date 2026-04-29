@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:integrations="clr-namespace:StreamBoard.Features.Integrations.Common.Views.Components"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:navigation="clr-namespace:StreamBoard.Components.Navigation"
+    xmlns:navigation="clr-namespace:StreamBoard.Features.Navigation.Views.Components"
     xmlns:titlebar="clr-namespace:StreamBoard.Components.TitleBar"
     xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
     xmlns:tray="clr-namespace:StreamBoard.Components.Tray"

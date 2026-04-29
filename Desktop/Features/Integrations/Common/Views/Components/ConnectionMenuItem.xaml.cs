@@ -1,18 +1,23 @@
+using Microsoft.Extensions.DependencyInjection;
+using StreamBoard.Features.Integrations.Common.Models;
+using StreamBoard.Features.Navigation.Services;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using StreamBoard.Components.Navigation;
-using StreamBoard.Features.Integrations.Common.Models;
 
 namespace StreamBoard.Features.Integrations.Common.Views.Components
 {
     public partial class ConnectionMenuItem : UserControl
     {
+        private readonly NavigationService _navService;
+
         public ConnectionMenuItem()
         {
             InitializeComponent();
             UpdateState();
+
+            _navService = App.ServiceProvider.GetRequiredService<NavigationService>();
         }
 
         public string Title
@@ -69,17 +74,12 @@ namespace StreamBoard.Features.Integrations.Common.Views.Components
             {
                 if (Window.GetWindow(this) is MainWindow mainWindow)
                 {
-                    var navComponent = mainWindow.FindName("RootNavView") as MainNavView;
-                    var navigationControl = navComponent?.GetNavigation();
-
-                    navigationControl?.Navigate(TargetPageType);
+                    _navService.NavigateTo(TargetPageType);
                 }
             }
 
-            // 3. ДОДАНО: Закриваємо контекстне меню після кліку
             CloseParentContextMenu(this);
 
-            // Кажемо WPF, що ми обробили клік
             e.Handled = true;
         }
 
@@ -102,7 +102,6 @@ namespace StreamBoard.Features.Integrations.Common.Views.Components
             SetValue(StateTextProperty, text);
         }
 
-        // Хелпер для пошуку батьківського ContextMenu і його закриття
         private void CloseParentContextMenu(DependencyObject current)
         {
             DependencyObject parent = VisualTreeHelper.GetParent(current);

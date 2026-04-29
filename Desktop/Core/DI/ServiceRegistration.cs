@@ -1,7 +1,6 @@
 using System.Net.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Core.Services;
 using StreamBoard.Features.Actions.Services;
 using StreamBoard.Features.Decks.Services;
 using StreamBoard.Features.Decks.ViewModels;
@@ -11,6 +10,7 @@ using StreamBoard.Features.Integrations.Obs.Services;
 using StreamBoard.Features.Integrations.Obs.ViewModels;
 using StreamBoard.Features.Integrations.Twitch.Services;
 using StreamBoard.Features.Integrations.Twitch.ViewModels;
+using StreamBoard.Features.Navigation.Services;
 using StreamBoard.Features.Servers.Controllers;
 using StreamBoard.Features.Servers.Services;
 using StreamBoard.Features.Servers.ViewModels;
@@ -25,7 +25,7 @@ namespace StreamBoard.Core.DI
     {
         public static void AddApplicationServices(this IServiceCollection services)
         {
-            services.AddSingleton<PageService>();
+            services.AddSingleton<NavigationService>();
 
             services.AddSingleton<SettingsStorage>();
             services.AddSingleton<ServerConfigsStorage>();
