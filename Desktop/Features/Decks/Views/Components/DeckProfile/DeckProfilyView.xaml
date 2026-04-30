@@ -25,6 +25,11 @@
                         TooltipText="Add New Page" />
                     <controls:IconButton
                         Margin="8,0,0,0"
+                        Command="{Binding DuplicatePageCommand}"
+                        IconType="Copy"
+                        TooltipText="Duplicate Page" />
+                    <controls:IconButton
+                        Margin="8,0,0,0"
                         Command="{Binding RenamePageCommand}"
                         IconType="Rename"
                         TooltipText="Rename Page" />
@@ -45,7 +50,7 @@
             VerticalScrollBarVisibility="Auto">
             <reorder:ReorderListView
                 dd:DragDrop.DropHandler="{Binding}"
-                ItemsSource="{Binding List}"
+                ItemsSource="{Binding AllPages}"
                 SelectedItem="{Binding SelectedPage, Mode=TwoWay}">
                 <reorder:ReorderListView.ItemTemplate>
                     <DataTemplate>

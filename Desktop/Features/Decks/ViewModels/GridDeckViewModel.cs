@@ -24,7 +24,7 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         public GridDeckViewModel(GridDeckStorage storage, ActionRegistry registry, WebsocketManager wsManager)
         {
-            Pages = new DeckPagesViewModel<GridCanvasConfig>(storage);
+            Pages = new DeckPagesViewModel<GridCanvasConfig>(storage, new DeckPageService<GridCanvasConfig>(storage));
             Library = new ActionLibraryViewModel(registry);
             Editor = new DeckButtonEditorViewModel(storage);
             Canvas = new DeckCanvasViewModel(storage);

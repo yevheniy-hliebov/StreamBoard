@@ -52,15 +52,15 @@ namespace StreamBoard.Features.Servers.Controllers
 
         private async Task GetButtons(HttpListenerContext ctx)
         {
-            var profile = _storage.CurrentProfile;
+            var profile = _storage.Current;
             var map = profile.CurrentPageButtonMap;
 
-            var selectedPage = profile.Pages.List.FirstOrDefault(p => p.Id == profile.Pages.SelectedPageId);
+            var selectedPage = profile.PagesState.AllPages.FirstOrDefault(p => p.Id == profile.PagesState.SelectedPageId);
 
             var responseObj = new
             {
                 grid_layout = profile.CanvasConfig.SelectedGrid,
-                current_page_id = profile.Pages.SelectedPageId,
+                current_page_id = profile.PagesState.SelectedPageId,
                 current_page_name = selectedPage?.Name,
 
                 page_map = map?.ToDictionary(
@@ -87,7 +87,7 @@ namespace StreamBoard.Features.Servers.Controllers
 
         private async Task GetImage(HttpListenerContext ctx, string key)
         {
-            var profile = _storage.CurrentProfile;
+            var profile = _storage.Current;
             var map = profile.CurrentPageButtonMap;
 
             if (map == null || !map.TryGetValue(key, out var buttonConfig))
@@ -133,7 +133,7 @@ namespace StreamBoard.Features.Servers.Controllers
 
         private async Task ClickKey(HttpListenerContext ctx, string key)
         {
-            var profile = _storage.CurrentProfile;
+            var profile = _storage.Current;
             var map = profile.CurrentPageButtonMap;
 
             if (map == null || !map.TryGetValue(key, out var buttonConfig))

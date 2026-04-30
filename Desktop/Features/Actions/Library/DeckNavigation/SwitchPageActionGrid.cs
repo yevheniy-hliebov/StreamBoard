@@ -31,7 +31,7 @@ namespace StreamBoard.Features.Actions.Library.DeckNavigation
                 if (string.IsNullOrEmpty(TargetPageId)) return string.Empty;
 
                 var storage = App.ServiceProvider.GetRequiredService<GridDeckStorage>();
-                var page = storage.CurrentProfile.Pages.List.FirstOrDefault(p => p.Id == TargetPageId);
+                var page = storage.Current.PagesState.AllPages.FirstOrDefault(p => p.Id == TargetPageId);
 
                 return page != null ? $"{page.Name} [{page.Id}]" : $"Unknown Page [{TargetPageId}]";
             }
@@ -59,7 +59,7 @@ namespace StreamBoard.Features.Actions.Library.DeckNavigation
                 if (string.IsNullOrEmpty(TargetPageId)) return Metadata.Name;
 
                 var storage = App.ServiceProvider.GetRequiredService<GridDeckStorage>();
-                var page = storage.CurrentProfile.Pages.List.FirstOrDefault(p => p.Id == TargetPageId);
+                var page = storage.Current.PagesState.AllPages.FirstOrDefault(p => p.Id == TargetPageId);
 
                 return page != null ? $"{Metadata.Name} ({page.Name})" : Metadata.Name;
             }

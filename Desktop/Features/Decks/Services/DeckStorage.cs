@@ -1,6 +1,5 @@
-﻿using StreamBoard.Features.Decks.Models;
-using StreamBoard.Helpers;
-using System.IO;
+﻿using StreamBoard.Core.Services;
+using StreamBoard.Features.Decks.Models;
 
 namespace StreamBoard.Features.Decks.Services
 {
@@ -15,44 +14,27 @@ namespace StreamBoard.Features.Decks.Services
     }
 
 
-    public class DeckStorage<TCanvasConfig> where TCanvasConfig : new()
+    public class DeckStorage<TCanvasConfig> : JsonFileStorage<DeckProfile<TCanvasConfig>>
+        where TCanvasConfig : new()
     {
-        private readonly string _filePath;
-
-        public DeckProfile<TCanvasConfig> CurrentProfile { get; private set; } = new();
-
-        public DeckStorage(String fileName)
+        public DeckStorage(string fileName) : base(fileName)
         {
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-            _filePath = Path.Combine(baseDirectory, "data", fileName);
-        }
-
-        public void Initialize()
-        {
-            if (File.Exists(_filePath))
+            if (Current.PagesState.AllPages.Count == 0)
             {
-                CurrentProfile = JsonHelper.Load<DeckProfile<TCanvasConfig>>(_filePath);
-            }
-            else
-            {
-                CurrentProfile = CreateDefaultProfile();
-                Save();
+                InitializeDefaultProfile();
             }
         }
 
-        public void Save() => JsonHelper.Save(_filePath, CurrentProfile);
-
-        private DeckProfile<TCanvasConfig> CreateDefaultProfile()
+        private void InitializeDefaultProfile()
         {
-            var profile = new DeckProfile<TCanvasConfig>();
+            var mainPage = new DeckPage { Name = "Default Page" };
 
-            var mainPage = new DeckPageInfo { Name = "Default Page" };
+            Current.PagesState.AllPages.Add(mainPage);
+            Current.PagesState.SelectedPageId = mainPage.Id;
+            var map = new Dictionary<string, DeckButtonConfig>();
+            Current.ButtonMaps[mainPage.Id] = map;
 
-            profile.Pages.List.Add(mainPage);
-            profile.Pages.SelectedPageId = mainPage.Id;
-
-            return profile;
+            Save();
         }
     }
 }

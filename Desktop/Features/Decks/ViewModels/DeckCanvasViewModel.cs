@@ -47,7 +47,7 @@ namespace StreamBoard.Features.Decks.ViewModels
                     var newConfig = new DeckButtonConfig();
                     value.Config = newConfig;
 
-                    var map = _storage.CurrentProfile.CurrentPageButtonMap;
+                    var map = _storage.Current.CurrentPageButtonMap;
                     if (map != null)
                     {
                         map[value.Index.ToString()] = newConfig;
@@ -69,7 +69,7 @@ namespace StreamBoard.Features.Decks.ViewModels
         public DeckCanvasViewModel(GridDeckStorage storage)
         {
             _storage = storage;
-            CanvasConfig = storage.CurrentProfile.CanvasConfig;
+            CanvasConfig = storage.Current.CanvasConfig;
 
             CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
 
@@ -107,7 +107,7 @@ namespace StreamBoard.Features.Decks.ViewModels
         {
             SelectedButton = null;
             Buttons.Clear();
-            var map = _storage.CurrentProfile.CurrentPageButtonMap;
+            var map = _storage.Current.CurrentPageButtonMap;
 
             foreach (var index in CanvasConfig.Cells)
             {
@@ -173,7 +173,7 @@ namespace StreamBoard.Features.Decks.ViewModels
                 var newConfig = new DeckButtonConfig();
                 target.Config = newConfig;
 
-                var map = _storage.CurrentProfile.CurrentPageButtonMap;
+                var map = _storage.Current.CurrentPageButtonMap;
                 map?[target.Index.ToString()] = newConfig;
             }
 
@@ -192,7 +192,7 @@ namespace StreamBoard.Features.Decks.ViewModels
 
             (source.Config, target.Config) = (target.Config, source.Config);
 
-            var map = _storage.CurrentProfile.CurrentPageButtonMap;
+            var map = _storage.Current.CurrentPageButtonMap;
             if (map != null)
             {
                 if (source.Config != null)

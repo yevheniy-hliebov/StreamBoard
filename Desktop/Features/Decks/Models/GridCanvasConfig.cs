@@ -1,5 +1,4 @@
 ﻿using StreamBoard.Core;
-using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 
 namespace StreamBoard.Features.Decks.Models
