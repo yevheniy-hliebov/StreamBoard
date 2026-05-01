@@ -1,4 +1,5 @@
 ﻿using StreamBoard.Core;
+using StreamBoard.Core.Services;
 using StreamBoard.Features.Actions.Services;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
@@ -12,6 +13,7 @@ namespace StreamBoard.Features.Decks.ViewModels
     {
         private readonly IDeckButtonService _buttonService;
         private readonly IDeckPageService _pageService;
+        private readonly IDialogService _dialogService;
 
         public BaseCanvasConfig CanvasConfig { get; }
         public ObservableCollection<DeckButtonSlot> Buttons { get; } = [];
@@ -59,10 +61,14 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
         }
 
-        public DeckCanvasViewModel(IDeckButtonService buttonService, IDeckPageService pageService)
+        public DeckCanvasViewModel(
+            IDeckButtonService buttonService,
+            IDeckPageService pageService,
+            IDialogService dialogService)
         {
             _buttonService = buttonService;
             _pageService = pageService;
+            _dialogService = dialogService;
 
             CanvasConfig = _buttonService.CanvasConfig;
 
@@ -71,8 +77,8 @@ namespace StreamBoard.Features.Decks.ViewModels
 
             ClickButtonCommand = new RelayCommand(async p => await ExecuteClickButton(p));
             CopyCommand = new RelayCommand(_ => ExecuteCopy());
-            PasteCommand = new RelayCommand(_ => ExecutePaste(), _ => _buttonService.CanPaste());
-            DeleteCommand = new RelayCommand(_ => ExecuteDelete());
+            PasteCommand = new RelayCommand(async _ => await ExecutePaste(), _ => _buttonService.CanPaste());
+            DeleteCommand = new RelayCommand(async _ => await ExecuteDelete());
 
             RebuildButtons();
         }
@@ -123,19 +129,34 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
         }
 
-        private void ExecutePaste()
+        private async Task ExecutePaste()
         {
             if (SelectedButton != null)
             {
+                if (SelectedButton.Config != null && SelectedButton.Config.HasData)
+                {
+                    bool isConfirmed = await _dialogService.ShowConfirmationAsync(
+                        "Overwrite Button",
+                        "This slot already has a button configured. Are you sure you want to overwrite it?");
+
+                    if (!isConfirmed) return;
+                }
+
                 _buttonService.PasteButton(SelectedButton.Index);
                 RebuildButtons();
             }
         }
 
-        private void ExecuteDelete()
+        private async Task ExecuteDelete()
         {
-            if (SelectedButton != null)
+            if (SelectedButton?.Config != null)
             {
+                bool isConfirmed = await _dialogService.ShowConfirmationAsync(
+                    "Clear Button",
+                    "Are you sure you want to clear this button? All actions and appearance will be lost.");
+
+                if (!isConfirmed) return;
+
                 _buttonService.DeleteButton(SelectedButton.Index);
                 RebuildButtons();
             }

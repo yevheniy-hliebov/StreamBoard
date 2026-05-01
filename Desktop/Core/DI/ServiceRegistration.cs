@@ -28,6 +28,7 @@ namespace StreamBoard.Core.DI
         {
             services.AddSingleton<NavigationService>();
             services.AddSingleton<IClipboardService, ClipboardService>();
+            services.AddSingleton<IDialogService, DialogService>();
 
             services.AddSingleton<SettingsStorage>();
             services.AddSingleton<ServerConfigsStorage>();
