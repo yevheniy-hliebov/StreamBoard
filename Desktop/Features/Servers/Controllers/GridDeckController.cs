@@ -1,3 +1,4 @@
+using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
 using StreamBoard.Features.Servers.Services;
 using System.Net;
@@ -56,10 +57,11 @@ namespace StreamBoard.Features.Servers.Controllers
             var map = profile.CurrentPageButtonMap;
 
             var selectedPage = profile.PagesState.AllPages.FirstOrDefault(p => p.Id == profile.PagesState.SelectedPageId);
+            var gridCanvasConfig = (GridCanvasConfig)profile.CanvasConfig;
 
             var responseObj = new
             {
-                grid_layout = profile.CanvasConfig.SelectedGrid,
+                grid_layout = gridCanvasConfig.SelectedGrid,
                 current_page_id = profile.PagesState.SelectedPageId,
                 current_page_name = selectedPage?.Name,
 

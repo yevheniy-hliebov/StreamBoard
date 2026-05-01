@@ -8,11 +8,12 @@ using System.Windows.Input;
 
 namespace StreamBoard.Features.Decks.ViewModels
 {
-    public class DeckCanvasViewModel : ObservableObject
+    public class DeckCanvasViewModel : ObservableObject, IDisposable
     {
-        private readonly GridDeckStorage _storage;
+        private readonly IDeckButtonService _buttonService;
+        private readonly IDeckPageService _pageService;
 
-        public GridCanvasConfig CanvasConfig { get; }
+        public BaseCanvasConfig CanvasConfig { get; }
         public ObservableCollection<DeckButtonSlot> Buttons { get; } = [];
 
         private bool _isClickMode;
@@ -21,14 +22,14 @@ namespace StreamBoard.Features.Decks.ViewModels
             get => _isClickMode;
             set
             {
-                if (SetProperty(ref _isClickMode, value))
+                if (SetProperty(ref _isClickMode, value) && _isClickMode)
                 {
-                    if (_isClickMode) SelectedButton = null;
+                    SelectedButton = null;
                 }
             }
         }
 
-        public ICommand SelectButtonCommand { get; }
+        public ICommand ClickButtonCommand { get; }
 
         private DeckButtonSlot? _selectedButton;
         public DeckButtonSlot? SelectedButton
@@ -36,89 +37,72 @@ namespace StreamBoard.Features.Decks.ViewModels
             get => _selectedButton;
             set
             {
-                if (_selectedButton != null)
+                if (value != null && value.Config == null && !IsClickMode)
                 {
-                    _selectedButton.IsSelected = false;
-                    _selectedButton.Config?.PropertyChanged -= OnConfigPropertyChanged;
-                }
-
-                if (value != null && value.Config == null)
-                {
-                    var newConfig = new DeckButtonConfig();
-                    value.Config = newConfig;
-
-                    var map = _storage.Current.CurrentPageButtonMap;
-                    if (map != null)
-                    {
-                        map[value.Index.ToString()] = newConfig;
-                    }
+                    value.Config = _buttonService.GetOrCreateButton(value.Index);
                 }
 
                 if (SetProperty(ref _selectedButton, value))
                 {
                     if (_selectedButton != null)
                     {
-                        _selectedButton.IsSelected = true;
-
-                        _selectedButton.Config?.PropertyChanged += OnConfigPropertyChanged;
+                        foreach (var button in Buttons)
+                        {
+                            button.IsSelected = button == _selectedButton;
+                        }
                     }
                 }
             }
         }
 
-        public DeckCanvasViewModel(GridDeckStorage storage)
+        public DeckCanvasViewModel(IDeckButtonService buttonService, IDeckPageService pageService)
         {
-            _storage = storage;
-            CanvasConfig = storage.Current.CanvasConfig;
+            _buttonService = buttonService;
+            _pageService = pageService;
 
+            CanvasConfig = _buttonService.CanvasConfig;
+
+            _pageService.SelectedPageChanged += RebuildButtons;
             CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
 
-            SelectButtonCommand = new RelayCommand(async p =>
-            {
-                if (p is not DeckButtonSlot slot) return;
-
-                if (!IsClickMode)
-                {
-                    if (SelectedButton == slot) return;
-                    SelectedButton = slot;
-                }
-                else
-                {
-                    if (slot.Config?.Actions != null)
-                    {
-                        foreach (var action in slot.Config.Actions)
-                        {
-                            try
-                            {
-                                await action.ExecuteAsync();
-                            }
-                            catch
-                            {
-                            }
-                        }
-                    }
-                }
-            });
+            ClickButtonCommand = new RelayCommand(async p => await ExecuteClickButton(p));
 
             RebuildButtons();
         }
 
-        public void RebuildButtons()
+        private void RebuildButtons()
         {
             SelectedButton = null;
             Buttons.Clear();
-            var map = _storage.Current.CurrentPageButtonMap;
 
-            foreach (var index in CanvasConfig.Cells)
+            var map = _buttonService.GetCurrentButtonMap();
+
+            if (CanvasConfig.Type == DeckType.Grid)
             {
-                DeckButtonConfig? config = null;
-                if (map != null && map.TryGetValue(index.ToString(), out var btn))
+                var gridCanvasConfig = (GridCanvasConfig)CanvasConfig;
+                foreach (var index in gridCanvasConfig.Cells)
                 {
-                    config = btn;
+                    map.TryGetValue(index.ToString(), out var config);
+                    var slot = new DeckButtonSlot(index, config, HandleDrop);
+                    Buttons.Add(slot);
                 }
+            }
+        }
+        private async Task ExecuteClickButton(object? parameter)
+        {
+            if (parameter is not DeckButtonSlot slot)
+                return;
 
-                var slot = new DeckButtonSlot(index, config, HandleDrop);
-                Buttons.Add(slot);
+            if (!IsClickMode)
+            {
+                if (SelectedButton == slot)
+                    return;
+
+                SelectedButton = slot;
+            }
+            else if (slot.Config != null)
+            {
+                await _buttonService.ExecuteButtonActions(slot.Config);
             }
         }
 
@@ -127,28 +111,7 @@ namespace StreamBoard.Features.Decks.ViewModels
             if (e.PropertyName == nameof(GridCanvasConfig.SelectedGrid))
             {
                 RebuildButtons();
-                _storage.Save();
-            }
-        }
-
-        public event Action<int, DeckButtonConfig>? ButtonAppearanceChanged;
-
-        private void OnConfigPropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(DeckButtonConfig.Name)
-                || e.PropertyName == nameof(DeckButtonConfig.ImagePath)
-                || e.PropertyName == nameof(DeckButtonConfig.BackgroundColor))
-            {
-                _storage.Save();
-
-                if (sender is DeckButtonConfig config)
-                {
-                    var slot = Buttons.FirstOrDefault(b => b.Config == config);
-                    if (slot != null)
-                    {
-                        ButtonAppearanceChanged?.Invoke(slot.Index, config);
-                    }
-                }
+                _buttonService.SaveChanges();
             }
         }
 
@@ -156,59 +119,22 @@ namespace StreamBoard.Features.Decks.ViewModels
         {
             if (IsClickMode) return;
 
-            if (payload is DeckButtonSlot sourceSlot)
+            if (payload is DeckButtonSlot sourceSlot && sourceSlot != target)
             {
-                SwapButtons(sourceSlot, target);
+                _buttonService.SwapButtons(sourceSlot.Index, target.Index);
+                RebuildButtons();
             }
             else if (payload is ActionDescriptor descriptor)
             {
-                AddActionToSlot(descriptor, target);
+                _buttonService.AddActionToButton(target.Index, descriptor);
+                target.Config ??= _buttonService.GetOrCreateButton(target.Index);
             }
         }
 
-        private void AddActionToSlot(ActionDescriptor descriptor, DeckButtonSlot target)
+        public void Dispose()
         {
-            if (target.Config == null)
-            {
-                var newConfig = new DeckButtonConfig();
-                target.Config = newConfig;
-
-                var map = _storage.Current.CurrentPageButtonMap;
-                map?[target.Index.ToString()] = newConfig;
-            }
-
-            var newActionInstance = descriptor.CreateInstance();
-            target.Config.Actions.Add(newActionInstance);
-            _storage.Save();
-        }
-
-        public event Action<int, int>? ButtonsSwapped;
-
-        private void SwapButtons(DeckButtonSlot source, DeckButtonSlot target)
-        {
-            if (source == null || target == null || source == target) return;
-
-            SelectedButton = null;
-
-            (source.Config, target.Config) = (target.Config, source.Config);
-
-            var map = _storage.Current.CurrentPageButtonMap;
-            if (map != null)
-            {
-                if (source.Config != null)
-                    map[source.Index.ToString()] = source.Config;
-                else
-                    map.Remove(source.Index.ToString());
-
-                if (target.Config != null)
-                    map[target.Index.ToString()] = target.Config;
-                else
-                    map.Remove(target.Index.ToString());
-
-                _storage.Save();
-
-                ButtonsSwapped?.Invoke(source.Index, target.Index);
-            }
+            _pageService.SelectedPageChanged -= RebuildButtons;
+            CanvasConfig.PropertyChanged -= OnCanvasConfigPropertyChanged;
         }
     }
 }

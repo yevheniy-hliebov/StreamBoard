@@ -1,10 +1,11 @@
-﻿using StreamBoard.Core;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace StreamBoard.Features.Decks.Models
 {
-    public class GridCanvasConfig : ObservableObject
+    public class GridCanvasConfig : BaseCanvasConfig
     {
+        public GridCanvasConfig() : base(DeckType.Grid) { }
+
         private GridLayout _selectedGrid = GridLayout.Grids[0];
 
         [JsonPropertyName("selected_grid")]

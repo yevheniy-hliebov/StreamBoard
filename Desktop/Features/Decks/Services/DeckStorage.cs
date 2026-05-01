@@ -3,21 +3,9 @@ using StreamBoard.Features.Decks.Models;
 
 namespace StreamBoard.Features.Decks.Services
 {
-    public class GridDeckStorage : DeckStorage<GridCanvasConfig>
+    public abstract class DeckStorage : JsonFileStorage<DeckProfile>
     {
-        public GridDeckStorage() : base("grid_deck.json") { }
-    }
-    
-    public class KeyboardDeckStorage : DeckStorage<GridCanvasConfig>
-    {
-        public KeyboardDeckStorage() : base("keyboard_deck.json") { }
-    }
-
-
-    public class DeckStorage<TCanvasConfig> : JsonFileStorage<DeckProfile<TCanvasConfig>>
-        where TCanvasConfig : new()
-    {
-        public DeckStorage(string fileName) : base(fileName)
+        protected DeckStorage(string fileName) : base(fileName)
         {
             if (Current.PagesState.AllPages.Count == 0)
             {
@@ -25,16 +13,35 @@ namespace StreamBoard.Features.Decks.Services
             }
         }
 
+        protected abstract BaseCanvasConfig CreateDefaultCanvasConfig();
+
         private void InitializeDefaultProfile()
         {
-            var mainPage = new DeckPage { Name = "Default Page" };
+            Current.CanvasConfig = CreateDefaultCanvasConfig();
 
+            var mainPage = new DeckPage { Name = "Default Page" };
             Current.PagesState.AllPages.Add(mainPage);
             Current.PagesState.SelectedPageId = mainPage.Id;
-            var map = new Dictionary<string, DeckButtonConfig>();
-            Current.ButtonMaps[mainPage.Id] = map;
+
+            Current.ButtonMaps[mainPage.Id] = new Dictionary<string, DeckButtonConfig>();
 
             Save();
         }
+    }
+
+    public class GridDeckStorage : DeckStorage
+    {
+        public GridDeckStorage() : base("grid_deck.json") { }
+
+        protected override BaseCanvasConfig CreateDefaultCanvasConfig()
+            => new GridCanvasConfig();
+    }
+
+    public class KeyboardDeckStorage : DeckStorage
+    {
+        public KeyboardDeckStorage() : base("keyboard_deck.json") { }
+
+        protected override BaseCanvasConfig CreateDefaultCanvasConfig()
+            => new KeyboardCanvasConfig();
     }
 }

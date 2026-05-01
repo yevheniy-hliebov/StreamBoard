@@ -11,7 +11,7 @@ namespace StreamBoard.Features.Decks.ViewModels
 {
     public partial class GridDeckViewModel : ObservableObject
     {
-        public DeckPagesViewModel<GridCanvasConfig> Pages { get; }
+        public DeckPagesViewModel Pages { get; }
         public ActionLibraryViewModel Library { get; }
         public DeckButtonEditorViewModel Editor { get; }
         public DeckCanvasViewModel Canvas { get; }
@@ -24,19 +24,22 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         public GridDeckViewModel(GridDeckStorage storage, ActionRegistry registry, WebsocketManager wsManager)
         {
-            Pages = new DeckPagesViewModel<GridCanvasConfig>(storage, new DeckPageService<GridCanvasConfig>(storage));
+            var _pageServise = new DeckPageService(storage);
+            var _buttonServise = new DeckButtonService(storage);
+
+            Pages = new DeckPagesViewModel(storage, _pageServise);
             Library = new ActionLibraryViewModel(registry);
             Editor = new DeckButtonEditorViewModel(storage);
-            Canvas = new DeckCanvasViewModel(storage);
+            Canvas = new DeckCanvasViewModel(_buttonServise, _pageServise);
 
             _wsManager = wsManager;
 
             Canvas.PropertyChanged += OnCanvasPropertyChanged;
-            Pages.PropertyChanged += OnPagesPropertyChanged;
+            _pageServise.SelectedPageChanged += OnSelectedPageChanged;
             Pages.PageRenamed += OnPageRenamed;
             Canvas.CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
-            Canvas.ButtonAppearanceChanged += OnButtonAppearanceChanged;
-            Canvas.ButtonsSwapped += OnButtonsSwapped;
+            Editor.ButtonAppearanceChanged += OnButtonAppearanceChanged;
+            _buttonServise.ButtonsSwapped += OnButtonsSwapped;
         }
 
         private void OnCanvasPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -47,22 +50,17 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
         }
 
-        private void OnPagesPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        private void OnSelectedPageChanged()
         {
-            if (e.PropertyName == nameof(DeckPagesViewModel<GridCanvasConfig>.SelectedPage))
+            var selectedPage = Pages.SelectedPage;
+            if (selectedPage != null)
             {
-                Canvas.RebuildButtons();
-
-                var selectedPage = Pages.SelectedPage;
-                if (selectedPage != null)
+                _ = _wsManager.BroadcastAsync(WebsocketMessageType.PageChanged, new
                 {
-                    _ = _wsManager.BroadcastAsync(WebsocketMessageType.PageChanged, new
-                    {
-                        deckType = _deckType,
-                        pageId = selectedPage.Id,
-                        pageName = selectedPage.Name
-                    });
-                }
+                    deckType = _deckType,
+                    pageId = selectedPage.Id,
+                    pageName = selectedPage.Name
+                });
             }
         }
 
@@ -90,11 +88,13 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
         }
 
-        private void OnButtonAppearanceChanged(int index, DeckButtonConfig config)
+        private void OnButtonAppearanceChanged(DeckButtonSlot button)
         {
             _buttonDebounceCts?.Cancel();
             _buttonDebounceCts = new CancellationTokenSource();
             var token = _buttonDebounceCts.Token;
+
+            var config = button.Config ?? new DeckButtonConfig();
 
             var name = config.Name;
             var bgColor = config.BackgroundColor;
@@ -111,7 +111,7 @@ namespace StreamBoard.Features.Decks.ViewModels
                         await _wsManager.BroadcastAsync(WebsocketMessageType.ButtonAppearanceChanged, new
                         {
                             deckType = _deckType,
-                            index,
+                            button.Index,
                             name,
                             background_color = bgColor,
                             image_path = imgPath

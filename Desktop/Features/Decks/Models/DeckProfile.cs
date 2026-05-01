@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace StreamBoard.Features.Decks.Models
 {
-    public class DeckProfile<TCanvasConfig> : ObservableObject where TCanvasConfig : new()
+    public class DeckProfile : ObservableObject
     {
         [JsonPropertyName("pages")]
         public DeckPagesState PagesState { get; set; } = new();
@@ -12,7 +12,7 @@ namespace StreamBoard.Features.Decks.Models
         public Dictionary<string, Dictionary<string, DeckButtonConfig>> ButtonMaps { get; set; } = [];
 
         [JsonPropertyName("canvas_config")]
-        public TCanvasConfig CanvasConfig { get; set; } = new();
+        public BaseCanvasConfig CanvasConfig { get; set; } = null!;
 
         [JsonIgnore]
         public Dictionary<string, DeckButtonConfig> CurrentPageButtonMap // TODO: Перенести в інше місце, або відмовитись

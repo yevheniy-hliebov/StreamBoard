@@ -1,4 +1,5 @@
 ﻿using StreamBoard.Features.Decks.Models;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
 namespace StreamBoard.Features.Decks.Services
@@ -6,6 +7,8 @@ namespace StreamBoard.Features.Decks.Services
     public interface IDeckPageService
     {
         public event Action? SelectedPageChanged;
+        public string GetSelectedPageId();
+        public ObservableCollection<DeckPage> AllPages { get; }
         public void AddPage();
         public void RenamePage(string id, string newName);
         public void DuplicatePage(string id);
@@ -16,18 +19,22 @@ namespace StreamBoard.Features.Decks.Services
         public void MovePage(int oldIndex, int newIndex);
     }
 
-    public class DeckPageService<TCanvasConfig> : IDeckPageService where TCanvasConfig : new()
+    public class DeckPageService : IDeckPageService
     {
-        private readonly DeckStorage<TCanvasConfig> _storage;
-        private readonly DeckProfile<TCanvasConfig> _profile;
+        private readonly DeckStorage _storage;
+        private readonly DeckProfile _profile;
 
-        public DeckPageService(DeckStorage<TCanvasConfig> storage)
+        public DeckPageService(DeckStorage storage)
         {
             _storage = storage;
             _profile = _storage.Current;
         }
 
         public event Action? SelectedPageChanged;
+
+        public string GetSelectedPageId() => _profile.PagesState.SelectedPageId;
+
+        public ObservableCollection<DeckPage> AllPages => _storage.Current.PagesState.AllPages;
 
         public void AddPage()
         {

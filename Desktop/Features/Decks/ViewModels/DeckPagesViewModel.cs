@@ -8,12 +8,11 @@ using System.Windows.Input;
 
 namespace StreamBoard.Features.Decks.ViewModels
 {
-    public partial class DeckPagesViewModel<TCanvasConfig> : ObservableObject, IDropTarget where TCanvasConfig : new()
+    public partial class DeckPagesViewModel : ObservableObject, IDropTarget
     {
-        private readonly DeckStorage<TCanvasConfig> _storage;
         private readonly IDeckPageService _pageService;
 
-        public ObservableCollection<DeckPage> AllPages => _storage.Current.PagesState.AllPages;
+        public ObservableCollection<DeckPage> AllPages => _pageService.AllPages;
 
         public ICommand AddPageCommand { get; }
         public ICommand DuplicatePageCommand { get; }
@@ -30,11 +29,11 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         public DeckPage? SelectedPage
         {
-            get => AllPages.FirstOrDefault(p => p.Id == _storage.Current.PagesState.SelectedPageId);
+            get => AllPages.FirstOrDefault(p => p.Id == _pageService.GetSelectedPageId());
             set
             {
                 IsRenameMode = false;
-                if (value != null && _storage.Current.PagesState.SelectedPageId != value.Id)
+                if (value != null && _pageService.GetSelectedPageId() != value.Id)
                 {
                     _pageService.SelectPage(value.Id);
                 }
@@ -43,9 +42,8 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         public event Action<string, string>? PageRenamed;
 
-        public DeckPagesViewModel(DeckStorage<TCanvasConfig> storage, IDeckPageService pageService)
+        public DeckPagesViewModel(DeckStorage storage, IDeckPageService pageService)
         {
-            _storage = storage;
             _pageService = pageService;
 
             _pageService.SelectedPageChanged += () =>
@@ -75,7 +73,8 @@ namespace StreamBoard.Features.Decks.ViewModels
 
             EndRenameCommand = new RelayCommand(_ => OnEndRename());
 
-            if (typeof(TCanvasConfig) == typeof(GridCanvasConfig))
+            var deckType = storage.Current.CanvasConfig.Type;
+            if (deckType == DeckType.Grid)
             {
                 GridDeckNavigationBus.Register(OnNextPage, OnPreviousPage, OnSwitchPage);
             }
@@ -110,6 +109,7 @@ namespace StreamBoard.Features.Decks.ViewModels
             }
         }
 
+        // --- DeckNavigationBus ---
         private void OnNextPage()
         {
             Application.Current.Dispatcher.Invoke(() => _pageService.NextPage());
