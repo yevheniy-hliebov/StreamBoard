@@ -1,4 +1,5 @@
-﻿using StreamBoard.Features.Actions.Services;
+﻿using StreamBoard.Core.Services;
+using StreamBoard.Features.Actions.Services;
 using StreamBoard.Features.Decks.Models;
 
 namespace StreamBoard.Features.Decks.Services
@@ -8,26 +9,35 @@ namespace StreamBoard.Features.Decks.Services
         public BaseCanvasConfig CanvasConfig { get; }
         public Dictionary<string, DeckButtonConfig> GetCurrentButtonMap();
         public DeckButtonConfig GetOrCreateButton(int index);
+        
         public Task ExecuteButtonActions(DeckButtonConfig config);
+        
+        public event Action<int, int>? ButtonsSwapped;
         public void SwapButtons(int sourceIndex, int targetIndex);
+
+        void CopyButton(int index);
+        void PasteButton(int index);
+        void DeleteButton(int index);
+        bool CanPaste();
+
         void AddActionToButton(int index, ActionDescriptor descriptor);
         public void SaveChanges();
 
-        public event Action<int, int>? ButtonsSwapped;
     }
 
     public class DeckButtonService : IDeckButtonService
     {
         private readonly DeckStorage _storage;
         private readonly DeckProfile _profile;
+        private readonly IClipboardService _clipboardService;
 
-        public event Action<int, DeckButtonConfig>? ButtonAppearanceChanged;
         public event Action<int, int>? ButtonsSwapped;
 
-        public DeckButtonService(DeckStorage storage)
+        public DeckButtonService(DeckStorage storage, IClipboardService clipboardService)
         {
             _storage = storage;
             _profile = _storage.Current;
+            _clipboardService = clipboardService;
         }
 
         public BaseCanvasConfig CanvasConfig => _profile.CanvasConfig;
@@ -82,6 +92,40 @@ namespace StreamBoard.Features.Decks.Services
 
             _storage.Save();
             ButtonsSwapped?.Invoke(sourceIndex, targetIndex);
+        }
+
+        public void CopyButton(int index)
+        {
+            var map = GetCurrentButtonMap();
+            if (map.TryGetValue(index.ToString(), out var config))
+            {
+                _clipboardService.Copy(config);
+            }
+        }
+
+        public void PasteButton(int index)
+        {
+            var newConfig = _clipboardService.Paste<DeckButtonConfig>();
+            if (newConfig == null) return;
+
+            var map = GetCurrentButtonMap();
+            map[index.ToString()] = newConfig;
+
+            _storage.Save();
+        }
+
+        public void DeleteButton(int index)
+        {
+            var map = GetCurrentButtonMap();
+            if (map.Remove(index.ToString()))
+            {
+                _storage.Save();
+            }
+        }
+
+        public bool CanPaste()
+        {
+            return _clipboardService.HasDataOfType<DeckButtonConfig>();
         }
 
         public void AddActionToButton(int index, ActionDescriptor descriptor)

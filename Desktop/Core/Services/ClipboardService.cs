@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using StreamBoard.Helpers;
+using System.Text.Json;
 
 namespace StreamBoard.Core.Services
 {
@@ -23,7 +24,7 @@ namespace StreamBoard.Core.Services
         {
             if (item == null) return;
 
-            _clipboardDataJson = JsonSerializer.Serialize(item);
+            _clipboardDataJson = JsonHelper.SerializeToString(item);
             _currentDataType = typeof(T);
 
             ClipboardChanged?.Invoke();
@@ -36,7 +37,7 @@ namespace StreamBoard.Core.Services
                 return default;
             }
 
-            return JsonSerializer.Deserialize<T>(_clipboardDataJson);
+            return JsonHelper.DeserializeFromString<T>(_clipboardDataJson);
         }
 
         public bool HasDataOfType<T>()

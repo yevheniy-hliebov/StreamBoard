@@ -1,4 +1,5 @@
 ﻿using StreamBoard.Core;
+using StreamBoard.Core.Services;
 using StreamBoard.Features.Actions.Services;
 using StreamBoard.Features.Actions.ViewModels;
 using StreamBoard.Features.Decks.Models;
@@ -22,10 +23,10 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         private CancellationTokenSource? _buttonDebounceCts;
 
-        public GridDeckViewModel(GridDeckStorage storage, ActionRegistry registry, WebsocketManager wsManager)
+        public GridDeckViewModel(GridDeckStorage storage, ActionRegistry registry, WebsocketManager wsManager, IClipboardService clipboard)
         {
             var _pageServise = new DeckPageService(storage);
-            var _buttonServise = new DeckButtonService(storage);
+            var _buttonServise = new DeckButtonService(storage, clipboard);
 
             Pages = new DeckPagesViewModel(storage, _pageServise);
             Library = new ActionLibraryViewModel(registry);

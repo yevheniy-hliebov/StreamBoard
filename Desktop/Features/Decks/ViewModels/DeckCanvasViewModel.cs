@@ -30,6 +30,10 @@ namespace StreamBoard.Features.Decks.ViewModels
         }
 
         public ICommand ClickButtonCommand { get; }
+        public ICommand CopyCommand { get; }
+        public ICommand PasteCommand { get; }
+        public ICommand DeleteCommand { get; }
+
 
         private DeckButtonSlot? _selectedButton;
         public DeckButtonSlot? SelectedButton
@@ -66,6 +70,9 @@ namespace StreamBoard.Features.Decks.ViewModels
             CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
 
             ClickButtonCommand = new RelayCommand(async p => await ExecuteClickButton(p));
+            CopyCommand = new RelayCommand(_ => ExecuteCopy());
+            PasteCommand = new RelayCommand(_ => ExecutePaste(), _ => _buttonService.CanPaste());
+            DeleteCommand = new RelayCommand(_ => ExecuteDelete());
 
             RebuildButtons();
         }
@@ -103,6 +110,34 @@ namespace StreamBoard.Features.Decks.ViewModels
             else if (slot.Config != null)
             {
                 await _buttonService.ExecuteButtonActions(slot.Config);
+            }
+        }
+
+        private void ExecuteCopy()
+        {
+            if (SelectedButton != null)
+            {
+                _buttonService.CopyButton(SelectedButton.Index);
+
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
+        private void ExecutePaste()
+        {
+            if (SelectedButton != null)
+            {
+                _buttonService.PasteButton(SelectedButton.Index);
+                RebuildButtons();
+            }
+        }
+
+        private void ExecuteDelete()
+        {
+            if (SelectedButton != null)
+            {
+                _buttonService.DeleteButton(SelectedButton.Index);
+                RebuildButtons();
             }
         }
 

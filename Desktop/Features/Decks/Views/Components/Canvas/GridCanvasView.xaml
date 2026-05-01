@@ -8,6 +8,12 @@
     xmlns:models="clr-namespace:StreamBoard.Features.Decks.Models"
     x:Name="Root">
 
+    <UserControl.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="C" Command="{Binding CopyCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="V" Command="{Binding PasteCommand}" />
+        <KeyBinding Key="Delete" Command="{Binding DeleteCommand}" />
+    </UserControl.InputBindings>
+
     <UserControl.Resources>
         <DataTemplate x:Key="EditorModeTemplate">
             <dd:DropWrapper

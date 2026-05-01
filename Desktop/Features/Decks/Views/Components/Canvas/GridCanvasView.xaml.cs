@@ -13,9 +13,13 @@ namespace StreamBoard.Features.Decks.Views.Components.Canvas
         {
             InitializeComponent();
 
-            Loaded += OnLoaded;
+            Focusable = true;
+            FocusVisualStyle = null;
 
-            Viewport.MouseDown += OnMouseDown;
+            Loaded += OnLoaded;
+            this.PreviewMouseDown += (s, e) => this.Focus();
+
+            Viewport.MouseDown += OnViewportMouseDown;
             Viewport.MouseMove += OnMouseMove;
             Viewport.MouseUp += OnMouseUp;
 
@@ -27,7 +31,7 @@ namespace StreamBoard.Features.Decks.Views.Components.Canvas
             CenterSurface();
         }
 
-        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void OnViewportMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Middle)
             {
