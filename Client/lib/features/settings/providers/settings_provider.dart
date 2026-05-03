@@ -7,18 +7,22 @@ class SettingsProvider extends ChangeNotifier {
   late String address;
   late String port;
   late bool isConfigured;
+  late bool receiveBetaUpdates;
+  late String skippedVersion;
 
   SettingsProvider(this._prefs) {
     isConfigured = _prefs.containsKey('server_address');
 
     address = _prefs.getString('server_address') ?? '';
     port = _prefs.getString('server_port') ?? '13550';
+    receiveBetaUpdates = _prefs.getBool('receive_beta_updates') ?? false;
+    skippedVersion = _prefs.getString('skipped_version') ?? '';
   }
 
   String get baseUrl =>
       'http://${address.isEmpty ? "localhost" : address}:$port';
 
-  Future<void> saveSettings(String newAddress, String newPort) async {
+  Future<void> saveServerSettings(String newAddress, String newPort) async {
     address = newAddress;
     port = newPort;
     isConfigured = true;
@@ -26,6 +30,18 @@ class SettingsProvider extends ChangeNotifier {
     await _prefs.setString('server_address', address);
     await _prefs.setString('server_port', port);
 
+    notifyListeners();
+  }
+
+  Future<void> toggleBetaUpdates(bool value) async {
+    receiveBetaUpdates = value;
+    await _prefs.setBool('receive_beta_updates', value);
+    notifyListeners();
+  }
+
+  Future<void> saveSkippedVersion(String version) async {
+    skippedVersion = version;
+    await _prefs.setString('skipped_version', version);
     notifyListeners();
   }
 }

@@ -8,17 +8,32 @@ import 'package:streamboard/features/home/providers/deck_provider.dart';
 import 'package:streamboard/features/home/services/grid_service.dart';
 import 'package:streamboard/features/home/services/websocket_service.dart';
 import 'package:streamboard/features/settings/providers/settings_provider.dart';
+import 'package:streamboard/features/updater/services/app_info_service.dart';
+import 'package:streamboard/features/updater/services/update_service.dart';
+import 'package:streamboard/features/updater/providers/updater_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
+  final appInfoService = AppInfoService();
+  await appInfoService.init();
+
+  final updateService = UpdateService();
+
   final prefs = await SharedPreferences.getInstance();
+  // await prefs.clear();
 
   runApp(
     MultiProvider(
       providers: [
+        Provider.value(value: appInfoService),
+        Provider.value(value: updateService),
+
         ChangeNotifierProvider(create: (_) => SettingsProvider(prefs)),
+
+        // Надаємо UpdaterProvider, передаючи готовий updateService
+        ChangeNotifierProvider(create: (_) => UpdaterProvider(updateService)),
 
         // Надаємо GridService
         ProxyProvider<SettingsProvider, GridService>(
@@ -73,7 +88,12 @@ class App extends StatelessWidget {
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+          brightness: Brightness.dark,
+        ),
+      ),
       home: const HomeScreen(),
     );
   }

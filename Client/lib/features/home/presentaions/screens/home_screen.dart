@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:streamboard/features/updater/presentations/update_dialog.dart';
+import 'package:streamboard/features/updater/providers/updater_provider.dart';
+import 'package:streamboard/features/updater/services/app_info_service.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:streamboard/common/widgets/orientation_adaptive_scaffold.dart';
 import 'package:streamboard/core/constants/app_colors.dart';
@@ -22,12 +25,35 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WakelockPlus.enable();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _runAutoUpdateCheck();
+    });
   }
 
   @override
   void dispose() {
     WakelockPlus.disable();
     super.dispose();
+  }
+
+  Future<void> _runAutoUpdateCheck() async {
+    final updaterProvider = context.read<UpdaterProvider>();
+    final settings = context.read<SettingsProvider>();
+    final appInfo = context.read<AppInfoService>().appInfo;
+
+    final shouldShowDialog = await updaterProvider.checkForUpdatesOnStartup(
+      appInfo,
+      settings,
+    );
+
+    if (shouldShowDialog && mounted) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const UpdateDialog(),
+      );
+    }
   }
 
   @override
