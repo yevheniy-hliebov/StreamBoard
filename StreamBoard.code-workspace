@@ -1,6 +1,10 @@
 {
   "folders": [
     {
+      "name": "⚙️ Root (Scripts)",
+      "path": "."
+    },
+    {
       "name": "🖥️ Desktop (C#)",
       "path": "Desktop"
     },
