@@ -17,6 +17,12 @@ class AppTheme {
         brightness: brightness,
       ),
       scaffoldBackgroundColor: colors.background,
+      iconTheme: IconThemeData(color: colors.onBackground),
+      listTileTheme: ListTileThemeData(
+        iconColor: colors.onBackground,
+        subtitleTextStyle: TextStyle().copyWith(color: colors.onBackground),
+      ),
+      dialogTheme: DialogThemeData(backgroundColor: colors.background),
     );
   }
 }

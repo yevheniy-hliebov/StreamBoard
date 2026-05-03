@@ -2,7 +2,7 @@ name: streamboard
 description: "StreamBoard Client Application."
 publish_to: "none"
 
-version: 1.0.0+1
+version: 0.1.0-beta.1+1
 
 environment:
   sdk: ^3.10.7
@@ -12,9 +12,14 @@ dependencies:
     sdk: flutter
   provider: ^6.1.5+1
   http: ^1.6.0
+  dio: ^5.9.2
   shared_preferences: ^2.5.4
   wakelock_plus: 1.5.2
   web_socket_channel: ^3.0.3
+  pub_semver: ^2.2.0
+  path_provider: ^2.1.5
+  open_filex: ^4.7.0
+  package_info_plus: ^9.0.1
 
 dev_dependencies:
   flutter_test:
