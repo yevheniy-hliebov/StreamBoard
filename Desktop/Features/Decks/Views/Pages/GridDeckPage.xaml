@@ -16,6 +16,10 @@
     ScrollViewer.CanContentScroll="False"
     mc:Ignorable="d">
 
+    <Page.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="E" Command="{Binding Canvas.ToggleClickCommand}" />
+    </Page.InputBindings>
+
     <layout:DeckEditorLayout
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"

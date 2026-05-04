@@ -5,6 +5,7 @@ using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace StreamBoard.Features.Decks.ViewModels
@@ -35,6 +36,7 @@ namespace StreamBoard.Features.Decks.ViewModels
         public ICommand CopyCommand { get; }
         public ICommand PasteCommand { get; }
         public ICommand DeleteCommand { get; }
+        public ICommand ToggleClickCommand { get; }
 
 
         private DeckButtonSlot? _selectedButton;
@@ -79,6 +81,11 @@ namespace StreamBoard.Features.Decks.ViewModels
             CopyCommand = new RelayCommand(_ => ExecuteCopy());
             PasteCommand = new RelayCommand(async _ => await ExecutePaste(), _ => _buttonService.CanPaste());
             DeleteCommand = new RelayCommand(async _ => await ExecuteDelete());
+
+            ToggleClickCommand = new RelayCommand(_ =>
+            {
+                IsClickMode = !IsClickMode;
+            });
 
             RebuildButtons();
         }
