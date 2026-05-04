@@ -1,5 +1,6 @@
 ﻿using StreamBoard.Core;
 using StreamBoard.Core.Services;
+using StreamBoard.Features.Actions.Services;
 using StreamBoard.Features.Actions.ViewModels;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
@@ -44,14 +45,15 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         public event Action<DeckButtonSlot>? ButtonAppearanceChanged;
 
-        public DeckButtonEditorViewModel(GridDeckStorage storage, IDialogService dialogService)
+        public DeckButtonEditorViewModel(GridDeckStorage storage, IDialogService dialogService, IClipboardService clipboard)
         {
             _storage = storage;
             _dialogService = dialogService;
+            var actionService = new ActionCollectionService(dialogService, clipboard);
 
             ActionList = new ActionListViewModel(
-                onSaveRequested: () => _storage.Save(), 
-                dialogService: dialogService
+                onSaveRequested: () => _storage.Save(),
+                actionService: actionService
             );
 
             ClearButtonCommand = new RelayCommand(async _ => await OnClearButtonAppearance());

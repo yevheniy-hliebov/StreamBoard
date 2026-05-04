@@ -36,7 +36,7 @@ namespace StreamBoard.Features.Decks.ViewModels
 
             Pages = new DeckPagesViewModel(storage, _pageServise, dialogService);
             Library = new ActionLibraryViewModel(registry);
-            Editor = new DeckButtonEditorViewModel(storage, dialogService);
+            Editor = new DeckButtonEditorViewModel(storage, dialogService, clipboard);
             Canvas = new DeckCanvasViewModel(_buttonServise, _pageServise, dialogService);
 
             _wsManager = wsManager;

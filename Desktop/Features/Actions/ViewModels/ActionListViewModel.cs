@@ -1,6 +1,5 @@
 using GongSolutions.Wpf.DragDrop;
 using StreamBoard.Core;
-using StreamBoard.Core.Services;
 using StreamBoard.Features.Actions.Models;
 using StreamBoard.Features.Actions.Services;
 using StreamBoard.Features.Actions.Views.Components.Editor;
@@ -13,8 +12,7 @@ namespace StreamBoard.Features.Actions.ViewModels
 {
     public class ActionListViewModel : ObservableObject, IDropTarget
     {
-        private readonly IDialogService _dialogService;
-
+        private readonly IActionCollectionService _actionService;
         private readonly Action _onSaveRequested;
 
         private ObservableCollection<BaseAction>? _actions;
@@ -41,30 +39,68 @@ namespace StreamBoard.Features.Actions.ViewModels
             set => SetProperty(ref _editingActionCopy, value);
         }
 
+        private BaseAction? _selectedAction;
+        public BaseAction? SelectedAction
+        {
+            get => _selectedAction;
+            set => SetProperty(ref _selectedAction, value);
+        }
+
         public ICommand DeleteActionCommand { get; }
         public ICommand ClearActionsCommand { get; }
         public ICommand OpenEditDialogCommand { get; }
         public ICommand ReceiveActionDropCommand { get; }
+        public ICommand CopyActionCommand { get; }
+        public ICommand CutActionCommand { get; }
+        public ICommand PasteActionCommand { get; }
+        public ICommand DuplicateActionCommand { get; }
 
-        public ActionListViewModel(Action onSaveRequested, IDialogService dialogService)
+        public ActionListViewModel(Action onSaveRequested, IActionCollectionService actionService)
         {
-            _dialogService = dialogService;
-
+            _actionService = actionService;
             _onSaveRequested = onSaveRequested;
 
             DeleteActionCommand = new RelayCommand<string>(id =>
             {
                 if (string.IsNullOrEmpty(id) || Actions == null) return;
+                _actionService.RemoveAction(Actions, id);
+                _onSaveRequested.Invoke();
+            });
 
-                var actionToRemove = Actions.FirstOrDefault(action => action.Id == id);
-                if (actionToRemove != null)
+            ClearActionsCommand = new RelayCommand(async _ =>
+            {
+                if (Actions != null && await _actionService.TryClearActionsAsync(Actions))
                 {
-                    Actions.Remove(actionToRemove);
                     _onSaveRequested.Invoke();
                 }
             });
 
-            ClearActionsCommand = new RelayCommand(async _ => await OnDeleteAllActions());
+            CopyActionCommand = new RelayCommand<string>(id =>
+            {
+                if (string.IsNullOrEmpty(id) || Actions == null) return;
+                _actionService.CopyAction(Actions, id);
+            });
+
+            CutActionCommand = new RelayCommand<string>(id =>
+            {
+                if (string.IsNullOrEmpty(id) || Actions == null) return;
+                _actionService.CutAction(Actions, id);
+                _onSaveRequested.Invoke();
+            });
+
+            PasteActionCommand = new RelayCommand(_ =>
+            {
+                Actions ??= [];
+                _actionService.PasteAction(Actions);
+                _onSaveRequested.Invoke();
+            });
+
+            DuplicateActionCommand = new RelayCommand<string>(id =>
+            {
+                if (string.IsNullOrEmpty(id) || Actions == null) return;
+                _actionService.DuplicateAction(Actions, id);
+                _onSaveRequested.Invoke();
+            });
 
             OpenEditDialogCommand = new RelayCommand<string>(id =>
             {
@@ -85,12 +121,8 @@ namespace StreamBoard.Features.Actions.ViewModels
 
                     if (dialog.ShowDialog() == true)
                     {
-                        int index = Actions.IndexOf(_originalActionToEdit);
-                        if (index >= 0)
-                        {
-                            Actions[index] = EditingActionCopy;
-                            _onSaveRequested.Invoke();
-                        }
+                        _actionService.UpdateAction(Actions, _originalActionToEdit, EditingActionCopy);
+                        _onSaveRequested.Invoke();
                     }
 
                     CloseDialog();
@@ -103,26 +135,10 @@ namespace StreamBoard.Features.Actions.ViewModels
 
                 if (payload is ActionDescriptor descriptor)
                 {
-                    var newAction = descriptor.CreateInstance();
-                    Actions.Add(newAction);
+                    _actionService.AddAction(Actions, descriptor);
                     _onSaveRequested.Invoke();
                 }
             });
-        }
-
-        private async Task OnDeleteAllActions()
-        {
-            if (Actions != null && Actions.Count > 0)
-            {
-                bool isConfirmed = await _dialogService.ShowConfirmationAsync(
-                    "Delete all actions",
-                    "Are you sure you want to delete all actions?");
-
-                if (!isConfirmed) return;
-
-                Actions.Clear();
-                _onSaveRequested.Invoke();
-            }
         }
 
         void IDropTarget.DragOver(IDropInfo dropInfo)
@@ -153,10 +169,9 @@ namespace StreamBoard.Features.Actions.ViewModels
 
                 if (oldIndex < newIndex) newIndex--;
 
-                if (oldIndex != newIndex)
+                if (oldIndex != newIndex && Actions != null)
                 {
-                    dynamic observableCollection = dropInfo.TargetCollection;
-                    observableCollection.Move(oldIndex, newIndex);
+                    _actionService.MoveAction(Actions, oldIndex, newIndex);
                     _onSaveRequested.Invoke();
                 }
             }

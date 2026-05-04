@@ -9,6 +9,27 @@
     xmlns:reorder="clr-namespace:StreamBoard.Components.Controls.ReorderList"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
+    <UserControl.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="C" 
+                    Command="{Binding CopyActionCommand}" 
+                    CommandParameter="{Binding SelectedAction.Id}" />
+
+        <KeyBinding Modifiers="Ctrl" Key="X" 
+                    Command="{Binding CutActionCommand}" 
+                    CommandParameter="{Binding SelectedAction.Id}" />
+
+        <KeyBinding Modifiers="Ctrl" Key="D" 
+                    Command="{Binding DuplicateActionCommand}" 
+                    CommandParameter="{Binding SelectedAction.Id}" />
+
+        <KeyBinding Key="Delete" 
+                    Command="{Binding DeleteActionCommand}" 
+                    CommandParameter="{Binding SelectedAction.Id}" />
+
+        <KeyBinding Modifiers="Ctrl" Key="V" 
+                    Command="{Binding PasteActionCommand}" />
+    </UserControl.InputBindings>
+
     <cdd:DropWrapper
         Margin="0"
         Padding="2"
@@ -16,13 +37,16 @@
         DragOverBorderBrush="{DynamicResource AccentTextFillColorPrimaryBrush}"
         DropCommand="{Binding ReceiveActionDropCommand}">
         <controls:ConstrainedScrollBorder>
+
             <reorder:ReorderListView
+                SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
                 HorizontalContentAlignment="Stretch"
                 dd:DragDrop.DropHandler="{Binding}"
                 dd:DragDrop.IsDragSource="True"
                 dd:DragDrop.IsDropTarget="True"
                 ItemsSource="{Binding Actions}"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
                 <reorder:ReorderListView.ItemTemplate>
                     <DataTemplate>
                         <reorder:ReorderListItemWrapper ShowDragHandle="True" UseDragHandle="True">
@@ -33,10 +57,10 @@
                                 Text="{Binding FullLabel}">
 
                                 <local:ActionListItem.InputBindings>
-                                    <MouseBinding
+                                    <MouseBinding 
                                         Command="{Binding DataContext.OpenEditDialogCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
                                         CommandParameter="{Binding Id}"
-                                        MouseAction="LeftClick" />
+                                        MouseAction="LeftDoubleClick" />
                                 </local:ActionListItem.InputBindings>
 
                             </local:ActionListItem>

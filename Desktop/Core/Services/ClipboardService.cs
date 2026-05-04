@@ -11,6 +11,7 @@ namespace StreamBoard.Core.Services
         event Action? ClipboardChanged;
 
         void Copy<T>(T item);
+        void Cut<T>(T item);
         T? Paste<T>();
         bool HasDataOfType<T>();
         void Clear();
@@ -39,7 +40,19 @@ namespace StreamBoard.Core.Services
 
             ClipboardChanged?.Invoke();
 
-            ShowCopyNotification<T>();
+            ShowNotification<T>(isCut: false);
+        }
+
+        public void Cut<T>(T item)
+        {
+            if (item == null) return;
+
+            _clipboardDataJson = JsonHelper.SerializeToString(item);
+            _currentDataType = typeof(T);
+
+            ClipboardChanged?.Invoke();
+
+            ShowNotification<T>(isCut: true);
         }
 
         public T? Paste<T>()
@@ -65,7 +78,7 @@ namespace StreamBoard.Core.Services
             ClipboardChanged?.Invoke();
         }
 
-        private void ShowCopyNotification<T>()
+        private void ShowNotification<T>(bool isCut)
         {
             string itemName = typeof(T).Name;
 
@@ -74,11 +87,16 @@ namespace StreamBoard.Core.Services
             else if (itemName.Contains("Action")) itemName = "Action";
             else itemName = "Item";
 
+            string actionVerb = isCut ? "cut" : "copied";
+            string title = isCut ? "Cut" : "Copied";
+
+            var icon = isCut ? FluentIconType.Cut : FluentIconType.Copy;
+
             _snackbarService.Show(
-                "Copied",
-                $"{itemName} copied to clipboard.",
+                title,
+                $"{itemName} {actionVerb} to clipboard.",
                 ControlAppearance.Secondary,
-                new FluentIcon { IconType = FluentIconType.Copy },
+                new FluentIcon { IconType = icon },
                 TimeSpan.FromSeconds(2)
             );
         }
