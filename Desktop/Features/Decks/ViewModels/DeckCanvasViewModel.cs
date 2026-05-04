@@ -35,6 +35,7 @@ namespace StreamBoard.Features.Decks.ViewModels
         public ICommand ClickButtonCommand { get; }
         public ICommand CopyCommand { get; }
         public ICommand PasteCommand { get; }
+        public ICommand CutCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand ToggleClickCommand { get; }
 
@@ -80,6 +81,7 @@ namespace StreamBoard.Features.Decks.ViewModels
             ClickButtonCommand = new RelayCommand(async p => await ExecuteClickButton(p));
             CopyCommand = new RelayCommand(_ => ExecuteCopy());
             PasteCommand = new RelayCommand(async _ => await ExecutePaste(), _ => _buttonService.CanPaste());
+            CutCommand = new RelayCommand(async _ => await ExecuteCut());
             DeleteCommand = new RelayCommand(async _ => await ExecuteDelete());
 
             ToggleClickCommand = new RelayCommand(_ =>
@@ -131,6 +133,26 @@ namespace StreamBoard.Features.Decks.ViewModels
             if (SelectedButton != null)
             {
                 _buttonService.CopyButton(SelectedButton.Index);
+
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
+        private async Task ExecuteCut()
+        {
+            if (SelectedButton != null)
+            {
+                if (SelectedButton.Config != null && SelectedButton.Config.HasData)
+                {
+                    bool isConfirmed = await _dialogService.ShowConfirmationAsync(
+                        "Cut Button",
+                        "Are you sure you want to cut this button? If you don't paste, all actions and appearance will be lost.");
+
+                    if (!isConfirmed) return;
+                }
+
+                _buttonService.CutButton(SelectedButton.Index);
+                RebuildButtons();
 
                 CommandManager.InvalidateRequerySuggested();
             }

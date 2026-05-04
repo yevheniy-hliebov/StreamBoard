@@ -13,8 +13,9 @@
     <UserControl.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="C" Command="{Binding CopyPageCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="V" Command="{Binding PastePageCommand}" />
-        <KeyBinding Modifiers="Ctrl" Key="R" Command="{Binding RenamePageCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="X" Command="{Binding CutPageCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="D" Command="{Binding DuplicatePageCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="R" Command="{Binding RenamePageCommand}" />
         <KeyBinding Key="Delete" Command="{Binding DeletePageCommand}" />
     </UserControl.InputBindings>
 

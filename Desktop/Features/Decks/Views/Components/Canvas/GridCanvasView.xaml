@@ -11,6 +11,7 @@
     <UserControl.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="C" Command="{Binding CopyCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="V" Command="{Binding PasteCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="X" Command="{Binding CutCommand}" />
         <KeyBinding Key="Delete" Command="{Binding DeleteCommand}" />
     </UserControl.InputBindings>
 

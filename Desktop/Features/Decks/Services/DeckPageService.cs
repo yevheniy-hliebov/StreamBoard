@@ -14,6 +14,7 @@ namespace StreamBoard.Features.Decks.Services
         public void RenamePage(string id, string newName);
         public void CopyPage(string id);
         public void PastePage();
+        public void CutPage(string id);
         public void DuplicatePage(string id);
         public void DeletePage(string id);
         public void SelectPage(string id);
@@ -100,7 +101,7 @@ namespace StreamBoard.Features.Decks.Services
 
             var payload = new PageClipboardPayload
             {
-                Name = page.Name,
+                Name = $"{page.Name} (Copy)",
                 Buttons = _profile.ButtonMaps.TryGetValue(id, out var buttons)
                     ? buttons
                     : []
@@ -116,7 +117,7 @@ namespace StreamBoard.Features.Decks.Services
 
             var newPage = new DeckPage
             {
-                Name = $"{payload.Name} (Copy)"
+                Name = payload.Name
             };
 
             _profile.ButtonMaps[newPage.Id] = payload.Buttons ?? [];
@@ -126,6 +127,24 @@ namespace StreamBoard.Features.Decks.Services
 
             _storage.Save();
             SelectedPageChanged?.Invoke();
+        }
+
+        public void CutPage(string id)
+        {
+            var page = _profile.PagesState.AllPages.FirstOrDefault(p => p.Id == id);
+            if (page == null) return;
+
+            var payload = new PageClipboardPayload
+            {
+                Name = page.Name,
+                Buttons = _profile.ButtonMaps.TryGetValue(id, out var buttons)
+                    ? buttons
+                    : []
+            };
+
+            _clipboardService.Cut(payload);
+
+            DeletePage(id);
         }
 
         public void DuplicatePage(string id)

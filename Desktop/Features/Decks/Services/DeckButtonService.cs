@@ -17,6 +17,7 @@ namespace StreamBoard.Features.Decks.Services
 
         void CopyButton(int index);
         void PasteButton(int index);
+        void CutButton(int index);
         void DeleteButton(int index);
         bool CanPaste();
 
@@ -100,6 +101,20 @@ namespace StreamBoard.Features.Decks.Services
             if (map.TryGetValue(index.ToString(), out var config))
             {
                 _clipboardService.Copy(config);
+            }
+        }
+
+        public void CutButton(int index)
+        {
+            var map = GetCurrentButtonMap();
+            if (map.TryGetValue(index.ToString(), out var config))
+            {
+                _clipboardService.Cut(config);
+            }
+
+            if (map.Remove(index.ToString()))
+            {
+                _storage.Save();
             }
         }
 

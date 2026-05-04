@@ -19,6 +19,7 @@ namespace StreamBoard.Features.Decks.ViewModels
         public ICommand AddPageCommand { get; }
         public ICommand CopyPageCommand { get; }
         public ICommand PastePageCommand { get; }
+        public ICommand CutPageCommand { get; }
         public ICommand DuplicatePageCommand { get; }
         public ICommand RenamePageCommand { get; }
         public ICommand EndRenameCommand { get; }
@@ -76,6 +77,8 @@ namespace StreamBoard.Features.Decks.ViewModels
                 if (SelectedPage != null) _pageService.DuplicatePage(SelectedPage.Id);
             }, _ => SelectedPage != null);
 
+            CutPageCommand = new RelayCommand(async _ => await OnCutPage(), _ => AllPages.Count > 1);
+
             DeletePageCommand = new RelayCommand(async _ => await OnDeletePage(), _ => AllPages.Count > 1);
 
             RenamePageCommand = new RelayCommand(_ =>
@@ -103,6 +106,20 @@ namespace StreamBoard.Features.Decks.ViewModels
                 if (!isConfirmed) return;
 
                 _pageService.DeletePage(SelectedPage.Id);
+            }
+        }
+
+        private async Task OnCutPage()
+        {
+            if (SelectedPage != null)
+            {
+                bool isConfirmed = await _dialogService.ShowConfirmationAsync(
+                    "Cut Page",
+                    "Are you sure you want to cut this page? If you don't paste, all configured buttons with appearance and actions will be lost.");
+
+                if (!isConfirmed) return;
+
+                _pageService.CutPage(SelectedPage.Id);
             }
         }
 
