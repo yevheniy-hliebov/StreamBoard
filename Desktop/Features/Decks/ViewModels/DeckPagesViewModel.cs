@@ -1,5 +1,6 @@
 ﻿using GongSolutions.Wpf.DragDrop;
 using StreamBoard.Core;
+using StreamBoard.Core.Services;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
 using System.Collections.ObjectModel;
@@ -11,6 +12,7 @@ namespace StreamBoard.Features.Decks.ViewModels
     public partial class DeckPagesViewModel : ObservableObject, IDropTarget
     {
         private readonly IDeckPageService _pageService;
+        private readonly IDialogService _dialogService;
 
         public ObservableCollection<DeckPage> AllPages => _pageService.AllPages;
 
@@ -42,9 +44,13 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         public event Action<string, string>? PageRenamed;
 
-        public DeckPagesViewModel(DeckStorage storage, IDeckPageService pageService)
+        public DeckPagesViewModel(
+            DeckStorage storage, 
+            IDeckPageService pageService,
+            IDialogService dialogService)
         {
             _pageService = pageService;
+            _dialogService = dialogService;
 
             _pageService.SelectedPageChanged += () =>
             {
@@ -61,10 +67,7 @@ namespace StreamBoard.Features.Decks.ViewModels
                 if (SelectedPage != null) _pageService.DuplicatePage(SelectedPage.Id);
             }, _ => SelectedPage != null);
 
-            DeletePageCommand = new RelayCommand(_ =>
-            {
-                if (SelectedPage != null) _pageService.DeletePage(SelectedPage.Id);
-            }, _ => AllPages.Count > 1);
+            DeletePageCommand = new RelayCommand(async _ => await OnDeletePage(), _ => AllPages.Count > 1);
 
             RenamePageCommand = new RelayCommand(_ =>
             {
@@ -77,6 +80,20 @@ namespace StreamBoard.Features.Decks.ViewModels
             if (deckType == DeckType.Grid)
             {
                 GridDeckNavigationBus.Register(OnNextPage, OnPreviousPage, OnSwitchPage);
+            }
+        }
+
+        private async Task OnDeletePage()
+        {
+            if (SelectedPage != null)
+            {
+                bool isConfirmed = await _dialogService.ShowConfirmationAsync(
+                    "Delete Page",
+                    "Are you sure you want to delete this page? All configured buttons with appearance and actions will be lost.");
+
+                if (!isConfirmed) return;
+
+                _pageService.DeletePage(SelectedPage.Id);
             }
         }
 

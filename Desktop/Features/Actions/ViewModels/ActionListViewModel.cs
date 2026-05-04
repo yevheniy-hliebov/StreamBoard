@@ -1,5 +1,6 @@
 using GongSolutions.Wpf.DragDrop;
 using StreamBoard.Core;
+using StreamBoard.Core.Services;
 using StreamBoard.Features.Actions.Models;
 using StreamBoard.Features.Actions.Services;
 using StreamBoard.Features.Actions.Views.Components.Editor;
@@ -12,6 +13,8 @@ namespace StreamBoard.Features.Actions.ViewModels
 {
     public class ActionListViewModel : ObservableObject, IDropTarget
     {
+        private readonly IDialogService _dialogService;
+
         private readonly Action _onSaveRequested;
 
         private ObservableCollection<BaseAction>? _actions;
@@ -43,8 +46,10 @@ namespace StreamBoard.Features.Actions.ViewModels
         public ICommand OpenEditDialogCommand { get; }
         public ICommand ReceiveActionDropCommand { get; }
 
-        public ActionListViewModel(Action onSaveRequested)
+        public ActionListViewModel(Action onSaveRequested, IDialogService dialogService)
         {
+            _dialogService = dialogService;
+
             _onSaveRequested = onSaveRequested;
 
             DeleteActionCommand = new RelayCommand<string>(id =>
@@ -59,14 +64,7 @@ namespace StreamBoard.Features.Actions.ViewModels
                 }
             });
 
-            ClearActionsCommand = new RelayCommand(_ =>
-            {
-                if (Actions != null && Actions.Count > 0)
-                {
-                    Actions.Clear();
-                    _onSaveRequested.Invoke();
-                }
-            });
+            ClearActionsCommand = new RelayCommand(async _ => await OnDeleteAllActions());
 
             OpenEditDialogCommand = new RelayCommand<string>(id =>
             {
@@ -110,6 +108,21 @@ namespace StreamBoard.Features.Actions.ViewModels
                     _onSaveRequested.Invoke();
                 }
             });
+        }
+
+        private async Task OnDeleteAllActions()
+        {
+            if (Actions != null && Actions.Count > 0)
+            {
+                bool isConfirmed = await _dialogService.ShowConfirmationAsync(
+                    "Delete all actions",
+                    "Are you sure you want to delete all actions?");
+
+                if (!isConfirmed) return;
+
+                Actions.Clear();
+                _onSaveRequested.Invoke();
+            }
         }
 
         void IDropTarget.DragOver(IDropInfo dropInfo)
