@@ -6,6 +6,7 @@ using StreamBoard.Features.Updater.Services;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Wpf.Ui;
 using Wpf.Ui.Controls;
 
 namespace StreamBoard
@@ -24,6 +25,9 @@ namespace StreamBoard
             InitializeComponent();
 
             WindowBackdropType = WindowBackdropType.Mica;
+
+            var snackbarService = App.ServiceProvider.GetRequiredService<ISnackbarService>();
+            snackbarService.SetSnackbarPresenter(RootSnackbarPresenter);
 
             _integrationsViewModel = App.ServiceProvider.GetRequiredService<IntegrationsViewModel>();
 

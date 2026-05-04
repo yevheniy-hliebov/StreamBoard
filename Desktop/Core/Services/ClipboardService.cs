@@ -1,5 +1,8 @@
-﻿using StreamBoard.Helpers;
-using System.Text.Json;
+﻿using StreamBoard.Components.Controls;
+using StreamBoard.Core.Models;
+using StreamBoard.Helpers;
+using Wpf.Ui;
+using Wpf.Ui.Controls;
 
 namespace StreamBoard.Core.Services
 {
@@ -18,7 +21,14 @@ namespace StreamBoard.Core.Services
         private string? _clipboardDataJson;
         private Type? _currentDataType;
 
+        private readonly ISnackbarService _snackbarService;
+
         public event Action? ClipboardChanged;
+
+        public ClipboardService(ISnackbarService snackbarService)
+        {
+            _snackbarService = snackbarService;
+        }
 
         public void Copy<T>(T item)
         {
@@ -28,6 +38,8 @@ namespace StreamBoard.Core.Services
             _currentDataType = typeof(T);
 
             ClipboardChanged?.Invoke();
+
+            ShowCopyNotification<T>();
         }
 
         public T? Paste<T>()
@@ -51,6 +63,24 @@ namespace StreamBoard.Core.Services
             _currentDataType = null;
 
             ClipboardChanged?.Invoke();
+        }
+
+        private void ShowCopyNotification<T>()
+        {
+            string itemName = typeof(T).Name;
+
+            if (itemName.Contains("PageClipboardPayload")) itemName = "Page";
+            else if (itemName.Contains("DeckButtonConfig")) itemName = "Button";
+            else if (itemName.Contains("Action")) itemName = "Action";
+            else itemName = "Item";
+
+            _snackbarService.Show(
+                "Copied",
+                $"{itemName} copied to clipboard.",
+                ControlAppearance.Secondary,
+                new FluentIcon { IconType = FluentIconType.Copy },
+                TimeSpan.FromSeconds(2)
+            );
         }
     }
 }
