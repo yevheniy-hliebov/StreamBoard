@@ -17,6 +17,8 @@ namespace StreamBoard.Features.Decks.ViewModels
         public ObservableCollection<DeckPage> AllPages => _pageService.AllPages;
 
         public ICommand AddPageCommand { get; }
+        public ICommand CopyPageCommand { get; }
+        public ICommand PastePageCommand { get; }
         public ICommand DuplicatePageCommand { get; }
         public ICommand RenamePageCommand { get; }
         public ICommand EndRenameCommand { get; }
@@ -61,6 +63,13 @@ namespace StreamBoard.Features.Decks.ViewModels
             };
 
             AddPageCommand = new RelayCommand(_ => _pageService.AddPage());
+            
+            CopyPageCommand = new RelayCommand(_ =>
+            {
+                if (SelectedPage != null) _pageService.CopyPage(SelectedPage.Id);
+            }, _ => SelectedPage != null);
+
+            PastePageCommand = new RelayCommand(_ => _pageService.PastePage());
 
             DuplicatePageCommand = new RelayCommand(_ =>
             {

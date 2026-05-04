@@ -31,7 +31,7 @@ namespace StreamBoard.Features.Decks.ViewModels
             IDialogService dialogService
         )
         {
-            var _pageServise = new DeckPageService(storage);
+            var _pageServise = new DeckPageService(storage, clipboard);
             var _buttonServise = new DeckButtonService(storage, clipboard);
 
             Pages = new DeckPagesViewModel(storage, _pageServise, dialogService);

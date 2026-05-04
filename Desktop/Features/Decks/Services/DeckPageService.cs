@@ -1,4 +1,5 @@
-﻿using StreamBoard.Features.Decks.Models;
+﻿using StreamBoard.Core.Services;
+using StreamBoard.Features.Decks.Models;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
@@ -11,6 +12,8 @@ namespace StreamBoard.Features.Decks.Services
         public ObservableCollection<DeckPage> AllPages { get; }
         public void AddPage();
         public void RenamePage(string id, string newName);
+        public void CopyPage(string id);
+        public void PastePage();
         public void DuplicatePage(string id);
         public void DeletePage(string id);
         public void SelectPage(string id);
@@ -19,15 +22,23 @@ namespace StreamBoard.Features.Decks.Services
         public void MovePage(int oldIndex, int newIndex);
     }
 
+    public class PageClipboardPayload
+    {
+        public string Name { get; set; } = string.Empty;
+        public Dictionary<string, DeckButtonConfig> Buttons { get; set; } = [];
+    }
+
     public class DeckPageService : IDeckPageService
     {
         private readonly DeckStorage _storage;
         private readonly DeckProfile _profile;
+        private readonly IClipboardService _clipboardService;
 
-        public DeckPageService(DeckStorage storage)
+        public DeckPageService(DeckStorage storage, IClipboardService clipboard)
         {
             _storage = storage;
             _profile = _storage.Current;
+            _clipboardService = clipboard;
         }
 
         public event Action? SelectedPageChanged;
@@ -80,6 +91,41 @@ namespace StreamBoard.Features.Decks.Services
                 page.Name = newName;
                 _storage.Save();
             }
+        }
+
+        public void CopyPage(string id)
+        {
+            var page = _profile.PagesState.AllPages.FirstOrDefault(p => p.Id == id);
+            if (page == null) return;
+
+            var payload = new PageClipboardPayload
+            {
+                Name = page.Name,
+                Buttons = _profile.ButtonMaps.TryGetValue(id, out var buttons)
+                    ? buttons
+                    : []
+            };
+
+            _clipboardService.Copy(payload);
+        }
+
+        public void PastePage()
+        {
+            var payload = _clipboardService.Paste<PageClipboardPayload>();
+            if (payload == null) return;
+
+            var newPage = new DeckPage
+            {
+                Name = $"{payload.Name} (Copy)"
+            };
+
+            _profile.ButtonMaps[newPage.Id] = payload.Buttons ?? [];
+            _profile.PagesState.AllPages.Add(newPage);
+
+            _profile.PagesState.SelectedPageId = newPage.Id;
+
+            _storage.Save();
+            SelectedPageChanged?.Invoke();
         }
 
         public void DuplicatePage(string id)

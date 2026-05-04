@@ -10,6 +10,14 @@
     xmlns:reorder="clr-namespace:StreamBoard.Components.Controls.ReorderList"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
+    <UserControl.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="C" Command="{Binding CopyPageCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="V" Command="{Binding PastePageCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="R" Command="{Binding RenamePageCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="D" Command="{Binding DuplicatePageCommand}" />
+        <KeyBinding Key="Delete" Command="{Binding DeletePageCommand}" />
+    </UserControl.InputBindings>
+
     <Grid VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
