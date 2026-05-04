@@ -48,11 +48,13 @@
                 <ui:Button
                     Margin="0,0,8,0"
                     Width="100"
+                    IsCancel="True"
                     Click="NoButton_Click"
                     Content="No" />
                 <ui:Button
                     Width="100"
                     Appearance="Primary"
+                    IsDefault="True"
                     Click="YesButton_Click"
                     Content="Yes" />
             </StackPanel>

@@ -140,7 +140,10 @@
                         Click="Close_Click"
                         Command="{Binding SkipVersionCommand}"
                         Content="Skip this version" />
-                    <ui:Button Click="Close_Click" Content="Later" />
+                    <ui:Button 
+                        Click="Close_Click" 
+                        IsCancel="True" 
+                        Content="Later" />
                 </StackPanel>
             </StackPanel>
 
