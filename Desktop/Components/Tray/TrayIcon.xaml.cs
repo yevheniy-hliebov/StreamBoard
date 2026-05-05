@@ -12,18 +12,31 @@ namespace StreamTabula.Components.Tray
 
         private void OpenMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = Application.Current.MainWindow;
-            if (mainWindow != null)
-            {
-                mainWindow.Show();
-                mainWindow.WindowState = WindowState.Normal;
-                mainWindow.Activate();
-            }
+            OpenApplication();
+        }
+
+        private void NotifyIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
+        {
+            OpenApplication();
         }
 
         private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private static void OpenApplication()
+        {
+            var mainWindow = Application.Current.MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.Show();
+                if (mainWindow.WindowState == WindowState.Minimized)
+                {
+                    mainWindow.WindowState = WindowState.Normal;
+                }
+                mainWindow.Activate();
+            }
         }
     }
 }
