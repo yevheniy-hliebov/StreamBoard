@@ -59,15 +59,25 @@
             VerticalScrollBarVisibility="Auto">
             <reorder:ReorderListView
                 dd:DragDrop.DropHandler="{Binding}"
+                HorizontalContentAlignment="Stretch"
                 ItemsSource="{Binding AllPages}"
-                SelectedItem="{Binding SelectedPage, Mode=TwoWay}">
+                SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                <reorder:ReorderListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ui:ListViewItem}" BasedOn="{StaticResource {x:Type ui:ListViewItem}}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Padding" Value="0" />
+                    </Style>
+                </reorder:ReorderListView.ItemContainerStyle>
+
                 <reorder:ReorderListView.ItemTemplate>
                     <DataTemplate>
                         <reorder:ReorderListItemWrapper ShowDragHandle="True" UseDragHandle="True">
                             <local:DeckPageItem
-                                Title="{Binding Name, Mode=TwoWay}"
-                                Margin="0,2"
-                                EndEditCommand="{Binding DataContext.EndRenameCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    Title="{Binding Name, Mode=TwoWay}"
+                                    Margin="8,4"
+                                    EndEditCommand="{Binding DataContext.EndRenameCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                 <local:DeckPageItem.Style>
                                     <Style TargetType="local:DeckPageItem">
                                         <Setter Property="IsEditing" Value="False" />
