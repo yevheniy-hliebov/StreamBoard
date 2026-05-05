@@ -1,8 +1,8 @@
-using StreamBoard.Features.Integrations.Common.Models;
-using StreamBoard.Features.Integrations.Obs.Services;
-using StreamBoard.Features.Integrations.Obs.Views.Pages;
+using StreamTabula.Features.Integrations.Common.Models;
+using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Features.Integrations.Obs.Views.Pages;
 
-namespace StreamBoard.Features.Integrations.Obs.Models
+namespace StreamTabula.Features.Integrations.Obs.Models
 {
     public class ObsIntegrationState : IntegrationStateModel
     {

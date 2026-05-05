@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:streamboard/core/constants/spacing.dart';
+import 'package:streamtabula/core/constants/spacing.dart';
 
 class OrientationAdaptiveScaffold extends StatelessWidget {
   final Widget body;

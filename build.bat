@@ -19,9 +19,9 @@ echo =======================================================
 echo Starting release build v%VERSION%
 echo =======================================================
 
-:: 2. Update version in StreamBoard.csproj
-echo Updating version in Desktop/StreamBoard.csproj...
-powershell -Command "(Get-Content '%DESKTOP_DIR%\StreamBoard.csproj') -replace '<Version>.*</Version>', '<Version>%VERSION%</Version>' | Set-Content '%DESKTOP_DIR%\StreamBoard.csproj'"
+:: 2. Update version in StreamTabula.csproj
+echo Updating version in Desktop/StreamTabula.csproj...
+powershell -Command "(Get-Content '%DESKTOP_DIR%\StreamTabula.csproj') -replace '<Version>.*</Version>', '<Version>%VERSION%</Version>' | Set-Content '%DESKTOP_DIR%\StreamTabula.csproj'"
 
 :: 3. Update version in pubspec.yaml
 echo Updating version in Client/pubspec.yaml...
@@ -44,11 +44,11 @@ cd /d "%DESKTOP_DIR%"
 set "TEMP_PUB=%DESKTOP_DIR%\bin\Release\publish"
 if exist "%TEMP_PUB%" rmdir /s /q "%TEMP_PUB%"
 
-dotnet publish StreamBoard.csproj -c Release -o "%TEMP_PUB%"
+dotnet publish StreamTabula.csproj -c Release -o "%TEMP_PUB%"
 
 :: 7-8. Archive Windows version
-echo Creating archive StreamBoard_Windows_v%VERSION%.zip...
-powershell -Command "Compress-Archive -Path '%TEMP_PUB%\*' -DestinationPath '%BUILD_DIR%\StreamBoard_Windows_v%VERSION%.zip' -Force"
+echo Creating archive StreamTabula_Windows_v%VERSION%.zip...
+powershell -Command "Compress-Archive -Path '%TEMP_PUB%\*' -DestinationPath '%BUILD_DIR%\StreamTabula_Windows_v%VERSION%.zip' -Force"
 
 :: 9. Build Flutter APK
 echo.
@@ -62,7 +62,7 @@ call flutter build apk --release
 echo Copying APK to Build folder...
 set "ORIGINAL_APK=%CLIENT_DIR%\build\app\outputs\flutter-apk\app-release.apk"
 if exist "%ORIGINAL_APK%" (
-  copy "%ORIGINAL_APK%" "%BUILD_DIR%\StreamBoard_Android_v%VERSION%.apk" >nul
+  copy "%ORIGINAL_APK%" "%BUILD_DIR%\StreamTabula_Android_v%VERSION%.apk" >nul
   ) else (
   echo Error: APK file not found!
 )

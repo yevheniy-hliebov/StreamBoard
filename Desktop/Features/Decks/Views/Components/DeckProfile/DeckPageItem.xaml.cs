@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace StreamBoard.Features.Decks.Views.Components.DeckProfile
+namespace StreamTabula.Features.Decks.Views.Components.DeckProfile
 {
     public partial class DeckPageItem : UserControl
     {

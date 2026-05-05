@@ -1,10 +1,10 @@
-﻿using StreamBoard.Core.Models;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Actions.Attributes;
+﻿using StreamTabula.Core.Models;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Attributes;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace StreamBoard.Features.Actions.Library.System
+namespace StreamTabula.Features.Actions.Library.System
 {
     [ActionDiscriminator("website")]
     public class WebsiteAction : SystemBaseAction

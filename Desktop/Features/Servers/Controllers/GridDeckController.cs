@@ -1,11 +1,11 @@
-using StreamBoard.Features.Decks.Models;
-using StreamBoard.Features.Decks.Services;
-using StreamBoard.Features.Servers.Services;
+using StreamTabula.Features.Decks.Models;
+using StreamTabula.Features.Decks.Services;
+using StreamTabula.Features.Servers.Services;
 using System.Net;
 using System.Text;
 using System.Text.Json;
 
-namespace StreamBoard.Features.Servers.Controllers
+namespace StreamTabula.Features.Servers.Controllers
 {
     public class GridDeckController : IHttpController
     {

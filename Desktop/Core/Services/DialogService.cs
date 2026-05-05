@@ -1,7 +1,7 @@
-﻿using StreamBoard.Components.Dialogs;
+﻿using StreamTabula.Components.Dialogs;
 using System.Windows;
 
-namespace StreamBoard.Core.Services
+namespace StreamTabula.Core.Services
 {
     public interface IDialogService
     {

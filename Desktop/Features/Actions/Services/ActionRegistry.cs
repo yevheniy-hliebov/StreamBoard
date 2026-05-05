@@ -1,11 +1,11 @@
-﻿using StreamBoard.Core.Models;
-using StreamBoard.Features.Actions.Attributes;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Actions.ViewModels;
-using StreamBoard.Features.Integrations.Common.Models;
+﻿using StreamTabula.Core.Models;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.ViewModels;
+using StreamTabula.Features.Integrations.Common.Models;
 using System.Reflection;
 
-namespace StreamBoard.Features.Actions.Services
+namespace StreamTabula.Features.Actions.Services
 {
     public class ActionRegistry
     {

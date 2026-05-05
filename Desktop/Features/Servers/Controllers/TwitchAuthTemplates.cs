@@ -1,4 +1,4 @@
-namespace StreamBoard.Features.Servers.Controllers
+namespace StreamTabula.Features.Servers.Controllers
 {
     public static class TwitchAuthTemplates
     {
@@ -6,7 +6,7 @@ namespace StreamBoard.Features.Servers.Controllers
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Twitch Auth - StreamBoard</title>
+    <title>Twitch Auth - StreamTabula</title>
     <meta charset='utf-8'>
     <style>
         body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #0f0f0f; color: white; margin: 0; }
@@ -20,7 +20,7 @@ namespace StreamBoard.Features.Servers.Controllers
 <body>
     <div class='card'>
         <h1 id='status'>Authorizing...</h1>
-        <p id='message'>Retrieving data from Twitch and transferring it to the StreamBoard app.</p>
+        <p id='message'>Retrieving data from Twitch and transferring it to the StreamTabula app.</p>
         <div id='loader' class='loader'></div>
     </div>
 

@@ -1,4 +1,4 @@
-﻿namespace StreamBoard.Core.Models
+﻿namespace StreamTabula.Core.Models
 {
     public enum WinErrorCodes
     {

@@ -1,5 +1,5 @@
-name: streamboard
-description: "StreamBoard Client Application."
+name: streamtabula
+description: "StreamTabula Client Application."
 publish_to: "none"
 
 version: 0.1.0-beta.1+1

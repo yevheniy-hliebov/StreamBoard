@@ -1,13 +1,13 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
-using StreamBoard.Core;
-using StreamBoard.Features.Settings.Services;
-using StreamBoard.Features.Updater.Models;
-using StreamBoard.Features.Updater.Services;
-using StreamBoard.Features.Updater.Views.Components;
+using StreamTabula.Core;
+using StreamTabula.Features.Settings.Services;
+using StreamTabula.Features.Updater.Models;
+using StreamTabula.Features.Updater.Services;
+using StreamTabula.Features.Updater.Views.Components;
 
-namespace StreamBoard.Features.Updater.ViewModels
+namespace StreamTabula.Features.Updater.ViewModels
 {
     public partial class UpdaterViewModel : ObservableObject
     {

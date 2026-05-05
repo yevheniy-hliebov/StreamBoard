@@ -1,4 +1,4 @@
-namespace StreamBoard.Features.Actions.Attributes
+namespace StreamTabula.Features.Actions.Attributes
 {
     public class DropdownFieldAttribute(string label, Type optionsProvider) : ActionFieldAttribute(label)
     {

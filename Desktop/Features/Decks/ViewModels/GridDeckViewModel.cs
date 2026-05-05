@@ -1,14 +1,14 @@
-﻿using StreamBoard.Core;
-using StreamBoard.Core.Services;
-using StreamBoard.Features.Actions.Services;
-using StreamBoard.Features.Actions.ViewModels;
-using StreamBoard.Features.Decks.Models;
-using StreamBoard.Features.Decks.Services;
-using StreamBoard.Features.Servers.Models;
-using StreamBoard.Features.Servers.Services;
+﻿using StreamTabula.Core;
+using StreamTabula.Core.Services;
+using StreamTabula.Features.Actions.Services;
+using StreamTabula.Features.Actions.ViewModels;
+using StreamTabula.Features.Decks.Models;
+using StreamTabula.Features.Decks.Services;
+using StreamTabula.Features.Servers.Models;
+using StreamTabula.Features.Servers.Services;
 using System.ComponentModel;
 
-namespace StreamBoard.Features.Decks.ViewModels
+namespace StreamTabula.Features.Decks.ViewModels
 {
     public partial class GridDeckViewModel : ObservableObject
     {

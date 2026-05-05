@@ -1,12 +1,12 @@
 ﻿<UserControl
-    x:Class="StreamBoard.Features.Actions.Views.Components.Editor.ActionListView"
+    x:Class="StreamTabula.Features.Actions.Views.Components.Editor.ActionListView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cdd="clr-namespace:CustomDragDropLib;assembly=CustomDragDropLib"
-    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
     xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
-    xmlns:local="clr-namespace:StreamBoard.Features.Actions.Views.Components.Editor"
-    xmlns:reorder="clr-namespace:StreamBoard.Components.Controls.ReorderList"
+    xmlns:local="clr-namespace:StreamTabula.Features.Actions.Views.Components.Editor"
+    xmlns:reorder="clr-namespace:StreamTabula.Components.Controls.ReorderList"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
     <UserControl.InputBindings>

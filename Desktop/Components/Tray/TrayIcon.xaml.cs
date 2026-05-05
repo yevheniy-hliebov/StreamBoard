@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace StreamBoard.Components.Tray
+namespace StreamTabula.Components.Tray
 {
     public partial class TrayIconView : UserControl
     {

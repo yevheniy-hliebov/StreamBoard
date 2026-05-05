@@ -1,7 +1,7 @@
-﻿using StreamBoard.Core.Services;
-using StreamBoard.Features.Decks.Models;
+﻿using StreamTabula.Core.Services;
+using StreamTabula.Features.Decks.Models;
 
-namespace StreamBoard.Features.Decks.Services
+namespace StreamTabula.Features.Decks.Services
 {
     public abstract class DeckStorage : JsonFileStorage<DeckProfile>
     {

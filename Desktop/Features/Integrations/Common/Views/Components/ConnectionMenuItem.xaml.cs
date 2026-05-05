@@ -1,12 +1,12 @@
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Features.Integrations.Common.Models;
-using StreamBoard.Features.Navigation.Services;
+using StreamTabula.Features.Integrations.Common.Models;
+using StreamTabula.Features.Navigation.Services;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace StreamBoard.Features.Integrations.Common.Views.Components
+namespace StreamTabula.Features.Integrations.Common.Views.Components
 {
     public partial class ConnectionMenuItem : UserControl
     {

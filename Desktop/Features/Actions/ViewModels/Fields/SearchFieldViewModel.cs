@@ -1,8 +1,8 @@
 using System.Collections.ObjectModel;
 using System.Reflection;
-using StreamBoard.Features.Actions.Models;
+using StreamTabula.Features.Actions.Models;
 
-namespace StreamBoard.Features.Actions.ViewModels
+namespace StreamTabula.Features.Actions.ViewModels
 {
     public class SearchFieldViewModel : ActionFieldViewModel
     {

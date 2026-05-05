@@ -1,10 +1,10 @@
-﻿using StreamBoard.Features.Servers.Models;
+﻿using StreamTabula.Features.Servers.Models;
 using System.Collections.Concurrent;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
 
-namespace StreamBoard.Features.Servers.Services
+namespace StreamTabula.Features.Servers.Services
 {
     public class WebsocketManager
     {

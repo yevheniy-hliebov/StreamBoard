@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 using System.Windows;
-using StreamBoard.Core.Models;
+using StreamTabula.Core.Models;
 using Wpf.Ui.Controls;
 
-namespace StreamBoard.Components.Controls
+namespace StreamTabula.Components.Controls
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class IconGlyphAttribute(string glyph) : Attribute

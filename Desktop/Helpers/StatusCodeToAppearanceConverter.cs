@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using Wpf.Ui.Controls;
 
-namespace StreamBoard.Helpers
+namespace StreamTabula.Helpers
 {
     public class StatusCodeToAppearanceConverter : IValueConverter
     {

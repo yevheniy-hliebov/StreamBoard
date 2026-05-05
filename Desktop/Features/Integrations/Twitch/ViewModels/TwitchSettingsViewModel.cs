@@ -1,7 +1,7 @@
-using StreamBoard.Core;
-using StreamBoard.Features.Integrations.Twitch.Services;
+using StreamTabula.Core;
+using StreamTabula.Features.Integrations.Twitch.Services;
 
-namespace StreamBoard.Features.Integrations.Twitch.ViewModels
+namespace StreamTabula.Features.Integrations.Twitch.ViewModels
 {
     public partial class TwitchSettingsViewModel(TwitchAccountsGateway gateway) : ObservableObject
     {

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace StreamBoard.Features.Servers.Models
+namespace StreamTabula.Features.Servers.Models
 {
     public class ServerConfigs
     {

@@ -1,6 +1,6 @@
 ﻿
 
-namespace StreamBoard.Features.Decks.Models
+namespace StreamTabula.Features.Decks.Models
 {
     public class KeyboardCanvasConfig : BaseCanvasConfig
     {

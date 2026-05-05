@@ -1,18 +1,18 @@
-using StreamBoard.Features.Settings.Services;
+using StreamTabula.Features.Settings.Services;
 using Wpf.Ui.Appearance;
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Features.Servers.Services;
+using StreamTabula.Features.Servers.Services;
 using System.Windows;
-using StreamBoard.Features.Integrations.Obs.Services;
-using StreamBoard.Features.Integrations.Common.Services;
-using StreamBoard.Features.Integrations.Twitch.Services;
-using StreamBoard.Features.Servers.Controllers;
-using StreamBoard.Features.Servers.Models;
-using StreamBoard.Features.Actions.Services;
-using StreamBoard.Features.Updater.ViewModels;
+using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Features.Integrations.Common.Services;
+using StreamTabula.Features.Integrations.Twitch.Services;
+using StreamTabula.Features.Servers.Controllers;
+using StreamTabula.Features.Servers.Models;
+using StreamTabula.Features.Actions.Services;
+using StreamTabula.Features.Updater.ViewModels;
 
 
-namespace StreamBoard.Core.AppStartup
+namespace StreamTabula.Core.AppStartup
 {
     public static class AppInitializer
     {

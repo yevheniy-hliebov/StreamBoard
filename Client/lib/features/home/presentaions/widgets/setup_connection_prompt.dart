@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:streamboard/core/constants/app_colors.dart';
-import 'package:streamboard/core/constants/spacing.dart';
+import 'package:streamtabula/core/constants/app_colors.dart';
+import 'package:streamtabula/core/constants/spacing.dart';
 
 class SetupConnectionPrompt extends StatelessWidget {
   final VoidCallback onSetupPressed;
@@ -25,7 +25,7 @@ class SetupConnectionPrompt extends StatelessWidget {
           ),
           const SizedBox(height: Spacing.sm),
           Text(
-            'Please specify the StreamBoard server address to connect.',
+            'Please specify the StreamTabula server address to connect.',
             style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),

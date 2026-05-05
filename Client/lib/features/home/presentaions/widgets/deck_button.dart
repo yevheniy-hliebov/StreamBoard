@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:streamboard/core/constants/app_colors.dart';
-import 'package:streamboard/features/home/data/models/deck_button_data.dart';
+import 'package:streamtabula/core/constants/app_colors.dart';
+import 'package:streamtabula/features/home/data/models/deck_button_data.dart';
 
 class DeckButton extends StatelessWidget {
   final Size size;

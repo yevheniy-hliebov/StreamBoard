@@ -1,8 +1,8 @@
 ﻿<UserControl
-    x:Class="StreamBoard.Features.Decks.Views.Components.PropertyEditor.ImagePicker"
+    x:Class="StreamTabula.Features.Decks.Views.Components.PropertyEditor.ImagePicker"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:StreamBoard.Components.Controls">
+    xmlns:controls="clr-namespace:StreamTabula.Components.Controls">
 
     <Grid
         Width="80"

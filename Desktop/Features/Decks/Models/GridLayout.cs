@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace StreamBoard.Features.Decks.Models
+namespace StreamTabula.Features.Decks.Models
 {
     public class GridLayout(string name, int columns, int rows)
     {

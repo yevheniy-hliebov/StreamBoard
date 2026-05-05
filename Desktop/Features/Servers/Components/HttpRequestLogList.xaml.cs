@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace StreamBoard.Features.Servers.Components
+namespace StreamTabula.Features.Servers.Components
 {
     public partial class HttpRequestLogList : UserControl
     {

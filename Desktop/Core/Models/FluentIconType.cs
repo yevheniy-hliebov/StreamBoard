@@ -1,6 +1,6 @@
-using StreamBoard.Components.Controls;
+using StreamTabula.Components.Controls;
 
-namespace StreamBoard.Core.Models
+namespace StreamTabula.Core.Models
 {
     public enum FluentIconType
     {

@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace StreamBoard.Features.Decks.Views.Components.PropertyEditor
+namespace StreamTabula.Features.Decks.Views.Components.PropertyEditor
 {
     public partial class ColorPreview : UserControl
     {

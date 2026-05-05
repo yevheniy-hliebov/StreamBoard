@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:streamboard/features/settings/providers/settings_provider.dart';
-import 'package:streamboard/features/updater/providers/updater_provider.dart';
+import 'package:streamtabula/features/settings/providers/settings_provider.dart';
+import 'package:streamtabula/features/updater/providers/updater_provider.dart';
 
 class UpdateDialog extends StatelessWidget {
   const UpdateDialog({super.key});
@@ -113,7 +113,7 @@ class UpdateDialog extends StatelessWidget {
             const Icon(Icons.downloading, size: 48),
             const SizedBox(height: 16),
             const Text(
-              'Updating StreamBoard...',
+              'Updating StreamTabula...',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),

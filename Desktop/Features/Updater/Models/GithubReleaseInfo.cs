@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace StreamBoard.Features.Updater.Models
+namespace StreamTabula.Features.Updater.Models
 {
     public class GithubReleaseInfo
     {

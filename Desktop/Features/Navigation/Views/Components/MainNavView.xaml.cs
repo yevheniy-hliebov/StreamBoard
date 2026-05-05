@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Components.Controls;
-using StreamBoard.Features.Integrations.Common.Views.Components;
-using StreamBoard.Features.Navigation.Services;
-using StreamBoard.Features.Settings.Services;
+using StreamTabula.Components.Controls;
+using StreamTabula.Features.Integrations.Common.Views.Components;
+using StreamTabula.Features.Navigation.Services;
+using StreamTabula.Features.Settings.Services;
 using System.Windows;
 using System.Windows.Controls;
 using Wpf.Ui.Controls;
 
-namespace StreamBoard.Features.Navigation.Views.Components
+namespace StreamTabula.Features.Navigation.Views.Components
 {
     public partial class MainNavView : UserControl
     {

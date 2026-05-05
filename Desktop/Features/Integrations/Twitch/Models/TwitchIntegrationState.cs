@@ -1,8 +1,8 @@
-using StreamBoard.Features.Integrations.Common.Models;
-using StreamBoard.Features.Integrations.Twitch.Services;
-using StreamBoard.Features.Integrations.Twitch.Views.Pages;
+using StreamTabula.Features.Integrations.Common.Models;
+using StreamTabula.Features.Integrations.Twitch.Services;
+using StreamTabula.Features.Integrations.Twitch.Views.Pages;
 
-namespace StreamBoard.Features.Integrations.Twitch.Models
+namespace StreamTabula.Features.Integrations.Twitch.Models
 {
     public class TwitchIntegrationState : IntegrationStateModel
     {

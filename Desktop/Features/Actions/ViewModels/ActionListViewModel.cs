@@ -1,14 +1,14 @@
 using GongSolutions.Wpf.DragDrop;
-using StreamBoard.Core;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Actions.Services;
-using StreamBoard.Features.Actions.Views.Components.Editor;
+using StreamTabula.Core;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Services;
+using StreamTabula.Features.Actions.Views.Components.Editor;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using Wpf.Ui.Input;
 
-namespace StreamBoard.Features.Actions.ViewModels
+namespace StreamTabula.Features.Actions.ViewModels
 {
     public class ActionListViewModel : ObservableObject, IDropTarget
     {

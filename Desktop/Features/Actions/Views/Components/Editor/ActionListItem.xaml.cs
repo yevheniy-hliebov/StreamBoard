@@ -1,9 +1,9 @@
-﻿using StreamBoard.Core.Models;
+﻿using StreamTabula.Core.Models;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace StreamBoard.Features.Actions.Views.Components.Editor
+namespace StreamTabula.Features.Actions.Views.Components.Editor
 {
     public partial class ActionListItem : UserControl
     {

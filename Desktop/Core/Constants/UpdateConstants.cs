@@ -1,10 +1,10 @@
-namespace StreamBoard.Core.Constants
+namespace StreamTabula.Core.Constants
 {
     public static class UpdateConstants
     {
         public const string GitHubOwner = "yevheniy-hliebov";
-        public const string GitHubRepo = "StreamBoard";
+        public const string GitHubRepo = "StreamTabula";
         public const string GitHubApiBaseUrl = "https://api.github.com/repos";
-        public static string ReleaseAssetName(string version) => $"StreamBoard-Windows-{version}.zip";
+        public static string ReleaseAssetName(string version) => $"StreamTabula-Windows-{version}.zip";
     }
 }

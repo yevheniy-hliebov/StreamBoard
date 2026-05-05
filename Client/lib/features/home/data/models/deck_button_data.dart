@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:streamboard/core/utils/color_helper.dart';
+import 'package:streamtabula/core/utils/color_helper.dart';
 
 class DeckButtonData {
   final String keyCode;

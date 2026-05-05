@@ -1,9 +1,9 @@
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Wpf.Ui.Controls;
-using StreamBoard.Features.Integrations.Common.Models;
+using StreamTabula.Features.Integrations.Common.Models;
 
-namespace StreamBoard.Features.Integrations.Common.Views.Components
+namespace StreamTabula.Features.Integrations.Common.Views.Components
 {
     public partial class IntegrationIcon : ImageIcon
     {

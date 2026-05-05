@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:streamboard/core/theme/app_theme.dart';
-import 'package:streamboard/features/home/presentaions/screens/home_screen.dart';
-import 'package:streamboard/features/home/providers/deck_provider.dart';
-import 'package:streamboard/features/home/services/grid_service.dart';
-import 'package:streamboard/features/home/services/websocket_service.dart';
-import 'package:streamboard/features/settings/providers/settings_provider.dart';
-import 'package:streamboard/features/updater/services/app_info_service.dart';
-import 'package:streamboard/features/updater/services/update_service.dart';
-import 'package:streamboard/features/updater/providers/updater_provider.dart';
+import 'package:streamtabula/core/theme/app_theme.dart';
+import 'package:streamtabula/features/home/presentaions/screens/home_screen.dart';
+import 'package:streamtabula/features/home/providers/deck_provider.dart';
+import 'package:streamtabula/features/home/services/grid_service.dart';
+import 'package:streamtabula/features/home/services/websocket_service.dart';
+import 'package:streamtabula/features/settings/providers/settings_provider.dart';
+import 'package:streamtabula/features/updater/services/app_info_service.dart';
+import 'package:streamtabula/features/updater/services/update_service.dart';
+import 'package:streamtabula/features/updater/providers/updater_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -84,7 +84,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'StreamBoard Application',
+      title: 'StreamTabula Application',
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,

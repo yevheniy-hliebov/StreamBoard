@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace StreamBoard.Features.Integrations.Twitch.Services.Auth
+namespace StreamTabula.Features.Integrations.Twitch.Services.Auth
 {
     public class TwitchAuthUriBuilder
     {

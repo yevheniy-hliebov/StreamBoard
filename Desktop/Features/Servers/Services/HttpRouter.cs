@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StreamBoard.Features.Servers.Services
+namespace StreamTabula.Features.Servers.Services
 {
     public class HttpRouter
     {

@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace StreamBoard.Features.Settings.Components
+namespace StreamTabula.Features.Settings.Components
 {
     /// <summary>
     /// Interaction logic for PrivilegeStatusInfo.xaml

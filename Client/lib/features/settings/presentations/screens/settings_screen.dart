@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:streamboard/common/widgets/orientation_adaptive_scaffold.dart';
-import 'package:streamboard/core/constants/app_colors.dart';
-import 'package:streamboard/core/constants/spacing.dart';
-import 'package:streamboard/features/settings/providers/settings_provider.dart';
-import 'package:streamboard/features/updater/presentations/update_dialog.dart';
-import 'package:streamboard/features/updater/providers/updater_provider.dart';
-import 'package:streamboard/features/updater/services/app_info_service.dart';
+import 'package:streamtabula/common/widgets/orientation_adaptive_scaffold.dart';
+import 'package:streamtabula/core/constants/app_colors.dart';
+import 'package:streamtabula/core/constants/spacing.dart';
+import 'package:streamtabula/features/settings/providers/settings_provider.dart';
+import 'package:streamtabula/features/updater/presentations/update_dialog.dart';
+import 'package:streamtabula/features/updater/providers/updater_provider.dart';
+import 'package:streamtabula/features/updater/services/app_info_service.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});

@@ -1,15 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Features.Integrations.Common.ViewModels;
-using StreamBoard.Features.Settings.Services;
-using StreamBoard.Features.Updater.Models;
-using StreamBoard.Features.Updater.Services;
+using StreamTabula.Features.Integrations.Common.ViewModels;
+using StreamTabula.Features.Settings.Services;
+using StreamTabula.Features.Updater.Models;
+using StreamTabula.Features.Updater.Services;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
 
-namespace StreamBoard
+namespace StreamTabula
 {
     public partial class MainWindow : FluentWindow
     {

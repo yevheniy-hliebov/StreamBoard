@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Features.Servers.ViewModels;
+using StreamTabula.Features.Servers.ViewModels;
 using System.Windows.Controls;
 
-namespace StreamBoard.Features.Servers.Pages
+namespace StreamTabula.Features.Servers.Pages
 {
     public partial class LocalServerPage : Page
     {

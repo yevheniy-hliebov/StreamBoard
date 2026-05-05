@@ -1,8 +1,8 @@
-﻿<ContentControl x:Class="StreamBoard.Components.Controls.ReorderList.ReorderListItemWrapper"
+﻿<ContentControl x:Class="StreamTabula.Components.Controls.ReorderList.ReorderListItemWrapper"
                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
-                xmlns:local="clr-namespace:StreamBoard.Components.Controls.ReorderList">
+                xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+                xmlns:local="clr-namespace:StreamTabula.Components.Controls.ReorderList">
 
     <ContentControl.Template>
         <ControlTemplate TargetType="{x:Type local:ReorderListItemWrapper}">

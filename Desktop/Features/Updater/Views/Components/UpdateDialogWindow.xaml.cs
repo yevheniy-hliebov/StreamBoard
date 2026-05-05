@@ -1,7 +1,7 @@
 using System.Windows;
 using Wpf.Ui.Controls;
 
-namespace StreamBoard.Features.Updater.Views.Components
+namespace StreamTabula.Features.Updater.Views.Components
 {
     public partial class UpdateDialogWindow : FluentWindow
     {

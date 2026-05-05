@@ -1,4 +1,4 @@
-package com.streamboard
+package com.streamtabula
 
 import io.flutter.embedding.android.FlutterActivity
 

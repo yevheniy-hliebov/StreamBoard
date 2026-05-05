@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Markup;
 
-namespace StreamBoard.Components.Cards
+namespace StreamTabula.Components.Cards
 {
     [ContentProperty(nameof(InnerContent))]
     public partial class CardExpander : UserControl

@@ -1,8 +1,8 @@
-﻿<UserControl x:Class="StreamBoard.Features.Servers.Components.HttpRequestLogList"
+﻿<UserControl x:Class="StreamTabula.Features.Servers.Components.HttpRequestLogList"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:local="clr-namespace:StreamBoard.Features.Servers.Components"
+             xmlns:local="clr-namespace:StreamTabula.Features.Servers.Components"
              x:Name="Root">
 
     <Grid Grid.IsSharedSizeScope="True">

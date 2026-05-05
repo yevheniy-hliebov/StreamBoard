@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace StreamBoard.Components.Controls
+namespace StreamTabula.Components.Controls
 {
     public partial class SectionHeader : UserControl
     {

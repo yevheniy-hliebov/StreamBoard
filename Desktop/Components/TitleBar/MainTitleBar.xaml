@@ -1,14 +1,14 @@
 ﻿<UserControl
-    x:Class="StreamBoard.Components.TitleBar.MainTitleBar"
+    x:Class="StreamTabula.Components.TitleBar.MainTitleBar"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:StreamBoard.Components.TitleBar"
+    xmlns:local="clr-namespace:StreamTabula.Components.TitleBar"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     x:Name="Root">
 
     <ui:TitleBar Height="32" Padding="12,0,0,0">
         <ui:TitleBar.Icon>
-            <ui:ImageIcon Margin="0,0,16,0" Source="pack://application:,,,/StreamBoard;component/Assets/Images/logo.ico" />
+            <ui:ImageIcon Margin="0,0,16,0" Source="pack://application:,,,/StreamTabula;component/Assets/Images/logo.ico" />
         </ui:TitleBar.Icon>
 
         <ui:TitleBar.Header>

@@ -1,12 +1,12 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Features.Actions.Attributes;
-using StreamBoard.Features.Integrations.Obs.Services;
-using StreamBoard.Core.Models;
-using StreamBoard.Features.Actions.Models;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Actions.Models;
 
-namespace StreamBoard.Features.Actions.Library.Obs
+namespace StreamTabula.Features.Actions.Library.Obs
 {
     [ActionDiscriminator("obs_switch_scene")]
     public class SwitchSceneAction : ObsBaseAction

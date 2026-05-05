@@ -3,7 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 
-namespace StreamBoard.Components.Controls.ReorderList
+namespace StreamTabula.Components.Controls.ReorderList
 {
     public class ReorderListView : Wpf.Ui.Controls.ListView, IDragSource
     {
@@ -43,7 +43,7 @@ namespace StreamBoard.Components.Controls.ReorderList
                 {
                     var originalSource = System.Windows.Input.Mouse.DirectlyOver as DependencyObject;
 
-                    var icon = FindVisualParent<StreamBoard.Components.Controls.FluentIcon>(originalSource);
+                    var icon = FindVisualParent<StreamTabula.Components.Controls.FluentIcon>(originalSource);
 
                     if (icon == null)
                     {

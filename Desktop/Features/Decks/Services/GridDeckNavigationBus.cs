@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StreamBoard.Features.Decks.Services
+namespace StreamTabula.Features.Decks.Services
 {
     public static class GridDeckNavigationBus
     {

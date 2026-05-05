@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Wpf.Ui.Controls;
 
-namespace StreamBoard.Components.Dialogs
+namespace StreamTabula.Components.Dialogs
 {
     public partial class ConfirmationDialogWindow : FluentWindow
     {

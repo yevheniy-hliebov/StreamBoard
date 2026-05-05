@@ -1,9 +1,9 @@
 using System.Net.Http;
 using System.Net.Http.Json;
-using StreamBoard.Features.Integrations.Twitch.Exceptions;
-using StreamBoard.Features.Integrations.Twitch.Models;
+using StreamTabula.Features.Integrations.Twitch.Exceptions;
+using StreamTabula.Features.Integrations.Twitch.Models;
 
-namespace StreamBoard.Features.Integrations.Twitch.Services.ApiModules
+namespace StreamTabula.Features.Integrations.Twitch.Services.ApiModules
 {
     public abstract class TwitchApiModule(TwitchAuthContext context, HttpClient http)
     {

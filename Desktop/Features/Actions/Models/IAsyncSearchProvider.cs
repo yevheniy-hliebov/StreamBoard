@@ -1,4 +1,4 @@
-namespace StreamBoard.Features.Actions.Models
+namespace StreamTabula.Features.Actions.Models
 {
     public class SearchResult
     {

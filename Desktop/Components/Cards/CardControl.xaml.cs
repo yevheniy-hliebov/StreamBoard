@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace StreamBoard.Components.Cards
+namespace StreamTabula.Components.Cards
 {
     public partial class CardControl : UserControl
     {

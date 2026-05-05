@@ -1,7 +1,7 @@
-using StreamBoard.Core.Services;
-using StreamBoard.Features.Integrations.Common.Models;
+using StreamTabula.Core.Services;
+using StreamTabula.Features.Integrations.Common.Models;
 
-namespace StreamBoard.Features.Integrations.Common.Services
+namespace StreamTabula.Features.Integrations.Common.Services
 {
     public class IntegrationConnectionStorage : JsonFileStorage<IntegrationConnectionSettings>
     {

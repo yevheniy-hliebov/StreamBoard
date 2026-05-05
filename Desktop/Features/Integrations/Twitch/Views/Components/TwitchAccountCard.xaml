@@ -1,8 +1,8 @@
 <UserControl
-    x:Class="StreamBoard.Features.Integrations.Twitch.Views.Components.TwitchAccountCard"
+    x:Class="StreamTabula.Features.Integrations.Twitch.Views.Components.TwitchAccountCard"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:StreamBoard.Features.Integrations.Twitch.Views.Components"
+    xmlns:local="clr-namespace:StreamTabula.Features.Integrations.Twitch.Views.Components"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     x:Name="Root">
 

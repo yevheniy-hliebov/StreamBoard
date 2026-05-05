@@ -1,13 +1,13 @@
-using StreamBoard.Features.Integrations.Twitch.Models;
-using StreamBoard.Features.Integrations.Twitch.Services;
-using StreamBoard.Features.Servers.Models;
-using StreamBoard.Features.Servers.Services;
+using StreamTabula.Features.Integrations.Twitch.Models;
+using StreamTabula.Features.Integrations.Twitch.Services;
+using StreamTabula.Features.Servers.Models;
+using StreamTabula.Features.Servers.Services;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.Json;
 
-namespace StreamBoard.Features.Servers.Controllers
+namespace StreamTabula.Features.Servers.Controllers
 {
     public class TwitchAuthController(TwitchAccountsGateway gateway) : IHttpController
     {

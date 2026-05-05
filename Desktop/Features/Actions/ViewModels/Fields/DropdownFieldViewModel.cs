@@ -2,10 +2,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Input;
-using StreamBoard.Features.Actions.Models;
+using StreamTabula.Features.Actions.Models;
 using Wpf.Ui.Input;
 
-namespace StreamBoard.Features.Actions.ViewModels
+namespace StreamTabula.Features.Actions.ViewModels
 {
     public class DropdownFieldViewModel : ActionFieldViewModel
     {

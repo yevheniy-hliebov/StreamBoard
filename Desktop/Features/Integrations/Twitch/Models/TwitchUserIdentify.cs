@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace StreamBoard.Features.Integrations.Twitch.Models
+namespace StreamTabula.Features.Integrations.Twitch.Models
 {
     public class TwitchUserIdentify()
     {

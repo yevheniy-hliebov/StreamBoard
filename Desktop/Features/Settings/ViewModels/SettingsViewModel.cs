@@ -1,13 +1,13 @@
 ﻿using Microsoft.Win32;
-using StreamBoard.Core;
-using StreamBoard.Features.Navigation.Services;
-using StreamBoard.Features.Settings.Services;
-using StreamBoard.Features.Updater.ViewModels;
+using StreamTabula.Core;
+using StreamTabula.Features.Navigation.Services;
+using StreamTabula.Features.Settings.Services;
+using StreamTabula.Features.Updater.ViewModels;
 using System.Windows.Input;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Input;
 
-namespace StreamBoard.Features.Settings.ViewModels
+namespace StreamTabula.Features.Settings.ViewModels
 {
     public class SettingsViewModel(
         SettingsStorage storage,

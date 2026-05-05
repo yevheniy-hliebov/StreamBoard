@@ -1,8 +1,8 @@
-﻿using StreamBoard.Core.Services;
-using StreamBoard.Features.Actions.Services;
-using StreamBoard.Features.Decks.Models;
+﻿using StreamTabula.Core.Services;
+using StreamTabula.Features.Actions.Services;
+using StreamTabula.Features.Decks.Models;
 
-namespace StreamBoard.Features.Decks.Services
+namespace StreamTabula.Features.Decks.Services
 {
     public interface IDeckButtonService
     {

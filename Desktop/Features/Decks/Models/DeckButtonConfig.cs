@@ -1,9 +1,9 @@
-﻿using StreamBoard.Core;
-using StreamBoard.Features.Actions.Models;
+﻿using StreamTabula.Core;
+using StreamTabula.Features.Actions.Models;
 using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 
-namespace StreamBoard.Features.Decks.Models
+namespace StreamTabula.Features.Decks.Models
 {
     public class DeckButtonConfig : ObservableObject
     {

@@ -1,6 +1,6 @@
-using StreamBoard.Features.Actions.Models;
+using StreamTabula.Features.Actions.Models;
 
-namespace StreamBoard.Features.Actions.Attributes
+namespace StreamTabula.Features.Actions.Attributes
 {
     public class PathFieldAttribute(
         string label,

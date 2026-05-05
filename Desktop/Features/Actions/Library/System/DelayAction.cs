@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
-using StreamBoard.Core.Models;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Actions.Attributes;
-using StreamBoard.Helpers;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Helpers;
 
-namespace StreamBoard.Features.Actions.Library.System
+namespace StreamTabula.Features.Actions.Library.System
 {
     [ActionDiscriminator("delay")]
     public class DelayAction : SystemBaseAction
@@ -68,7 +68,6 @@ namespace StreamBoard.Features.Actions.Library.System
                 while (remainingMs > 0)
                 {
                     AudioPlayerService.Play("Assets/Sounds/tick.mp3", SoundVolume);
-                    // AudioPlayerService.Play("C:/Users/glebov/develop/projects/streamboard/Desktop/Assets/Sounds/tick.mp3", SoundVolume);
 
                     int sleepTime = Math.Min(remainingMs, 1000);
                     await Task.Delay(sleepTime);

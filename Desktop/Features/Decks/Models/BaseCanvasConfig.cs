@@ -1,7 +1,7 @@
-﻿using StreamBoard.Core;
+﻿using StreamTabula.Core;
 using System.Text.Json.Serialization;
 
-namespace StreamBoard.Features.Decks.Models
+namespace StreamTabula.Features.Decks.Models
 {
     public enum DeckType
     {

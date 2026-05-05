@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Decks.Services;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Decks.Services;
 
-namespace StreamBoard.Features.Actions.Library.DeckNavigation
+namespace StreamTabula.Features.Actions.Library.DeckNavigation
 {
     public class GridPageOptionsProvider : IOptionsProvider
     {

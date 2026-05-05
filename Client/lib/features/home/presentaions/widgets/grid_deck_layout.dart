@@ -2,11 +2,11 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:streamboard/common/widgets/for.dart';
-import 'package:streamboard/core/constants/spacing.dart';
-import 'package:streamboard/features/home/data/models/deck_button_data.dart';
-import 'package:streamboard/features/home/data/models/grid_layout.dart';
-import 'package:streamboard/features/home/presentaions/widgets/deck_button.dart';
+import 'package:streamtabula/common/widgets/for.dart';
+import 'package:streamtabula/core/constants/spacing.dart';
+import 'package:streamtabula/features/home/data/models/deck_button_data.dart';
+import 'package:streamtabula/features/home/data/models/grid_layout.dart';
+import 'package:streamtabula/features/home/presentaions/widgets/deck_button.dart';
 
 class GridDeckLayout extends StatelessWidget {
   final GridLayout grid;

@@ -1,7 +1,7 @@
 using System.Reflection;
-using StreamBoard.Features.Updater.Models;
+using StreamTabula.Features.Updater.Models;
 
-namespace StreamBoard.Features.Updater.Services
+namespace StreamTabula.Features.Updater.Services
 {
     public class AppInfoService
     {
@@ -11,7 +11,7 @@ namespace StreamBoard.Features.Updater.Services
         {
             var assembly = Assembly.GetExecutingAssembly();
 
-            var appName = assembly.GetName().Name ?? "StreamBoard";
+            var appName = assembly.GetName().Name ?? "StreamTabula";
 
             var infoVersionAttr = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
             var currentVersion = infoVersionAttr?.InformationalVersion ?? "1.0.0";

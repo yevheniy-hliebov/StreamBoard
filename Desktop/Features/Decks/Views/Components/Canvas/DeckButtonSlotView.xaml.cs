@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace StreamBoard.Features.Decks.Views.Components.Canvas
+namespace StreamTabula.Features.Decks.Views.Components.Canvas
 {
     public partial class DeckButtonSlotView : UserControl
     {

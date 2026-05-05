@@ -1,6 +1,6 @@
-﻿using StreamBoard.Features.Actions.Models;
+﻿using StreamTabula.Features.Actions.Models;
 
-namespace StreamBoard.Features.Actions.Services
+namespace StreamTabula.Features.Actions.Services
 {
     public class ActionDescriptor
     {

@@ -1,4 +1,4 @@
-namespace StreamBoard.Features.Actions.Attributes
+namespace StreamTabula.Features.Actions.Attributes
 {
     public class SearchFieldAttribute(string label, Type searchProvider) : ActionFieldAttribute(label)
     {

@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace StreamBoard.Features.Actions.ViewModels
+namespace StreamTabula.Features.Actions.ViewModels
 {
     public class BoolFieldViewModel(
         string label,

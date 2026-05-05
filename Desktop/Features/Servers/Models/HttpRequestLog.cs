@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace StreamBoard.Features.Servers.Models
+namespace StreamTabula.Features.Servers.Models
 {
     public record HttpRequestLog(string Method, string Endpoint, string IpAddress, int StatusCode, DateTime Timestamp)
     {

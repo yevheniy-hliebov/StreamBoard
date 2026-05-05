@@ -1,9 +1,9 @@
-﻿using StreamBoard.Core.Models;
-using StreamBoard.Features.Servers.Models;
+﻿using StreamTabula.Core.Models;
+using StreamTabula.Features.Servers.Models;
 using System.Net;
 using System.Text;
 
-namespace StreamBoard.Features.Servers.Services
+namespace StreamTabula.Features.Servers.Services
 {
     public class LocalServer(LocalServerConfig config, HttpRouter router, WebsocketManager? wsManager = null)
     {
