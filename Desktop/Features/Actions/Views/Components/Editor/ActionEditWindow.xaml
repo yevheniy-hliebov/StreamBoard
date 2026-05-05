@@ -41,11 +41,13 @@
                 Orientation="Horizontal">
                 <ui:Button
                     Margin="0,0,8,0"
+                    IsCancel="True"
                     Click="Cancel_Click"
                     Content="Cancel" />
 
                 <ui:Button
                     Appearance="Primary"
+                    IsDefault="True"
                     Click="Save_Click"
                     Content="Save" />
             </StackPanel>

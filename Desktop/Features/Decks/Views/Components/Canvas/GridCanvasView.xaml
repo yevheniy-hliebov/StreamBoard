@@ -8,6 +8,13 @@
     xmlns:models="clr-namespace:StreamBoard.Features.Decks.Models"
     x:Name="Root">
 
+    <UserControl.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="C" Command="{Binding CopyCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="V" Command="{Binding PasteCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="X" Command="{Binding CutCommand}" />
+        <KeyBinding Key="Delete" Command="{Binding DeleteCommand}" />
+    </UserControl.InputBindings>
+
     <UserControl.Resources>
         <DataTemplate x:Key="EditorModeTemplate">
             <dd:DropWrapper
@@ -23,7 +30,7 @@
                         ButtonBackground="{Binding Config.BackgroundColor, FallbackValue=#2B2B2B}"
                         ButtonIndex="{Binding Index}"
                         ButtonName="{Binding Config.Name}"
-                        Command="{Binding DataContext.SelectButtonCommand, ElementName=Root}"
+                        Command="{Binding DataContext.ClickButtonCommand, ElementName=Root}"
                         CommandParameter="{Binding}"
                         Cursor="Hand"
                         ImagePath="{Binding Config.ImagePath}"
@@ -38,7 +45,7 @@
                 Margin="6" ButtonBackground="{Binding Config.BackgroundColor, FallbackValue=#2B2B2B}"
                 ButtonIndex="{Binding Index}"
                 ButtonName="{Binding Config.Name}"
-                Command="{Binding DataContext.SelectButtonCommand, ElementName=Root}"
+                Command="{Binding DataContext.ClickButtonCommand, ElementName=Root}"
                 CommandParameter="{Binding}"
                 Cursor="Hand"
                 ImagePath="{Binding Config.ImagePath}"

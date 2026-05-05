@@ -45,5 +45,17 @@
         </titlebar:MainTitleBar>
 
         <navigation:MainNavView x:Name="RootNavView" Grid.Row="1" />
+
+        <ui:SnackbarPresenter 
+            x:Name="RootSnackbarPresenter" 
+            Grid.Row="1"
+            Margin="16"
+            VerticalAlignment="Bottom"
+            HorizontalAlignment="Left" 
+            MaxWidth="400">
+            <ui:SnackbarPresenter.LayoutTransform>
+                <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
+            </ui:SnackbarPresenter.LayoutTransform>
+        </ui:SnackbarPresenter>
     </Grid>
 </ui:FluentWindow>

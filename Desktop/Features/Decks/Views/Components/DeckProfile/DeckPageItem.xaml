@@ -9,6 +9,9 @@
         <TextBlock
             x:Name="TitleLabel"
             VerticalAlignment="Center"
+            TextTrimming="CharacterEllipsis"
+            TextWrapping="NoWrap"
+            ToolTip="{Binding Title, ElementName=Root}"
             Text="{Binding Title, ElementName=Root}">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
@@ -27,6 +30,7 @@
             MinHeight="0"
             Padding="2,0"
             VerticalAlignment="Center"
+            HorizontalAlignment="Stretch"
             Text="{Binding Title, ElementName=Root, UpdateSourceTrigger=PropertyChanged}">
             <ui:TextBox.Style>
                 <Style BasedOn="{StaticResource {x:Type ui:TextBox}}" TargetType="ui:TextBox">

@@ -1,6 +1,6 @@
-using System.Net.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using StreamBoard.Core.Services;
 using StreamBoard.Features.Actions.Services;
 using StreamBoard.Features.Decks.Services;
 using StreamBoard.Features.Decks.ViewModels;
@@ -10,7 +10,6 @@ using StreamBoard.Features.Integrations.Obs.Services;
 using StreamBoard.Features.Integrations.Obs.ViewModels;
 using StreamBoard.Features.Integrations.Twitch.Services;
 using StreamBoard.Features.Integrations.Twitch.ViewModels;
-using StreamBoard.Features.Navigation.Services;
 using StreamBoard.Features.Servers.Controllers;
 using StreamBoard.Features.Servers.Services;
 using StreamBoard.Features.Servers.ViewModels;
@@ -18,6 +17,8 @@ using StreamBoard.Features.Settings.Services;
 using StreamBoard.Features.Settings.ViewModels;
 using StreamBoard.Features.Updater.Services;
 using StreamBoard.Features.Updater.ViewModels;
+using System.Net.Http;
+using Wpf.Ui;
 
 namespace StreamBoard.Core.DI
 {
@@ -25,7 +26,10 @@ namespace StreamBoard.Core.DI
     {
         public static void AddApplicationServices(this IServiceCollection services)
         {
-            services.AddSingleton<NavigationService>();
+            services.AddSingleton<Features.Navigation.Services.NavigationService>();
+            services.AddSingleton<ISnackbarService, SnackbarService>();
+            services.AddSingleton<IClipboardService, ClipboardService>();
+            services.AddSingleton<IDialogService, DialogService>();
 
             services.AddSingleton<SettingsStorage>();
             services.AddSingleton<ServerConfigsStorage>();

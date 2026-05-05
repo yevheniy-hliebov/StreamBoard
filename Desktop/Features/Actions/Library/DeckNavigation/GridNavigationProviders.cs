@@ -9,7 +9,7 @@ namespace StreamBoard.Features.Actions.Library.DeckNavigation
         public List<string> GetOptions(BaseAction action)
         {
             var storage = App.ServiceProvider.GetRequiredService<GridDeckStorage>();
-            var pages = storage.CurrentProfile.Pages.List;
+            var pages = storage.Current.PagesState.AllPages;
 
             if (pages.Count == 0) return ["No pages found"];
 

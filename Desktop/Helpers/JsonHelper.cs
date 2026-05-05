@@ -38,5 +38,16 @@ namespace StreamBoard.Helpers
                 return new T();
             }
         }
+
+        public static string SerializeToString<T>(T data)
+        {
+            return JsonSerializer.Serialize(data, _options);
+        }
+
+        public static T? DeserializeFromString<T>(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) return default;
+            return JsonSerializer.Deserialize<T>(json, _options);
+        }
     }
 }

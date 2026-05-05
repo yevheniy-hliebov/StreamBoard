@@ -2,7 +2,6 @@ using StreamBoard.Features.Settings.Services;
 using Wpf.Ui.Appearance;
 using Microsoft.Extensions.DependencyInjection;
 using StreamBoard.Features.Servers.Services;
-using StreamBoard.Features.Decks.Services;
 using System.Windows;
 using StreamBoard.Features.Integrations.Obs.Services;
 using StreamBoard.Features.Integrations.Common.Services;
@@ -64,10 +63,6 @@ namespace StreamBoard.Core.AppStartup
             // Actions
             var registry = serviceProvider.GetRequiredService<ActionRegistry>();
             registry.RegisterActions();
-
-            // Decks
-            var gridDeckStorage = serviceProvider.GetRequiredService<GridDeckStorage>();
-            gridDeckStorage.Initialize();
         }
     }
 }

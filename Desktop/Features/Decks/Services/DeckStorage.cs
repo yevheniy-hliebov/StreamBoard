@@ -1,58 +1,47 @@
-﻿using StreamBoard.Features.Decks.Models;
-using StreamBoard.Helpers;
-using System.IO;
+﻿using StreamBoard.Core.Services;
+using StreamBoard.Features.Decks.Models;
 
 namespace StreamBoard.Features.Decks.Services
 {
-    public class GridDeckStorage : DeckStorage<GridCanvasConfig>
+    public abstract class DeckStorage : JsonFileStorage<DeckProfile>
+    {
+        protected DeckStorage(string fileName) : base(fileName)
+        {
+            if (Current.PagesState.AllPages.Count == 0)
+            {
+                InitializeDefaultProfile();
+            }
+        }
+
+        protected abstract BaseCanvasConfig CreateDefaultCanvasConfig();
+
+        private void InitializeDefaultProfile()
+        {
+            Current.CanvasConfig = CreateDefaultCanvasConfig();
+
+            var mainPage = new DeckPage { Name = "Default Page" };
+            Current.PagesState.AllPages.Add(mainPage);
+            Current.PagesState.SelectedPageId = mainPage.Id;
+
+            Current.ButtonMaps[mainPage.Id] = new Dictionary<string, DeckButtonConfig>();
+
+            Save();
+        }
+    }
+
+    public class GridDeckStorage : DeckStorage
     {
         public GridDeckStorage() : base("grid_deck.json") { }
+
+        protected override BaseCanvasConfig CreateDefaultCanvasConfig()
+            => new GridCanvasConfig();
     }
-    
-    public class KeyboardDeckStorage : DeckStorage<GridCanvasConfig>
+
+    public class KeyboardDeckStorage : DeckStorage
     {
         public KeyboardDeckStorage() : base("keyboard_deck.json") { }
-    }
 
-
-    public class DeckStorage<TCanvasConfig> where TCanvasConfig : new()
-    {
-        private readonly string _filePath;
-
-        public DeckProfile<TCanvasConfig> CurrentProfile { get; private set; } = new();
-
-        public DeckStorage(String fileName)
-        {
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-            _filePath = Path.Combine(baseDirectory, "data", fileName);
-        }
-
-        public void Initialize()
-        {
-            if (File.Exists(_filePath))
-            {
-                CurrentProfile = JsonHelper.Load<DeckProfile<TCanvasConfig>>(_filePath);
-            }
-            else
-            {
-                CurrentProfile = CreateDefaultProfile();
-                Save();
-            }
-        }
-
-        public void Save() => JsonHelper.Save(_filePath, CurrentProfile);
-
-        private DeckProfile<TCanvasConfig> CreateDefaultProfile()
-        {
-            var profile = new DeckProfile<TCanvasConfig>();
-
-            var mainPage = new DeckPageInfo { Name = "Default Page" };
-
-            profile.Pages.List.Add(mainPage);
-            profile.Pages.SelectedPageId = mainPage.Id;
-
-            return profile;
-        }
+        protected override BaseCanvasConfig CreateDefaultCanvasConfig()
+            => new KeyboardCanvasConfig();
     }
 }

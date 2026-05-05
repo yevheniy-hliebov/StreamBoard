@@ -10,6 +10,15 @@
     xmlns:reorder="clr-namespace:StreamBoard.Components.Controls.ReorderList"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
+    <UserControl.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="C" Command="{Binding CopyPageCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="V" Command="{Binding PastePageCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="X" Command="{Binding CutPageCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="D" Command="{Binding DuplicatePageCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="R" Command="{Binding RenamePageCommand}" />
+        <KeyBinding Key="Delete" Command="{Binding DeletePageCommand}" />
+    </UserControl.InputBindings>
+
     <Grid VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -23,6 +32,11 @@
                         Command="{Binding AddPageCommand}"
                         IconType="Add"
                         TooltipText="Add New Page" />
+                    <controls:IconButton
+                        Margin="8,0,0,0"
+                        Command="{Binding DuplicatePageCommand}"
+                        IconType="Copy"
+                        TooltipText="Duplicate Page" />
                     <controls:IconButton
                         Margin="8,0,0,0"
                         Command="{Binding RenamePageCommand}"
@@ -45,15 +59,25 @@
             VerticalScrollBarVisibility="Auto">
             <reorder:ReorderListView
                 dd:DragDrop.DropHandler="{Binding}"
-                ItemsSource="{Binding List}"
-                SelectedItem="{Binding SelectedPage, Mode=TwoWay}">
+                HorizontalContentAlignment="Stretch"
+                ItemsSource="{Binding AllPages}"
+                SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                <reorder:ReorderListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ui:ListViewItem}" BasedOn="{StaticResource {x:Type ui:ListViewItem}}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Padding" Value="0" />
+                    </Style>
+                </reorder:ReorderListView.ItemContainerStyle>
+
                 <reorder:ReorderListView.ItemTemplate>
                     <DataTemplate>
                         <reorder:ReorderListItemWrapper ShowDragHandle="True" UseDragHandle="True">
                             <local:DeckPageItem
-                                Title="{Binding Name, Mode=TwoWay}"
-                                Margin="0,2"
-                                EndEditCommand="{Binding DataContext.EndRenameCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    Title="{Binding Name, Mode=TwoWay}"
+                                    Margin="8,4"
+                                    EndEditCommand="{Binding DataContext.EndRenameCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                 <local:DeckPageItem.Style>
                                     <Style TargetType="local:DeckPageItem">
                                         <Setter Property="IsEditing" Value="False" />

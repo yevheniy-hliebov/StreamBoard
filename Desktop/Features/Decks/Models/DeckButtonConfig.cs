@@ -7,6 +7,8 @@ namespace StreamBoard.Features.Decks.Models
 {
     public class DeckButtonConfig : ObservableObject
     {
+        private const string DefaultBackgroundColor = "#FF2D2D2D";
+
         private string _name = string.Empty;
         [JsonPropertyName("name")]
         public string Name
@@ -15,7 +17,7 @@ namespace StreamBoard.Features.Decks.Models
             set => SetProperty(ref _name, value);
         }
 
-        private string _backgroundColor = "#FF2D2D2D";
+        private string _backgroundColor = DefaultBackgroundColor;
         [JsonPropertyName("background_color")]
         public string BackgroundColor
         {
@@ -36,6 +38,12 @@ namespace StreamBoard.Features.Decks.Models
 
         [JsonIgnore]
         public bool HasName => !string.IsNullOrWhiteSpace(Name);
+
+        [JsonIgnore]
+        public bool HasData => Actions.Count > 0 ||
+                               !string.IsNullOrWhiteSpace(Name) ||
+                               !string.IsNullOrWhiteSpace(ImagePath) ||
+                               BackgroundColor != DefaultBackgroundColor;
 
         public void ResetAppearance()
         {

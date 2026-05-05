@@ -1,23 +1,25 @@
 ﻿using GongSolutions.Wpf.DragDrop;
 using StreamBoard.Core;
+using StreamBoard.Core.Services;
 using StreamBoard.Features.Decks.Models;
 using StreamBoard.Features.Decks.Services;
-using StreamBoard.Features.Servers.Models;
-using StreamBoard.Features.Servers.Services;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 
 namespace StreamBoard.Features.Decks.ViewModels
 {
-    public partial class DeckPagesViewModel<TCanvasConfig> : ObservableObject, IDropTarget where TCanvasConfig : new()
+    public partial class DeckPagesViewModel : ObservableObject, IDropTarget
     {
-        private readonly DeckStorage<TCanvasConfig> _storage;
-        private readonly DeckPagesConfig _config;
+        private readonly IDeckPageService _pageService;
+        private readonly IDialogService _dialogService;
 
-        public ObservableCollection<DeckPageInfo> List => _config.List;
+        public ObservableCollection<DeckPage> AllPages => _pageService.AllPages;
 
         public ICommand AddPageCommand { get; }
+        public ICommand CopyPageCommand { get; }
+        public ICommand PastePageCommand { get; }
+        public ICommand CutPageCommand { get; }
         public ICommand DuplicatePageCommand { get; }
         public ICommand RenamePageCommand { get; }
         public ICommand EndRenameCommand { get; }
@@ -30,71 +32,104 @@ namespace StreamBoard.Features.Decks.ViewModels
             set => SetProperty(ref _isRenameMode, value);
         }
 
-        public DeckPageInfo? SelectedPage
+        public DeckPage? SelectedPage
         {
-            get => List.FirstOrDefault(p => p.Id == _config.SelectedPageId);
+            get => AllPages.FirstOrDefault(p => p.Id == _pageService.GetSelectedPageId());
             set
             {
                 IsRenameMode = false;
-                if (value != null && _config.SelectedPageId != value.Id)
+                if (value != null && _pageService.GetSelectedPageId() != value.Id)
                 {
-                    _config.SelectedPageId = value.Id;
-                    OnPropertyChanged();
-                    _storage.Save();
+                    _pageService.SelectPage(value.Id);
                 }
             }
         }
 
-        public DeckPagesViewModel(DeckStorage<TCanvasConfig> storage)
-        {
-            _storage = storage;
-            _config = storage.CurrentProfile.Pages;
+        public event Action<string, string>? PageRenamed;
 
-            AddPageCommand = new RelayCommand(_ => OnAddPage());
-            DeletePageCommand = new RelayCommand(_ => OnDeletePage(), _ => List.Count > 1);
+        public DeckPagesViewModel(
+            DeckStorage storage, 
+            IDeckPageService pageService,
+            IDialogService dialogService)
+        {
+            _pageService = pageService;
+            _dialogService = dialogService;
+
+            _pageService.SelectedPageChanged += () =>
+            {
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    OnPropertyChanged(nameof(SelectedPage));
+                });
+            };
+
+            AddPageCommand = new RelayCommand(_ => _pageService.AddPage());
+            
+            CopyPageCommand = new RelayCommand(_ =>
+            {
+                if (SelectedPage != null) _pageService.CopyPage(SelectedPage.Id);
+            }, _ => SelectedPage != null);
+
+            PastePageCommand = new RelayCommand(_ => _pageService.PastePage());
+
+            DuplicatePageCommand = new RelayCommand(_ =>
+            {
+                if (SelectedPage != null) _pageService.DuplicatePage(SelectedPage.Id);
+            }, _ => SelectedPage != null);
+
+            CutPageCommand = new RelayCommand(async _ => await OnCutPage(), _ => AllPages.Count > 1);
+
+            DeletePageCommand = new RelayCommand(async _ => await OnDeletePage(), _ => AllPages.Count > 1);
+
             RenamePageCommand = new RelayCommand(_ =>
             {
                 if (SelectedPage != null) IsRenameMode = true;
             }, _ => SelectedPage != null);
+
             EndRenameCommand = new RelayCommand(_ => OnEndRename());
 
-            if (typeof(TCanvasConfig) == typeof(GridCanvasConfig))
+            var deckType = storage.Current.CanvasConfig.Type;
+            if (deckType == DeckType.Grid)
             {
                 GridDeckNavigationBus.Register(OnNextPage, OnPreviousPage, OnSwitchPage);
             }
         }
 
-        private void OnAddPage()
+        private async Task OnDeletePage()
         {
-            IsRenameMode = false;
-            var newPage = new DeckPageInfo { Name = $"Page {List.Count + 1}" };
-            List.Add(newPage);
-            SelectedPage = newPage;
-            _storage.Save();
+            if (SelectedPage != null)
+            {
+                bool isConfirmed = await _dialogService.ShowConfirmationAsync(
+                    "Delete Page",
+                    "Are you sure you want to delete this page? All configured buttons with appearance and actions will be lost.");
+
+                if (!isConfirmed) return;
+
+                _pageService.DeletePage(SelectedPage.Id);
+            }
         }
 
-        private void OnDeletePage()
+        private async Task OnCutPage()
         {
-            if (SelectedPage == null || List.Count <= 1) return;
+            if (SelectedPage != null)
+            {
+                bool isConfirmed = await _dialogService.ShowConfirmationAsync(
+                    "Cut Page",
+                    "Are you sure you want to cut this page? If you don't paste, all configured buttons with appearance and actions will be lost.");
 
-            var pageToDelete = SelectedPage;
-            int currentIndex = List.IndexOf(pageToDelete);
-            List.Remove(pageToDelete);
+                if (!isConfirmed) return;
 
-            int nextIndex = Math.Min(currentIndex, List.Count - 1);
-            SelectedPage = List[nextIndex];
-            _storage.Save();
+                _pageService.CutPage(SelectedPage.Id);
+            }
         }
-
-        public event Action<string, string>? PageRenamed;
 
         public void OnEndRename()
         {
             IsRenameMode = false;
-            _storage.Save();
 
             if (SelectedPage != null)
             {
+                _pageService.RenamePage(SelectedPage.Id, SelectedPage.Name);
                 PageRenamed?.Invoke(SelectedPage.Id, SelectedPage.Name);
             }
         }
@@ -102,7 +137,7 @@ namespace StreamBoard.Features.Decks.ViewModels
         // --- Drag & Drop Implementation ---
         void IDropTarget.DragOver(IDropInfo dropInfo)
         {
-            if (dropInfo.Data is DeckPageInfo && !IsRenameMode)
+            if (dropInfo.Data is DeckPage && !IsRenameMode)
             {
                 dropInfo.Effects = DragDropEffects.Move;
                 dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
@@ -111,57 +146,26 @@ namespace StreamBoard.Features.Decks.ViewModels
 
         void IDropTarget.Drop(IDropInfo dropInfo)
         {
-            if (dropInfo.Data is DeckPageInfo item && dropInfo.TargetCollection is ObservableCollection<DeckPageInfo> list)
+            if (dropInfo.Data is DeckPage)
             {
-                int oldIndex = list.IndexOf(item);
-                int newIndex = dropInfo.InsertIndex;
-
-                if (oldIndex < newIndex) newIndex--;
-                if (oldIndex != newIndex)
-                {
-                    list.Move(oldIndex, newIndex);
-                    _storage.Save();
-                }
+                _pageService.MovePage(dropInfo.DragInfo.SourceIndex, dropInfo.InsertIndex);
             }
         }
 
-        // DeckNabigationBus
+        // --- DeckNavigationBus ---
         private void OnNextPage()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
-            {
-                if (List.Count <= 1) return;
-
-                int currentIndex = SelectedPage != null ? List.IndexOf(SelectedPage) : -1;
-                int nextIndex = (currentIndex + 1) % List.Count;
-
-                SelectedPage = List[nextIndex];
-            });
+            Application.Current.Dispatcher.Invoke(() => _pageService.NextPage());
         }
 
         private void OnPreviousPage()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
-            {
-                if (List.Count <= 1) return;
-
-                int currentIndex = SelectedPage != null ? List.IndexOf(SelectedPage) : -1;
-                int prevIndex = (currentIndex - 1 + List.Count) % List.Count;
-
-                SelectedPage = List[prevIndex];
-            });
+            Application.Current.Dispatcher.Invoke(() => _pageService.PreviousPage());
         }
 
         private void OnSwitchPage(string pageId)
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
-            {
-                var targetPage = List.FirstOrDefault(p => p.Id == pageId);
-                if (targetPage != null)
-                {
-                    SelectedPage = targetPage;
-                }
-            });
+            Application.Current.Dispatcher.Invoke(() => _pageService.SelectPage(pageId));
         }
     }
 }
