@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Components.Cards;
-using StreamBoard.Features.Navigation.Services;
+using StreamTabula.Components.Cards;
+using StreamTabula.Features.Navigation.Services;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace StreamBoard.Features.Navigation.Views.Components
+namespace StreamTabula.Features.Navigation.Views.Components
 {
     public abstract class NavigationHubPage : Page
     {

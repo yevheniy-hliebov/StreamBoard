@@ -1,9 +1,9 @@
 ﻿<UserControl
-    x:Class="StreamBoard.Features.Actions.Views.Components.Library.CategoryExpander"
+    x:Class="StreamTabula.Features.Actions.Views.Components.Library.CategoryExpander"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
-    xmlns:ic="clr-namespace:StreamBoard.Features.Integrations.Common.Views.Components"
+    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+    xmlns:ic="clr-namespace:StreamTabula.Features.Integrations.Common.Views.Components"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     x:Name="Root">
 

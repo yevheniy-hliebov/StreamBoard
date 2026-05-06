@@ -1,4 +1,4 @@
-﻿namespace StreamBoard.Features.Servers.Models
+﻿namespace StreamTabula.Features.Servers.Models
 {
     public enum WebsocketMessageType
     {

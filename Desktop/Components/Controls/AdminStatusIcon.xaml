@@ -1,8 +1,8 @@
 ﻿<UserControl
-    x:Class="StreamBoard.Components.Controls.AdminStatusIcon"
+    x:Class="StreamTabula.Components.Controls.AdminStatusIcon"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
     Visibility="Collapsed"
     Foreground="{DynamicResource SystemFillColorSuccessBrush}">
     

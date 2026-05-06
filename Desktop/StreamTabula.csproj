@@ -6,8 +6,8 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
-		<AssemblyName>StreamBoard</AssemblyName>
-		<RootNamespace>StreamBoard</RootNamespace>
+		<AssemblyName>StreamTabula</AssemblyName>
+		<RootNamespace>StreamTabula</RootNamespace>
 		<ApplicationIcon>Assets\Images\logo.ico</ApplicationIcon>
 
 		<Version>0.1.0-beta.1</Version>

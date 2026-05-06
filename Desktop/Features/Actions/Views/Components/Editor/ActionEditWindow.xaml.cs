@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Wpf.Ui.Controls;
 
-namespace StreamBoard.Features.Actions.Views.Components.Editor
+namespace StreamTabula.Features.Actions.Views.Components.Editor
 {
     public partial class ActionEditWindow : FluentWindow
     {

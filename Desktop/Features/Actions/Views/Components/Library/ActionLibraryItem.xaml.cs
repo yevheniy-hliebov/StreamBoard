@@ -1,8 +1,8 @@
-﻿using StreamBoard.Core.Models;
+﻿using StreamTabula.Core.Models;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace StreamBoard.Features.Actions.Views.Components.Library
+namespace StreamTabula.Features.Actions.Views.Components.Library
 {
     public partial class ActionLibraryItem : UserControl
     {

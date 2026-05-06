@@ -1,7 +1,7 @@
-using StreamBoard.Core.Models;
-using StreamBoard.Features.Integrations.Common.Models;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Integrations.Common.Models;
 
-namespace StreamBoard.Features.Navigation.Models
+namespace StreamTabula.Features.Navigation.Models
 {
     public record AppRoute(
         string Name,

@@ -1,13 +1,13 @@
-﻿using StreamBoard.Core;
-using StreamBoard.Core.Models;
-using StreamBoard.Features.Servers.Models;
-using StreamBoard.Features.Servers.Services;
+﻿using StreamTabula.Core;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Servers.Models;
+using StreamTabula.Features.Servers.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Wpf.Ui.Controls;
 using Wpf.Ui.Input;
 
-namespace StreamBoard.Features.Servers.ViewModels
+namespace StreamTabula.Features.Servers.ViewModels
 {
     public class LocalServerViewModel : ObservableObject
     {

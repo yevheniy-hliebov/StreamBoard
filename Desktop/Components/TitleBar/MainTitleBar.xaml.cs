@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace StreamBoard.Components.TitleBar
+namespace StreamTabula.Components.TitleBar
 {
     public partial class MainTitleBar : UserControl
     {
@@ -14,7 +14,7 @@ namespace StreamBoard.Components.TitleBar
         }
 
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register(nameof(Title), typeof(string), typeof(MainTitleBar), new PropertyMetadata("StreamBoard"));
+            DependencyProperty.Register(nameof(Title), typeof(string), typeof(MainTitleBar), new PropertyMetadata("StreamTabula"));
 
         public string Subtitle
         {

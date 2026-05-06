@@ -1,8 +1,8 @@
-﻿using StreamBoard.Features.Settings.Models;
-using StreamBoard.Helpers;
+﻿using StreamTabula.Features.Settings.Models;
+using StreamTabula.Helpers;
 using System.IO;
 
-namespace StreamBoard.Core.Services
+namespace StreamTabula.Core.Services
 {
     public abstract class JsonFileStorage<T> where T : class, new()
     {

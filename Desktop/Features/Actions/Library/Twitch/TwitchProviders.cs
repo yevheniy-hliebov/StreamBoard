@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Integrations.Twitch.Models;
-using StreamBoard.Features.Integrations.Twitch.Services;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Integrations.Twitch.Models;
+using StreamTabula.Features.Integrations.Twitch.Services;
 
-namespace StreamBoard.Features.Actions.Library.Twitch
+namespace StreamTabula.Features.Actions.Library.Twitch
 {
     public class TwitchUsernameProvider : IValueProvider
     {

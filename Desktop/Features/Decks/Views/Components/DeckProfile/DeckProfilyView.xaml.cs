@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace StreamBoard.Features.Decks.Views.Components.DeckProfile
+namespace StreamTabula.Features.Decks.Views.Components.DeckProfile
 {
     public partial class DeckProfilyView : UserControl
     {

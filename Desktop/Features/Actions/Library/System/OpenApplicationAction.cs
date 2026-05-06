@@ -1,11 +1,11 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json.Serialization;
-using StreamBoard.Core.Models;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Actions.Attributes;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Attributes;
 
-namespace StreamBoard.Features.Actions.Library.System
+namespace StreamTabula.Features.Actions.Library.System
 {
     [ActionDiscriminator("open_application")]
     public class OpenApplicationAction : SystemBaseAction

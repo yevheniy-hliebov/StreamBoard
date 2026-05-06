@@ -1,9 +1,9 @@
 <Page
-    x:Class="StreamBoard.Features.Integrations.Twitch.Views.Pages.TwitchSettingsPage"
+    x:Class="StreamTabula.Features.Integrations.Twitch.Views.Pages.TwitchSettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:components="clr-namespace:StreamBoard.Features.Integrations.Twitch.Views.Components"
-    xmlns:ic="clr-namespace:StreamBoard.Features.Integrations.Common.Views.Components"
+    xmlns:components="clr-namespace:StreamTabula.Features.Integrations.Twitch.Views.Components"
+    xmlns:ic="clr-namespace:StreamTabula.Features.Integrations.Common.Views.Components"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
     <StackPanel Margin="16">

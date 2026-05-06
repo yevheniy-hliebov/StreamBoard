@@ -1,8 +1,8 @@
-﻿using StreamBoard.Core.Services;
-using StreamBoard.Features.Actions.Models;
+﻿using StreamTabula.Core.Services;
+using StreamTabula.Features.Actions.Models;
 using System.Collections.ObjectModel;
 
-namespace StreamBoard.Features.Actions.Services
+namespace StreamTabula.Features.Actions.Services
 {
     public interface IActionCollectionService
     {

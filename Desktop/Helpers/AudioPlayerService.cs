@@ -1,7 +1,7 @@
 using System.IO;
 using System.Windows.Media;
 
-namespace StreamBoard.Helpers
+namespace StreamTabula.Helpers
 {
     public static class AudioPlayerService
     {

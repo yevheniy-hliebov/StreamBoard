@@ -1,10 +1,10 @@
-﻿using StreamBoard.Components.Cards;
+﻿using StreamTabula.Components.Cards;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-namespace StreamBoard.Components.Controls
+namespace StreamTabula.Components.Controls
 {
     public partial class LabeledToggle : UserControl
     {

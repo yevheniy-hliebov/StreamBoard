@@ -1,9 +1,9 @@
-using StreamBoard.Features.Actions.Attributes;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Actions.ViewModels;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.ViewModels;
 using System.Reflection;
 
-namespace StreamBoard.Features.Actions.Services
+namespace StreamTabula.Features.Actions.Services
 {
     public static class ActionFieldsGenerator
     {

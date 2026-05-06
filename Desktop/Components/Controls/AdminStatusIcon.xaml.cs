@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Features.Settings.Services;
+using StreamTabula.Features.Settings.Services;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace StreamBoard.Components.Controls
+namespace StreamTabula.Components.Controls
 {
     public partial class AdminStatusIcon : UserControl
     {

@@ -1,10 +1,10 @@
 using System.Net.Http;
 using System.Net.Http.Json;
-using StreamBoard.Features.Integrations.Twitch.Models;
-using StreamBoard.Features.Integrations.Twitch.Models.Requests;
-using StreamBoard.Features.Integrations.Twitch.Models.Responses;
+using StreamTabula.Features.Integrations.Twitch.Models;
+using StreamTabula.Features.Integrations.Twitch.Models.Requests;
+using StreamTabula.Features.Integrations.Twitch.Models.Responses;
 
-namespace StreamBoard.Features.Integrations.Twitch.Services.ApiModules
+namespace StreamTabula.Features.Integrations.Twitch.Services.ApiModules
 {
     public class TwitchApiChatModule(TwitchAuthContext context, HttpClient http)
         : TwitchApiModule(context, http)

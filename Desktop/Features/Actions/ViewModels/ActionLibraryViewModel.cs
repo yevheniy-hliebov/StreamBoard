@@ -1,7 +1,7 @@
-﻿using StreamBoard.Core;
-using StreamBoard.Features.Actions.Services;
+﻿using StreamTabula.Core;
+using StreamTabula.Features.Actions.Services;
 
-namespace StreamBoard.Features.Actions.ViewModels
+namespace StreamTabula.Features.Actions.ViewModels
 {
     public class ActionLibraryViewModel : ObservableObject
     {

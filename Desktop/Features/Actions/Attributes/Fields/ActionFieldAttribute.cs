@@ -1,4 +1,4 @@
-namespace StreamBoard.Features.Actions.Attributes
+namespace StreamTabula.Features.Actions.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class ActionFieldAttribute : Attribute

@@ -1,8 +1,8 @@
-﻿using StreamBoard.Core;
+﻿using StreamTabula.Core;
 using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 
-namespace StreamBoard.Features.Decks.Models
+namespace StreamTabula.Features.Decks.Models
 {
     public class DeckPagesState : ObservableObject
     {

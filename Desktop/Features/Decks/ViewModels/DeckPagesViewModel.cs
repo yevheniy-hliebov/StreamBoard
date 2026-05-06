@@ -1,13 +1,13 @@
 ﻿using GongSolutions.Wpf.DragDrop;
-using StreamBoard.Core;
-using StreamBoard.Core.Services;
-using StreamBoard.Features.Decks.Models;
-using StreamBoard.Features.Decks.Services;
+using StreamTabula.Core;
+using StreamTabula.Core.Services;
+using StreamTabula.Features.Decks.Models;
+using StreamTabula.Features.Decks.Services;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 
-namespace StreamBoard.Features.Decks.ViewModels
+namespace StreamTabula.Features.Decks.ViewModels
 {
     public partial class DeckPagesViewModel : ObservableObject, IDropTarget
     {

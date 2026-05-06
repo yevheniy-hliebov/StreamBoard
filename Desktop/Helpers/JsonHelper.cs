@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Text.Json;
-using StreamBoard.Features.Actions.Serialization;
+using StreamTabula.Features.Actions.Serialization;
 
-namespace StreamBoard.Helpers
+namespace StreamTabula.Helpers
 {
     public static class JsonHelper
     {

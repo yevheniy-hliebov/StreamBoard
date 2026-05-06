@@ -1,7 +1,7 @@
-﻿using StreamBoard.Core.Models;
-using StreamBoard.Features.Integrations.Common.Models;
+﻿using StreamTabula.Core.Models;
+using StreamTabula.Features.Integrations.Common.Models;
 
-namespace StreamBoard.Features.Actions.Attributes
+namespace StreamTabula.Features.Actions.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
     public class ActionCategoryAttribute : Attribute

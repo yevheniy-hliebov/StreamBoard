@@ -1,15 +1,15 @@
-using StreamBoard.Core.Models;
-using StreamBoard.Features.Decks.Views.Pages;
-using StreamBoard.Features.Home.Pages;
-using StreamBoard.Features.Integrations.Common.Views.Pages;
-using StreamBoard.Features.Integrations.Obs.Views.Pages;
-using StreamBoard.Features.Integrations.Twitch.Views.Pages;
-using StreamBoard.Features.Servers.Pages;
-using StreamBoard.Features.Settings.Pages;
-using StreamBoard.Features.Integrations.Common.Models;
-using StreamBoard.Features.Navigation.Models;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Decks.Views.Pages;
+using StreamTabula.Features.Home.Pages;
+using StreamTabula.Features.Integrations.Common.Views.Pages;
+using StreamTabula.Features.Integrations.Obs.Views.Pages;
+using StreamTabula.Features.Integrations.Twitch.Views.Pages;
+using StreamTabula.Features.Servers.Pages;
+using StreamTabula.Features.Settings.Pages;
+using StreamTabula.Features.Integrations.Common.Models;
+using StreamTabula.Features.Navigation.Models;
 
-namespace StreamBoard.Features.Navigation.Services
+namespace StreamTabula.Features.Navigation.Services
 {
     public class NavigationService
     {

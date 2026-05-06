@@ -1,9 +1,9 @@
 using System.Windows.Input;
-using StreamBoard.Core;
-using StreamBoard.Features.Integrations.Twitch.Models;
-using StreamBoard.Features.Integrations.Twitch.Services;
+using StreamTabula.Core;
+using StreamTabula.Features.Integrations.Twitch.Models;
+using StreamTabula.Features.Integrations.Twitch.Services;
 
-namespace StreamBoard.Features.Integrations.Twitch.ViewModels
+namespace StreamTabula.Features.Integrations.Twitch.ViewModels
 {
     public class TwitchAccountViewModel : ObservableObject
     {

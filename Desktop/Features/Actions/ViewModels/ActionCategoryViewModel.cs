@@ -1,10 +1,10 @@
-﻿using StreamBoard.Core;
-using StreamBoard.Core.Models;
-using StreamBoard.Features.Actions.Services;
-using StreamBoard.Features.Integrations.Common.Models;
+﻿using StreamTabula.Core;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Actions.Services;
+using StreamTabula.Features.Integrations.Common.Models;
 using System.Collections.ObjectModel;
 
-namespace StreamBoard.Features.Actions.ViewModels
+namespace StreamTabula.Features.Actions.ViewModels
 {
     public class ActionCategoryViewModel(
         string name,

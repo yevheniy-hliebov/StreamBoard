@@ -1,6 +1,6 @@
-﻿using StreamBoard.Core.Models;
+﻿using StreamTabula.Core.Models;
 
-namespace StreamBoard.Features.Actions.Models
+namespace StreamTabula.Features.Actions.Models
 {
     public record ActionMetadata(string Name, string DialogTitle, FluentIconType Icon);
 }

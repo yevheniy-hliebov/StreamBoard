@@ -1,7 +1,7 @@
-﻿using StreamBoard.Core.Services;
-using StreamBoard.Features.Settings.Models;
+﻿using StreamTabula.Core.Services;
+using StreamTabula.Features.Settings.Models;
 
-namespace StreamBoard.Features.Settings.Services
+namespace StreamTabula.Features.Settings.Services
 {
     public class SettingsStorage : JsonFileStorage<SettingsModel>
     {

@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace StreamBoard.Components.Controls
+namespace StreamTabula.Components.Controls
 {
     public class ClippingBorder : Border
     {

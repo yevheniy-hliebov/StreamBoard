@@ -1,8 +1,8 @@
 ﻿using System.Windows.Controls;
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Features.Updater.Services;
+using StreamTabula.Features.Updater.Services;
 
-namespace StreamBoard.Features.Home.Components
+namespace StreamTabula.Features.Home.Components
 {
     public partial class HomeBanner : UserControl
     {

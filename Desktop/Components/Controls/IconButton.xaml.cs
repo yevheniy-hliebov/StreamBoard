@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using StreamBoard.Core.Models;
+using StreamTabula.Core.Models;
 
-namespace StreamBoard.Components.Controls
+namespace StreamTabula.Components.Controls
 {
     public partial class IconButton : UserControl
     {

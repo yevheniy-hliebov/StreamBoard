@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace StreamBoard.Components.Controls.ReorderList
+namespace StreamTabula.Components.Controls.ReorderList
 {
     public partial class ReorderListItemWrapper : ContentControl
     {

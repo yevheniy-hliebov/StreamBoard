@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace StreamBoard.Features.Servers.Services
+namespace StreamTabula.Features.Servers.Services
 {
     public interface IHttpController
     {

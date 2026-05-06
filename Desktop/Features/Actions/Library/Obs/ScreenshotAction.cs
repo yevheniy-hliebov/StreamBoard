@@ -2,13 +2,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Core.Models;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Actions.Attributes;
-using StreamBoard.Features.Integrations.Obs.Services;
-using StreamBoard.Helpers;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Helpers;
 
-namespace StreamBoard.Features.Actions.Library.Obs
+namespace StreamTabula.Features.Actions.Library.Obs
 {
     [ActionDiscriminator("obs_screenshot")]
     public class ScreenshotAction : ObsBaseAction

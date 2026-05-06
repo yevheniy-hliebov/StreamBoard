@@ -1,13 +1,13 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Core.Models;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Actions.Attributes;
-using StreamBoard.Features.Integrations.Twitch.Models;
-using StreamBoard.Features.Integrations.Twitch.Services;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Integrations.Twitch.Models;
+using StreamTabula.Features.Integrations.Twitch.Services;
 
-namespace StreamBoard.Features.Actions.Library.Twitch
+namespace StreamTabula.Features.Actions.Library.Twitch
 {
     [ActionDiscriminator("twitch_send_announcement")]
     public class TwitchSendAnnouncementAction : TwitchBaseAction

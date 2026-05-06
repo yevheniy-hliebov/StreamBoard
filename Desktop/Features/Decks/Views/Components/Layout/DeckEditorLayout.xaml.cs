@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 
-namespace StreamBoard.Features.Decks.Views.Components.Layout
+namespace StreamTabula.Features.Decks.Views.Components.Layout
 {
     public partial class DeckEditorLayout : UserControl
     {

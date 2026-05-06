@@ -1,11 +1,11 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
-using StreamBoard.Core.Models;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Actions.Attributes;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Attributes;
 
-namespace StreamBoard.Features.Actions.Library.System
+namespace StreamTabula.Features.Actions.Library.System
 {
     [ActionDiscriminator("close_active_window")]
     public class CloseActiveWindowAction : SystemBaseAction
@@ -51,7 +51,7 @@ namespace StreamBoard.Features.Actions.Library.System
                     }
                     else
                     {
-                        Debug.WriteLine("Ignored: StreamBoard is the active window, preventing self-close.");
+                        Debug.WriteLine("Ignored: StreamTabula is the active window, preventing self-close.");
                     }
                 }
             }

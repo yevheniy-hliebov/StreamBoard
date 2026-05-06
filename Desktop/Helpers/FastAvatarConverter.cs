@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace StreamBoard.Helpers
+namespace StreamTabula.Helpers
 {
     public class FastAvatarConverter : IValueConverter
     {

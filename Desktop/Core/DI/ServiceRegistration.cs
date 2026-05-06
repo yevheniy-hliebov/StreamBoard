@@ -1,26 +1,26 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Core.Services;
-using StreamBoard.Features.Actions.Services;
-using StreamBoard.Features.Decks.Services;
-using StreamBoard.Features.Decks.ViewModels;
-using StreamBoard.Features.Integrations.Common.Services;
-using StreamBoard.Features.Integrations.Common.ViewModels;
-using StreamBoard.Features.Integrations.Obs.Services;
-using StreamBoard.Features.Integrations.Obs.ViewModels;
-using StreamBoard.Features.Integrations.Twitch.Services;
-using StreamBoard.Features.Integrations.Twitch.ViewModels;
-using StreamBoard.Features.Servers.Controllers;
-using StreamBoard.Features.Servers.Services;
-using StreamBoard.Features.Servers.ViewModels;
-using StreamBoard.Features.Settings.Services;
-using StreamBoard.Features.Settings.ViewModels;
-using StreamBoard.Features.Updater.Services;
-using StreamBoard.Features.Updater.ViewModels;
+using StreamTabula.Core.Services;
+using StreamTabula.Features.Actions.Services;
+using StreamTabula.Features.Decks.Services;
+using StreamTabula.Features.Decks.ViewModels;
+using StreamTabula.Features.Integrations.Common.Services;
+using StreamTabula.Features.Integrations.Common.ViewModels;
+using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Features.Integrations.Obs.ViewModels;
+using StreamTabula.Features.Integrations.Twitch.Services;
+using StreamTabula.Features.Integrations.Twitch.ViewModels;
+using StreamTabula.Features.Servers.Controllers;
+using StreamTabula.Features.Servers.Services;
+using StreamTabula.Features.Servers.ViewModels;
+using StreamTabula.Features.Settings.Services;
+using StreamTabula.Features.Settings.ViewModels;
+using StreamTabula.Features.Updater.Services;
+using StreamTabula.Features.Updater.ViewModels;
 using System.Net.Http;
 using Wpf.Ui;
 
-namespace StreamBoard.Core.DI
+namespace StreamTabula.Core.DI
 {
     public static class ServiceRegistration
     {

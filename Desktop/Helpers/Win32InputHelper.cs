@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace StreamBoard.Helpers
+namespace StreamTabula.Helpers
 {
     public static class Win32InputHelper
     {

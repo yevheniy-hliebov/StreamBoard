@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace StreamBoard.Features.Integrations.Twitch.Models.Responses
+namespace StreamTabula.Features.Integrations.Twitch.Models.Responses
 {
     public class TwitchSendMessageResponse
     {

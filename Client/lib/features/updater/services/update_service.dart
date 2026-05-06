@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pub_semver/pub_semver.dart';
-import 'package:streamboard/core/constants/update_constants.dart';
-import 'package:streamboard/features/updater/models/app_info.dart';
-import 'package:streamboard/features/updater/models/github_asset_info.dart';
-import 'package:streamboard/features/updater/models/github_release_info.dart';
+import 'package:streamtabula/core/constants/update_constants.dart';
+import 'package:streamtabula/features/updater/models/app_info.dart';
+import 'package:streamtabula/features/updater/models/github_asset_info.dart';
+import 'package:streamtabula/features/updater/models/github_release_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_filex/open_filex.dart';
 

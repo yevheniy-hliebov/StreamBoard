@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace StreamBoard.Features.Servers.Components
+namespace StreamTabula.Features.Servers.Components
 {
     /// <summary>
     /// Interaction logic for HttpRequestLogItem.xaml

@@ -1,4 +1,4 @@
-namespace StreamBoard.Features.Updater.Models
+namespace StreamTabula.Features.Updater.Models
 {
     public class AppInfoModel(string version, string appName)
     {

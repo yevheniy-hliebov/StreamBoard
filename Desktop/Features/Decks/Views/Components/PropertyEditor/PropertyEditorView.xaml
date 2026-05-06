@@ -1,11 +1,11 @@
 ﻿<UserControl
-    x:Class="StreamBoard.Features.Decks.Views.Components.PropertyEditor.PropertyEditorView"
+    x:Class="StreamTabula.Features.Decks.Views.Components.PropertyEditor.PropertyEditorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ae="clr-namespace:StreamBoard.Features.Actions.Views.Components.Editor"
-    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
-    xmlns:layout="clr-namespace:StreamBoard.Features.Decks.Views.Components.Layout"
-    xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components.PropertyEditor"
+    xmlns:ae="clr-namespace:StreamTabula.Features.Actions.Views.Components.Editor"
+    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+    xmlns:layout="clr-namespace:StreamTabula.Features.Decks.Views.Components.Layout"
+    xmlns:local="clr-namespace:StreamTabula.Features.Decks.Views.Components.PropertyEditor"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
     <Grid Background="Transparent">

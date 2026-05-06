@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace StreamBoard.Components.Cards
+namespace StreamTabula.Components.Cards
 {
     public enum IconPosition { Top, Left }
 

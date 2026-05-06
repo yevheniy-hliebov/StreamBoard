@@ -1,11 +1,11 @@
 ﻿using Microsoft.Win32;
 using System.Diagnostics;
 
-namespace StreamBoard.Features.Settings.Services
+namespace StreamTabula.Features.Settings.Services
 {
     public class StartupService
     {
-        private const string AppName = "StreamBoard";
+        private const string AppName = "StreamTabula";
 
         public void SetStartup(bool enable)
         {

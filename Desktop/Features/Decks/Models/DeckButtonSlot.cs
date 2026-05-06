@@ -1,9 +1,9 @@
-﻿using StreamBoard.Core;
-using StreamBoard.Features.Actions.Services;
+﻿using StreamTabula.Core;
+using StreamTabula.Features.Actions.Services;
 using System.Windows.Input;
 using Wpf.Ui.Input;
 
-namespace StreamBoard.Features.Decks.Models
+namespace StreamTabula.Features.Decks.Models
 {
     public class DeckButtonSlot : ObservableObject
     {

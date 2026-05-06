@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace StreamBoard.Features.Integrations.Twitch.Views.Components
+namespace StreamTabula.Features.Integrations.Twitch.Views.Components
 {
     public partial class TwitchLoginCard : UserControl
     {

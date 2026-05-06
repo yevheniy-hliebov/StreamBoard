@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:streamboard/core/constants/app_colors.dart';
+import 'package:streamtabula/core/constants/app_colors.dart';
 
 class AppTheme {
   const AppTheme._();

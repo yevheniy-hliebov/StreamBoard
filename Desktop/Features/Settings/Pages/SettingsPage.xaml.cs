@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Features.Settings.ViewModels;
+using StreamTabula.Features.Settings.ViewModels;
 using System.Windows.Controls;
 
-namespace StreamBoard.Features.Settings.Pages
+namespace StreamTabula.Features.Settings.Pages
 {
     /// <summary>
     /// Interaction logic for SettingsPage.xaml

@@ -1,6 +1,6 @@
-﻿using StreamBoard.Features.Navigation.Views.Components;
+﻿using StreamTabula.Features.Navigation.Views.Components;
 
-namespace StreamBoard.Features.Home.Pages
+namespace StreamTabula.Features.Home.Pages
 {
     public partial class HomePage : NavigationHubPage
     {

@@ -1,10 +1,10 @@
 <ui:FluentWindow
-    x:Class="StreamBoard.Features.Updater.Views.Components.UpdateDialogWindow"
+    x:Class="StreamTabula.Features.Updater.Views.Components.UpdateDialogWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
-    xmlns:local="clr-namespace:StreamBoard.Features.Updater.Views.Components"
-    xmlns:titlebar="clr-namespace:StreamBoard.Components.TitleBar"
+    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+    xmlns:local="clr-namespace:StreamTabula.Features.Updater.Views.Components"
+    xmlns:titlebar="clr-namespace:StreamTabula.Components.TitleBar"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Width="350"
     Height="300"
@@ -173,7 +173,7 @@
                     HorizontalAlignment="Center"
                     FontSize="18"
                     FontWeight="SemiBold"
-                    Text="Updating StreamBoard..." />
+                    Text="Updating StreamTabula..." />
 
                 <TextBlock
                     Margin="0,0,0,16"

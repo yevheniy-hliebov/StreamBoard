@@ -1,11 +1,11 @@
 ﻿<UserControl
-    x:Class="StreamBoard.Features.Decks.Views.Components.Canvas.GridCanvasView"
+    x:Class="StreamTabula.Features.Decks.Views.Components.Canvas.GridCanvasView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:StreamBoard.Components.Controls"
+    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
     xmlns:dd="clr-namespace:CustomDragDropLib;assembly=CustomDragDropLib"
-    xmlns:local="clr-namespace:StreamBoard.Features.Decks.Views.Components.Canvas"
-    xmlns:models="clr-namespace:StreamBoard.Features.Decks.Models"
+    xmlns:local="clr-namespace:StreamTabula.Features.Decks.Views.Components.Canvas"
+    xmlns:models="clr-namespace:StreamTabula.Features.Decks.Models"
     x:Name="Root">
 
     <UserControl.InputBindings>

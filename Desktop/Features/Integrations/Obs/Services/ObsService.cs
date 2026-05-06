@@ -1,9 +1,9 @@
 using OBSWebsocketDotNet.Communication;
-using StreamBoard.Core;
-using StreamBoard.Features.Integrations.Common.Models;
-using StreamBoard.Features.Integrations.Obs.Models;
+using StreamTabula.Core;
+using StreamTabula.Features.Integrations.Common.Models;
+using StreamTabula.Features.Integrations.Obs.Models;
 
-namespace StreamBoard.Features.Integrations.Obs.Services
+namespace StreamTabula.Features.Integrations.Obs.Services
 {
     public class ObsService : ObservableObject
     {

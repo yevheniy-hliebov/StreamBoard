@@ -1,4 +1,4 @@
-namespace StreamBoard.Features.Integrations.Twitch.Exceptions
+namespace StreamTabula.Features.Integrations.Twitch.Exceptions
 {
     public class TwitchApiException(string message, int statusCode) : Exception(message)
     {

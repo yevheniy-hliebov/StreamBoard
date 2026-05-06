@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="StreamBoard.Features.Decks.Views.Components.Layout.DeckSidebarHeader"
+﻿<UserControl x:Class="StreamTabula.Features.Decks.Views.Components.Layout.DeckSidebarHeader"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"

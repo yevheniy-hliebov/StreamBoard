@@ -1,4 +1,4 @@
-import 'package:streamboard/features/updater/models/github_asset_info.dart';
+import 'package:streamtabula/features/updater/models/github_asset_info.dart';
 
 class GithubReleaseInfo {
   final String url;

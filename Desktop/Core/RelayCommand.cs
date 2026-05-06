@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace StreamBoard.Core
+namespace StreamTabula.Core
 {
     public class RelayCommand : ICommand
     {

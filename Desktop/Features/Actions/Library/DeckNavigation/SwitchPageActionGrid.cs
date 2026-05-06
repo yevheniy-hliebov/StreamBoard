@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Core.Models;
-using StreamBoard.Features.Actions.Attributes;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Decks.Services;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Decks.Services;
 using System.Text.Json.Serialization;
 
-namespace StreamBoard.Features.Actions.Library.DeckNavigation
+namespace StreamTabula.Features.Actions.Library.DeckNavigation
 {
     [ActionDiscriminator("deck_navigation_grid_switch_page")]
     public class SwitchPageActionGrid : DeckNavigationBaseAction

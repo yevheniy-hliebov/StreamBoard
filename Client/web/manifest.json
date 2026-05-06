@@ -1,11 +1,11 @@
 {
-    "name": "StreamBoard",
-    "short_name": "StreamBoard",
+    "name": "StreamTabula",
+    "short_name": "StreamTabula",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "StreamBoard Client Application.",
+    "description": "StreamTabula Client Application.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

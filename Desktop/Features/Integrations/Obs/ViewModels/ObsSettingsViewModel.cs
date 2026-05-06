@@ -1,12 +1,12 @@
 using System.Windows.Input;
-using StreamBoard.Core;
-using StreamBoard.Features.Integrations.Common.Models;
-using StreamBoard.Features.Integrations.Common.Services;
-using StreamBoard.Features.Integrations.Obs.Services;
+using StreamTabula.Core;
+using StreamTabula.Features.Integrations.Common.Models;
+using StreamTabula.Features.Integrations.Common.Services;
+using StreamTabula.Features.Integrations.Obs.Services;
 using Wpf.Ui.Controls;
 using Wpf.Ui.Input;
 
-namespace StreamBoard.Features.Integrations.Obs.ViewModels
+namespace StreamTabula.Features.Integrations.Obs.ViewModels
 {
     public class ObsSettingsViewModel : ObservableObject
     {

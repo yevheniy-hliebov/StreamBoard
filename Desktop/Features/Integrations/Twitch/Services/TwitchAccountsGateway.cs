@@ -1,8 +1,8 @@
 using System.Net.Http;
 using Microsoft.Extensions.Caching.Memory;
-using StreamBoard.Features.Integrations.Twitch.Models;
+using StreamTabula.Features.Integrations.Twitch.Models;
 
-namespace StreamBoard.Features.Integrations.Twitch.Services
+namespace StreamTabula.Features.Integrations.Twitch.Services
 {
     public class TwitchAccountsGateway : IDisposable
     {

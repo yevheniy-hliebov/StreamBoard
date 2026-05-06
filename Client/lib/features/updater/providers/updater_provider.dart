@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:streamboard/features/settings/providers/settings_provider.dart';
-import 'package:streamboard/features/updater/models/app_info.dart';
-import 'package:streamboard/features/updater/models/github_release_info.dart';
-import 'package:streamboard/features/updater/services/update_service.dart';
+import 'package:streamtabula/features/settings/providers/settings_provider.dart';
+import 'package:streamtabula/features/updater/models/app_info.dart';
+import 'package:streamtabula/features/updater/models/github_release_info.dart';
+import 'package:streamtabula/features/updater/services/update_service.dart';
 
 enum UpdateDialogState { loading, upToDate, updateAvailable, downloading }
 

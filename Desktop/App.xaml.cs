@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Core.AppStartup;
-using StreamBoard.Core.DI;
+using StreamTabula.Core.AppStartup;
+using StreamTabula.Core.DI;
 using System.Windows;
 
-namespace StreamBoard
+namespace StreamTabula
 {
     public partial class App : Application
     {

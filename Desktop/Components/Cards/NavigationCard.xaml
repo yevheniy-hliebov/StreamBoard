@@ -1,8 +1,8 @@
 ﻿<UserControl
-    x:Class="StreamBoard.Components.Cards.NavigationCard"
+    x:Class="StreamTabula.Components.Cards.NavigationCard"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:StreamBoard.Components.Cards"
+    xmlns:local="clr-namespace:StreamTabula.Components.Cards"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     x:Name="Root">
 

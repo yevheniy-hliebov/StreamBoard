@@ -1,9 +1,9 @@
-﻿using StreamBoard.Features.Servers.Models;
-using StreamBoard.Features.Servers.Services;
+﻿using StreamTabula.Features.Servers.Models;
+using StreamTabula.Features.Servers.Services;
 using System.Net;
 using System.Text;
 
-namespace StreamBoard.Features.Servers.Controllers
+namespace StreamTabula.Features.Servers.Controllers
 {
     public class HomeController(LocalServerConfig config) : IHttpController
     {

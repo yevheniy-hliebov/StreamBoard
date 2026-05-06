@@ -1,5 +1,5 @@
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:streamboard/features/updater/models/app_info.dart';
+import 'package:streamtabula/features/updater/models/app_info.dart';
 
 class AppInfoService {
   late final AppInfo appInfo;
@@ -8,6 +8,6 @@ class AppInfoService {
     final packageInfo = await PackageInfo.fromPlatform();
     final cleanVersion = packageInfo.version.split('+').first;
 
-    appInfo = AppInfo(appName: "StreamBoard", currentVersion: cleanVersion);
+    appInfo = AppInfo(appName: "StreamTabula", currentVersion: cleanVersion);
   }
 }

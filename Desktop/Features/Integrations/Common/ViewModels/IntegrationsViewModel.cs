@@ -1,12 +1,12 @@
 using System.Collections.ObjectModel;
-using StreamBoard.Core;
-using StreamBoard.Features.Integrations.Common.Models;
-using StreamBoard.Features.Integrations.Obs.Models;
-using StreamBoard.Features.Integrations.Obs.Services;
-using StreamBoard.Features.Integrations.Twitch.Models;
-using StreamBoard.Features.Integrations.Twitch.Services;
+using StreamTabula.Core;
+using StreamTabula.Features.Integrations.Common.Models;
+using StreamTabula.Features.Integrations.Obs.Models;
+using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Features.Integrations.Twitch.Models;
+using StreamTabula.Features.Integrations.Twitch.Services;
 
-namespace StreamBoard.Features.Integrations.Common.ViewModels
+namespace StreamTabula.Features.Integrations.Common.ViewModels
 {
     public class IntegrationsViewModel : ObservableObject
     {

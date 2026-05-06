@@ -1,9 +1,9 @@
-﻿using StreamBoard.Core.Services;
-using StreamBoard.Features.Decks.Models;
+﻿using StreamTabula.Core.Services;
+using StreamTabula.Features.Decks.Models;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
-namespace StreamBoard.Features.Decks.Services
+namespace StreamTabula.Features.Decks.Services
 {
     public interface IDeckPageService
     {

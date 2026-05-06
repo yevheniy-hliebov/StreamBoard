@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 using OBSWebsocketDotNet;
 using OBSWebsocketDotNet.Types;
 
-namespace StreamBoard.Features.Integrations.Obs.Services
+namespace StreamTabula.Features.Integrations.Obs.Services
 {
     public class ExtendedObsWebsocket : OBSWebsocket
     {

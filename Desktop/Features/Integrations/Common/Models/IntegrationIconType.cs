@@ -1,4 +1,4 @@
-namespace StreamBoard.Features.Integrations.Common.Models
+namespace StreamTabula.Features.Integrations.Common.Models
 {
     public enum IntegrationIconType
     {

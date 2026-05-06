@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Markup;
 
-namespace StreamBoard.Components.Controls
+namespace StreamTabula.Components.Controls
 {
     [ContentProperty(nameof(InnerContent))]
     public partial class ConstrainedScrollBorder : UserControl

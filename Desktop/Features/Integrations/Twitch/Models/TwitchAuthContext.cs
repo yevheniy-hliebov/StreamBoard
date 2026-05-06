@@ -1,4 +1,4 @@
-namespace StreamBoard.Features.Integrations.Twitch.Models
+namespace StreamTabula.Features.Integrations.Twitch.Models
 {
     public class TwitchAuthContext(string accessToken, string tokenType, List<string> scopes)
     {

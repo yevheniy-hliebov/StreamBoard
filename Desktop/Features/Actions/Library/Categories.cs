@@ -1,9 +1,9 @@
-using StreamBoard.Core.Models;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Actions.Attributes;
-using StreamBoard.Features.Integrations.Common.Models;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Integrations.Common.Models;
 
-namespace StreamBoard.Features.Actions.Library
+namespace StreamTabula.Features.Actions.Library
 {
 
     [ActionCategory("System", FluentIconType.System)]

@@ -2,7 +2,7 @@
 using System.Security.Principal;
 using System.Windows;
 
-namespace StreamBoard.Features.Settings.Services
+namespace StreamTabula.Features.Settings.Services
 {
     public class PrivilegeService
     {

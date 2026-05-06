@@ -2,9 +2,9 @@ using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using StreamBoard.Features.Integrations.Common.Models;
+using StreamTabula.Features.Integrations.Common.Models;
 
-namespace StreamBoard.Features.Integrations.Common.Views.Components
+namespace StreamTabula.Features.Integrations.Common.Views.Components
 {
     public partial class ConnectionStateMenu : UserControl
     {

@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Actions.Attributes;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Attributes;
 
-namespace StreamBoard.Features.Actions.Serialization
+namespace StreamTabula.Features.Actions.Serialization
 {
     public static class ActionSerializationContext
     {

@@ -1,10 +1,10 @@
-﻿using StreamBoard.Components.Controls;
-using StreamBoard.Core.Models;
-using StreamBoard.Helpers;
+﻿using StreamTabula.Components.Controls;
+using StreamTabula.Core.Models;
+using StreamTabula.Helpers;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
 
-namespace StreamBoard.Core.Services
+namespace StreamTabula.Core.Services
 {
     public interface IClipboardService
     {

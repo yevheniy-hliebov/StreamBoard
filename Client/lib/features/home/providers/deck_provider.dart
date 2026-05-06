@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:streamboard/features/home/data/models/deck_button_data.dart';
-import 'package:streamboard/features/home/data/models/grid_layout.dart';
-import 'package:streamboard/features/home/services/grid_service.dart';
-import 'package:streamboard/features/home/services/websocket_service.dart';
+import 'package:streamtabula/features/home/data/models/deck_button_data.dart';
+import 'package:streamtabula/features/home/data/models/grid_layout.dart';
+import 'package:streamtabula/features/home/services/grid_service.dart';
+import 'package:streamtabula/features/home/services/websocket_service.dart';
 
 class DeckProvider extends ChangeNotifier {
   GridService _gridService;
@@ -15,7 +15,7 @@ class DeckProvider extends ChangeNotifier {
 
   GridLayout? gridLayout;
   Map<String, DeckButtonData> buttons = {};
-  String currentPageName = 'StreamBoard';
+  String currentPageName = 'StreamTabula';
   bool isLoading = true;
   String? error;
 
@@ -100,7 +100,7 @@ class DeckProvider extends ChangeNotifier {
 
       gridLayout = GridLayout.fromJson(data['grid_layout']);
 
-      currentPageName = data['current_page_name'] ?? 'StreamBoard';
+      currentPageName = data['current_page_name'] ?? 'StreamTabula';
 
       final pageMap = data['page_map'] as Map<String, dynamic>? ?? {};
       buttons = pageMap.map(

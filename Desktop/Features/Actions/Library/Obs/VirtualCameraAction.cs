@@ -1,13 +1,13 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Core.Models;
+using StreamTabula.Core.Models;
 
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Actions.Attributes;
-using StreamBoard.Features.Integrations.Obs.Services;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Integrations.Obs.Services;
 
-namespace StreamBoard.Features.Actions.Library.Obs
+namespace StreamTabula.Features.Actions.Library.Obs
 {
     [ActionDiscriminator("obs_virtual_camera")]
     public class VirtualCameraAction : ObsBaseAction

@@ -4,12 +4,12 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using NuGet.Versioning;
-using StreamBoard.Core.Constants;
-using StreamBoard.Features.Updater.Models;
+using StreamTabula.Core.Constants;
+using StreamTabula.Features.Updater.Models;
 using System.IO.Compression;
 using System.Windows;
 
-namespace StreamBoard.Features.Updater.Services
+namespace StreamTabula.Features.Updater.Services
 {
     public class UpdateService
     {
@@ -72,7 +72,7 @@ namespace StreamBoard.Features.Updater.Services
                 throw new Exception("No .zip asset found in the release.");
 
             string tempPath = Path.GetTempPath();
-            string zipPath = Path.Combine(tempPath, $"StreamBoard_Windows_{releaseInfo.TagName}.zip");
+            string zipPath = Path.Combine(tempPath, $"StreamTabula_Windows_{releaseInfo.TagName}.zip");
 
             using var request = new HttpRequestMessage(HttpMethod.Get, asset.BrowserDownloadUrl);
             request.Headers.UserAgent.Add(new ProductInfoHeaderValue(appInfo.AppName.Replace(" ", ""), appInfo.CurrentVersion));
@@ -120,16 +120,16 @@ namespace StreamBoard.Features.Updater.Services
         public void ExtractAndInstallUpdateAsync(string zipPath, string currentVersion)
         {
             string tempPath = Path.GetTempPath();
-            string extractPath = Path.Combine(tempPath, $"StreamBoard_Extracted_{Guid.NewGuid()}");
+            string extractPath = Path.Combine(tempPath, $"StreamTabula_Extracted_{Guid.NewGuid()}");
 
             string currentAppDir = AppDomain.CurrentDomain.BaseDirectory;
-            string exeName = Process.GetCurrentProcess().MainModule?.ModuleName ?? "StreamBoard.exe";
+            string exeName = Process.GetCurrentProcess().MainModule?.ModuleName ?? "StreamTabula.exe";
 
             if (Directory.Exists(extractPath)) Directory.Delete(extractPath, true);
             ZipFile.ExtractToDirectory(zipPath, extractPath);
 
             string backupsDir = Path.Combine(currentAppDir, "Backups");
-            string thisBackupDir = Path.Combine(backupsDir, $"StreamBoard_Backup_v{currentVersion}_{DateTime.Now:yyyyMMdd_HHmmss}");
+            string thisBackupDir = Path.Combine(backupsDir, $"StreamTabula_Backup_v{currentVersion}_{DateTime.Now:yyyyMMdd_HHmmss}");
             Directory.CreateDirectory(thisBackupDir);
 
             foreach (var dirPath in Directory.GetDirectories(currentAppDir, "*", SearchOption.AllDirectories))
@@ -155,14 +155,14 @@ namespace StreamBoard.Features.Updater.Services
             string batPath = Path.Combine(tempPath, "updater.bat");
             string batContent = $@"
             @echo off
-            echo Updating StreamBoard... Please wait.
+            echo Updating StreamTabula... Please wait.
             :: Wait 3 seconds for the WPF application to completely close (release files)
             timeout /t 3 /nobreak > NUL
 
             :: Copy new files over old ones (/Y - replace without questions, /S - subfolders)
             xcopy /s /y /e ""{extractPath}\*"" ""{currentAppDir}\""
 
-            :: Run the updated StreamBoard
+            :: Run the updated StreamTabula
             cd /d ""{currentAppDir}""
             start """" ""{exeName}""
 

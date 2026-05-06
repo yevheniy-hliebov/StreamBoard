@@ -1,9 +1,9 @@
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
-using StreamBoard.Features.Actions.Models;
-using StreamBoard.Features.Integrations.Obs.Services;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Integrations.Obs.Services;
 
-namespace StreamBoard.Features.Actions.Library.Obs
+namespace StreamTabula.Features.Actions.Library.Obs
 {
     public class ObsSceneOptionsProvider : IOptionsProvider
     {

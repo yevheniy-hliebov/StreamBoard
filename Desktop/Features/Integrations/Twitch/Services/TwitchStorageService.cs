@@ -2,14 +2,14 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using StreamBoard.Features.Integrations.Twitch.Models;
+using StreamTabula.Features.Integrations.Twitch.Models;
 
-namespace StreamBoard.Features.Integrations.Twitch.Services
+namespace StreamTabula.Features.Integrations.Twitch.Services
 {
     public class TwitchStorageService
     {
         private readonly string _dataDirectory;
-        private readonly byte[] _entropy = Encoding.UTF8.GetBytes("StreamBoard_Twitch_Context_Salt");
+        private readonly byte[] _entropy = Encoding.UTF8.GetBytes("StreamTabula_Twitch_Context_Salt");
 
         public TwitchStorageService()
         {
