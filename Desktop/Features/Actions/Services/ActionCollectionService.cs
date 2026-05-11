@@ -101,7 +101,7 @@ namespace StreamTabula.Features.Actions.Services
             var pastedAction = _clipboardService.Paste<BaseAction>();
             if (pastedAction == null) return;
 
-            var newAction = pastedAction.Copy();
+            var newAction = pastedAction.CopyWithNewId();
 
             if (insertIndex >= 0 && insertIndex <= actions.Count)
             {
@@ -118,7 +118,7 @@ namespace StreamTabula.Features.Actions.Services
             var original = actions.FirstOrDefault(a => a.Id == actionId);
             if (original == null) return;
 
-            var duplicate = original.Copy();
+            var duplicate = original.CopyWithNewId();
 
             int index = actions.IndexOf(original);
             actions.Insert(index + 1, duplicate);
