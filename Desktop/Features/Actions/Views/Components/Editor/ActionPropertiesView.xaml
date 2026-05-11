@@ -106,7 +106,7 @@
                                 <ui:DropDownButton.Content>
                                     <TextBlock
                                         HorizontalAlignment="Stretch"
-                                        Text="{Binding Value, TargetNullValue='Select scene...'}"
+                                        Text="{Binding SelectedDisplayOption, TargetNullValue='Select scene...'}"
                                         TextAlignment="Left" />
                                 </ui:DropDownButton.Content>
 
@@ -123,11 +123,11 @@
                                                     BorderThickness="1"
                                                     CornerRadius="8">
                                                     <ScrollViewer
-                                                        Margin="2"
-                                                        CanContentScroll="True"
-                                                        Focusable="False"
-                                                        PanningMode="VerticalOnly"
-                                                        VerticalScrollBarVisibility="Auto">
+                                                            Margin="2"
+                                                            CanContentScroll="True"
+                                                            Focusable="False"
+                                                            PanningMode="VerticalOnly"
+                                                            VerticalScrollBarVisibility="Auto">
                                                         <ItemsPresenter VerticalAlignment="Top" />
                                                     </ScrollViewer>
                                                 </Border>
@@ -138,7 +138,7 @@
                                             <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
                                                 <Setter Property="Command" Value="{Binding DataContext.SelectOptionCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                                 <Setter Property="CommandParameter" Value="{Binding}" />
-                                                <Setter Property="Header" Value="{Binding}" />
+                                                <Setter Property="Header" Value="{Binding DisplayOption}" />
                                                 <Setter Property="Padding" Value="8,6" />
                                             </Style>
                                         </ContextMenu.ItemContainerStyle>

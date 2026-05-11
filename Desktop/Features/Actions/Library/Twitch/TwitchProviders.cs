@@ -16,7 +16,7 @@ namespace StreamTabula.Features.Actions.Library.Twitch
 
     public class AnnouncementColorsOptionsProvider : IOptionsProvider
     {
-        public List<string> GetOptions(BaseAction action)
+        public IEnumerable<object> GetOptions(BaseAction action)
         {
             return Enum.GetNames<TwitchAnnouncementColor>().ToList();
         }
@@ -43,7 +43,7 @@ namespace StreamTabula.Features.Actions.Library.Twitch
 
     public class TwitchChatModeOptionsProvider : IOptionsProvider
     {
-        public List<string> GetOptions(BaseAction action)
+        public IEnumerable<object> GetOptions(BaseAction action)
         {
             return
             [
@@ -57,7 +57,7 @@ namespace StreamTabula.Features.Actions.Library.Twitch
 
     public class TwitchShieldModeStateOptionsProvider : IOptionsProvider
     {
-        public List<string> GetOptions(BaseAction action)
+        public IEnumerable<object> GetOptions(BaseAction action)
         {
             return ["Toggle", "Enable", "Disable"];
         }
