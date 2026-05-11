@@ -7,9 +7,15 @@ namespace StreamTabula.Features.Actions.Models
 {
     public abstract class BaseAction : ObservableObject
     {
-        [JsonPropertyName("id")]
-        public string Id { get; init; } = Guid.NewGuid().ToString();
+        private static string GenerateId() => Guid.NewGuid().ToString();
 
+        [JsonPropertyName("id")]
+        public string Id { get; protected set; } = GenerateId();
+
+        public void RegenerateId()
+        {
+            Id = GenerateId();
+        }
 
         [JsonIgnore]
         public abstract ActionMetadata Metadata { get; }
@@ -33,5 +39,11 @@ namespace StreamTabula.Features.Actions.Models
         public abstract Task ExecuteAsync(object? data = null);
 
         public abstract BaseAction Copy();
+        public BaseAction CopyWithNewId()
+        {
+            var copied = Copy();
+            copied.RegenerateId();
+            return copied;
+        }
     }
 }
