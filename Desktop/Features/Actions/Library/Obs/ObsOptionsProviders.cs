@@ -18,6 +18,7 @@ namespace StreamTabula.Features.Actions.Library.Obs
             {
                 var sceneList = obsService.Obs.GetSceneList();
                 var options = sceneList.Scenes.Select(s => s.Name).ToList();
+                options.Reverse();
 
                 if (string.IsNullOrEmpty(GetSceneName(action)))
                 {
