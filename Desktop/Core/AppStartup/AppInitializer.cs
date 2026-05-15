@@ -16,8 +16,19 @@ namespace StreamTabula.Core.AppStartup
 {
     public static class AppInitializer
     {
+        private const string MutexName = "StreamTabula_SingleInstance_Mutex";
+        private static Mutex? _mutex;
+
         public static async Task InitializeAsync(IServiceProvider serviceProvider)
         {
+            // Mutex
+            _mutex = new Mutex(true, MutexName, out bool createdNew);
+            if (!createdNew)
+            {
+                MessageBox.Show("StreamTabula is already up and running!", "StreamTabula", MessageBoxButton.OK, MessageBoxImage.Information);
+                Application.Current.Shutdown();
+            }
+
             var settingStorage = serviceProvider.GetRequiredService<SettingsStorage>();
             var privilegeService = serviceProvider.GetRequiredService<PrivilegeService>();
 
