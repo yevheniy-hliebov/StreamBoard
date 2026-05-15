@@ -28,10 +28,13 @@ namespace StreamTabula.Features.Navigation.Views.Components
             var settings = App.ServiceProvider.GetRequiredService<SettingsStorage>();
             var pageService = App.ServiceProvider.GetRequiredService<NavigationService>();
 
-            pageService.RegisterNavigationControl(RootNavigation);
+            bool hadPendingNavigation = pageService.RegisterNavigationControl(RootNavigation);
 
-            var startupPage = settings.Current.StartupPage;
-            pageService.NavigateTo(startupPage);
+            if (!hadPendingNavigation)
+            {
+                var startupPage = settings.Current.StartupPage;
+                pageService.NavigateTo(startupPage);
+            }
         }
 
         private void BuildNavigationMenu()

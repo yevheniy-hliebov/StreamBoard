@@ -14,6 +14,7 @@ namespace StreamTabula.Features.Navigation.Services
     public class NavigationService
     {
         private Wpf.Ui.Controls.NavigationView? _navigationControl;
+        private Type? _pendingNavigationType;
 
         public IReadOnlyList<AppRoute> AllPages { get; } = [
             new("Home", typeof(HomePage), FluentIcon: FluentIconType.Home, AddSeparatorAfter: true),
@@ -29,9 +30,18 @@ namespace StreamTabula.Features.Navigation.Services
             new("Settings", typeof(SettingsPage), FluentIcon: FluentIconType.Settings, IsFooter: true)
         ];
 
-        public void RegisterNavigationControl(Wpf.Ui.Controls.NavigationView navControl)
+        public bool RegisterNavigationControl(Wpf.Ui.Controls.NavigationView navControl)
         {
             _navigationControl = navControl;
+
+            if (_pendingNavigationType != null)
+            {
+                NavigateTo(_pendingNavigationType);
+                _pendingNavigationType = null;
+                return true;
+            }
+
+            return false;
         }
 
         public Type GetPageTypeByName(string name)
@@ -49,7 +59,11 @@ namespace StreamTabula.Features.Navigation.Services
 
         public void NavigateTo(Type targetType)
         {
-            if (_navigationControl == null) return;
+            if (_navigationControl == null)
+            {
+                _pendingNavigationType = targetType;
+                return;
+            }
             _navigationControl.Navigate(targetType);
         }
     }
