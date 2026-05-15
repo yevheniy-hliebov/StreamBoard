@@ -1,70 +1,68 @@
-using System.Diagnostics;
-using System.Reflection;
 using Newtonsoft.Json.Linq;
 using OBSWebsocketDotNet;
 using OBSWebsocketDotNet.Types;
+using StreamTabula.Features.Integrations.Obs.Models;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace StreamTabula.Features.Integrations.Obs.Services
 {
     public class ExtendedObsWebsocket : OBSWebsocket
     {
-        public List<string> GetAllSourceNamesInScene(string sceneName)
+        public List<ObsSourceItem> GetAllSourcesDetailsInScene(string sceneName)
         {
-            var allSources = new List<string>();
+            var allSources = new List<ObsSourceItem>();
             var visited = new HashSet<string>();
-            GetAllSourcesRecursiveHelper(sceneName, allSources, visited);
+            GetAllSourcesRecursiveHelper(sceneName, allSources, visited, null);
             return allSources;
         }
 
-        public (string ParentScene, int SourceId)? GetSourceParentAndId(string rootScene, string targetSourceName)
-        {
-            var visited = new HashSet<string>();
-            return GetSourceParentAndIdHelper(rootScene, targetSourceName, visited);
-        }
-
-        private void GetAllSourcesRecursiveHelper(string targetName, List<string> allSources, HashSet<string> visited)
+        private void GetAllSourcesRecursiveHelper(string targetName, List<ObsSourceItem> allSources, HashSet<string> visited, string? parentGroupName)
         {
             if (!visited.Add(targetName)) return;
 
-            var items = TryGetSceneItems(targetName);
+            var items = TryGetSceneItems(targetName, out bool _);
+            items.Reverse();
 
             foreach (var item in items)
             {
-                allSources.Add(item.SourceName);
+                bool isItemGroup = IsGroup(item);
+                bool isNestedScene = !isItemGroup && item.SourceType == SceneItemSourceType.OBS_SOURCE_TYPE_SCENE;
 
-                if (item.SourceType == SceneItemSourceType.OBS_SOURCE_TYPE_SCENE)
+                allSources.Add(new ObsSourceItem
                 {
-                    GetAllSourcesRecursiveHelper(item.SourceName, allSources, visited);
+                    Name = item.SourceName,
+                    IsGroup = isItemGroup,
+                    IsNestedScene = isNestedScene,
+                    IsInGroup = !string.IsNullOrEmpty(parentGroupName),
+                    ParentGroupName = parentGroupName
+                });
+
+                if (isItemGroup)
+                {
+                    GetAllSourcesRecursiveHelper(item.SourceName, allSources, visited, item.SourceName);
                 }
             }
         }
 
-        private (string ParentScene, int SourceId)? GetSourceParentAndIdHelper(string currentScene, string targetSourceName, HashSet<string> visited)
+        private bool IsGroup(SceneItemDetails item)
         {
-            if (!visited.Add(currentScene)) return null;
+            var prop = item.GetType().GetProperty("IsGroup");
+            if (prop != null && prop.GetValue(item) is bool isGroup)
+                return isGroup;
 
-            var items = TryGetSceneItems(currentScene);
-
-            foreach (var item in items)
+            if (item.SourceType == SceneItemSourceType.OBS_SOURCE_TYPE_SCENE)
             {
-                if (item.SourceName == targetSourceName)
-                {
-                    return (currentScene, item.ItemId);
-                }
-
-                if (item.SourceType == SceneItemSourceType.OBS_SOURCE_TYPE_SCENE)
-                {
-                    var found = GetSourceParentAndIdHelper(item.SourceName, targetSourceName, visited);
-                    if (found != null) return found;
-                }
+                TryGetSceneItems(item.SourceName, out bool isG);
+                return isG;
             }
-
-            return null;
+            return false;
         }
 
-        private List<SceneItemDetails> TryGetSceneItems(string targetName)
+        private List<SceneItemDetails> TryGetSceneItems(string targetName, out bool isGroup)
         {
             List<SceneItemDetails> items = [];
+            isGroup = false;
 
             try
             {
@@ -75,7 +73,6 @@ namespace StreamTabula.Features.Integrations.Obs.Services
                 try
                 {
                     var request = new JObject { { "sceneName", targetName } };
-
                     var sendRequestMethod = GetType().GetMethod(
                         "SendRequest",
                         BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
@@ -91,16 +88,46 @@ namespace StreamTabula.Features.Integrations.Obs.Services
                         {
                             var groupItems = sceneItemsArray.Select(m => (JObject)m).ToList();
                             items = groupItems.Select(g => new SceneItemDetails(g)).ToList();
+                            isGroup = true;
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($"[ExtendedObsWebsocket] Не вдалося прочитати групу {targetName}: {ex.Message}");
+                    Debug.WriteLine($"[ExtendedObsWebsocket] Failed to read group {targetName}: {ex.Message}");
                 }
             }
 
             return items;
+        }
+
+        public (string ParentName, int SourceId)? GetSourceParentAndId(string rootScene, string targetSourceName)
+        {
+            var visited = new HashSet<string>();
+            return GetSourceParentAndIdHelper(rootScene, targetSourceName, visited);
+        }
+
+        private (string ParentName, int SourceId)? GetSourceParentAndIdHelper(string currentContainer, string targetSourceName, HashSet<string> visited)
+        {
+            if (!visited.Add(currentContainer)) return null;
+
+            var items = TryGetSceneItems(currentContainer, out bool _);
+
+            foreach (var item in items)
+            {
+                if (item.SourceName == targetSourceName)
+                {
+                    return (currentContainer, item.ItemId);
+                }
+
+                if (IsGroup(item))
+                {
+                    var found = GetSourceParentAndIdHelper(item.SourceName, targetSourceName, visited);
+                    if (found != null) return found;
+                }
+            }
+
+            return null;
         }
     }
 }

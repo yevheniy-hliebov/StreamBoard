@@ -1,13 +1,14 @@
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Integrations.Obs.Models;
 using StreamTabula.Features.Integrations.Obs.Services;
 
 namespace StreamTabula.Features.Actions.Library.Obs
 {
     public class ObsSceneOptionsProvider : IOptionsProvider
     {
-        public List<string> GetOptions(BaseAction action)
+        public IEnumerable<object> GetOptions(BaseAction action)
         {
             var obsService = App.ServiceProvider.GetRequiredService<ObsService>();
 
@@ -18,6 +19,7 @@ namespace StreamTabula.Features.Actions.Library.Obs
             {
                 var sceneList = obsService.Obs.GetSceneList();
                 var options = sceneList.Scenes.Select(s => s.Name).ToList();
+                options.Reverse();
 
                 if (string.IsNullOrEmpty(GetSceneName(action)))
                 {
@@ -53,36 +55,56 @@ namespace StreamTabula.Features.Actions.Library.Obs
 
     public class ObsSourceOptionsProvider : IOptionsProvider
     {
-        public List<string> GetOptions(BaseAction? action)
+        public IEnumerable<object> GetOptions(BaseAction? action)
         {
             var obsService = App.ServiceProvider.GetRequiredService<ObsService>();
 
             if (!obsService.IsConnected)
-                return ["OBS not connected"];
+                return [new DropdownOption("OBS not connected")];
 
             var sceneNameProperty = action?.GetType().GetProperty("SceneName");
             var sceneName = sceneNameProperty?.GetValue(action) as string;
 
             if (string.IsNullOrWhiteSpace(sceneName))
-                return ["Select a scene first"];
+                return [new DropdownOption("Select a scene first")];
 
             try
             {
-                var allSources = obsService.Obs.GetAllSourceNamesInScene(sceneName);
+                List<ObsSourceItem> allSources = obsService.Obs.GetAllSourcesDetailsInScene(sceneName);
 
-                return [.. allSources.Distinct().OrderBy(name => name)];
+                var options = allSources.Select(src =>
+                {
+                    string displayOption = src.Name;
+
+                    if (src.IsGroup)
+                        displayOption = $"📁 {src.Name}";
+                    else if (src.IsNestedScene)
+                        displayOption = src.IsInGroup ? $"   └─ 🎬 {src.Name}" : $"🎬 {src.Name}";
+                    else if (src.IsInGroup)
+                        displayOption = $"   └─ {src.Name}";
+
+                    string displaySelectedOption = src.Name;
+
+                    return new DropdownOption(
+                        value: src.Name,
+                        displayOption: displayOption,
+                        displaySelectedOption: displaySelectedOption
+                    );
+                }).ToList();
+
+                return options;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"[ObsSourceOptionsProvider] Помилка: {ex.Message}");
-                return [$"Error: {ex.Message}"];
+                return [new DropdownOption($"Error: {ex.Message}")];
             }
         }
     }
 
     public class ObsMuteStateOptionsProvider : IOptionsProvider
     {
-        public List<string> GetOptions(BaseAction? action)
+        public IEnumerable<object> GetOptions(BaseAction? action)
         {
             return ["Toggle", "Mute", "Unmute"];
         }
@@ -90,7 +112,7 @@ namespace StreamTabula.Features.Actions.Library.Obs
 
     public class ObsVisibilityStateOptionsProvider : IOptionsProvider
     {
-        public List<string> GetOptions(BaseAction? action)
+        public IEnumerable<object> GetOptions(BaseAction? action)
         {
             return ["Toggle", "Show", "Hide"];
         }
@@ -98,7 +120,7 @@ namespace StreamTabula.Features.Actions.Library.Obs
 
     public class ObsOutputStateOptionsProvider : IOptionsProvider
     {
-        public List<string> GetOptions(BaseAction? action)
+        public IEnumerable<object> GetOptions(BaseAction? action)
         {
             return ["Toggle", "Start", "Stop"];
         }
@@ -106,7 +128,7 @@ namespace StreamTabula.Features.Actions.Library.Obs
 
     public class ObsRecordStateOptionsProvider : IOptionsProvider
     {
-        public List<string> GetOptions(BaseAction action)
+        public IEnumerable<object> GetOptions(BaseAction action)
         {
             return [
                 "Toggle",

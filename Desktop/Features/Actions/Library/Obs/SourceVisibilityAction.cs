@@ -79,7 +79,7 @@ namespace StreamTabula.Features.Actions.Library.Obs
                     return;
                 }
 
-                string actualParent = targetInfo.Value.ParentScene;
+                string actualParent = targetInfo.Value.ParentName;
                 int itemId = targetInfo.Value.SourceId;
 
                 switch (VisibilityState)

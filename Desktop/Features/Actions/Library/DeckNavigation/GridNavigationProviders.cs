@@ -6,7 +6,7 @@ namespace StreamTabula.Features.Actions.Library.DeckNavigation
 {
     public class GridPageOptionsProvider : IOptionsProvider
     {
-        public List<string> GetOptions(BaseAction action)
+        public IEnumerable<object> GetOptions(BaseAction action)
         {
             var storage = App.ServiceProvider.GetRequiredService<GridDeckStorage>();
             var pages = storage.Current.PagesState.AllPages;

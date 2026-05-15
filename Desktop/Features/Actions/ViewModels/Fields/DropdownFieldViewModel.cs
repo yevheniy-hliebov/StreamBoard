@@ -12,7 +12,7 @@ namespace StreamTabula.Features.Actions.ViewModels
         private readonly IOptionsProvider _provider;
         private readonly BaseAction _action;
 
-        public ObservableCollection<string> Options { get; } = new();
+        public ObservableCollection<DropdownOption> Options { get; } = new();
 
         public DropdownFieldViewModel(
             string label,
@@ -30,24 +30,38 @@ namespace StreamTabula.Features.Actions.ViewModels
             RefreshOptions();
         }
 
-        public string Value
+        public object? Value
         {
-            get => Property.GetValue(TargetAction) as string ?? "";
+            get => Property.GetValue(TargetAction);
             set
             {
-                if (Value != value)
+                if (!Equals(Value, value))
                 {
                     Property.SetValue(TargetAction, value);
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(SelectedDisplayOption));
                 }
             }
         }
 
-        public ICommand SelectOptionCommand => new RelayCommand<string>(option =>
+        public string? SelectedDisplayOption
+        {
+            get
+            {
+                var currentVal = Value;
+                if (currentVal == null || (currentVal is string s && string.IsNullOrWhiteSpace(s)))
+                    return null;
+
+                var selectedOpt = Options.FirstOrDefault(o => Equals(o.Value, currentVal));
+                return selectedOpt?.DisplaySelectedOption ?? currentVal.ToString();
+            }
+        }
+
+        public ICommand SelectOptionCommand => new RelayCommand<DropdownOption>(option =>
         {
             if (option != null)
             {
-                Value = option;
+                Value = option.Value;
             }
         });
 
@@ -58,18 +72,28 @@ namespace StreamTabula.Features.Actions.ViewModels
 
         private void RefreshOptions()
         {
-            var newOptions = _provider.GetOptions(_action) ?? [];
+            var rawOptions = _provider.GetOptions(_action) ?? [];
 
-            if (!Options.SequenceEqual(newOptions))
+            Options.Clear();
+
+            foreach (var opt in rawOptions)
             {
-                Options.Clear();
-                foreach (var opt in newOptions)
+                if (opt is DropdownOption dropOption)
                 {
-                    Options.Add(opt);
+                    Options.Add(dropOption);
                 }
-
-                OnPropertyChanged(nameof(Options));
+                else if (opt is string strOption)
+                {
+                    Options.Add(new DropdownOption(strOption));
+                }
+                else if (opt != null)
+                {
+                    Options.Add(new DropdownOption(opt));
+                }
             }
+
+            OnPropertyChanged(nameof(Options));
+            OnPropertyChanged(nameof(SelectedDisplayOption));
         }
     }
 }
