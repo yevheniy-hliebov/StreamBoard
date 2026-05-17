@@ -8,14 +8,25 @@ class WebSocketService {
   WebSocketChannel? _channel;
 
   final _messageController = StreamController<Map<String, dynamic>>.broadcast();
+  final _connectionStateController = StreamController<bool>.broadcast();
 
   Timer? _reconnectTimer;
   int _reconnectAttempts = 0;
   bool _isIntentionalDisconnect = false;
   String? _currentUrl;
 
+  bool _isConnected = false;
+
   Stream<Map<String, dynamic>> get messages => _messageController.stream;
-  bool get isConnected => _channel != null;
+  Stream<bool> get connectionState => _connectionStateController.stream;
+  bool get isConnected => _isConnected;
+
+  void _setConnectionState(bool state) {
+    if (_isConnected != state) {
+      _isConnected = state;
+      _connectionStateController.add(state);
+    }
+  }
 
   void connect(String baseUrl) {
     _isIntentionalDisconnect = false;
@@ -27,13 +38,17 @@ class WebSocketService {
     _connectInternal();
   }
 
-  void _connectInternal() {
+  void _connectInternal() async {
     if (_currentUrl == null) return;
 
     try {
       debugPrint('Connecting to WebSocket: $_currentUrl');
       final uri = Uri.parse(_currentUrl!);
       _channel = WebSocketChannel.connect(uri);
+
+      await _channel!.ready;
+
+      _setConnectionState(true);
 
       _channel!.stream.listen(
         (message) {
@@ -47,16 +62,19 @@ class WebSocketService {
         },
         onDone: () {
           debugPrint('WebSocket closed');
+          _setConnectionState(false);
           _scheduleReconnect();
         },
         onError: (error) {
           debugPrint('WebSocket error: $error');
+          _setConnectionState(false);
           _scheduleReconnect();
         },
         cancelOnError: true,
       );
     } catch (e) {
       debugPrint('WebSocket connection exception: $e');
+      _setConnectionState(false);
       _scheduleReconnect();
     }
   }
@@ -78,6 +96,21 @@ class WebSocketService {
     _reconnectTimer = Timer(Duration(milliseconds: delay), _connectInternal);
   }
 
+  void reconnect() {
+    debugPrint('Manual reconnect triggered...');
+    _reconnectTimer?.cancel();
+    _channel?.sink.close();
+    _channel = null;
+
+    _reconnectAttempts = 0;
+    _isIntentionalDisconnect = false;
+    _setConnectionState(false);
+
+    if (_currentUrl != null) {
+      _connectInternal();
+    }
+  }
+
   void send(String type, [Map<String, dynamic>? data]) {
     if (_channel != null) {
       final payload = jsonEncode({'type': type, 'data': ?data});
@@ -92,11 +125,13 @@ class WebSocketService {
     _reconnectTimer?.cancel();
     _channel?.sink.close();
     _channel = null;
+    _setConnectionState(false);
     debugPrint('WebSocket intentionally disconnected');
   }
 
   void dispose() {
     disconnect();
     _messageController.close();
+    _connectionStateController.close();
   }
 }

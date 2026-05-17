@@ -19,12 +19,20 @@ class DeckProvider extends ChangeNotifier {
   bool isLoading = true;
   String? error;
 
+  bool isWsConnected = false;
+  StreamSubscription? _wsStateSubscription;
+
   DeckProvider(this._gridService, this._wsService) {
     fetchDeck();
     _initWebSocket();
   }
 
   void _initWebSocket() {
+    _wsStateSubscription = _wsService.connectionState.listen((status) {
+      isWsConnected = status;
+      notifyListeners();
+    });
+
     _wsSubscription = _wsService.messages.listen((message) {
       final type = message['type'] as String?;
       final data = message['data'] as Map<String, dynamic>?;
@@ -32,7 +40,7 @@ class DeckProvider extends ChangeNotifier {
       if (type == null || data == null) return;
 
       switch (type) {
-        case 'ButtonAppearanceChanged':
+        case 'ButtonUpdated':
           _handleButtonUpdated(data);
           break;
         case 'ButtonsSwapped':
@@ -115,6 +123,22 @@ class DeckProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> refreshDataAndConnection() async {
+    // Спочатку ініціюємо перепідключення вебсокету.
+    // Замініть .reconnect() на ваш метод з WebSocketService, якщо він називається інакше.
+    try {
+      _wsService.reconnect();
+    } catch (e) {
+      debugPrint('Error reconnecting websocket: $e');
+    }
+
+    // Очищаємо кеш зображень, щоб завантажити свіжі (опціонально, але корисно при ручному рефреші)
+    _imageCache.clear();
+
+    // Завантажуємо дані деки
+    await fetchDeck();
+  }
+
   Future<Uint8List?> getImage(String keyCode, String? imagePath) async {
     if (imagePath == null || imagePath.isEmpty) return null;
 
@@ -163,6 +187,7 @@ class DeckProvider extends ChangeNotifier {
   @override
   void dispose() {
     _wsSubscription?.cancel();
+    _wsStateSubscription?.cancel();
     super.dispose();
   }
 }

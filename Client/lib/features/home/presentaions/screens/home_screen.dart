@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
       leading: IconButton(
         icon: Icon(Icons.refresh, color: AppColors.of(context).onBackground),
         onPressed: isConfigured
-            ? () => context.read<DeckProvider>().fetchDeck()
+            ? () => context.read<DeckProvider>().refreshDataAndConnection()
             : null,
       ),
       actions: [
@@ -117,6 +117,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () => _openSettings(context),
                   icon: const Icon(Icons.settings),
                   label: const Text('Check Settings'),
+                ),
+              ],
+            ),
+          );
+        }
+
+        if (!provider.isWsConnected) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.wifi_off,
+                  size: 64,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                const SizedBox(height: Spacing.md),
+                Text(
+                  'Server Disconnected',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: Spacing.sm),
+                const Text('Waiting for connection...'),
+                const SizedBox(height: Spacing.lg),
+                FilledButton.icon(
+                  onPressed: () =>
+                      context.read<DeckProvider>().refreshDataAndConnection(),
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('Reconnect Now'),
                 ),
               ],
             ),

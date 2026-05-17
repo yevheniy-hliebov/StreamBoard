@@ -33,6 +33,21 @@ class SettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateServerAddress(String rawUrl) async {
+    try {
+      final uri = Uri.parse(rawUrl);
+      final newAddress = uri.host;
+
+      final newPort = uri.hasPort ? uri.port.toString() : port;
+
+      if (newAddress.isNotEmpty) {
+        await saveServerSettings(newAddress, newPort);
+      }
+    } catch (e) {
+      debugPrint('Error parsing URL from QR code: $e');
+    }
+  }
+
   Future<void> toggleBetaUpdates(bool value) async {
     receiveBetaUpdates = value;
     await _prefs.setBool('receive_beta_updates', value);

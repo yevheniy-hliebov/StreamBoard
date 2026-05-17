@@ -1,23 +1,36 @@
-using StreamTabula.Features.Settings.Services;
-using Wpf.Ui.Appearance;
 using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Servers.Services;
-using System.Windows;
-using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Features.Actions.Services;
 using StreamTabula.Features.Integrations.Common.Services;
+using StreamTabula.Features.Integrations.Obs.Services;
 using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Features.Servers.Controllers;
 using StreamTabula.Features.Servers.Models;
-using StreamTabula.Features.Actions.Services;
+using StreamTabula.Features.Servers.Services;
+using StreamTabula.Features.Settings.Services;
 using StreamTabula.Features.Updater.ViewModels;
+using System.Windows;
+using Wpf.Ui.Appearance;
+
 
 
 namespace StreamTabula.Core.AppStartup
 {
     public static class AppInitializer
     {
+        private const string MutexName = "StreamTabula_SingleInstance_Mutex";
+        private static Mutex? _mutex;
+
         public static async Task InitializeAsync(IServiceProvider serviceProvider)
         {
+            // Mutex
+            _mutex = new Mutex(true, MutexName, out bool createdNew);
+            if (!createdNew)
+            {
+                MessageBox.Show("StreamTabula is already up and running!", "StreamTabula", MessageBoxButton.OK, MessageBoxImage.Information);
+                Application.Current.Shutdown();
+                return;
+            }
+
             var settingStorage = serviceProvider.GetRequiredService<SettingsStorage>();
             var privilegeService = serviceProvider.GetRequiredService<PrivilegeService>();
 
@@ -38,10 +51,9 @@ namespace StreamTabula.Core.AppStartup
             var updater = serviceProvider.GetRequiredService<UpdaterViewModel>();
             _ = updater.CheckForUpdatesOnStartupAsync();
 
-            // LocalServer start
-            var LocalServer = serviceProvider.GetRequiredService<LocalServer>();
-            if (LocalServer != null && LocalServer.ShouldAutoStart && !LocalServer.IsRunning)
-                await LocalServer.Start();
+            // 5. LocalServer start
+            await LocalServerBootstrapper.EnsureStartedAsync(serviceProvider);
+
 
             // OBS Connection
             var integrationStorage = serviceProvider.GetRequiredService<IntegrationConnectionStorage>();

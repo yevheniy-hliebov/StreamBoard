@@ -6,7 +6,12 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     x:Name="Root">
 
-    <ui:TitleBar Height="32" Padding="12,0,0,0">
+    <ui:TitleBar 
+        Height="32" 
+        Padding="12,0,0,0"
+        ShowMinimize="{Binding ShowMinimize, ElementName=Root}"
+        ShowMaximize="{Binding ShowMaximize, ElementName=Root}">
+
         <ui:TitleBar.Icon>
             <ui:ImageIcon Margin="0,0,16,0" Source="pack://application:,,,/StreamTabula;component/Assets/Images/logo.ico" />
         </ui:TitleBar.Icon>

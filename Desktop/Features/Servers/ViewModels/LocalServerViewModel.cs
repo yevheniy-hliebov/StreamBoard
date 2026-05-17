@@ -1,8 +1,10 @@
 ﻿using StreamTabula.Core;
 using StreamTabula.Core.Models;
+using StreamTabula.Features.Servers.Components;
 using StreamTabula.Features.Servers.Models;
 using StreamTabula.Features.Servers.Services;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using Wpf.Ui.Controls;
 using Wpf.Ui.Input;
@@ -14,6 +16,9 @@ namespace StreamTabula.Features.Servers.ViewModels
         private readonly ServerConfigsStorage _storage;
         private readonly LocalServer _server;
 
+        public ICommand ShowQrCodeCommand { get; }
+
+
         public ObservableCollection<HttpRequestLog> HttpRequestLogs { get; } = new();
 
         public LocalServerViewModel(ServerConfigsStorage storage, LocalServer server)
@@ -21,8 +26,26 @@ namespace StreamTabula.Features.Servers.ViewModels
             _storage = storage;
             _server = server;
 
+            ShowQrCodeCommand = new RelayCommand(_ => ShowQrCode());
+
             _server.StatusChanged += OnServerStatusChanged;
             _server.RequestProcessed += OnRequestProcessed;
+        }
+
+        private void ShowQrCode()
+        {
+            var qrBitmap = QrHelper.GenerateUrlQrCode(NetworkIpAddress, Port);
+
+            var url = $"http://{NetworkIpAddress}:{Port}";
+
+            var dialog = new QrCodeDialogWindow(
+                title: "Connect Mobile App",
+                message: $"Scan this QR code from the StreamTabula mobile app to connect to:\n{url}",
+                qrImage: qrBitmap
+            );
+
+            dialog.Owner = Application.Current.MainWindow;
+            dialog.ShowDialog();
         }
 
         private void OnServerStatusChanged(ServerStatus status)
@@ -102,7 +125,7 @@ namespace StreamTabula.Features.Servers.ViewModels
                     _ => $"Unexpected error: {ex.Message}"
                 };
 
-                var uiMessageBox = new MessageBox
+                var uiMessageBox = new Wpf.Ui.Controls.MessageBox
                 {
                     Title = "Server Error",
                     Content = message,
@@ -129,18 +152,12 @@ namespace StreamTabula.Features.Servers.ViewModels
             }
         }
 
-        // Address
-        public string Address
+        // NetworkIpAddress
+        public string NetworkIpAddress
         {
-            get => _storage.Current.Local.Address;
-            set
+            get
             {
-                if (_storage.Current.Local.Address != value)
-                {
-                    _storage.Current.Local.Address = value;
-                    _storage.Save();
-                    OnPropertyChanged();
-                }
+                return NetworkHelper.GetLocalIpAddress();
             }
         }
 

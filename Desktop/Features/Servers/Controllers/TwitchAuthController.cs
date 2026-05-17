@@ -1,10 +1,10 @@
+using Microsoft.AspNetCore.Http;
 using StreamTabula.Features.Integrations.Twitch.Models;
 using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Features.Servers.Models;
 using StreamTabula.Features.Servers.Services;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Text.Json;
 
 namespace StreamTabula.Features.Servers.Controllers
@@ -15,10 +15,10 @@ namespace StreamTabula.Features.Servers.Controllers
 
         public string RoutePrefix => "/twitch";
 
-        public async Task HandleAsync(HttpListenerContext ctx)
+        public async Task HandleAsync(HttpContext ctx)
         {
-            string path = ctx.Request.Url!.AbsolutePath;
-            string method = ctx.Request.HttpMethod;
+            string path = ctx.Request.Path.Value ?? "/";
+            string method = ctx.Request.Method;
 
             if (method == "GET" && HttpRouteHelper.TryMatch(path, "/twitch/{type}", out var paramsGet))
             {
@@ -35,19 +35,17 @@ namespace StreamTabula.Features.Servers.Controllers
             ctx.Response.StatusCode = (int)HttpStatusCode.NotFound;
         }
 
-        private static async Task ServeAuthPage(HttpListenerContext ctx)
+        private static async Task ServeAuthPage(HttpContext ctx)
         {
-            byte[] buffer = Encoding.UTF8.GetBytes(TwitchAuthTemplates.AuthPageHtml);
             ctx.Response.ContentType = "text/html";
-            ctx.Response.ContentLength64 = buffer.Length;
-            await ctx.Response.OutputStream.WriteAsync(buffer);
+            await ctx.Response.WriteAsync(TwitchAuthTemplates.AuthPageHtml);
         }
 
-        private async Task HandleTokenSubmit(HttpListenerContext ctx, string type)
+        private async Task HandleTokenSubmit(HttpContext ctx, string type)
         {
             try
             {
-                using var reader = new StreamReader(ctx.Request.InputStream);
+                using var reader = new StreamReader(ctx.Request.Body);
                 string json = await reader.ReadToEndAsync();
 
                 var payload = JsonSerializer.Deserialize<TwitchAuthResponse>(json);
@@ -77,14 +75,12 @@ namespace StreamTabula.Features.Servers.Controllers
                 }
 
                 ctx.Response.StatusCode = (int)HttpStatusCode.OK;
-                byte[] response = Encoding.UTF8.GetBytes("Data received");
-                await ctx.Response.OutputStream.WriteAsync(response);
+                await ctx.Response.WriteAsync("Data received");
             }
             catch (Exception ex)
             {
                 ctx.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                byte[] error = Encoding.UTF8.GetBytes(ex.Message);
-                await ctx.Response.OutputStream.WriteAsync(error);
+                await ctx.Response.WriteAsync(ex.Message);
             }
         }
     }

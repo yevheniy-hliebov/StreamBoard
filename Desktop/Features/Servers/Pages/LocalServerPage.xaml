@@ -43,8 +43,8 @@
             <cards:CardControl.ActionContent>
                 <ui:TextBox
                     Width="128"
-                    IsEnabled="{Binding CanEditSettings}"
-                    Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}" />
+                    IsReadOnly="True" 
+                    Text="{Binding NetworkIpAddress, Mode=OneWay}" />
             </cards:CardControl.ActionContent>
         </cards:CardControl>
 
@@ -54,6 +54,12 @@
                     Width="128"
                     IsEnabled="{Binding CanEditSettings}"
                     Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" />
+            </cards:CardControl.ActionContent>
+        </cards:CardControl>
+
+        <cards:CardControl Title="QR Code" Description="For easier client-server connection">
+            <cards:CardControl.ActionContent>
+                <ui:Button Command="{Binding ShowQrCodeCommand}" Content="Show" />
             </cards:CardControl.ActionContent>
         </cards:CardControl>
 

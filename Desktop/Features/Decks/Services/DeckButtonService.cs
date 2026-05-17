@@ -13,6 +13,7 @@ namespace StreamTabula.Features.Decks.Services
         public Task ExecuteButtonActions(DeckButtonConfig config);
         
         public event Action<int, int>? ButtonsSwapped;
+        public event Action<int, DeckButtonConfig>? ButtonChanged;
         public void SwapButtons(int sourceIndex, int targetIndex);
 
         void CopyButton(int index);
@@ -33,6 +34,7 @@ namespace StreamTabula.Features.Decks.Services
         private readonly IClipboardService _clipboardService;
 
         public event Action<int, int>? ButtonsSwapped;
+        public event Action<int, DeckButtonConfig>? ButtonChanged;
 
         public DeckButtonService(DeckStorage storage, IClipboardService clipboardService)
         {
@@ -115,6 +117,7 @@ namespace StreamTabula.Features.Decks.Services
             if (map.Remove(index.ToString()))
             {
                 _storage.Save();
+                ButtonChanged?.Invoke(index, new DeckButtonConfig());
             }
         }
 
@@ -127,6 +130,7 @@ namespace StreamTabula.Features.Decks.Services
             map[index.ToString()] = newConfig;
 
             _storage.Save();
+            ButtonChanged?.Invoke(index, newConfig);
         }
 
         public void DeleteButton(int index)
