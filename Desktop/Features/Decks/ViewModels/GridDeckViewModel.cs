@@ -47,6 +47,7 @@ namespace StreamTabula.Features.Decks.ViewModels
             Canvas.CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
             Editor.ButtonAppearanceChanged += OnButtonAppearanceChanged;
             _buttonServise.ButtonsSwapped += OnButtonsSwapped;
+            _buttonServise.ButtonChanged += OnButtonChanged;
         }
 
         private void OnCanvasPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -64,7 +65,7 @@ namespace StreamTabula.Features.Decks.ViewModels
             {
                 _ = _wsManager.BroadcastAsync(WebsocketMessageType.PageChanged, new
                 {
-                    deckType = _deckType,
+                    deck_type = _deckType,
                     pageId = selectedPage.Id,
                     pageName = selectedPage.Name
                 });
@@ -75,7 +76,7 @@ namespace StreamTabula.Features.Decks.ViewModels
         {
             _ = _wsManager.BroadcastAsync(WebsocketMessageType.PageRenamed, new
             {
-                deckType = _deckType,
+                deck_type = _deckType,
                 pageId,
                 pageName = newName
             });
@@ -89,7 +90,7 @@ namespace StreamTabula.Features.Decks.ViewModels
 
                 _ = _wsManager.BroadcastAsync(WebsocketMessageType.GridLayoutChanged, new
                 {
-                    deckType = _deckType,
+                    deck_type = _deckType,
                     grid_layout = newGrid,
                 });
             }
@@ -103,10 +104,6 @@ namespace StreamTabula.Features.Decks.ViewModels
 
             var config = button.Config ?? new DeckButtonConfig();
 
-            var name = config.Name;
-            var bgColor = config.BackgroundColor;
-            var imgPath = config.ImagePath;
-
             _ = Task.Run(async () =>
             {
                 try
@@ -115,14 +112,7 @@ namespace StreamTabula.Features.Decks.ViewModels
 
                     if (!token.IsCancellationRequested)
                     {
-                        await _wsManager.BroadcastAsync(WebsocketMessageType.ButtonAppearanceChanged, new
-                        {
-                            deckType = _deckType,
-                            button.Index,
-                            name,
-                            background_color = bgColor,
-                            image_path = imgPath
-                        });
+                        OnButtonChanged(button.Index, config);
                     }
                 }
                 catch (OperationCanceledException) { }
@@ -133,9 +123,25 @@ namespace StreamTabula.Features.Decks.ViewModels
         {
             _ = _wsManager.BroadcastAsync(WebsocketMessageType.ButtonsSwapped, new
             {
-                deckType = _deckType,
+                deck_type = _deckType,
                 index_a = indexA,
                 index_b = indexB
+            });
+        }
+
+        private void OnButtonChanged(int index, DeckButtonConfig config)
+        {
+            var name = config.Name;
+            var bgColor = config.BackgroundColor;
+            var imgPath = config.ImagePath;
+
+            _ = _wsManager.BroadcastAsync(WebsocketMessageType.ButtonUpdated, new
+            {
+                deck_type = _deckType,
+                index = index,
+                name,
+                background_color = bgColor,
+                image_path = imgPath
             });
         }
     }

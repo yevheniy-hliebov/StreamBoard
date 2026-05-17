@@ -5,7 +5,7 @@
         PageChanged,
         PageRenamed,
         GridLayoutChanged,
-        ButtonAppearanceChanged,
+        ButtonUpdated,
         ButtonsSwapped
     }
 }

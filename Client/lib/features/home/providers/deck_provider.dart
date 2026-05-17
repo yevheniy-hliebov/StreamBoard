@@ -32,7 +32,7 @@ class DeckProvider extends ChangeNotifier {
       if (type == null || data == null) return;
 
       switch (type) {
-        case 'ButtonAppearanceChanged':
+        case 'ButtonUpdated':
           _handleButtonUpdated(data);
           break;
         case 'ButtonsSwapped':
