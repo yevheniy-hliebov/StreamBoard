@@ -1,7 +1,7 @@
-﻿using StreamTabula.Features.Servers.Models;
+﻿using Microsoft.AspNetCore.Http;
+using StreamTabula.Features.Servers.Models;
 using StreamTabula.Features.Servers.Services;
 using System.Net;
-using System.Text;
 
 namespace StreamTabula.Features.Servers.Controllers
 {
@@ -11,18 +11,17 @@ namespace StreamTabula.Features.Servers.Controllers
 
         public string RoutePrefix => "/";
 
-        public async Task HandleAsync(HttpListenerContext ctx)
+        public async Task HandleAsync(HttpContext ctx)
         {
             try
             {
-                string responseText = $"Running on {_config.Address}:{_config.Port}";
-                byte[] data = Encoding.UTF8.GetBytes(responseText);
+                var address = NetworkHelper.GetLocalIpAddress();
+                string responseText = $"Running on {address}:{_config.Port}";
 
                 ctx.Response.ContentType = "text/plain";
-                ctx.Response.ContentLength64 = data.Length;
                 ctx.Response.StatusCode = (int)HttpStatusCode.OK;
 
-                await ctx.Response.OutputStream.WriteAsync(data);
+                await ctx.Response.WriteAsync(responseText);
             }
             catch (Exception)
             {

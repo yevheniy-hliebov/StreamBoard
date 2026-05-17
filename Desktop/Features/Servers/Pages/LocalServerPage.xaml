@@ -43,8 +43,8 @@
             <cards:CardControl.ActionContent>
                 <ui:TextBox
                     Width="128"
-                    IsEnabled="{Binding CanEditSettings}"
-                    Text="{Binding Address, UpdateSourceTrigger=PropertyChanged}" />
+                    IsReadOnly="True" 
+                    Text="{Binding NetworkIpAddress, Mode=OneWay}" />
             </cards:CardControl.ActionContent>
         </cards:CardControl>
 

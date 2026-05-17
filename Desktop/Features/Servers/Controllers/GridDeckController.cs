@@ -1,8 +1,8 @@
+using Microsoft.AspNetCore.Http;
 using StreamTabula.Features.Decks.Models;
 using StreamTabula.Features.Decks.Services;
 using StreamTabula.Features.Servers.Services;
 using System.Net;
-using System.Text;
 using System.Text.Json;
 
 namespace StreamTabula.Features.Servers.Controllers
@@ -18,12 +18,12 @@ namespace StreamTabula.Features.Servers.Controllers
 
         public string RoutePrefix => "/api/grid";
 
-        public async Task HandleAsync(HttpListenerContext ctx)
+        public async Task HandleAsync(HttpContext ctx)
         {
             try
             {
-                string path = ctx.Request.Url!.AbsolutePath;
-                string method = ctx.Request.HttpMethod;
+                string path = ctx.Request.Path.Value ?? "/";
+                string method = ctx.Request.Method;
 
                 if (method == "GET" && HttpRouteHelper.TryMatch(path, "/api/grid/buttons", out _))
                 {
@@ -51,7 +51,7 @@ namespace StreamTabula.Features.Servers.Controllers
             }
         }
 
-        private async Task GetButtons(HttpListenerContext ctx)
+        private async Task GetButtons(HttpContext ctx)
         {
             var profile = _storage.Current;
             var map = profile.CurrentPageButtonMap;
@@ -78,16 +78,14 @@ namespace StreamTabula.Features.Servers.Controllers
 
             var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
             string jsonResponse = JsonSerializer.Serialize(responseObj, jsonOptions);
-            byte[] data = Encoding.UTF8.GetBytes(jsonResponse);
 
             ctx.Response.ContentType = "application/json";
-            ctx.Response.ContentLength64 = data.Length;
             ctx.Response.StatusCode = (int)HttpStatusCode.OK;
 
-            await ctx.Response.OutputStream.WriteAsync(data);
+            await ctx.Response.WriteAsync(jsonResponse);
         }
 
-        private async Task GetImage(HttpListenerContext ctx, string key)
+        private async Task GetImage(HttpContext ctx, string key)
         {
             var profile = _storage.Current;
             var map = profile.CurrentPageButtonMap;
@@ -122,10 +120,10 @@ namespace StreamTabula.Features.Servers.Controllers
                 byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(imagePath);
 
                 ctx.Response.ContentType = mimeType;
-                ctx.Response.ContentLength64 = fileBytes.Length;
+                ctx.Response.ContentLength = fileBytes.Length;
                 ctx.Response.StatusCode = (int)HttpStatusCode.OK;
 
-                await ctx.Response.OutputStream.WriteAsync(fileBytes);
+                await ctx.Response.Body.WriteAsync(fileBytes);
             }
             catch (Exception)
             {
@@ -133,7 +131,7 @@ namespace StreamTabula.Features.Servers.Controllers
             }
         }
 
-        private async Task ClickKey(HttpListenerContext ctx, string key)
+        private async Task ClickKey(HttpContext ctx, string key)
         {
             var profile = _storage.Current;
             var map = profile.CurrentPageButtonMap;
@@ -154,29 +152,20 @@ namespace StreamTabula.Features.Servers.Controllers
                     }
                     catch
                     {
-
                     }
                 }
             }
 
             ctx.Response.StatusCode = (int)HttpStatusCode.OK;
             ctx.Response.ContentType = "text/plain";
-
-            byte[] data = System.Text.Encoding.UTF8.GetBytes("Action executed");
-            ctx.Response.ContentLength64 = data.Length;
-
-            await ctx.Response.OutputStream.WriteAsync(data);
+            await ctx.Response.WriteAsync("Action executed");
         }
 
-        private static async Task WriteErrorAsync(HttpListenerContext ctx, HttpStatusCode statusCode, string message)
+        private static async Task WriteErrorAsync(HttpContext ctx, HttpStatusCode statusCode, string message)
         {
             ctx.Response.StatusCode = (int)statusCode;
             ctx.Response.ContentType = "text/plain";
-
-            byte[] data = Encoding.UTF8.GetBytes(message);
-            ctx.Response.ContentLength64 = data.Length;
-
-            await ctx.Response.OutputStream.WriteAsync(data);
+            await ctx.Response.WriteAsync(message);
         }
     }
 }

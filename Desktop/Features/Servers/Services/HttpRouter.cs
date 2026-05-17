@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace StreamTabula.Features.Servers.Services
+﻿namespace StreamTabula.Features.Servers.Services
 {
-    public class HttpRouter
+    public class HttpRouter(IEnumerable<IHttpController> controllers)
     {
-        private readonly List<IHttpController> _controllers;
-
-        public HttpRouter(IEnumerable<IHttpController> controllers)
-        {
-            _controllers = controllers
+        private readonly List<IHttpController> _controllers = controllers
                 .OrderByDescending(c => c.RoutePrefix.Length)
                 .ToList();
-        }
 
         public IHttpController? Resolve(string path)
         {
             var normalizedPath = Normalize(path);
 
-            return _controllers.FirstOrDefault(c => 
+            return _controllers.FirstOrDefault(c =>
                 normalizedPath.StartsWith(Normalize(c.RoutePrefix), StringComparison.OrdinalIgnoreCase));
         }
 

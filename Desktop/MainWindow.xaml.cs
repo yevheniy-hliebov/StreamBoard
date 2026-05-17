@@ -16,9 +16,9 @@ namespace StreamTabula
         private readonly SettingsStorage _settings;
         private readonly IntegrationsViewModel _integrationsViewModel;
 
-        public AppInfoModel AppInfo { get; }
+        public AppInfoModel? AppInfo { get; }
 
-        public string AppVersion => $"(v{AppInfo.CurrentVersion})";
+        public string AppVersion => AppInfo != null ? $"(v{AppInfo.CurrentVersion})" : string.Empty;
 
         public MainWindow()
         {

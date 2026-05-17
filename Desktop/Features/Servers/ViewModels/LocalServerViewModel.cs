@@ -129,18 +129,12 @@ namespace StreamTabula.Features.Servers.ViewModels
             }
         }
 
-        // Address
-        public string Address
+        // NetworkIpAddress
+        public string NetworkIpAddress
         {
-            get => _storage.Current.Local.Address;
-            set
+            get
             {
-                if (_storage.Current.Local.Address != value)
-                {
-                    _storage.Current.Local.Address = value;
-                    _storage.Save();
-                    OnPropertyChanged();
-                }
+                return NetworkHelper.GetLocalIpAddress();
             }
         }
 

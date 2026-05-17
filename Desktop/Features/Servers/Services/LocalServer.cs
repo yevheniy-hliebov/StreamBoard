@@ -1,22 +1,23 @@
-﻿using StreamTabula.Core.Models;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using StreamTabula.Features.Servers.Models;
 using System.Net;
-using System.Text;
+using System.Net.NetworkInformation;
 
 namespace StreamTabula.Features.Servers.Services
 {
-    public class LocalServer(LocalServerConfig config, HttpRouter router, WebsocketManager? wsManager = null)
+    public class LocalServer
     {
-        private readonly LocalServerConfig _config = config;
-        private readonly HttpRouter _router = router;
-        private readonly WebsocketManager? _wsManager = wsManager;
+        private readonly LocalServerConfig _config;
+        private readonly HttpRouter _router;
+        private readonly WebsocketManager? _wsManager;
         private readonly Lock _statusLock = new();
 
-        private HttpListener? _listener;
-        private CancellationTokenSource? _cts;
-        private Task? _listeningTask;
+        private WebApplication? _app;
 
         public event Action<ServerStatus>? StatusChanged;
+        public event Action<HttpRequestLog>? RequestProcessed;
 
         private ServerStatus _status = ServerStatus.Stopped;
         public ServerStatus Status
@@ -31,9 +32,16 @@ namespace StreamTabula.Features.Servers.Services
         }
 
         public bool IsRunning => Status == ServerStatus.Running;
+
         public bool ShouldAutoStart => _config.AutoStart;
 
-        public event Action<HttpRequestLog>? RequestProcessed;
+
+        public LocalServer(LocalServerConfig config, HttpRouter router, WebsocketManager? wsManager = null)
+        {
+            _config = config;
+            _router = router;
+            _wsManager = wsManager;
+        }
 
         public async Task Start()
         {
@@ -45,20 +53,93 @@ namespace StreamTabula.Features.Servers.Services
 
             try
             {
-                _listener = new HttpListener();
-                _listener.Prefixes.Add(_config.HttpPrefix);
-                _cts = new CancellationTokenSource();
+                if (IsPortInUse(_config.Port))
+                {
+                    throw new InvalidOperationException($"Port {_config.Port} is already in use by another application.");
+                }
 
-                _listener.Start();
+                var builder = WebApplication.CreateBuilder();
 
-                _listeningTask = Task.Run(() => ListenLoop(_cts.Token));
+                // Налаштування порту
+                builder.WebHost.ConfigureKestrel(serverOptions =>
+                {
+                    serverOptions.ListenAnyIP(_config.Port);
+                });
+
+                _app = builder.Build();
+
+                // 1. Ручне налаштування CORS заголовків (заміняє AddCors / UseCors)
+                _app.Use(async (context, next) =>
+                {
+                    context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
+                    context.Response.Headers.Append("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                    context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type, Accept, Host");
+
+                    // Перехоплення OPTIONS (Preflight)
+                    if (context.Request.Method.Equals("OPTIONS", StringComparison.OrdinalIgnoreCase))
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.OK;
+                        return;
+                    }
+
+                    await next();
+                });
+
+                _app.UseWebSockets();
+
+                _app.Map("/ws", async context =>
+                {
+                    if (context.WebSockets.IsWebSocketRequest)
+                    {
+                        using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                        _wsManager?.AddClient(webSocket);
+                        try
+                        {
+                            await Task.Delay(Timeout.InfiniteTimeSpan, context.RequestAborted);
+                        }
+                        catch (OperationCanceledException) { }
+                    }
+                    else
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    }
+                });
+
+                _app.MapFallback(ProcessHttpRequest);
+
+                await _app.StartAsync();
 
                 Status = ServerStatus.Running;
             }
-            catch (Exception ex)
+            catch (System.IO.IOException ex)
             {
                 Status = ServerStatus.Stopped;
-                HandleStartupException(ex);
+
+                if (_app != null)
+                {
+                    await _app.DisposeAsync();
+                    _app = null;
+                }
+
+                if (ex.InnerException is System.Net.Sockets.SocketException socketEx &&
+                    socketEx.SocketErrorCode == System.Net.Sockets.SocketError.AddressAlreadyInUse)
+                {
+                    throw new InvalidOperationException($"Port {_config.Port} is already in use by another application.", ex);
+                }
+
+                throw new InvalidOperationException($"Failed to bind to port {_config.Port}.", ex);
+            }
+            catch (Exception)
+            {
+                Status = ServerStatus.Stopped;
+
+                if (_app != null)
+                {
+                    await _app.DisposeAsync();
+                    _app = null;
+                }
+
+                throw;
             }
         }
 
@@ -72,13 +153,14 @@ namespace StreamTabula.Features.Servers.Services
 
             try
             {
-                _cts?.Cancel();
-                _listener?.Stop();
+                if (_app != null)
+                {
+                    using var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(500));
+                    await _app.StopAsync(cts.Token);
 
-                if (_listeningTask != null)
-                    await Task.WhenAny(_listeningTask, Task.Delay(5000));
-
-                _listener?.Close();
+                    await _app.DisposeAsync();
+                    _app = null;
+                }
             }
             finally
             {
@@ -86,109 +168,47 @@ namespace StreamTabula.Features.Servers.Services
             }
         }
 
-        private async Task ListenLoop(CancellationToken token)
+        private async Task ProcessHttpRequest(HttpContext context)
         {
-            while (!token.IsCancellationRequested)
-            {
-                try
-                {
-                    var listener = _listener;
-                    if (listener == null)
-                        return;
-
-                    var ctx = await listener.GetContextAsync();
-                    _ = Task.Run(() => Handle(ctx), token);
-                }
-                catch when (token.IsCancellationRequested) { break; }
-                catch
-                {
-                    if (_listener?.IsListening != true) break;
-                }
-            }
-        }
-
-        private async Task Handle(HttpListenerContext ctx)
-        {
-            try
-            {
-                if (_wsManager != null && ctx.Request.IsWebSocketRequest)
-                {
-                    if (ctx.Request.Url?.AbsolutePath.Equals("/ws", StringComparison.OrdinalIgnoreCase) == true)
-                    {
-                        var wsContext = await ctx.AcceptWebSocketAsync(subProtocol: null);
-                        _wsManager?.AddClient(wsContext.WebSocket);
-                        return;
-                    }
-                }
-
-                ctx.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-                ctx.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-                ctx.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Accept, Host");
-
-                if (ctx.Request.HttpMethod.Equals("OPTIONS", StringComparison.OrdinalIgnoreCase))
-                {
-                    ctx.Response.StatusCode = (int)HttpStatusCode.OK;
-                    return;
-                }
-
-                await ProcessRequest(ctx);
-            }
-            catch
-            {
-                if (!ctx.Request.IsWebSocketRequest)
-                    await WriteTextResponse(ctx, HttpStatusCode.InternalServerError, "Internal Server Error");
-            }
-            finally
-            {
-                if (!ctx.Request.IsWebSocketRequest)
-                {
-                    RequestProcessed?.Invoke(new HttpRequestLog(ctx));
-                    ctx.Response.OutputStream.Close();
-                }
-            }
-        }
-
-        private async Task ProcessRequest(HttpListenerContext ctx)
-        {
-            var path = ctx.Request.Url?.AbsolutePath ?? "/";
-
+            var path = context.Request.Path.Value ?? "/";
             var controller = _router.Resolve(path);
 
             if (controller == null)
             {
-                await WriteTextResponse(ctx, HttpStatusCode.NotFound, "Not Found");
+                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                await context.Response.WriteAsync("404 - Not Found");
                 return;
             }
 
-            await controller.HandleAsync(ctx);
-        }
-
-        private static async Task WriteTextResponse(
-            HttpListenerContext ctx,
-            HttpStatusCode status,
-            string text
-        )
-        {
-            int statusCode = (int)status;
-            ctx.Response.StatusCode = statusCode;
-
-            var data = Encoding.UTF8.GetBytes($"{statusCode} - {text}");
-            await ctx.Response.OutputStream.WriteAsync(data);
-        }
-
-        private static void HandleStartupException(Exception ex)
-        {
-            if (ex is HttpListenerException httpEx)
+            try
             {
-                switch (httpEx.ErrorCode)
+                await controller.HandleAsync(context);
+            }
+            catch
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                await context.Response.WriteAsync("500 - Internal Server Error");
+            }
+            finally
+            {
+                RequestProcessed?.Invoke(new HttpRequestLog(context));
+            }
+        }
+
+        private static bool IsPortInUse(int port)
+        {
+            var ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
+            var tcpListeners = ipGlobalProperties.GetActiveTcpListeners();
+
+            foreach (var endpoint in tcpListeners)
+            {
+                if (endpoint.Port == port)
                 {
-                    case (int)WinErrorCodes.AccessDenied:
-                        throw new UnauthorizedAccessException("Access denied. Run as admin to use this IP/Port.", ex);
-                    case (int)WinErrorCodes.AlreadyExists:
-                        throw new InvalidOperationException("Port is already in use by another application.", ex);
+                    return true;
                 }
             }
-            throw ex;
+
+            return false;
         }
     }
 }
