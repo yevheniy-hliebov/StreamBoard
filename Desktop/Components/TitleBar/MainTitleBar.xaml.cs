@@ -7,6 +7,15 @@ namespace StreamTabula.Components.TitleBar
     {
         public MainTitleBar() => InitializeComponent();
 
+        public bool ShowAppIcon
+        {
+            get { return (bool)GetValue(ShowAppIconProperty); }
+            set { SetValue(ShowAppIconProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowAppIconProperty =
+            DependencyProperty.Register(nameof(ShowAppIcon), typeof(bool), typeof(MainTitleBar), new PropertyMetadata(true));
+
         public string Title
         {
             get { return (string)GetValue(TitleProperty); }

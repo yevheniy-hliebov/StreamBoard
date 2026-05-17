@@ -26,7 +26,11 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <titlebar:MainTitleBar Title="Check for Updates" Grid.Row="0" />
+        <titlebar:MainTitleBar Grid.Row="0"
+                       Title="Check for Updates"
+                       ShowMinimize="False"
+                       ShowMaximize="False"
+                       ShowAppIcon="False"/>
 
         <Grid Grid.Row="1" Margin="24">
 
