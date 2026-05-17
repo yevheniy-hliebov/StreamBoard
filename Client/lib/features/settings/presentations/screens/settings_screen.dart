@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:streamtabula/common/widgets/orientation_adaptive_scaffold.dart';
 import 'package:streamtabula/core/constants/app_colors.dart';
 import 'package:streamtabula/core/constants/spacing.dart';
+import 'package:streamtabula/features/settings/presentations/screens/qr_scanner_screen.dart';
 import 'package:streamtabula/features/settings/providers/settings_provider.dart';
 import 'package:streamtabula/features/updater/presentations/update_dialog.dart';
 import 'package:streamtabula/features/updater/providers/updater_provider.dart';
@@ -34,6 +35,19 @@ class SettingsScreen extends StatelessWidget {
                   : 'Not configured',
             ),
             onTap: () => _showServerDialog(context, settings),
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.qr_code_scanner),
+            title: const Text('Scan QR Code'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const QrScannerScreen(),
+                ),
+              );
+            },
           ),
 
           const Divider(),

@@ -57,6 +57,12 @@
             </cards:CardControl.ActionContent>
         </cards:CardControl>
 
+        <cards:CardControl Title="QR Code" Description="For easier client-server connection">
+            <cards:CardControl.ActionContent>
+                <ui:Button Command="{Binding ShowQrCodeCommand}" Content="Show" />
+            </cards:CardControl.ActionContent>
+        </cards:CardControl>
+
         <cards:CardExpander Title="HTTP Requests" Description="View a real-time log of incoming connection http requests">
             <controls:ConstrainedScrollBorder
                 MinHeight="150"

@@ -33,5 +33,23 @@ namespace StreamTabula.Components.TitleBar
 
         public static readonly DependencyProperty RightContentProperty =
             DependencyProperty.Register(nameof(RightContent), typeof(object), typeof(MainTitleBar), new PropertyMetadata(null));
+
+        public bool ShowMinimize
+        {
+            get { return (bool)GetValue(ShowMinimizeProperty); }
+            set { SetValue(ShowMinimizeProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowMinimizeProperty =
+            DependencyProperty.Register(nameof(ShowMinimize), typeof(bool), typeof(MainTitleBar), new PropertyMetadata(true));
+
+        public bool ShowMaximize
+        {
+            get { return (bool)GetValue(ShowMaximizeProperty); }
+            set { SetValue(ShowMaximizeProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowMaximizeProperty =
+            DependencyProperty.Register(nameof(ShowMaximize), typeof(bool), typeof(MainTitleBar), new PropertyMetadata(true));
     }
 }
