@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
 
 namespace StreamTabula.Features.Servers.Models
 {
@@ -17,7 +16,17 @@ namespace StreamTabula.Features.Servers.Models
         private static string GetIpAddress(HttpContext ctx)
         {
             var ip = ctx.Connection.RemoteIpAddress?.ToString();
-            return ip == "::1" ? "127.0.0.1" : (ip ?? "Unknown");
+            if (ip == "::1")
+            {
+                return "127.0.0.1";
+            }
+
+            if (ip?.Contains("::ffff:") ?? false)
+            {
+                ip = ip.Replace("::ffff:", "");
+            }
+
+            return ip ?? "Unknown";
         }
     }
 }
