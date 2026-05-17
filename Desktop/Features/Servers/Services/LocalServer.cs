@@ -60,7 +60,6 @@ namespace StreamTabula.Features.Servers.Services
 
                 var builder = WebApplication.CreateBuilder();
 
-                // Налаштування порту
                 builder.WebHost.ConfigureKestrel(serverOptions =>
                 {
                     serverOptions.ListenAnyIP(_config.Port);
@@ -68,14 +67,12 @@ namespace StreamTabula.Features.Servers.Services
 
                 _app = builder.Build();
 
-                // 1. Ручне налаштування CORS заголовків (заміняє AddCors / UseCors)
                 _app.Use(async (context, next) =>
                 {
                     context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
                     context.Response.Headers.Append("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
                     context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type, Accept, Host");
 
-                    // Перехоплення OPTIONS (Preflight)
                     if (context.Request.Method.Equals("OPTIONS", StringComparison.OrdinalIgnoreCase))
                     {
                         context.Response.StatusCode = (int)HttpStatusCode.OK;
