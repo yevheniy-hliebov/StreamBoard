@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -65,7 +66,11 @@ namespace StreamTabula.Features.Decks.Views.Components.Canvas
         }
 
         public static readonly DependencyProperty ImagePathProperty =
-            DependencyProperty.Register(nameof(ImagePath), typeof(string), typeof(DeckButtonSlotView), new PropertyMetadata(null));
+            DependencyProperty.Register(
+                nameof(ImagePath),
+                typeof(string),
+                typeof(DeckButtonSlotView),
+                new PropertyMetadata(null, OnImagePathChanged));
 
 
         public string ButtonBackground
@@ -76,5 +81,37 @@ namespace StreamTabula.Features.Decks.Views.Components.Canvas
 
         public static readonly DependencyProperty ButtonBackgroundProperty =
             DependencyProperty.Register(nameof(ButtonBackground), typeof(string), typeof(DeckButtonSlotView), new PropertyMetadata("#2B2B2B"));
+
+        public bool IsImageMissing
+        {
+            get { return (bool)GetValue(IsImageMissingProperty); }
+            private set { SetValue(IsImageMissingPropertyKey, value); }
+        }
+
+        private static readonly DependencyPropertyKey IsImageMissingPropertyKey =
+            DependencyProperty.RegisterReadOnly(
+                nameof(IsImageMissing),
+                typeof(bool),
+                typeof(DeckButtonSlotView),
+                new PropertyMetadata(false));
+
+        public static readonly DependencyProperty IsImageMissingProperty = IsImageMissingPropertyKey.DependencyProperty;
+
+        private static void OnImagePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is DeckButtonSlotView slotView)
+            {
+                string? path = e.NewValue as string;
+
+                if (!string.IsNullOrWhiteSpace(path))
+                {
+                    slotView.IsImageMissing = !File.Exists(path);
+                }
+                else
+                {
+                    slotView.IsImageMissing = false;
+                }
+            }
+        }
     }
 }
