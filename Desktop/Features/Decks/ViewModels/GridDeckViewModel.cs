@@ -7,11 +7,14 @@ using StreamTabula.Features.Decks.Services;
 using StreamTabula.Features.Servers.Models;
 using StreamTabula.Features.Servers.Services;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace StreamTabula.Features.Decks.ViewModels
 {
     public partial class GridDeckViewModel : ObservableObject
     {
+        public DeckEditorState EditorState { get; } = new DeckEditorState();
+
         public DeckPagesViewModel Pages { get; }
         public ActionLibraryViewModel Library { get; }
         public DeckButtonEditorViewModel Editor { get; }
@@ -22,6 +25,8 @@ namespace StreamTabula.Features.Decks.ViewModels
         private readonly string _deckType = "grid";
 
         private CancellationTokenSource? _buttonDebounceCts;
+
+        public ICommand ToggleClickCommand { get; }
 
         public GridDeckViewModel(
             GridDeckStorage storage,
@@ -37,7 +42,7 @@ namespace StreamTabula.Features.Decks.ViewModels
             Pages = new DeckPagesViewModel(storage, _pageServise, dialogService);
             Library = new ActionLibraryViewModel(registry);
             Editor = new DeckButtonEditorViewModel(storage, dialogService, clipboard);
-            Canvas = new DeckCanvasViewModel(_buttonServise, _pageServise, dialogService);
+            Canvas = new DeckCanvasViewModel(_buttonServise, _pageServise, dialogService, EditorState);
 
             _wsManager = wsManager;
 
@@ -48,6 +53,8 @@ namespace StreamTabula.Features.Decks.ViewModels
             Editor.ButtonAppearanceChanged += OnButtonAppearanceChanged;
             _buttonServise.ButtonsSwapped += OnButtonsSwapped;
             _buttonServise.ButtonChanged += OnButtonChanged;
+
+            ToggleClickCommand = new RelayCommand(_ => EditorState.IsClickMode = !EditorState.IsClickMode);
         }
 
         private void OnCanvasPropertyChanged(object? sender, PropertyChangedEventArgs e)

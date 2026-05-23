@@ -17,13 +17,13 @@
     mc:Ignorable="d">
 
     <Page.InputBindings>
-        <KeyBinding Modifiers="Ctrl" Key="E" Command="{Binding Canvas.ToggleClickCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="E" Command="{Binding EditorState.ToggleClickCommand}" />
     </Page.InputBindings>
 
     <layout:DeckEditorLayout
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
-        IsClickMode="{Binding Canvas.IsClickMode}">
+        IsClickMode="{Binding EditorState.IsClickMode}">
 
         <layout:DeckEditorLayout.LeftBarContent>
             <deck_profile:DeckProfilyView DataContext="{Binding Pages}" />
