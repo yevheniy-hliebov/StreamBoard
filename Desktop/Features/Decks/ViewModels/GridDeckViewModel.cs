@@ -39,7 +39,7 @@ namespace StreamTabula.Features.Decks.ViewModels
             var _pageServise = new DeckPageService(storage, clipboard);
             var _buttonServise = new DeckButtonService(storage, clipboard);
 
-            Pages = new DeckPagesViewModel(storage, _pageServise, dialogService);
+            Pages = new DeckPagesViewModel(storage, _pageServise, dialogService, EditorState);
             Library = new ActionLibraryViewModel(registry);
             Editor = new DeckButtonEditorViewModel(storage, dialogService, clipboard);
             Canvas = new DeckCanvasViewModel(_buttonServise, _pageServise, dialogService, EditorState);
