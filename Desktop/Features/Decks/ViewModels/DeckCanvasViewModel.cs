@@ -5,7 +5,6 @@ using StreamTabula.Features.Decks.Models;
 using StreamTabula.Features.Decks.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace StreamTabula.Features.Decks.ViewModels
@@ -16,28 +15,16 @@ namespace StreamTabula.Features.Decks.ViewModels
         private readonly IDeckPageService _pageService;
         private readonly IDialogService _dialogService;
 
+        private readonly DeckEditorState _editorState;
+
         public BaseCanvasConfig CanvasConfig { get; }
         public ObservableCollection<DeckButtonSlot> Buttons { get; } = [];
-
-        private bool _isClickMode;
-        public bool IsClickMode
-        {
-            get => _isClickMode;
-            set
-            {
-                if (SetProperty(ref _isClickMode, value) && _isClickMode)
-                {
-                    SelectedButton = null;
-                }
-            }
-        }
 
         public ICommand ClickButtonCommand { get; }
         public ICommand CopyCommand { get; }
         public ICommand PasteCommand { get; }
         public ICommand CutCommand { get; }
         public ICommand DeleteCommand { get; }
-        public ICommand ToggleClickCommand { get; }
 
 
         private DeckButtonSlot? _selectedButton;
@@ -46,19 +33,16 @@ namespace StreamTabula.Features.Decks.ViewModels
             get => _selectedButton;
             set
             {
-                if (value != null && value.Config == null && !IsClickMode)
+                if (value != null && value.Config == null && _editorState.IsEditorMode)
                 {
                     value.Config = _buttonService.GetOrCreateButton(value.Index);
                 }
 
                 if (SetProperty(ref _selectedButton, value))
                 {
-                    if (_selectedButton != null)
+                    foreach (var button in Buttons)
                     {
-                        foreach (var button in Buttons)
-                        {
-                            button.IsSelected = button == _selectedButton;
-                        }
+                        button.IsSelected = button == _selectedButton;
                     }
                 }
             }
@@ -67,27 +51,26 @@ namespace StreamTabula.Features.Decks.ViewModels
         public DeckCanvasViewModel(
             IDeckButtonService buttonService,
             IDeckPageService pageService,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            DeckEditorState editorState)
         {
             _buttonService = buttonService;
             _pageService = pageService;
             _dialogService = dialogService;
 
+            _editorState = editorState;
+
             CanvasConfig = _buttonService.CanvasConfig;
 
             _pageService.SelectedPageChanged += RebuildButtons;
             CanvasConfig.PropertyChanged += OnCanvasConfigPropertyChanged;
+            _editorState.PropertyChanged += OnEditorStatePropertyChanged;
 
             ClickButtonCommand = new RelayCommand(async p => await ExecuteClickButton(p));
-            CopyCommand = new RelayCommand(_ => ExecuteCopy());
-            PasteCommand = new RelayCommand(async _ => await ExecutePaste(), _ => _buttonService.CanPaste());
-            CutCommand = new RelayCommand(async _ => await ExecuteCut());
-            DeleteCommand = new RelayCommand(async _ => await ExecuteDelete());
-
-            ToggleClickCommand = new RelayCommand(_ =>
-            {
-                IsClickMode = !IsClickMode;
-            });
+            CopyCommand = new RelayCommand(_ => ExecuteCopy(), _ => _editorState.IsEditorMode);
+            PasteCommand = new RelayCommand(async _ => await ExecutePaste(), _ => _buttonService.CanPaste() && _editorState.IsEditorMode);
+            CutCommand = new RelayCommand(async _ => await ExecuteCut(), _ => _editorState.IsEditorMode);
+            DeleteCommand = new RelayCommand(async _ => await ExecuteDelete(), _ => _editorState.IsEditorMode);
 
             RebuildButtons();
         }
@@ -110,12 +93,13 @@ namespace StreamTabula.Features.Decks.ViewModels
                 }
             }
         }
+
         private async Task ExecuteClickButton(object? parameter)
         {
             if (parameter is not DeckButtonSlot slot)
                 return;
 
-            if (!IsClickMode)
+            if (_editorState.IsEditorMode)
             {
                 if (SelectedButton == slot)
                     return;
@@ -200,9 +184,20 @@ namespace StreamTabula.Features.Decks.ViewModels
             }
         }
 
+        private void OnEditorStatePropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(DeckEditorState.IsClickMode))
+            {
+                if (_editorState.IsClickMode)
+                {
+                    SelectedButton = null;
+                }
+            }
+        }
+
         private void HandleDrop(object payload, DeckButtonSlot target)
         {
-            if (IsClickMode) return;
+            if (_editorState.IsClickMode) return;
 
             if (payload is DeckButtonSlot sourceSlot && sourceSlot != target)
             {
@@ -220,6 +215,7 @@ namespace StreamTabula.Features.Decks.ViewModels
         {
             _pageService.SelectedPageChanged -= RebuildButtons;
             CanvasConfig.PropertyChanged -= OnCanvasConfigPropertyChanged;
+            _editorState.PropertyChanged -= OnEditorStatePropertyChanged;
         }
     }
 }

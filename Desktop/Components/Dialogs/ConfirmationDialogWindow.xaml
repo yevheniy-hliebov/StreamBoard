@@ -25,7 +25,11 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <titlebar:MainTitleBar Title="{Binding Title}" Grid.Row="0" />
+        <titlebar:MainTitleBar Grid.Row="0"
+                               Title="{Binding Title}"
+                               ShowMinimize="False"
+                               ShowMaximize="False"
+                               ShowAppIcon="False"/>
 
         <StackPanel Grid.Row="1" Margin="24">
             

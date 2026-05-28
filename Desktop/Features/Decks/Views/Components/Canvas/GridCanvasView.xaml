@@ -98,7 +98,7 @@
                                     <Style TargetType="ContentControl">
                                         <Setter Property="ContentTemplate" Value="{StaticResource EditorModeTemplate}" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding DataContext.IsClickMode, ElementName=Root}" Value="True">
+                                            <DataTrigger Binding="{Binding DataContext.EditorState.IsClickMode, RelativeSource={RelativeSource AncestorType=Page}}" Value="True">
                                                 <Setter Property="ContentTemplate" Value="{StaticResource ClickModeTemplate}" />
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -128,13 +128,14 @@
                 VerticalAlignment="Top"
                 DisplayMemberPath="Name"
                 ItemsSource="{Binding CanvasConfig.Grids}"
-                SelectedItem="{Binding CanvasConfig.SelectedGrid, Mode=TwoWay}" />
+                SelectedItem="{Binding CanvasConfig.SelectedGrid, Mode=TwoWay}"
+                IsEnabled="{Binding DataContext.EditorState.IsEditorMode, RelativeSource={RelativeSource AncestorType=Page}}"  />
 
             <controls:LabeledToggle
                 Grid.Column="2"
                 Margin="12"
                 VerticalAlignment="Center"
-                IsChecked="{Binding IsClickMode}"
+                IsChecked="{Binding DataContext.EditorState.IsClickMode, RelativeSource={RelativeSource AncestorType=Page}}"
                 ToggleOffText="Editor Mode"
                 ToggleOnText="Click Mode" />
         </Grid>

@@ -11,8 +11,6 @@
     xmlns:tray="clr-namespace:StreamTabula.Components.Tray"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="StreamTabula"
-    Width="1252"
-    Height="800"
     ExtendsContentIntoTitleBar="True"
     WindowBackdropType="Mica"
     WindowStartupLocation="CenterScreen"

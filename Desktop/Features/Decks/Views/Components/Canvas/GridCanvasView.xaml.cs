@@ -17,7 +17,8 @@ namespace StreamTabula.Features.Decks.Views.Components.Canvas
             FocusVisualStyle = null;
 
             Loaded += OnLoaded;
-            this.PreviewMouseDown += (s, e) => this.Focus();
+
+            Viewport.PreviewMouseDown += (s, e) => this.Focus();
 
             Viewport.MouseDown += OnViewportMouseDown;
             Viewport.MouseMove += OnMouseMove;

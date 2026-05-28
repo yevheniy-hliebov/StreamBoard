@@ -39,7 +39,7 @@
                 VerticalAlignment="Center">
 
                 <TextBlock
-                    Margin="0,0,0,12"
+                    Margin="0,0,0,0"
                     FontSize="40"
                     FontWeight="SemiBold"
                     Foreground="White"

@@ -14,6 +14,8 @@ namespace StreamTabula.Features.Decks.ViewModels
         private readonly IDeckPageService _pageService;
         private readonly IDialogService _dialogService;
 
+        private readonly DeckEditorState _editorState;
+
         public ObservableCollection<DeckPage> AllPages => _pageService.AllPages;
 
         public ICommand AddPageCommand { get; }
@@ -50,10 +52,13 @@ namespace StreamTabula.Features.Decks.ViewModels
         public DeckPagesViewModel(
             DeckStorage storage, 
             IDeckPageService pageService,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            DeckEditorState editorState)
         {
             _pageService = pageService;
             _dialogService = dialogService;
+
+            _editorState = editorState;
 
             _pageService.SelectedPageChanged += () =>
             {
@@ -63,28 +68,28 @@ namespace StreamTabula.Features.Decks.ViewModels
                 });
             };
 
-            AddPageCommand = new RelayCommand(_ => _pageService.AddPage());
+            AddPageCommand = new RelayCommand(_ => _pageService.AddPage(), _ => _editorState.IsEditorMode);
             
             CopyPageCommand = new RelayCommand(_ =>
             {
                 if (SelectedPage != null) _pageService.CopyPage(SelectedPage.Id);
-            }, _ => SelectedPage != null);
+            }, _ => SelectedPage != null && _editorState.IsEditorMode);
 
-            PastePageCommand = new RelayCommand(_ => _pageService.PastePage());
+            PastePageCommand = new RelayCommand(_ => _pageService.PastePage(), _ => _editorState.IsEditorMode);
 
             DuplicatePageCommand = new RelayCommand(_ =>
             {
                 if (SelectedPage != null) _pageService.DuplicatePage(SelectedPage.Id);
-            }, _ => SelectedPage != null);
+            }, _ => SelectedPage != null && _editorState.IsEditorMode);
 
-            CutPageCommand = new RelayCommand(async _ => await OnCutPage(), _ => AllPages.Count > 1);
+            CutPageCommand = new RelayCommand(async _ => await OnCutPage(), _ => AllPages.Count > 1 && _editorState.IsEditorMode);
 
-            DeletePageCommand = new RelayCommand(async _ => await OnDeletePage(), _ => AllPages.Count > 1);
+            DeletePageCommand = new RelayCommand(async _ => await OnDeletePage(), _ => AllPages.Count > 1 && _editorState.IsEditorMode);
 
             RenamePageCommand = new RelayCommand(_ =>
             {
                 if (SelectedPage != null) IsRenameMode = true;
-            }, _ => SelectedPage != null);
+            }, _ => SelectedPage != null && _editorState.IsEditorMode);
 
             EndRenameCommand = new RelayCommand(_ => OnEndRename());
 

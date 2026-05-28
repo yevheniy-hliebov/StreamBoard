@@ -10,6 +10,7 @@
         Background="Transparent"
         Cursor="Hand"
         MouseLeftButtonDown="OnPickerClicked">
+
         <Rectangle
             RadiusX="8"
             RadiusY="8"
@@ -39,6 +40,26 @@
             </controls:FluentIcon.Style>
         </controls:FluentIcon>
 
+        <controls:FluentIcon
+            Margin="3,0,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="24"
+            Foreground="#FFA500"
+            IconType="Warning"
+            ToolTip="The image at the specified path was not found or has been deleted.">
+            <controls:FluentIcon.Style>
+                <Style TargetType="controls:FluentIcon">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsImageMissing, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:FluentIcon.Style>
+        </controls:FluentIcon>
+
         <controls:ClippingBorder
             Margin="3"
             ClipToBounds="True"
@@ -52,6 +73,9 @@
                                 <Setter Property="Visibility" Value="Collapsed" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsImageMissing, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
                                 <Setter Property="Visibility" Value="Collapsed" />
                             </DataTrigger>
                         </Style.Triggers>

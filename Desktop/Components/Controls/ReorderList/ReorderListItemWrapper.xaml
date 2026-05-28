@@ -23,9 +23,15 @@
                         <Style TargetType="{x:Type controls:FluentIcon}">
                             <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ShowDragHandle, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ReorderListItemWrapper}}}" Value="True">
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding ShowDragHandle, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ReorderListItemWrapper}}}" Value="True" />
+
+                                        <Condition Binding="{Binding IsDragEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ReorderListView}}}" Value="True" />
+                                    </MultiDataTrigger.Conditions>
+
                                     <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
+                                </MultiDataTrigger>
                             </Style.Triggers>
                         </Style>
                     </controls:FluentIcon.Style>
