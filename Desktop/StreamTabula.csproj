@@ -10,7 +10,7 @@
 		<RootNamespace>StreamTabula</RootNamespace>
 		<ApplicationIcon>Assets\Images\logo.ico</ApplicationIcon>
 
-		<Version>0.1.1-beta.1</Version>
+		<Version>0.1.1-beta.2</Version>
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 
 		<RuntimeIdentifier>win-x86</RuntimeIdentifier>
