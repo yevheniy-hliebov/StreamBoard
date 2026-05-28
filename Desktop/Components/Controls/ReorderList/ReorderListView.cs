@@ -14,6 +14,25 @@ namespace StreamTabula.Components.Controls.ReorderList
                 new FrameworkPropertyMetadata(typeof(Wpf.Ui.Controls.ListView)));
         }
 
+        public bool IsDragEnabled
+        {
+            get => (bool)GetValue(IsDragEnabledProperty);
+            set => SetValue(IsDragEnabledProperty, value);
+        }
+        public static readonly DependencyProperty IsDragEnabledProperty =
+            DependencyProperty.Register(nameof(IsDragEnabled), typeof(bool), typeof(ReorderListView),
+                new PropertyMetadata(true, OnIsDragEnabledChanged));
+
+        private static void OnIsDragEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ReorderListView listView)
+            {
+                bool isEnabled = (bool)e.NewValue;
+                GongSolutions.Wpf.DragDrop.DragDrop.SetIsDragSource(listView, isEnabled);
+                GongSolutions.Wpf.DragDrop.DragDrop.SetIsDropTarget(listView, isEnabled);
+            }
+        }
+
         public ReorderListView()
         {
             GongSolutions.Wpf.DragDrop.DragDrop.SetIsDragSource(this, true);

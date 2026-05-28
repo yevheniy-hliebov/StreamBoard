@@ -58,6 +58,7 @@
             HorizontalScrollBarVisibility="Disabled"
             VerticalScrollBarVisibility="Auto">
             <reorder:ReorderListView
+                IsDragEnabled="{Binding DataContext.EditorState.IsEditorMode, RelativeSource={RelativeSource AncestorType=Page}}"
                 dd:DragDrop.DropHandler="{Binding}"
                 HorizontalContentAlignment="Stretch"
                 ItemsSource="{Binding AllPages}"
@@ -73,10 +74,9 @@
 
                 <reorder:ReorderListView.ItemTemplate>
                     <DataTemplate>
-                        <reorder:ReorderListItemWrapper ShowDragHandle="True" UseDragHandle="True">
+                        <reorder:ReorderListItemWrapper ShowDragHandle="True" UseDragHandle="True" Margin="8,4">
                             <local:DeckPageItem
                                     Title="{Binding Name, Mode=TwoWay}"
-                                    Margin="8,4"
                                     EndEditCommand="{Binding DataContext.EndRenameCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
                                 <local:DeckPageItem.Style>
                                     <Style TargetType="local:DeckPageItem">

@@ -33,7 +33,7 @@ namespace StreamTabula.Features.Decks.ViewModels
             get => _selectedButton;
             set
             {
-                if (value != null && value.Config == null && !_editorState.IsClickMode)
+                if (value != null && value.Config == null && _editorState.IsEditorMode)
                 {
                     value.Config = _buttonService.GetOrCreateButton(value.Index);
                 }
@@ -70,10 +70,10 @@ namespace StreamTabula.Features.Decks.ViewModels
             _editorState.PropertyChanged += OnEditorStatePropertyChanged;
 
             ClickButtonCommand = new RelayCommand(async p => await ExecuteClickButton(p));
-            CopyCommand = new RelayCommand(_ => ExecuteCopy(), _ => !_editorState.IsClickMode);
-            PasteCommand = new RelayCommand(async _ => await ExecutePaste(), _ => _buttonService.CanPaste() && !_editorState.IsClickMode);
-            CutCommand = new RelayCommand(async _ => await ExecuteCut(), _ => !_editorState.IsClickMode);
-            DeleteCommand = new RelayCommand(async _ => await ExecuteDelete(), _ => !_editorState.IsClickMode);
+            CopyCommand = new RelayCommand(_ => ExecuteCopy(), _ => _editorState.IsEditorMode);
+            PasteCommand = new RelayCommand(async _ => await ExecutePaste(), _ => _buttonService.CanPaste() && _editorState.IsEditorMode);
+            CutCommand = new RelayCommand(async _ => await ExecuteCut(), _ => _editorState.IsEditorMode);
+            DeleteCommand = new RelayCommand(async _ => await ExecuteDelete(), _ => _editorState.IsEditorMode);
 
             RebuildButtons();
         }
@@ -102,7 +102,7 @@ namespace StreamTabula.Features.Decks.ViewModels
             if (parameter is not DeckButtonSlot slot)
                 return;
 
-            if (!_editorState.IsClickMode)
+            if (_editorState.IsEditorMode)
             {
                 if (SelectedButton == slot)
                     return;

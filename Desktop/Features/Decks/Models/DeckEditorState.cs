@@ -11,11 +11,14 @@ namespace StreamTabula.Features.Decks.Models
             get => _isClickMode;
             set
             {
-                if (SetProperty(ref _isClickMode, value) && _isClickMode)
+                if (SetProperty(ref _isClickMode, value))
                 {
+                    OnPropertyChanged(nameof(IsEditorMode));
                     CommandManager.InvalidateRequerySuggested();
                 }
             }
         }
+
+        public bool IsEditorMode => !IsClickMode;
     }
 }

@@ -68,28 +68,28 @@ namespace StreamTabula.Features.Decks.ViewModels
                 });
             };
 
-            AddPageCommand = new RelayCommand(_ => _pageService.AddPage(), _ => !_editorState.IsClickMode);
+            AddPageCommand = new RelayCommand(_ => _pageService.AddPage(), _ => _editorState.IsEditorMode);
             
             CopyPageCommand = new RelayCommand(_ =>
             {
                 if (SelectedPage != null) _pageService.CopyPage(SelectedPage.Id);
-            }, _ => SelectedPage != null && !_editorState.IsClickMode);
+            }, _ => SelectedPage != null && _editorState.IsEditorMode);
 
-            PastePageCommand = new RelayCommand(_ => _pageService.PastePage(), _ => !_editorState.IsClickMode);
+            PastePageCommand = new RelayCommand(_ => _pageService.PastePage(), _ => _editorState.IsEditorMode);
 
             DuplicatePageCommand = new RelayCommand(_ =>
             {
                 if (SelectedPage != null) _pageService.DuplicatePage(SelectedPage.Id);
-            }, _ => SelectedPage != null && !_editorState.IsClickMode);
+            }, _ => SelectedPage != null && _editorState.IsEditorMode);
 
-            CutPageCommand = new RelayCommand(async _ => await OnCutPage(), _ => AllPages.Count > 1 && !_editorState.IsClickMode);
+            CutPageCommand = new RelayCommand(async _ => await OnCutPage(), _ => AllPages.Count > 1 && _editorState.IsEditorMode);
 
-            DeletePageCommand = new RelayCommand(async _ => await OnDeletePage(), _ => AllPages.Count > 1 && !_editorState.IsClickMode);
+            DeletePageCommand = new RelayCommand(async _ => await OnDeletePage(), _ => AllPages.Count > 1 && _editorState.IsEditorMode);
 
             RenamePageCommand = new RelayCommand(_ =>
             {
                 if (SelectedPage != null) IsRenameMode = true;
-            }, _ => SelectedPage != null && !_editorState.IsClickMode);
+            }, _ => SelectedPage != null && _editorState.IsEditorMode);
 
             EndRenameCommand = new RelayCommand(_ => OnEndRename());
 
