@@ -1,0 +1,95 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-desktop:
+    name: Build Desktop (Windows)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        run: |
+          $VERSION = $env:GITHUB_REF.Replace('refs/tags/v', '')
+          echo "VERSION=$VERSION" >> $env:GITHUB_ENV
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish Desktop (WPF)
+        run: dotnet publish Desktop/StreamTabula.csproj -c Release -o ./publish
+
+      - name: Create ZIP archive
+        run: Compress-Archive -Path ./publish/* -DestinationPath StreamTabula_Windows_v${{ env.VERSION }}.zip -Force
+
+      - name: Upload Desktop Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-build
+          path: StreamTabula_Windows_v${{ env.VERSION }}.zip
+
+  build-android:
+    name: Build Client (Android APK)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Setup Java (required for Android build)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Build APK
+        working-directory: ./Client
+        run: |
+          flutter pub get
+          flutter build apk --release
+
+      - name: Rename APK
+        run: mv Client/build/app/outputs/flutter-apk/app-release.apk StreamTabula_Android_v${{ env.VERSION }}.apk
+
+      - name: Upload Android Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-build
+          path: StreamTabula_Android_v${{ env.VERSION }}.apk
+
+  release:
+    name: Create GitHub Release
+    needs: [build-desktop, build-android]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            StreamTabula_Windows_v*.zip
+            StreamTabula_Android_v*.apk
+          prerelease: ${{ contains(github.ref, '-') }}
+          generate_release_notes: false
