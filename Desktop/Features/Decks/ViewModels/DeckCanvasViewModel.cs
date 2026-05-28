@@ -40,12 +40,9 @@ namespace StreamTabula.Features.Decks.ViewModels
 
                 if (SetProperty(ref _selectedButton, value))
                 {
-                    if (_selectedButton != null)
+                    foreach (var button in Buttons)
                     {
-                        foreach (var button in Buttons)
-                        {
-                            button.IsSelected = button == _selectedButton;
-                        }
+                        button.IsSelected = button == _selectedButton;
                     }
                 }
             }
@@ -218,6 +215,7 @@ namespace StreamTabula.Features.Decks.ViewModels
         {
             _pageService.SelectedPageChanged -= RebuildButtons;
             CanvasConfig.PropertyChanged -= OnCanvasConfigPropertyChanged;
+            _editorState.PropertyChanged -= OnEditorStatePropertyChanged;
         }
     }
 }
