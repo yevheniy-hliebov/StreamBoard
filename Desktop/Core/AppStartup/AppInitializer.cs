@@ -42,6 +42,13 @@ namespace StreamTabula.Core.AppStartup
             // Run as admin
             if (settingStorage.Current.RunAsAdmin && !privilegeService.IsRunAsAdmin())
             {
+                if (_mutex != null)
+                {
+                    _mutex.ReleaseMutex();
+                    _mutex.Dispose();
+                    _mutex = null;
+                }
+
                 privilegeService.RestartAsAdmin();
                 Application.Current.Shutdown();
                 return;
