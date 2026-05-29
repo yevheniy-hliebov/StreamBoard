@@ -9,6 +9,9 @@ namespace StreamTabula.Features.Actions.Library
     [ActionCategory("System", FluentIconType.System)]
     public abstract class SystemBaseAction : BaseAction { }
 
+    [ActionCategory("Variables", FluentIconType.Code)]
+    public abstract class VariablesBaseAction : BaseAction { }
+
     [ActionCategory("Input", FluentIconType.Rename)]
     public abstract class InputBaseAction : BaseAction { }
 
