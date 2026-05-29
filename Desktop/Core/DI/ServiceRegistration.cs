@@ -17,6 +17,7 @@ using StreamTabula.Features.Settings.Services;
 using StreamTabula.Features.Settings.ViewModels;
 using StreamTabula.Features.Updater.Services;
 using StreamTabula.Features.Updater.ViewModels;
+using StreamTabula.Features.Variables.Services;
 using System.Net.Http;
 using Wpf.Ui;
 
@@ -30,6 +31,9 @@ namespace StreamTabula.Core.DI
             services.AddSingleton<ISnackbarService, SnackbarService>();
             services.AddSingleton<IClipboardService, ClipboardService>();
             services.AddSingleton<IDialogService, DialogService>();
+
+            services.AddSingleton<VariablesJsonStorage>();
+            services.AddSingleton<IVariableService, VariableService>();
 
             services.AddSingleton<SettingsStorage>();
             services.AddSingleton<ServerConfigsStorage>();
