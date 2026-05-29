@@ -8,6 +8,7 @@ using StreamTabula.Features.Servers.Pages;
 using StreamTabula.Features.Settings.Pages;
 using StreamTabula.Features.Integrations.Common.Models;
 using StreamTabula.Features.Navigation.Models;
+using StreamTabula.Features.Variables.Views.Pages;
 
 namespace StreamTabula.Features.Navigation.Services
 {
@@ -20,6 +21,8 @@ namespace StreamTabula.Features.Navigation.Services
             new("Home", typeof(HomePage), FluentIcon: FluentIconType.Home, AddSeparatorAfter: true),
 
             new("Grid Deck", typeof(GridDeckPage), FluentIcon: FluentIconType.Grid, AddSeparatorAfter: true),
+            
+            new("Variables", typeof(VariablesPage), FluentIcon: FluentIconType.Code, AddSeparatorAfter: true),
 
             new("Integrations", typeof(IntegrationsPage), FluentIcon: FluentIconType.Puzzle),
             new("OBS Studio", typeof(ObsSettingsPage), IntegrationIcon: IntegrationIconType.Obs, ParentName: "Integrations"),

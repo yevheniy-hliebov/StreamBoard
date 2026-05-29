@@ -18,6 +18,7 @@ using StreamTabula.Features.Settings.ViewModels;
 using StreamTabula.Features.Updater.Services;
 using StreamTabula.Features.Updater.ViewModels;
 using StreamTabula.Features.Variables.Services;
+using StreamTabula.Features.Variables.ViewModels;
 using System.Net.Http;
 using Wpf.Ui;
 
@@ -85,6 +86,7 @@ namespace StreamTabula.Core.DI
             services.AddSingleton<AppInfoService>();
             services.AddSingleton<UpdateService>();
 
+            services.AddSingleton<VariablesViewModel>();
             services.AddSingleton<GridDeckViewModel>();
             services.AddSingleton<IntegrationsViewModel>();
             services.AddSingleton<ObsSettingsViewModel>();

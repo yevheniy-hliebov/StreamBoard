@@ -1,0 +1,120 @@
+﻿<Page x:Class="StreamTabula.Features.Variables.Views.Pages.VariablesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="Variables">
+
+    <StackPanel Margin="16">
+        <controls:PageTitle Text="Variables Manager" />
+        <TextBlock 
+            Margin="0,-12,0,12"
+            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+            Text="Manage global and track temporary session variables." />
+
+        <Border Background="{DynamicResource CardBackgroundFillColorSecondaryBrush}"
+                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="12"
+                Padding="16">
+
+            <TabControl Background="Transparent" BorderThickness="0">
+
+                <TabItem Header="Global Variables" 
+                         Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+                    <Grid Margin="0,16,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <ui:Button
+                            Grid.Row="0"
+                            Margin="0,0,0,12"
+                            HorizontalAlignment="Right"
+                            Command="{Binding AddGlobalCommand}"
+                            Content="Add Variable" />
+
+                        <Border Grid.Row="1" 
+                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" 
+                                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="1">
+
+                            <DataGrid
+                                AutoGenerateColumns="False"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                CanUserAddRows="False"
+                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                RowBackground="Transparent"
+                                HeadersVisibility="Column"
+                                ItemsSource="{Binding GlobalVariables}"
+                                SelectionMode="Single">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" IsReadOnly="True" Width="*" />
+                                    <DataGridTextColumn Binding="{Binding Value}" Header="Value" IsReadOnly="True" Width="2*" />
+
+                                    <DataGridTemplateColumn Width="Auto">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <controls:IconButton
+                                                    TooltipText="Delete"
+                                                    HorizontalAlignment="Right"
+                                                    Command="{Binding DataContext.DeleteGlobalCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                    CommandParameter="{Binding}"
+                                                    IconType="Delete"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Temporary Variables" 
+                         Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+                    <Border Margin="0,16,0,0" 
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" 
+                            BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="1">
+
+                        <DataGrid
+                            AutoGenerateColumns="False"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            CanUserAddRows="False"
+                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                            RowBackground="Transparent"
+                            HeadersVisibility="Column"
+                            ItemsSource="{Binding TemporaryVariables}"
+                            SelectionMode="Single">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Name}" Header="Name" IsReadOnly="True" Width="*" />
+                                <DataGridTextColumn Binding="{Binding Value}" Header="Value" IsReadOnly="True" Width="2*" />
+
+                                <DataGridTemplateColumn Width="Auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <controls:IconButton
+                                                TooltipText="Delete"
+                                                HorizontalAlignment="Right"
+                                                Command="{Binding DataContext.DeleteGlobalCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                CommandParameter="{Binding}"
+                                                IconType="Delete"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                </TabItem>
+
+            </TabControl>
+        </Border>
+    </StackPanel>
+</Page>
