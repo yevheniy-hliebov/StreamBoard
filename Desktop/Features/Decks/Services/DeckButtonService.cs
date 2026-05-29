@@ -1,4 +1,5 @@
 ﻿using StreamTabula.Core.Services;
+using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Services;
 using StreamTabula.Features.Decks.Models;
 
@@ -74,9 +75,11 @@ namespace StreamTabula.Features.Decks.Services
         {
             if (config?.Actions == null) return;
 
+            var context = new ActionExecutionContext();
+
             foreach (var action in config.Actions.ToList())
             {
-                try { await action.ExecuteAsync(); }
+                try { await action.ExecuteAsync(context); }
                 catch { /* Error logging */ }
             }
         }

@@ -48,7 +48,7 @@ namespace StreamTabula.Features.Actions.Library.Twitch
             }
         }
 
-        public override async Task ExecuteAsync(object? data = null)
+        public override async Task ExecuteAsync(ActionExecutionContext context)
         {
             if (string.IsNullOrWhiteSpace(Title)) return;
 

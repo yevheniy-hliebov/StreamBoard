@@ -62,7 +62,7 @@ namespace StreamTabula.Features.Actions.Library.Obs
             }
         }
 
-        public override async Task ExecuteAsync(object? data = null)
+        public override async Task ExecuteAsync(ActionExecutionContext context)
         {
             if (string.IsNullOrWhiteSpace(SourceName)) return;
 

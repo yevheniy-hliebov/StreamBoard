@@ -36,7 +36,7 @@ namespace StreamTabula.Features.Actions.Models
         [JsonIgnore]
         public string FullLabel => $"{CategoryName} | {Label}";
 
-        public abstract Task ExecuteAsync(object? data = null);
+        public abstract Task ExecuteAsync(ActionExecutionContext context);
 
         public abstract BaseAction Copy();
         public BaseAction CopyWithNewId()

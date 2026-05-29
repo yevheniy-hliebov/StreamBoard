@@ -78,7 +78,7 @@ namespace StreamTabula.Features.Actions.Library.Input
         [StructLayout(LayoutKind.Sequential)]
         private struct HARDWAREINPUT { public uint uMsg; public ushort wParamL, wParamH; }
 
-        public override Task ExecuteAsync(object? data = null)
+        public override Task ExecuteAsync(ActionExecutionContext context)
         {
             if (string.IsNullOrEmpty(TextToType)) return Task.CompletedTask;
 

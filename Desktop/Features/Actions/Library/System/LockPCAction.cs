@@ -25,7 +25,7 @@ namespace StreamTabula.Features.Actions.Library.System
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool LockWorkStation();
 
-        public override Task ExecuteAsync(object? data = null)
+        public override Task ExecuteAsync(ActionExecutionContext context)
         {
             try
             {

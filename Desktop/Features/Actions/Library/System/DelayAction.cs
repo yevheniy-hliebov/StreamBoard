@@ -54,7 +54,7 @@ namespace StreamTabula.Features.Actions.Library.System
         [JsonIgnore]
         public override string Label => $"{Metadata.Name} for {DelayMs} ms";
 
-        public override async Task ExecuteAsync(object? data = null)
+        public override async Task ExecuteAsync(ActionExecutionContext context)
         {
             if (DelayMs <= 0) return;
 

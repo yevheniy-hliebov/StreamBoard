@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Decks.Models;
 using StreamTabula.Features.Decks.Services;
 using StreamTabula.Features.Servers.Services;
@@ -142,17 +143,19 @@ namespace StreamTabula.Features.Servers.Controllers
                 return;
             }
 
+
             if (buttonConfig.Actions != null)
             {
+                var context = new ActionExecutionContext();
+
                 foreach (var action in buttonConfig.Actions)
                 {
                     try
                     {
-                        await action.ExecuteAsync();
+                        await action.ExecuteAsync(context);
                     }
                     catch
-                    {
-                    }
+                    { }
                 }
             }
 

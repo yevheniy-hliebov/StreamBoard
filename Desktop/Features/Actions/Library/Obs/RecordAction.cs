@@ -39,7 +39,7 @@ namespace StreamTabula.Features.Actions.Library.Obs
             }
         }
 
-        public override async Task ExecuteAsync(object? data = null)
+        public override async Task ExecuteAsync(ActionExecutionContext context)
         {
             var obsService = App.ServiceProvider.GetRequiredService<ObsService>();
             if (!obsService.IsConnected) return;

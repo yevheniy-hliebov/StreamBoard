@@ -65,7 +65,7 @@ namespace StreamTabula.Features.Actions.Library.DeckNavigation
             }
         }
 
-        public override Task ExecuteAsync(object? data = null)
+        public override Task ExecuteAsync(ActionExecutionContext context)
         {
             if (!string.IsNullOrWhiteSpace(TargetPageId))
             {

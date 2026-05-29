@@ -25,7 +25,7 @@ namespace StreamTabula.Features.Actions.Library.System
         [DllImport("Powrprof.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         public static extern bool SetSuspendState(bool hiberate, bool forceCritical, bool disableWakeEvent);
 
-        public override Task ExecuteAsync(object? data = null)
+        public override Task ExecuteAsync(ActionExecutionContext context)
         {
             try
             {

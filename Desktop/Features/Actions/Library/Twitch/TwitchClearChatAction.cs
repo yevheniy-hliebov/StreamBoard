@@ -20,7 +20,7 @@ namespace StreamTabula.Features.Actions.Library.Twitch
         [JsonIgnore]
         public override ActionMetadata Metadata => StaticMetadata;
 
-        public override async Task ExecuteAsync(object? data = null)
+        public override async Task ExecuteAsync(ActionExecutionContext context)
         {
             try
             {

@@ -36,7 +36,7 @@ namespace StreamTabula.Features.Actions.Library.System
         [JsonIgnore]
         public override string Label => string.IsNullOrEmpty(FolderPath) ? Metadata.Name : $"{Metadata.Name} ({FolderPath})";
 
-        public override Task ExecuteAsync(object? data = null)
+        public override Task ExecuteAsync(ActionExecutionContext context)
         {
             if (string.IsNullOrWhiteSpace(FolderPath)) return Task.CompletedTask;
 

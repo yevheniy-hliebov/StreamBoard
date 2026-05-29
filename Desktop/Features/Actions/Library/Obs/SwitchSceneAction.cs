@@ -41,7 +41,7 @@ namespace StreamTabula.Features.Actions.Library.Obs
             ? Metadata.Name
             : $"{Metadata.Name} ({SceneName})";
 
-        public override async Task ExecuteAsync(object? data = null)
+        public override async Task ExecuteAsync(ActionExecutionContext context)
         {
             if (string.IsNullOrWhiteSpace(SceneName)) return;
 

@@ -87,7 +87,7 @@ namespace StreamTabula.Features.Actions.Library.Input
             }
         }
 
-        public override Task ExecuteAsync(object? data = null)
+        public override Task ExecuteAsync(ActionExecutionContext context)
         {
             if (string.IsNullOrWhiteSpace(KeyToPress) && !Ctrl && !Shift && !Alt && !Win)
                 return Task.CompletedTask;

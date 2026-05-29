@@ -52,7 +52,7 @@ namespace StreamTabula.Features.Actions.Library.System
         public override string Label => string.IsNullOrEmpty(AppPath)
             ? Metadata.Name : $"{Metadata.Name} ({Path.GetFileNameWithoutExtension(AppPath)})";
 
-        public override Task ExecuteAsync(object? data = null)
+        public override Task ExecuteAsync(ActionExecutionContext context)
         {
             if (string.IsNullOrWhiteSpace(AppPath)) return Task.CompletedTask;
 

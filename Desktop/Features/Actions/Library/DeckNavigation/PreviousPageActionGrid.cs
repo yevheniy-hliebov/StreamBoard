@@ -21,7 +21,7 @@ namespace StreamTabula.Features.Actions.Library.DeckNavigation
         [JsonIgnore]
         public override string Label => Metadata.Name;
 
-        public override Task ExecuteAsync(object? data = null)
+        public override Task ExecuteAsync(ActionExecutionContext context)
         {
             GridDeckNavigationBus.RequestPreviousPage();
             return Task.CompletedTask;

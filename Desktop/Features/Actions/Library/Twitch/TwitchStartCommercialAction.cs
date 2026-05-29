@@ -38,7 +38,7 @@ namespace StreamTabula.Features.Actions.Library.Twitch
         [JsonIgnore]
         public override string Label => $"{Metadata.Name} ({CommercialLength}s)";
 
-        public override async Task ExecuteAsync(object? data = null)
+        public override async Task ExecuteAsync(ActionExecutionContext context)
         {
             try
             {
