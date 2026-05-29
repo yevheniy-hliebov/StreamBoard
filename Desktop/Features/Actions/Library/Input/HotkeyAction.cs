@@ -101,9 +101,13 @@ namespace StreamTabula.Features.Actions.Library.Input
                 if (Alt) inputs.Add(Win32InputHelper.CreateInput(Win32InputHelper.VK_MENU, false));
                 if (Win) inputs.Add(Win32InputHelper.CreateInput(Win32InputHelper.VK_LWIN, false));
 
-                if (!string.IsNullOrWhiteSpace(KeyToPress))
+                string resolvedKeyToPress = ResolveVariable(KeyToPress, context);
+
+                if (string.IsNullOrWhiteSpace(resolvedKeyToPress)) return Task.CompletedTask;
+
+                if (!string.IsNullOrWhiteSpace(resolvedKeyToPress))
                 {
-                    ushort vk = GetVirtualKeyCode(KeyToPress);
+                    ushort vk = GetVirtualKeyCode(resolvedKeyToPress);
                     if (vk != 0)
                     {
                         inputs.Add(Win32InputHelper.CreateInput(vk, false)); // Key Down

@@ -105,9 +105,13 @@ namespace StreamTabula.Features.Actions.Library.Obs
 
                     string fileName = $"OBS_{targetScene}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png";
 
-                    string directory = string.IsNullOrWhiteSpace(SavePath)
+                    string resolvedSavePath = ResolveVariable(SavePath, context);
+
+                    if (string.IsNullOrWhiteSpace(resolvedSavePath)) return;
+
+                    string directory = string.IsNullOrWhiteSpace(resolvedSavePath)
                         ? Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)
-                        : SavePath;
+                        : resolvedSavePath;
 
                     Directory.CreateDirectory(directory);
 

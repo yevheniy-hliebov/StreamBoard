@@ -86,7 +86,9 @@ namespace StreamTabula.Features.Actions.Library.Twitch
                     string? broadcasterLogin = gateway.Broadcaster.User?.Login;
                     string senderId = moderator.User.Id;
 
-                    if (Username == broadcasterLogin)
+                    string resolvedUsername = ResolveVariable(Username, context);
+
+                    if (resolvedUsername == broadcasterLogin)
                     {
                         broadcasterId = gateway.Broadcaster.User?.Id;
                     }
@@ -94,13 +96,14 @@ namespace StreamTabula.Features.Actions.Library.Twitch
                     {
                         if (moderator.Api != null)
                         {
-                            broadcasterId = await moderator.Api.Users.GetUserIdByLogin(Username);
+                            broadcasterId = await moderator.Api.Users.GetUserIdByLogin(resolvedUsername);
                         }
                     }
 
                     if (broadcasterId != null && moderator.Api != null)
                     {
-                        await moderator.Api.Chat.SendMessage(broadcasterId, senderId, Message);
+                        string resolvedMessage = ResolveVariable(Message, context);
+                        await moderator.Api.Chat.SendMessage(broadcasterId, senderId, resolvedMessage);
                     }
                 }
             }

@@ -1,8 +1,10 @@
+using Microsoft.Extensions.DependencyInjection;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Variables.Services;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
-using StreamTabula.Core.Models;
-using StreamTabula.Features.Actions.Models;
-using StreamTabula.Features.Actions.Attributes;
 
 namespace StreamTabula.Features.Actions.Library.System
 {
@@ -42,9 +44,13 @@ namespace StreamTabula.Features.Actions.Library.System
 
             try
             {
+                string resolvedPath = ResolveVariable(FolderPath, context);
+
+                if (string.IsNullOrWhiteSpace(resolvedPath)) return Task.CompletedTask;
+
                 var psi = new ProcessStartInfo
                 {
-                    FileName = FolderPath,
+                    FileName = resolvedPath,
                     UseShellExecute = true
                 };
 

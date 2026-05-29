@@ -84,11 +84,15 @@ namespace StreamTabula.Features.Actions.Library.Input
 
             try
             {
+                string resolvedTextToType = ResolveVariable(TextToType, context);
+
+                if (string.IsNullOrWhiteSpace(resolvedTextToType)) return Task.CompletedTask;
+
                 INPUT[] inputs = new INPUT[TextToType.Length * 2];
 
-                for (int i = 0; i < TextToType.Length; i++)
+                for (int i = 0; i < resolvedTextToType.Length; i++)
                 {
-                    char c = TextToType[i];
+                    char c = resolvedTextToType[i];
 
                     // Key Down
                     inputs[i * 2] = new INPUT

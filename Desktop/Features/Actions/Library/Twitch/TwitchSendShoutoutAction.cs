@@ -51,9 +51,12 @@ namespace StreamTabula.Features.Actions.Library.Twitch
         public override async Task ExecuteAsync(ActionExecutionContext context)
         {
             if (string.IsNullOrWhiteSpace(Username)) return;
+            string resolvedUsername = ResolveVariable(Username, context);
+            if (string.IsNullOrWhiteSpace(resolvedUsername)) return;
 
             try
             {
+
                 var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
                 var broadcaster = gateway.Broadcaster;
 
@@ -63,7 +66,7 @@ namespace StreamTabula.Features.Actions.Library.Twitch
 
                     if (broadcasterId != null && broadcaster.Api != null)
                     {
-                        var toBroadcasterId = await broadcaster.Api.Users.GetUserIdByLogin(Username);
+                        var toBroadcasterId = await broadcaster.Api.Users.GetUserIdByLogin(resolvedUsername);
 
                         if (toBroadcasterId != null)
                         {

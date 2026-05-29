@@ -42,9 +42,13 @@ namespace StreamTabula.Features.Actions.Library.System
 
             try
             {
+                string resolvedUrl = ResolveVariable(Url, context);
+
+                if (string.IsNullOrWhiteSpace(resolvedUrl)) return Task.CompletedTask;
+
                 var psi = new ProcessStartInfo
                 {
-                    FileName = Url,
+                    FileName = resolvedUrl,
                     UseShellExecute = true
                 };
 

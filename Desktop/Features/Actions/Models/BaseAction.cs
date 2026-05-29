@@ -1,5 +1,7 @@
-﻿using StreamTabula.Core;
+﻿using Microsoft.Extensions.DependencyInjection;
+using StreamTabula.Core;
 using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Variables.Services;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -37,13 +39,20 @@ namespace StreamTabula.Features.Actions.Models
         public string FullLabel => $"{CategoryName} | {Label}";
 
         public abstract Task ExecuteAsync(ActionExecutionContext context);
-
+               
         public abstract BaseAction Copy();
         public BaseAction CopyWithNewId()
         {
             var copied = Copy();
             copied.RegenerateId();
             return copied;
+        }
+
+        public static string ResolveVariable(string value, ActionExecutionContext context)
+        {
+            var variableService = App.ServiceProvider.GetRequiredService<IVariableService>();
+
+            return variableService.Resolve(value, context);
         }
     }
 }

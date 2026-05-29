@@ -58,10 +58,15 @@ namespace StreamTabula.Features.Actions.Library.System
 
             try
             {
+                string resolvedPath = ResolveVariable(AppPath, context);
+                string resolvedArguments = ResolveVariable(Arguments, context);
+
+                if (string.IsNullOrWhiteSpace(resolvedPath)) return Task.CompletedTask;
+
                 var psi = new ProcessStartInfo
                 {
-                    FileName = AppPath,
-                    Arguments = Arguments,
+                    FileName = resolvedPath,
+                    Arguments = resolvedArguments,
                     UseShellExecute = true
                 };
 

@@ -42,9 +42,13 @@ namespace StreamTabula.Features.Actions.Library.System
 
             try
             {
+                string resolvedFilePath = ResolveVariable(FilePath, context);
+
+                if (string.IsNullOrWhiteSpace(resolvedFilePath)) return Task.CompletedTask;
+
                 var psi = new ProcessStartInfo
                 {
-                    FileName = FilePath,
+                    FileName = resolvedFilePath,
                     UseShellExecute = true
                 };
 

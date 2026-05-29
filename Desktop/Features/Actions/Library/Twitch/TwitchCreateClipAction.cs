@@ -61,6 +61,10 @@ namespace StreamTabula.Features.Actions.Library.Twitch
         {
             try
             {
+                string resolvedClipTitle = ResolveVariable(ClipTitle, context);
+
+                if (string.IsNullOrWhiteSpace(resolvedClipTitle)) return;
+
                 var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
                 var broadcaster = gateway.Broadcaster;
 
@@ -69,7 +73,7 @@ namespace StreamTabula.Features.Actions.Library.Twitch
                     return;
                 }
 
-                string? finalTitle = string.IsNullOrWhiteSpace(ClipTitle) ? null : ClipTitle;
+                string? finalTitle = string.IsNullOrWhiteSpace(resolvedClipTitle) ? null : resolvedClipTitle;
                 float? finalDuration = DurationSeconds > 0 ? DurationSeconds : null;
 
                 await broadcaster.Api.Production.CreateClip(

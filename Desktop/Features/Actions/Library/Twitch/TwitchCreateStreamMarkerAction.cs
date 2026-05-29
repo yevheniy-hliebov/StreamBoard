@@ -58,7 +58,9 @@ namespace StreamTabula.Features.Actions.Library.Twitch
                     return;
                 }
 
-                string? finalDescription = string.IsNullOrWhiteSpace(Description) ? null : Description;
+                string resolvedDescription = ResolveVariable(Description, context);
+
+                string? finalDescription = string.IsNullOrWhiteSpace(resolvedDescription) ? null : resolvedDescription;
 
                 await broadcaster.Api.Production.CreateStreamMarker(
                     broadcaster.User.Id,

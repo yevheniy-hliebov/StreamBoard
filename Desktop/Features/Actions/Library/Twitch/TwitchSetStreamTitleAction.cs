@@ -1,10 +1,10 @@
-using System.Diagnostics;
-using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using StreamTabula.Core.Models;
-using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Integrations.Twitch.Services;
+using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace StreamTabula.Features.Actions.Library.Twitch
 {
@@ -51,6 +51,8 @@ namespace StreamTabula.Features.Actions.Library.Twitch
         public override async Task ExecuteAsync(ActionExecutionContext context)
         {
             if (string.IsNullOrWhiteSpace(Title)) return;
+            string resolvedTitle = ResolveVariable(Title, context);
+            if (string.IsNullOrWhiteSpace(resolvedTitle)) return;
 
             try
             {
@@ -63,7 +65,7 @@ namespace StreamTabula.Features.Actions.Library.Twitch
 
                     if (broadcasterId != null && broadcaster.Api != null)
                     {
-                        await broadcaster.Api.Channel.UpdateTitle(broadcasterId, Title);
+                        await broadcaster.Api.Channel.UpdateTitle(broadcasterId, resolvedTitle);
                     }
                 }
             }
