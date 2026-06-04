@@ -54,6 +54,10 @@ namespace StreamTabula.Features.Actions.Library.System
 
         public override Task ExecuteAsync(ActionExecutionContext context)
         {
+            context.RuntimeVariables["openAppSuccess"] = "false";
+            context.RuntimeVariables["openAppError"] = "";
+            context.RuntimeVariables["openAppPID"] = "";
+
             if (string.IsNullOrWhiteSpace(AppPath)) return Task.CompletedTask;
 
             try
@@ -70,11 +74,23 @@ namespace StreamTabula.Features.Actions.Library.System
                     UseShellExecute = true
                 };
 
-                Process.Start(psi);
+                var process = Process.Start(psi);
+
+                context.RuntimeVariables["openAppSuccess"] = "true";
+
+                if (process != null)
+                {
+                    try
+                    {
+                        context.RuntimeVariables["openAppPID"] = process.Id.ToString();
+                    }
+                    catch
+                    { }
+                }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Could not open application: {ex.Message}");
+                context.RuntimeVariables["openAppError"] = ex.Message;
             }
 
             return Task.CompletedTask;

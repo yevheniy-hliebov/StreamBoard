@@ -48,6 +48,12 @@ namespace StreamTabula.Features.Actions.Library.Twitch
 
         public override async Task ExecuteAsync(ActionExecutionContext context)
         {
+            context.RuntimeVariables["twitchMarkerSuccess"] = "false";
+            context.RuntimeVariables["twitchMarkerError"] = "";
+            context.RuntimeVariables["twitchMarkerId"] = "";
+            context.RuntimeVariables["twitchMarkerCreatedAt"] = "";
+            context.RuntimeVariables["twitchMarkerPositionSeconds"] = "";
+
             try
             {
                 var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
@@ -55,21 +61,33 @@ namespace StreamTabula.Features.Actions.Library.Twitch
 
                 if (!broadcaster.IsAuth || broadcaster.User?.Id == null || broadcaster.Api == null)
                 {
+                    context.RuntimeVariables["twitchMarkerError"] = "Broadcaster account is not authenticated or API is unavailable.";
                     return;
                 }
 
                 string resolvedDescription = ResolveVariable(Description, context);
-
                 string? finalDescription = string.IsNullOrWhiteSpace(resolvedDescription) ? null : resolvedDescription;
 
-                await broadcaster.Api.Production.CreateStreamMarker(
+                var markerResponse = await broadcaster.Api.Production.CreateStreamMarker(
                     broadcaster.User.Id,
                     finalDescription
                 );
+
+                if (markerResponse != null)
+                {
+                    context.RuntimeVariables["twitchMarkerSuccess"] = "true";
+                    context.RuntimeVariables["twitchMarkerId"] = markerResponse.Id;
+                    context.RuntimeVariables["twitchMarkerCreatedAt"] = markerResponse.CreatedAt;
+                    context.RuntimeVariables["twitchMarkerPositionSeconds"] = markerResponse.PositionSeconds.ToString();
+                }
+                else
+                {
+                    context.RuntimeVariables["twitchMarkerError"] = "Received empty response from Twitch API.";
+                }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[Twitch Stream Marker] Error: {ex.Message}");
+                context.RuntimeVariables["twitchMarkerError"] = ex.Message;
             }
         }
 

@@ -72,6 +72,10 @@ namespace StreamTabula.Features.Actions.Library.Twitch
 
         public override async Task ExecuteAsync(ActionExecutionContext context)
         {
+            context.RuntimeVariables["twitchMessageSuccess"] = "false";
+            context.RuntimeVariables["twitchMessageError"] = "";
+            context.RuntimeVariables["twitchMessageId"] = "";
+
             if (string.IsNullOrWhiteSpace(Message) || string.IsNullOrWhiteSpace(Username))
                 return;
 
@@ -80,37 +84,59 @@ namespace StreamTabula.Features.Actions.Library.Twitch
                 var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
                 var moderator = UseBot ? gateway.Bot : gateway.Broadcaster;
 
-                if (moderator.IsAuth && moderator.User != null)
+                if (!moderator.IsAuth || moderator.User == null || moderator.Api == null)
                 {
-                    string? broadcasterId = null;
-                    string? broadcasterLogin = gateway.Broadcaster.User?.Login;
-                    string senderId = moderator.User.Id;
+                    context.RuntimeVariables["twitchMessageError"] = "Selected account is not authenticated or API is unavailable.";
+                    return;
+                }
 
-                    string resolvedUsername = ResolveVariable(Username, context);
+                string? broadcasterId = null;
+                string? broadcasterLogin = gateway.Broadcaster.User?.Login;
+                string senderId = moderator.User.Id;
 
-                    if (resolvedUsername == broadcasterLogin)
+                string resolvedUsername = ResolveVariable(Username, context);
+
+                if (resolvedUsername == broadcasterLogin)
+                {
+                    broadcasterId = gateway.Broadcaster.User?.Id;
+                }
+                else
+                {
+                    broadcasterId = await moderator.Api.Users.GetUserIdByLogin(resolvedUsername);
+                }
+
+                if (broadcasterId != null)
+                {
+                    string resolvedMessage = ResolveVariable(Message, context);
+
+                    var messageResponse = await moderator.Api.Chat.SendMessage(broadcasterId, senderId, resolvedMessage);
+
+                    if (messageResponse != null)
                     {
-                        broadcasterId = gateway.Broadcaster.User?.Id;
+                        if (messageResponse.IsSent)
+                        {
+                            context.RuntimeVariables["twitchMessageSuccess"] = "true";
+                            context.RuntimeVariables["twitchMessageId"] = messageResponse.MessageId;
+                        }
+                        else
+                        {
+                            string dropReason = messageResponse.DropReason?.ToString() ?? "Unknown reason";
+                            context.RuntimeVariables["twitchMessageError"] = $"Message dropped by Twitch: {dropReason}";
+                        }
                     }
                     else
                     {
-                        if (moderator.Api != null)
-                        {
-                            broadcasterId = await moderator.Api.Users.GetUserIdByLogin(resolvedUsername);
-                        }
+                        context.RuntimeVariables["twitchMessageError"] = "Received empty response from Twitch API.";
                     }
-
-                    if (broadcasterId != null && moderator.Api != null)
-                    {
-                        string resolvedMessage = ResolveVariable(Message, context);
-                        await moderator.Api.Chat.SendMessage(broadcasterId, senderId, resolvedMessage);
-                    }
+                }
+                else
+                {
+                    context.RuntimeVariables["twitchMessageError"] = $"Could not resolve broadcaster ID for username: '{resolvedUsername}'";
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Twitch send message error: {ex.Message}");
-                throw;
+                context.RuntimeVariables["twitchMessageError"] = ex.Message;
             }
         }
 

@@ -59,32 +59,47 @@ namespace StreamTabula.Features.Actions.Library.Twitch
 
         public override async Task ExecuteAsync(ActionExecutionContext context)
         {
+            context.RuntimeVariables["twitchClipSuccess"] = "false";
+            context.RuntimeVariables["twitchClipError"] = "";
+            context.RuntimeVariables["twitchClipId"] = "";
+            context.RuntimeVariables["twitchClipEditUrl"] = "";
+
             try
             {
                 string resolvedClipTitle = ResolveVariable(ClipTitle, context);
-
-                if (string.IsNullOrWhiteSpace(resolvedClipTitle)) return;
 
                 var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
                 var broadcaster = gateway.Broadcaster;
 
                 if (!broadcaster.IsAuth || broadcaster.User?.Id == null || broadcaster.Api == null)
                 {
+                    context.RuntimeVariables["twitchClipError"] = "Broadcaster account is not authenticated or API is unavailable.";
                     return;
                 }
 
                 string? finalTitle = string.IsNullOrWhiteSpace(resolvedClipTitle) ? null : resolvedClipTitle;
                 float? finalDuration = DurationSeconds > 0 ? DurationSeconds : null;
 
-                await broadcaster.Api.Production.CreateClip(
+                var clipResponse = await broadcaster.Api.Production.CreateClip(
                     broadcaster.User.Id,
                     finalTitle,
                     finalDuration
                 );
+
+                if (clipResponse != null)
+                {
+                    context.RuntimeVariables["twitchClipSuccess"] = "true";
+                    context.RuntimeVariables["twitchClipId"] = clipResponse.Id;
+                    context.RuntimeVariables["twitchClipEditUrl"] = clipResponse.EditUrl;
+                }
+                else
+                {
+                    context.RuntimeVariables["twitchClipError"] = "Received empty response from Twitch API.";
+                }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[Twitch Create Clip] Error: {ex.Message}");
+                context.RuntimeVariables["twitchClipError"] = ex.Message;
             }
         }
 

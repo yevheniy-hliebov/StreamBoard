@@ -83,16 +83,28 @@ namespace StreamTabula.Features.Actions.Library.Obs
 
         public override async Task ExecuteAsync(ActionExecutionContext context)
         {
+            context.RuntimeVariables["obsScreenshotCreatedAt"] = "";
+            context.RuntimeVariables["obsScreenshotSuccess"] = "false";
+            context.RuntimeVariables["obsScreenshotError"] = "";
+            context.RuntimeVariables["obsScreenshotFilePath"] = "";
+            context.RuntimeVariables["obsScreenshotTargetScene"] = "";
+
             var obsService = App.ServiceProvider.GetRequiredService<ObsService>();
-            if (!obsService.IsConnected) return;
+            if (!obsService.IsConnected)
+            {
+                context.RuntimeVariables["obsScreenshotError"] = "OBS is not connected.";
+                Debug.WriteLine("[OBS Screenshot] Error: OBS is not connected.");
+                return;
+            }
 
             try
             {
                 string targetScene = CaptureActiveScene ? obsService.Obs.GetCurrentProgramScene() : SceneName;
+                context.RuntimeVariables["obsScreenshotTargetScene"] = targetScene;
 
                 if (string.IsNullOrWhiteSpace(targetScene))
                 {
-                    Debug.WriteLine("[OBS Screenshot] Error: Scene not selected or unavailable.");
+                    context.RuntimeVariables["obsScreenshotError"] = "Scene not selected or unavailable.";
                     return;
                 }
 
@@ -103,11 +115,11 @@ namespace StreamTabula.Features.Actions.Library.Obs
                     string cleanBase64 = base64Data.Substring(base64Data.IndexOf(',') + 1);
                     byte[] imageBytes = Convert.FromBase64String(cleanBase64);
 
-                    string fileName = $"OBS_{targetScene}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png";
+                    DateTime now = DateTime.Now;
+                    string createdAt = now.ToString("s");
+                    string fileName = $"OBS_{targetScene}_{now:yyyy-MM-dd_HH-mm-ss}.png";
 
                     string resolvedSavePath = ResolveVariable(SavePath, context);
-
-                    if (string.IsNullOrWhiteSpace(resolvedSavePath)) return;
 
                     string directory = string.IsNullOrWhiteSpace(resolvedSavePath)
                         ? Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)
@@ -118,17 +130,23 @@ namespace StreamTabula.Features.Actions.Library.Obs
                     string fullPath = Path.Combine(directory, fileName);
                     await File.WriteAllBytesAsync(fullPath, imageBytes);
 
-                    Debug.WriteLine($"[OBS Screenshot] Saved: {fullPath}");
+                    context.RuntimeVariables["obsScreenshotCreatedAt"] = createdAt;
+                    context.RuntimeVariables["obsScreenshotSuccess"] = "true";
+                    context.RuntimeVariables["obsScreenshotFilePath"] = fullPath;
 
                     if (PlaySoundOnComplete)
                     {
                         AudioPlayerService.Play("Assets/Sounds/shutter.mp3", SoundVolume);
                     }
                 }
+                else
+                {
+                    context.RuntimeVariables["obsScreenshotError"] = "Received empty or invalid image data from OBS.";
+                }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[OBS Screenshot] {ex.Message}");
+                context.RuntimeVariables["obsScreenshotError"] = ex.Message;
             }
         }
 
