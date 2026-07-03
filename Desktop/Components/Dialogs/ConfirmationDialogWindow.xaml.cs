@@ -1,30 +1,28 @@
 ﻿using System.Windows;
-using Wpf.Ui.Controls;
 
-namespace StreamTabula.Components.Dialogs
+namespace StreamTabula.Components.Dialogs;
+
+public partial class ConfirmationDialogWindow : BaseDialog
 {
-    public partial class ConfirmationDialogWindow : FluentWindow
+    public string Message { get; }
+
+    public ConfirmationDialogWindow(string title, string message)
     {
-        public string Message { get; }
+        InitializeComponent();
 
-        public ConfirmationDialogWindow(string title, string message)
-        {
-            InitializeComponent();
+        Title = title;
+        Message = message;
 
-            Title = title;
-            Message = message;
-
-            DataContext = this;
-        }
-
-        private void YesButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-        }
-
-        private void NoButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
-        }
+        DataContext = this;
     }
+
+    //private void YesButton_Click(object sender, RoutedEventArgs e)
+    //{
+    //    Submit(sender, e);
+    //}
+
+    //private void NoButton_Click(object sender, RoutedEventArgs e)
+    //{
+    //    Cancel(sender, e);
+    //}
 }
