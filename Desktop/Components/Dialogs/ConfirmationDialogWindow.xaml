@@ -1,68 +1,46 @@
-﻿<ui:FluentWindow
-    x:Class="StreamTabula.Components.Dialogs.ConfirmationDialogWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
-    xmlns:titlebar="clr-namespace:StreamTabula.Components.TitleBar"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    Width="350"
-    Height="230"
-    MinWidth="350"
-    MinHeight="230"
-    MaxWidth="400"
-    MaxHeight="300"
-    Background="{DynamicResource ApplicationBackgroundBrush}"
-    ExtendsContentIntoTitleBar="True"
-    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-    ShowInTaskbar="False"
-    SizeToContent="Height"
-    WindowBackdropType="Mica"
-    WindowStartupLocation="CenterOwner">
+﻿<dialogs:BaseDialog x:Class="StreamTabula.Components.Dialogs.ConfirmationDialogWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dialogs="clr-namespace:StreamTabula.Components.Dialogs"
+                    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    Height="230"
+                    MinHeight="230"
+                    MaxHeight="300">
 
-    <Grid VerticalAlignment="Top">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <dialogs:BaseDialogContent Title="{Binding Title}">
+        <dialogs:BaseDialogContent.DialogContent>
+            <StackPanel>
+                <controls:FluentIcon Margin="0,0,0,16"
+                                     HorizontalAlignment="Center"
+                                     FontSize="42"
+                                     Foreground="#FFA500"
+                                     IconType="Warning" />
 
-        <titlebar:MainTitleBar Grid.Row="0"
-                               Title="{Binding Title}"
-                               ShowMinimize="False"
-                               ShowMaximize="False"
-                               ShowAppIcon="False"/>
-
-        <StackPanel Grid.Row="1" Margin="24">
-            
-            <controls:FluentIcon
-                Margin="0,0,0,16"
-                HorizontalAlignment="Center"
-                FontSize="42"
-                Foreground="#FFA500"
-                IconType="Warning" />
-
-            <TextBlock
-                Margin="0,0,0,24"
-                HorizontalAlignment="Center"
-                TextAlignment="Center"
-                TextWrapping="Wrap"
-                FontSize="15"
-                Text="{Binding Message}" />
-
-            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                <ui:Button
-                    Margin="0,0,8,0"
-                    Width="100"
-                    IsCancel="True"
-                    Click="NoButton_Click"
-                    Content="No" />
-                <ui:Button
-                    Width="100"
-                    Appearance="Primary"
-                    IsDefault="True"
-                    Click="YesButton_Click"
-                    Content="Yes" />
+                <TextBlock Margin="0,0,0,24"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap"
+                           FontSize="15"
+                           Text="{Binding Message}" />
             </StackPanel>
-            
-        </StackPanel>
-    </Grid>
-</ui:FluentWindow>
+        </dialogs:BaseDialogContent.DialogContent>
+
+        <dialogs:BaseDialogContent.Buttons>
+            <StackPanel HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                <ui:Button Margin="0,0,8,0"
+                           Width="100"
+                           Appearance="Primary"
+                           IsDefault="True"
+                           Click="Submit"
+                           Content="OK" />
+                <ui:Button Width="100"
+                           IsCancel="True"
+                           Click="Cancel"
+                           Content="Cancel" />
+            </StackPanel>
+        </dialogs:BaseDialogContent.Buttons>
+    </dialogs:BaseDialogContent>
+
+</dialogs:BaseDialog>

@@ -1,10 +1,9 @@
-﻿using System.Windows;
+﻿using StreamTabula.Components.Dialogs;
 using System.Windows.Media.Imaging;
-using Wpf.Ui.Controls;
 
 namespace StreamTabula.Features.Servers.Components
 {
-    public partial class QrCodeDialogWindow : FluentWindow
+    public partial class QrCodeDialogWindow : BaseDialog
     {
         public string Message { get; }
         public BitmapImage QrImage { get; }
@@ -18,11 +17,6 @@ namespace StreamTabula.Features.Servers.Components
             QrImage = qrImage;
 
             DataContext = this;
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
         }
     }
 }

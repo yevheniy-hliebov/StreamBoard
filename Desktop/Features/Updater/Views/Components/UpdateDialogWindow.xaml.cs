@@ -1,18 +1,12 @@
-using System.Windows;
-using Wpf.Ui.Controls;
+using StreamTabula.Components.Dialogs;
 
 namespace StreamTabula.Features.Updater.Views.Components
 {
-    public partial class UpdateDialogWindow : FluentWindow
+    public partial class UpdateDialogWindow : BaseDialog
     {
         public UpdateDialogWindow()
         {
             InitializeComponent();
-        }
-
-        private void Close_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

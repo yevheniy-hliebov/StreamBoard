@@ -1,205 +1,182 @@
-<ui:FluentWindow
-    x:Class="StreamTabula.Features.Updater.Views.Components.UpdateDialogWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
-    xmlns:local="clr-namespace:StreamTabula.Features.Updater.Views.Components"
-    xmlns:titlebar="clr-namespace:StreamTabula.Components.TitleBar"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    Width="350"
-    Height="300"
-    MinWidth="350"
-    MinHeight="300"
-    MaxWidth="350"
-    MaxHeight="300"
-    Background="{DynamicResource ApplicationBackgroundBrush}"
-    ExtendsContentIntoTitleBar="True"
-    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-    ShowInTaskbar="False"
-    SizeToContent="Height"
-    WindowBackdropType="Mica"
-    WindowStartupLocation="CenterOwner">
+<dialogs:BaseDialog x:Class="StreamTabula.Features.Updater.Views.Components.UpdateDialogWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dialogs="clr-namespace:StreamTabula.Components.Dialogs"
+                    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    Height="230"
+                    MinHeight="230"
+                    MaxHeight="300">
 
-    <Grid VerticalAlignment="Top">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <dialogs:BaseDialogContent Title="Check for Updates"
+                               ButtonsPadding="0">
 
-        <titlebar:MainTitleBar Grid.Row="0"
-                       Title="Check for Updates"
-                       ShowMinimize="False"
-                       ShowMaximize="False"
-                       ShowAppIcon="False"/>
+        <dialogs:BaseDialogContent.DialogContent>
+            <Grid>
 
-        <Grid Grid.Row="1" Margin="24">
+                <StackPanel Margin="0,16"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DialogState}"
+                                             Value="Loading">
+                                    <Setter Property="Visibility"
+                                            Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
 
-            <StackPanel
-                Margin="0,16"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Visibility" Value="Collapsed" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding DialogState}" Value="Loading">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
-
-                <ui:ProgressRing Margin="0,0,0,16" IsIndeterminate="True" />
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    FontSize="16"
-                    Text="Checking for updates..." />
-            </StackPanel>
-
-            <StackPanel
-                Margin="0,16"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Visibility" Value="Collapsed" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding DialogState}" Value="UpToDate">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
-
-                <controls:FluentIcon
-                    Margin="0,0,0,16"
-                    HorizontalAlignment="Center"
-                    FontSize="48"
-                    Foreground="#4CAF50"
-                    IconType="CheckMark" />
-
-                <TextBlock
-                    Margin="0,0,0,8"
-                    HorizontalAlignment="Center"
-                    FontSize="18"
-                    FontWeight="SemiBold"
-                    Text="No new updates available" />
-                <TextBlock
-                    Margin="0,0,0,24"
-                    HorizontalAlignment="Center"
-                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                    Text="You are currently running the latest version." />
-
-                <ui:Button
-                    Width="100"
-                    HorizontalAlignment="Center"
-                    Click="Close_Click"
-                    Content="OK" />
-            </StackPanel>
-
-            <StackPanel
-                Margin="0,16"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Visibility" Value="Collapsed" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding DialogState}" Value="UpdateAvailable">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
-
-                <controls:FluentIcon
-                    Margin="0,0,0,16"
-                    HorizontalAlignment="Center"
-                    FontSize="48"
-                    IconType="Cloud" />
-
-                <TextBlock
-                    Margin="0,0,0,8"
-                    HorizontalAlignment="Center"
-                    FontSize="18"
-                    FontWeight="SemiBold">
-                    <Run Text="New version available:" />
-                    <Run Foreground="{DynamicResource TextFillColorPrimaryBrush}" Text="{Binding LatestReleaseInfo.TagName}" />
-                </TextBlock>
-
-                <TextBlock
-                    Margin="0,0,0,24"
-                    HorizontalAlignment="Center"
-                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                    Text="Would you like to install the new version now?" />
-
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <ui:Button
-                        Margin="0,0,8,0"
-                        Appearance="Primary"
-                        Command="{Binding UpdateNowCommand}"
-                        Content="Update now" />
-                    <ui:Button
-                        Margin="0,0,8,0"
-                        Click="Close_Click"
-                        Command="{Binding SkipVersionCommand}"
-                        Content="Skip this version" />
-                    <ui:Button 
-                        Click="Close_Click" 
-                        IsCancel="True" 
-                        Content="Later" />
+                    <ui:ProgressRing Margin="0,0,0,16"
+                                     IsIndeterminate="True" />
+                    <TextBlock HorizontalAlignment="Center"
+                               FontSize="16"
+                               Text="Checking for updates..." />
                 </StackPanel>
-            </StackPanel>
 
-            <StackPanel
-                Margin="0,16"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Visibility" Value="Collapsed" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding DialogState}" Value="Downloading">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
+                <StackPanel Margin="0,16"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DialogState}"
+                                             Value="UpToDate">
+                                    <Setter Property="Visibility"
+                                            Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
 
-                <controls:FluentIcon
-                    Margin="0,0,0,16"
-                    HorizontalAlignment="Center"
-                    FontSize="48"
-                    IconType="Download" />
+                    <controls:FluentIcon Margin="0,0,0,16"
+                                         HorizontalAlignment="Center"
+                                         FontSize="48"
+                                         Foreground="#4CAF50"
+                                         IconType="CheckMark" />
 
-                <TextBlock
-                    Margin="0,0,0,8"
-                    HorizontalAlignment="Center"
-                    FontSize="18"
-                    FontWeight="SemiBold"
-                    Text="Updating StreamTabula..." />
+                    <TextBlock Margin="0,0,0,8"
+                               HorizontalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Text="No new updates available" />
+                    <TextBlock Margin="0,0,0,24"
+                               HorizontalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="You are currently running the latest version." />
 
-                <TextBlock
-                    Margin="0,0,0,16"
-                    HorizontalAlignment="Center"
-                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                    Text="{Binding DownloadStatusText}" />
+                    <ui:Button Width="100"
+                               HorizontalAlignment="Center"
+                               Click="Submit"
+                               Content="OK" />
+                </StackPanel>
 
-                <ProgressBar
-                    Width="280"
-                    Height="8"
-                    Margin="0,0,0,4"
-                    Maximum="100"
-                    Minimum="0"
-                    Value="{Binding DownloadProgress}" />
+                <StackPanel Margin="0,16"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DialogState}"
+                                             Value="UpdateAvailable">
+                                    <Setter Property="Visibility"
+                                            Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
 
-                <TextBlock
-                    HorizontalAlignment="Right"
-                    FontSize="12"
-                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                    Text="{Binding DownloadProgress, StringFormat={}{0:F1}%}" />
-            </StackPanel>
+                    <controls:FluentIcon Margin="0,0,0,16"
+                                         HorizontalAlignment="Center"
+                                         FontSize="48"
+                                         IconType="Cloud" />
 
-        </Grid>
-    </Grid>
-</ui:FluentWindow>
+                    <TextBlock Margin="0,0,0,8"
+                               HorizontalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="SemiBold">
+                            <Run Text="New version available:" />
+                            <Run Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                 Text="{Binding LatestReleaseInfo.TagName}" />
+                    </TextBlock>
+
+                    <TextBlock Margin="0,0,0,24"
+                               HorizontalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="Would you like to install the new version now?" />
+
+                    <StackPanel HorizontalAlignment="Center"
+                                Orientation="Horizontal">
+                        <ui:Button Margin="0,0,8,0"
+                                   Appearance="Primary"
+                                   Command="{Binding UpdateNowCommand}"
+                                   Content="Update now" />
+                        <ui:Button Margin="0,0,8,0"
+                                   Click="Submit"
+                                   Command="{Binding SkipVersionCommand}"
+                                   Content="Skip this version" />
+                        <ui:Button Click="Cancel"
+                                   IsCancel="True"
+                                   Content="Later" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Margin="0,16"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DialogState}"
+                                             Value="Downloading">
+                                    <Setter Property="Visibility"
+                                            Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <controls:FluentIcon Margin="0,0,0,16"
+                                         HorizontalAlignment="Center"
+                                         FontSize="48"
+                                         IconType="Download" />
+
+                    <TextBlock Margin="0,0,0,8"
+                               HorizontalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Text="Updating StreamTabula..." />
+
+                    <TextBlock Margin="0,0,0,16"
+                               HorizontalAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="{Binding DownloadStatusText}" />
+
+                    <ProgressBar Width="280"
+                                 Height="8"
+                                 Margin="0,0,0,4"
+                                 Maximum="100"
+                                 Minimum="0"
+                                 Value="{Binding DownloadProgress}" />
+
+                    <TextBlock HorizontalAlignment="Right"
+                               FontSize="12"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="{Binding DownloadProgress, StringFormat={}{0:F1}%}" />
+                </StackPanel>
+
+            </Grid>
+        </dialogs:BaseDialogContent.DialogContent>
+    </dialogs:BaseDialogContent>
+
+</dialogs:BaseDialog>
