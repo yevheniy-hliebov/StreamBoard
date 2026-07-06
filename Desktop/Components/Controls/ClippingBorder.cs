@@ -41,9 +41,12 @@ namespace StreamTabula.Components.Controls
                 Child.Clip = _clip;
             }
 
-            double radius = Math.Max(0.0, CornerRadius.TopLeft - (BorderThickness.Left * 0.5));
+            double width = Math.Max(0, this.RenderSize.Width - this.BorderThickness.Left - this.BorderThickness.Right - this.Padding.Left - this.Padding.Right);
+            double height = Math.Max(0, this.RenderSize.Height - this.BorderThickness.Top - this.BorderThickness.Bottom - this.Padding.Top - this.Padding.Bottom);
 
-            _clip.Rect = new Rect(new Point(0, 0), this.RenderSize);
+            double radius = Math.Max(0.0, this.CornerRadius.TopLeft - this.BorderThickness.Left);
+
+            _clip.Rect = new Rect(new Point(0, 0), new Size(width, height));
             _clip.RadiusX = radius;
             _clip.RadiusY = radius;
         }

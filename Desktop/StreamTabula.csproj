@@ -42,6 +42,222 @@
 
 	<!-- Assets/Sounds -->
 	<ItemGroup>
+		<Content Include="Assets\Images\Buttons\announcement.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\camera_off.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\camera_on.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\camera_positions.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\category_cs2.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\category_irl.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\category_jackbox.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\category_just_chatting.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\category_minecraft.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\category_pubg.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\category_repo.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\category_software_and_development.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\chat.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\chatterino.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\chat_clear.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\discord.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\donatello.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\go.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\google_chrome.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\home.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\live_dark.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\live_light.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\marker.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\messages_in_chat.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\mic_decrease.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\mic_increase.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\mic_off.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\mic_on.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\movie.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\next.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\obs_camera_screenshot.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\obs_scene_screenshot.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\obs_studio.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\pause_dark.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\pause_light.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\play_dark.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\play_light.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\prev.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\record_dark.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\record_light.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\scene-screen.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\scenes.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\scene_end.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\scene_f1.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\scene_game.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\scene_just_chatting.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\scene_starting_soon.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\screenshot.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\shield.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\speakerbot.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\steam.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\stop_dark.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\stop_light.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\streamerbot.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\switch.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\telegram.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\telegram_chat.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\twitch_categories.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\twitch_chat.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\twitch_dark.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\twitch_light.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\volume_decrease.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\volume_increase.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\volume_off.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\volume_on.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\webcam_bottom_left.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\webcam_bottom_right.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\webcam_central_left.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\webcam_central_vertical.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\webcam_top_left.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\webcam_top_right.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\Buttons\youtube.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 		<Content Include="Assets\Sounds\shutter.mp3">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -71,6 +287,81 @@
 
 	<ItemGroup>
 		<Watch Include="**\*.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Assets\Images\Buttons\announcement.png" />
+	  <None Remove="Assets\Images\Buttons\camera_off.png" />
+	  <None Remove="Assets\Images\Buttons\camera_on.png" />
+	  <None Remove="Assets\Images\Buttons\camera_positions.png" />
+	  <None Remove="Assets\Images\Buttons\category_cs2.png" />
+	  <None Remove="Assets\Images\Buttons\category_irl.png" />
+	  <None Remove="Assets\Images\Buttons\category_jackbox.png" />
+	  <None Remove="Assets\Images\Buttons\category_just_chatting.png" />
+	  <None Remove="Assets\Images\Buttons\category_minecraft.png" />
+	  <None Remove="Assets\Images\Buttons\category_pubg.png" />
+	  <None Remove="Assets\Images\Buttons\category_repo.png" />
+	  <None Remove="Assets\Images\Buttons\category_software_and_development.png" />
+	  <None Remove="Assets\Images\Buttons\chat.png" />
+	  <None Remove="Assets\Images\Buttons\chatterino.png" />
+	  <None Remove="Assets\Images\Buttons\chat_clear.png" />
+	  <None Remove="Assets\Images\Buttons\discord.png" />
+	  <None Remove="Assets\Images\Buttons\donatello.png" />
+	  <None Remove="Assets\Images\Buttons\go.png" />
+	  <None Remove="Assets\Images\Buttons\google_chrome.png" />
+	  <None Remove="Assets\Images\Buttons\home.png" />
+	  <None Remove="Assets\Images\Buttons\live_dark.png" />
+	  <None Remove="Assets\Images\Buttons\live_light.png" />
+	  <None Remove="Assets\Images\Buttons\marker.png" />
+	  <None Remove="Assets\Images\Buttons\messages_in_chat.png" />
+	  <None Remove="Assets\Images\Buttons\mic_decrease.png" />
+	  <None Remove="Assets\Images\Buttons\mic_increase.png" />
+	  <None Remove="Assets\Images\Buttons\mic_off.png" />
+	  <None Remove="Assets\Images\Buttons\mic_on.png" />
+	  <None Remove="Assets\Images\Buttons\movie.png" />
+	  <None Remove="Assets\Images\Buttons\next.png" />
+	  <None Remove="Assets\Images\Buttons\obs_camera_screenshot.png" />
+	  <None Remove="Assets\Images\Buttons\obs_scene_screenshot.png" />
+	  <None Remove="Assets\Images\Buttons\obs_studio.png" />
+	  <None Remove="Assets\Images\Buttons\pause_dark.png" />
+	  <None Remove="Assets\Images\Buttons\pause_light.png" />
+	  <None Remove="Assets\Images\Buttons\play_dark.png" />
+	  <None Remove="Assets\Images\Buttons\play_light.png" />
+	  <None Remove="Assets\Images\Buttons\prev.png" />
+	  <None Remove="Assets\Images\Buttons\record_dark.png" />
+	  <None Remove="Assets\Images\Buttons\record_light.png" />
+	  <None Remove="Assets\Images\Buttons\scene-screen.png" />
+	  <None Remove="Assets\Images\Buttons\scenes.png" />
+	  <None Remove="Assets\Images\Buttons\scene_end.png" />
+	  <None Remove="Assets\Images\Buttons\scene_f1.png" />
+	  <None Remove="Assets\Images\Buttons\scene_game.png" />
+	  <None Remove="Assets\Images\Buttons\scene_just_chatting.png" />
+	  <None Remove="Assets\Images\Buttons\scene_starting_soon.png" />
+	  <None Remove="Assets\Images\Buttons\screenshot.png" />
+	  <None Remove="Assets\Images\Buttons\shield.png" />
+	  <None Remove="Assets\Images\Buttons\speakerbot.png" />
+	  <None Remove="Assets\Images\Buttons\steam.png" />
+	  <None Remove="Assets\Images\Buttons\stop_dark.png" />
+	  <None Remove="Assets\Images\Buttons\stop_light.png" />
+	  <None Remove="Assets\Images\Buttons\streamerbot.png" />
+	  <None Remove="Assets\Images\Buttons\switch.png" />
+	  <None Remove="Assets\Images\Buttons\telegram.png" />
+	  <None Remove="Assets\Images\Buttons\telegram_chat.png" />
+	  <None Remove="Assets\Images\Buttons\twitch_categories.png" />
+	  <None Remove="Assets\Images\Buttons\twitch_chat.png" />
+	  <None Remove="Assets\Images\Buttons\twitch_dark.png" />
+	  <None Remove="Assets\Images\Buttons\twitch_light.png" />
+	  <None Remove="Assets\Images\Buttons\volume_decrease.png" />
+	  <None Remove="Assets\Images\Buttons\volume_increase.png" />
+	  <None Remove="Assets\Images\Buttons\volume_off.png" />
+	  <None Remove="Assets\Images\Buttons\volume_on.png" />
+	  <None Remove="Assets\Images\Buttons\webcam_bottom_left.png" />
+	  <None Remove="Assets\Images\Buttons\webcam_bottom_right.png" />
+	  <None Remove="Assets\Images\Buttons\webcam_central_left.png" />
+	  <None Remove="Assets\Images\Buttons\webcam_central_vertical.png" />
+	  <None Remove="Assets\Images\Buttons\webcam_top_left.png" />
+	  <None Remove="Assets\Images\Buttons\webcam_top_right.png" />
+	  <None Remove="Assets\Images\Buttons\youtube.png" />
 	</ItemGroup>
 
 </Project>

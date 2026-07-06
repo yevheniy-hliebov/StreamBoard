@@ -1,85 +1,111 @@
-﻿<UserControl
-    x:Class="StreamTabula.Features.Decks.Views.Components.Canvas.DeckButtonSlotView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:StreamTabula.Components.Controls">
+﻿<UserControl x:Class="StreamTabula.Features.Decks.Views.Components.Canvas.DeckButtonSlotView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+             xmlns:editor="clr-namespace:StreamTabula.Features.Decks.Views.Components.PropertyEditor"
+             xmlns:converters="clr-namespace:StreamTabula.Features.Decks.Converters">
 
-    <controls:ClippingBorder
-        Width="45"
-        Height="45"
-        Background="{Binding ButtonBackground, RelativeSource={RelativeSource AncestorType=UserControl}}"
-        BorderThickness="1"
-        ClipToBounds="True"
-        CornerRadius="4"
-        ToolTipService.Placement="Center"
-        ToolTipService.VerticalOffset="35">
+    <UserControl.Resources>
+        <converters:ImagePathToSourceConverter x:Key="ImagePathToSourceConverter" />
+    </UserControl.Resources>
 
-        <controls:ClippingBorder.InputBindings>
-            <MouseBinding
-                Command="{Binding Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                CommandParameter="{Binding CommandParameter, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                MouseAction="LeftClick" />
-        </controls:ClippingBorder.InputBindings>
+    <Grid Width="55"
+          Height="55"
+          Cursor="Hand"
+          ToolTipService.Placement="Center"
+          ToolTipService.VerticalOffset="35">
 
-        <controls:ClippingBorder.Style>
-            <Style TargetType="Border">
-                <Setter Property="BorderBrush" Value="#555" />
-                <Setter Property="ToolTip" Value="{Binding ButtonName, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                        <Setter Property="BorderBrush" Value="{DynamicResource SystemFillColorAttentionBrush}" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding ButtonName, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="">
-                        <Setter Property="ToolTip" Value="{Binding ButtonIndex, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding ButtonName, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Null}">
-                        <Setter Property="ToolTip" Value="{Binding ButtonIndex, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </controls:ClippingBorder.Style>
+        <Grid.InputBindings>
+            <MouseBinding Command="{Binding Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                          CommandParameter="{Binding CommandParameter, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                          MouseAction="LeftClick" />
+        </Grid.InputBindings>
 
-        <Grid>
-            <Image
-                RenderOptions.BitmapScalingMode="HighQuality"
-                Source="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}, TargetNullValue={x:Null}, FallbackValue={x:Null}}"
-                Stretch="UniformToFill">
-                <Image.Style>
-                    <Style TargetType="Image">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsImageMissing, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>
+        <Border BorderThickness="2"
+                CornerRadius="6"
+                Background="Transparent">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush"
+                            Value="#555" />
+                    <Setter Property="ToolTip"
+                            Value="{Binding ButtonName, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                     Value="True">
+                            <Setter Property="BorderBrush"
+                                    Value="{DynamicResource SystemFillColorAttentionBrush}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ButtonName, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                     Value="">
+                            <Setter Property="ToolTip"
+                                    Value="{Binding ButtonIndex, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ButtonName, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                     Value="{x:Null}">
+                            <Setter Property="ToolTip"
+                                    Value="{Binding ButtonIndex, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
 
-            <controls:FluentIcon
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                FontSize="18"
-                Foreground="#FFA500"
-                IconType="Warning"
-                ToolTip="The image at the specified path was not found or has been deleted.">
-                <controls:FluentIcon.Style>
-                    <Style TargetType="controls:FluentIcon">
-                        <Setter Property="Visibility" Value="Collapsed" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsImageMissing, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </controls:FluentIcon.Style>
-            </controls:FluentIcon>
-        </Grid>
+        <controls:ClippingBorder Margin="2"
+                                 CornerRadius="6"
+                                 BorderThickness="0"
+                                 ClipToBounds="True">
 
-    </controls:ClippingBorder>
+            <Grid Background="{Binding ButtonBackground, RelativeSource={RelativeSource AncestorType=UserControl}}">
+
+                <Image RenderOptions.BitmapScalingMode="HighQuality"
+                       Source="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource ImagePathToSourceConverter}, TargetNullValue={x:Null}, FallbackValue={x:Null}}"
+                       Stretch="UniformToFill">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                             Value="{x:Null}">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                             Value="">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsImageMissing, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                             Value="True">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+
+                <controls:FluentIcon HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     FontSize="18"
+                                     Foreground="#FFA500"
+                                     IconType="Warning"
+                                     ToolTip="The image at the specified path was not found or has been deleted.">
+                    <controls:FluentIcon.Style>
+                        <Style TargetType="controls:FluentIcon">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsImageMissing, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                             Value="True">
+                                    <Setter Property="Visibility"
+                                            Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:FluentIcon.Style>
+                </controls:FluentIcon>
+            </Grid>
+        </controls:ClippingBorder>
+
+    </Grid>
 </UserControl>

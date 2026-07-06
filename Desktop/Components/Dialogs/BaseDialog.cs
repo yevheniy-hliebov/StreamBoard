@@ -16,9 +16,9 @@ public class BaseDialog : FluentWindow
         MaxWidth = 350;
 
         ExtendsContentIntoTitleBar = true;
-        ShowInTaskbar = false;
+        ShowInTaskbar = true;
         WindowBackdropType = WindowBackdropType.Mica;
-        WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        WindowStartupLocation = WindowStartupLocation.CenterScreen;
         SizeToContent = SizeToContent.Height;
     }
 

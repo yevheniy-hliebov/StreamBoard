@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,7 +19,6 @@ namespace StreamTabula.Features.Decks.Views.Components.Canvas
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.Register(nameof(IsSelected), typeof(bool), typeof(DeckButtonSlotView), new PropertyMetadata(false));
 
-
         public ICommand Command
         {
             get { return (ICommand)GetValue(CommandProperty); }
@@ -27,7 +27,6 @@ namespace StreamTabula.Features.Decks.Views.Components.Canvas
 
         public static readonly DependencyProperty CommandProperty =
             DependencyProperty.Register(nameof(Command), typeof(ICommand), typeof(DeckButtonSlotView), new PropertyMetadata(null));
-
 
         public object CommandParameter
         {
@@ -38,7 +37,6 @@ namespace StreamTabula.Features.Decks.Views.Components.Canvas
         public static readonly DependencyProperty CommandParameterProperty =
             DependencyProperty.Register(nameof(CommandParameter), typeof(object), typeof(DeckButtonSlotView), new PropertyMetadata(null));
 
-
         public string ButtonName
         {
             get { return (string)GetValue(ButtonNameProperty); }
@@ -48,7 +46,6 @@ namespace StreamTabula.Features.Decks.Views.Components.Canvas
         public static readonly DependencyProperty ButtonNameProperty =
             DependencyProperty.Register(nameof(ButtonName), typeof(string), typeof(DeckButtonSlotView), new PropertyMetadata(""));
 
-
         public int ButtonIndex
         {
             get { return (int)GetValue(ButtonIndexProperty); }
@@ -57,7 +54,6 @@ namespace StreamTabula.Features.Decks.Views.Components.Canvas
 
         public static readonly DependencyProperty ButtonIndexProperty =
             DependencyProperty.Register(nameof(ButtonIndex), typeof(int), typeof(DeckButtonSlotView), new PropertyMetadata(0));
-
 
         public string ImagePath
         {
@@ -71,7 +67,6 @@ namespace StreamTabula.Features.Decks.Views.Components.Canvas
                 typeof(string),
                 typeof(DeckButtonSlotView),
                 new PropertyMetadata(null, OnImagePathChanged));
-
 
         public string ButtonBackground
         {
@@ -105,7 +100,16 @@ namespace StreamTabula.Features.Decks.Views.Components.Canvas
 
                 if (!string.IsNullOrWhiteSpace(path))
                 {
-                    slotView.IsImageMissing = !File.Exists(path);
+                    if (Path.IsPathRooted(path))
+                    {
+                        slotView.IsImageMissing = !File.Exists(path);
+                    }
+                    else
+                    {
+                        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                        string fullSystemPath = Path.Combine(baseDir, "Assets", "Images", "Buttons", path);
+                        slotView.IsImageMissing = !File.Exists(fullSystemPath);
+                    }
                 }
                 else
                 {

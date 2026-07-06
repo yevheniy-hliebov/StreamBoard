@@ -3,8 +3,12 @@ using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Decks.Models;
 using StreamTabula.Features.Decks.Services;
 using StreamTabula.Features.Servers.Services;
+using System;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace StreamTabula.Features.Servers.Controllers
 {
@@ -97,14 +101,15 @@ namespace StreamTabula.Features.Servers.Controllers
                 return;
             }
 
-            string? imagePath = buttonConfig.ImagePath;
-            if (string.IsNullOrEmpty(imagePath) || !System.IO.File.Exists(imagePath))
+            string? physicalPath = ResolvePhysicalPath(buttonConfig.ImagePath);
+
+            if (string.IsNullOrEmpty(physicalPath) || !File.Exists(physicalPath))
             {
                 await WriteErrorAsync(ctx, HttpStatusCode.NotFound, "Image not found");
                 return;
             }
 
-            string extension = System.IO.Path.GetExtension(imagePath).ToLowerInvariant();
+            string extension = Path.GetExtension(physicalPath).ToLowerInvariant();
             string mimeType = extension switch
             {
                 ".png" => "image/png",
@@ -118,7 +123,7 @@ namespace StreamTabula.Features.Servers.Controllers
 
             try
             {
-                byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(imagePath);
+                byte[] fileBytes = await File.ReadAllBytesAsync(physicalPath);
 
                 ctx.Response.ContentType = mimeType;
                 ctx.Response.ContentLength = fileBytes.Length;
@@ -142,7 +147,6 @@ namespace StreamTabula.Features.Servers.Controllers
                 await WriteErrorAsync(ctx, HttpStatusCode.NotFound, "Key binding data not found");
                 return;
             }
-
 
             if (buttonConfig.Actions != null)
             {
@@ -169,6 +173,20 @@ namespace StreamTabula.Features.Servers.Controllers
             ctx.Response.StatusCode = (int)statusCode;
             ctx.Response.ContentType = "text/plain";
             await ctx.Response.WriteAsync(message);
+        }
+
+        private string? ResolvePhysicalPath(string? path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return null;
+
+            if (Path.IsPathRooted(path))
+            {
+                return path;
+            }
+
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            return Path.Combine(baseDir, "Assets", "Images", "Buttons", path);
         }
     }
 }

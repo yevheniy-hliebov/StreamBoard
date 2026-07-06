@@ -31,6 +31,19 @@ namespace StreamTabula.Components.Dialogs
                 typeof(object),
                 typeof(BaseDialogContent));
 
+        public Thickness ContentPadding
+        {
+            get => (Thickness)GetValue(ContentPaddingProperty);
+            set => SetValue(ContentPaddingProperty, value);
+        }
+
+        public static readonly DependencyProperty ContentPaddingProperty =
+            DependencyProperty.Register(
+                nameof(ContentPadding),
+                typeof(Thickness),
+                typeof(BaseDialogContent),
+                new PropertyMetadata(new Thickness(24)));
+
 
         public object Buttons
         {

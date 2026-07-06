@@ -21,7 +21,7 @@
                                ShowMaximize="False" />
 
         <ContentPresenter Grid.Row="1"
-                          Margin="24"
+                          Margin="{Binding ContentPadding, ElementName=Root}"
                           Content="{Binding DialogContent, ElementName=Root}" />
 
         <Border Grid.Row="2"
