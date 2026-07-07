@@ -9,6 +9,24 @@ namespace StreamTabula.Features.Decks.Views.Components.PropertyEditor
     {
         public ImagePicker() => InitializeComponent();
 
+        public ICommand Command
+        {
+            get => (ICommand)GetValue(CommandProperty);
+            set => SetValue(CommandProperty, value);
+        }
+
+        public static readonly DependencyProperty CommandProperty =
+            DependencyProperty.Register(nameof(Command), typeof(ICommand), typeof(ImagePicker), new PropertyMetadata(null));
+
+        public object CommandParameter
+        {
+            get => GetValue(CommandParameterProperty);
+            set => SetValue(CommandParameterProperty, value);
+        }
+
+        public static readonly DependencyProperty CommandParameterProperty =
+            DependencyProperty.Register(nameof(CommandParameter), typeof(object), typeof(ImagePicker), new PropertyMetadata(null));
+
         public string ImagePath
         {
             get { return (string)GetValue(ImagePathProperty); }
@@ -61,15 +79,6 @@ namespace StreamTabula.Features.Decks.Views.Components.PropertyEditor
                 {
                     picker.IsImageMissing = false;
                 }
-            }
-        }
-
-        private void OnPickerClicked(object sender, MouseButtonEventArgs e)
-        {
-            var dialog = new ImageLibraryDialog();
-            if (dialog.ShowDialog() == true && dialog.Result != null)
-            {
-                ImagePath = dialog.Result.Path;
             }
         }
     }

@@ -1,27 +1,28 @@
-﻿<UserControl
-    x:Class="StreamTabula.Features.Decks.Views.Components.PropertyEditor.PropertyEditorView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ae="clr-namespace:StreamTabula.Features.Actions.Views.Components.Editor"
-    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
-    xmlns:layout="clr-namespace:StreamTabula.Features.Decks.Views.Components.Layout"
-    xmlns:local="clr-namespace:StreamTabula.Features.Decks.Views.Components.PropertyEditor"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+﻿<UserControl x:Class="StreamTabula.Features.Decks.Views.Components.PropertyEditor.PropertyEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ae="clr-namespace:StreamTabula.Features.Actions.Views.Components.Editor"
+             xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+             xmlns:layout="clr-namespace:StreamTabula.Features.Decks.Views.Components.Layout"
+             xmlns:local="clr-namespace:StreamTabula.Features.Decks.Views.Components.PropertyEditor"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
     <Grid Background="Transparent">
 
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="16"
-            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-            Text="Select a key button">
+        <TextBlock HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="16"
+                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                   Text="Select a key button">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
-                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Setter Property="Visibility"
+                            Value="Collapsed" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Canvas.SelectedButton}" Value="{x:Null}">
-                            <Setter Property="Visibility" Value="Visible" />
+                        <DataTrigger Binding="{Binding Editor.EditingSlot}"
+                                     Value="{x:Null}">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -31,10 +32,13 @@
         <Grid>
             <Grid.Style>
                 <Style TargetType="Grid">
-                    <Setter Property="Visibility" Value="Visible" />
+                    <Setter Property="Visibility"
+                            Value="Visible" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Canvas.SelectedButton}" Value="{x:Null}">
-                            <Setter Property="Visibility" Value="Collapsed" />
+                        <DataTrigger Binding="{Binding Editor.EditingSlot}"
+                                     Value="{x:Null}">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -52,12 +56,12 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <layout:DeckSidebarHeader Title="{Binding Canvas.SelectedButton.Index, StringFormat='Button Properties | Key: {0}'}" Grid.Row="0">
+                <layout:DeckSidebarHeader Title="{Binding Editor.EditingSlot.Index, StringFormat='Button Properties | Key: {0}'}"
+                                          Grid.Row="0">
                     <layout:DeckSidebarHeader.RightContent>
-                        <controls:IconButton
-                            Command="{Binding Editor.ClearButtonCommand}"
-                            IconType="ClearAllInk"
-                            TooltipText="Reset Appearance" />
+                        <controls:IconButton Command="{Binding Editor.ClearButtonCommand}"
+                                             IconType="ClearAllInk"
+                                             TooltipText="Reset Appearance" />
                     </layout:DeckSidebarHeader.RightContent>
                 </layout:DeckSidebarHeader>
 
@@ -72,42 +76,47 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        Margin="8">
-                        <Label Margin="0,0,0,4" Content="Name" />
-                        <ui:TextBox PlaceholderText="Enter a name..." Text="{Binding Canvas.SelectedButton.Config.Name, UpdateSourceTrigger=PropertyChanged}" />
+                    <StackPanel Grid.Row="0"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Margin="8">
+                        <Label Margin="0,0,0,4"
+                               Content="Name" />
+                        
+                        <ui:TextBox PlaceholderText="Enter a name..."
+                                    Text="{Binding Editor.EditingSlot.Config.Name, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
 
-                    <StackPanel
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Margin="8">
-                        <Label Margin="0,0,0,4" Content="Button Image" />
-                        <local:ImagePicker HorizontalAlignment="Left" ImagePath="{Binding Canvas.SelectedButton.Config.ImagePath}" />
+                    <StackPanel Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="8">
+                        <Label Margin="0,0,0,4"
+                               Content="Button Image" />
+                        
+                        <local:ImagePicker HorizontalAlignment="Left"
+                                           ImagePath="{Binding Editor.EditingSlot.Config.ImagePath, Mode=TwoWay}"
+                                           Command="{Binding Editor.PickImageCommand}" />
                     </StackPanel>
 
-                    <StackPanel
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Margin="8">
-                        <Label Margin="0,0,0,4" Content="Background Color" />
+                    <StackPanel Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="8">
+                        <Label Margin="0,0,0,4"
+                               Content="Background Color" />
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <ui:TextBox
-                                Grid.Column="0"
-                                Height="35"
-                                Margin="0,0,4,0"
-                                PlaceholderText="Enter a hex..."
-                                Text="{Binding Canvas.SelectedButton.Config.BackgroundColor, UpdateSourceTrigger=PropertyChanged}" />
+                            <ui:TextBox Grid.Column="0"
+                                        Height="35"
+                                        Margin="0,0,4,0"
+                                        PlaceholderText="Enter a hex..."
+                                        Text="{Binding Editor.EditingSlot.Config.BackgroundColor, UpdateSourceTrigger=PropertyChanged}" />
 
-                            <local:ColorPreview Grid.Column="1" SelectedColor="{Binding Canvas.SelectedButton.Config.BackgroundColor}" />
+                            <local:ColorPreview Grid.Column="1"
+                                                SelectedColor="{Binding Editor.EditingSlot.Config.BackgroundColor}" />
                         </Grid>
                     </StackPanel>
                 </Grid>
@@ -121,19 +130,18 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <layout:DeckSidebarHeader Title="Actions" Grid.Row="0">
+                <layout:DeckSidebarHeader Title="Actions"
+                                          Grid.Row="0">
                     <layout:DeckSidebarHeader.RightContent>
-                        <controls:IconButton
-                            Command="{Binding Editor.ActionList.ClearActionsCommand}"
-                            IconType="ClearAllInk"
-                            TooltipText="Clear Actions" />
+                        <controls:IconButton Command="{Binding Editor.ActionList.ClearActionsCommand}"
+                                             IconType="ClearAllInk"
+                                             TooltipText="Clear Actions" />
                     </layout:DeckSidebarHeader.RightContent>
                 </layout:DeckSidebarHeader>
 
-                <ae:ActionListView
-                    Grid.Row="1"
-                    Margin="8"
-                    DataContext="{Binding Editor.ActionList}" />
+                <ae:ActionListView Grid.Row="1"
+                                   Margin="8"
+                                   DataContext="{Binding Editor.ActionList}" />
             </Grid>
         </Grid>
     </Grid>

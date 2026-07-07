@@ -4,6 +4,7 @@ using StreamTabula.Features.Actions.Services;
 using StreamTabula.Features.Actions.ViewModels;
 using StreamTabula.Features.Decks.Models;
 using StreamTabula.Features.Decks.Services;
+using StreamTabula.Features.Decks.Views.Components.PropertyEditor;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -42,6 +43,7 @@ namespace StreamTabula.Features.Decks.ViewModels
         }
 
         public ICommand ClearButtonCommand { get; }
+        public ICommand PickImageCommand { get; }
 
         public event Action<DeckButtonSlot>? ButtonAppearanceChanged;
 
@@ -57,6 +59,19 @@ namespace StreamTabula.Features.Decks.ViewModels
             );
 
             ClearButtonCommand = new RelayCommand(async _ => await OnClearButtonAppearance());
+            PickImageCommand = new RelayCommand(_ => ExecutePickImage());
+        }
+
+        private void ExecutePickImage()
+        {
+            if (EditingSlot?.Config == null) return;
+            
+            var dialog = new ImageLibraryDialog();
+
+            if (dialog.ShowDialog() == true && dialog.Result != null)
+            {
+                EditingSlot.Config.ImagePath = dialog.Result.Path;
+            }
         }
 
         private async Task OnClearButtonAppearance()

@@ -9,96 +9,103 @@
         <converters:ImagePathToSourceConverter x:Key="ImagePathToSourceConverter" />
     </UserControl.Resources>
 
-    <Grid Width="80"
-          Height="80"
-          Background="Transparent"
-          Cursor="Hand"
-          MouseLeftButtonDown="OnPickerClicked">
+    <Viewbox Stretch="Uniform">
+        <Grid Width="80"
+              Height="80"
+              Background="Transparent"
+              Cursor="Hand">
 
-        <Rectangle RadiusX="8"
-                   RadiusY="8"
-                   Stroke="#888"
-                   StrokeDashArray="3 3"
-                   StrokeDashCap="Round"
-                   StrokeThickness="2" />
+            <Grid.InputBindings>
+                <MouseBinding MouseAction="LeftClick"
+                              Command="{Binding Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                              CommandParameter="{Binding CommandParameter, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            </Grid.InputBindings>
 
-        <controls:FluentIcon HorizontalAlignment="Center"
-                             VerticalAlignment="Center"
-                             FontSize="24"
-                             Foreground="#888"
-                             IconType="Photo">
-            <controls:FluentIcon.Style>
-                <Style TargetType="controls:FluentIcon">
-                    <Setter Property="Visibility"
-                            Value="Collapsed" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                     Value="{x:Null}">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                     Value="">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </controls:FluentIcon.Style>
-        </controls:FluentIcon>
+            <Rectangle RadiusX="8"
+                       RadiusY="8"
+                       Stroke="#888"
+                       StrokeDashArray="3 3"
+                       StrokeDashCap="Round"
+                       StrokeThickness="2" />
 
-        <controls:FluentIcon Margin="3,0,0,0"
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="Center"
-                             FontSize="24"
-                             Foreground="#FFA500"
-                             IconType="Warning"
-                             ToolTip="The image at the specified path was not found or has been deleted.">
-            <controls:FluentIcon.Style>
-                <Style TargetType="controls:FluentIcon">
-                    <Setter Property="Visibility"
-                            Value="Collapsed" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsImageMissing, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                     Value="True">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </controls:FluentIcon.Style>
-        </controls:FluentIcon>
-
-        <controls:ClippingBorder Margin="3"
-                                 ClipToBounds="True"
-                                 CornerRadius="6">
-            <Image Source="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource ImagePathToSourceConverter}, TargetNullValue={x:Null}, FallbackValue={x:Null}}"
-                   Stretch="UniformToFill">
-                <Image.Style>
-                    <Style TargetType="Image">
+            <controls:FluentIcon HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 FontSize="24"
+                                 Foreground="#888"
+                                 IconType="Photo">
+                <controls:FluentIcon.Style>
+                    <Style TargetType="controls:FluentIcon">
                         <Setter Property="Visibility"
-                                Value="Visible" />
+                                Value="Collapsed" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                          Value="{x:Null}">
                                 <Setter Property="Visibility"
-                                        Value="Collapsed" />
+                                        Value="Visible" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                          Value="">
                                 <Setter Property="Visibility"
-                                        Value="Collapsed" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsImageMissing, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                         Value="True">
-                                <Setter Property="Visibility"
-                                        Value="Collapsed" />
+                                        Value="Visible" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </Image.Style>
-            </Image>
-        </controls:ClippingBorder>
+                </controls:FluentIcon.Style>
+            </controls:FluentIcon>
 
-    </Grid>
+            <controls:FluentIcon Margin="3,0,0,0"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 FontSize="24"
+                                 Foreground="#FFA500"
+                                 IconType="Warning"
+                                 ToolTip="The image at the specified path was not found or has been deleted.">
+                <controls:FluentIcon.Style>
+                    <Style TargetType="controls:FluentIcon">
+                        <Setter Property="Visibility"
+                                Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsImageMissing, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                         Value="True">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:FluentIcon.Style>
+            </controls:FluentIcon>
+
+            <controls:ClippingBorder Margin="3"
+                                     ClipToBounds="True"
+                                     CornerRadius="6">
+                <Image Source="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource ImagePathToSourceConverter}, TargetNullValue={x:Null}, FallbackValue={x:Null}}"
+                       Stretch="UniformToFill">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                             Value="{x:Null}">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ImagePath, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                             Value="">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsImageMissing, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                             Value="True">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </controls:ClippingBorder>
+
+        </Grid>
+    </Viewbox>
 </UserControl>
