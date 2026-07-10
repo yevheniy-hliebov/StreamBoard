@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using StreamTabula.Components.Controls;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Integrations.Obs.Models;
 using StreamTabula.Features.Integrations.Obs.Services;

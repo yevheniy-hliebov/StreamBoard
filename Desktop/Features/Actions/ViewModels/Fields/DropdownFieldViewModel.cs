@@ -1,9 +1,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reflection;
-using System.Windows.Input;
+using StreamTabula.Components.Controls;
 using StreamTabula.Features.Actions.Models;
-using Wpf.Ui.Input;
 
 namespace StreamTabula.Features.Actions.ViewModels
 {
@@ -39,31 +38,26 @@ namespace StreamTabula.Features.Actions.ViewModels
                 {
                     Property.SetValue(TargetAction, value);
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(SelectedDisplayOption));
+                    OnPropertyChanged(nameof(SelectedOption)); // Оновлюємо вибраний об'єкт
                 }
             }
         }
 
-        public string? SelectedDisplayOption
+        // Замість команди та SelectedDisplayOption робимо одну повноцінну властивість
+        public DropdownOption? SelectedOption
         {
             get
             {
-                var currentVal = Value;
-                if (currentVal == null || (currentVal is string s && string.IsNullOrWhiteSpace(s)))
-                    return null;
-
-                var selectedOpt = Options.FirstOrDefault(o => Equals(o.Value, currentVal));
-                return selectedOpt?.DisplaySelectedOption ?? currentVal.ToString();
+                return Options.FirstOrDefault(o => Equals(o.Value, Value));
+            }
+            set
+            {
+                if (value != null && !Equals(Value, value.Value))
+                {
+                    Value = value.Value; // Тут виконується та сама логіка, що була в команді
+                }
             }
         }
-
-        public ICommand SelectOptionCommand => new RelayCommand<DropdownOption>(option =>
-        {
-            if (option != null)
-            {
-                Value = option.Value;
-            }
-        });
 
         private void OnActionPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
@@ -93,7 +87,7 @@ namespace StreamTabula.Features.Actions.ViewModels
             }
 
             OnPropertyChanged(nameof(Options));
-            OnPropertyChanged(nameof(SelectedDisplayOption));
+            OnPropertyChanged(nameof(SelectedOption));
         }
     }
 }

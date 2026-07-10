@@ -93,58 +93,16 @@
 
                     <DataTemplate DataType="{x:Type avm:DropdownFieldViewModel}">
                         <StackPanel Margin="0,0,0,12">
-                            <TextBlock
-                                Margin="0,0,0,8"
-                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                Text="{Binding Label}" />
+                            <TextBlock Margin="0,0,0,8"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       Text="{Binding Label}" />
 
-                            <ui:DropDownButton
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Stretch"
-                                Icon="FitPage24">
+                            <controls:DropdownSelector HorizontalAlignment="Stretch"
+                                                       IconName="FitPage24"
+                                                       PlaceholderText="Select scene..."
+                                                       ItemsSource="{Binding Options}"
+                                                       SelectedItem="{Binding SelectedOption}" />
 
-                                <ui:DropDownButton.Content>
-                                    <TextBlock
-                                        HorizontalAlignment="Stretch"
-                                        Text="{Binding SelectedDisplayOption, TargetNullValue='Select scene...'}"
-                                        TextAlignment="Left" />
-                                </ui:DropDownButton.Content>
-
-                                <ui:DropDownButton.Flyout>
-                                    <ContextMenu
-                                        MaxHeight="300"
-                                        Padding="0"
-                                        ItemsSource="{Binding Options}">
-                                        <ContextMenu.Template>
-                                            <ControlTemplate TargetType="{x:Type ContextMenu}">
-                                                <Border
-                                                    Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
-                                                    BorderBrush="{DynamicResource SurfaceStrokeColorDefaultBrush}"
-                                                    BorderThickness="1"
-                                                    CornerRadius="8">
-                                                    <ScrollViewer
-                                                            Margin="2"
-                                                            CanContentScroll="True"
-                                                            Focusable="False"
-                                                            PanningMode="VerticalOnly"
-                                                            VerticalScrollBarVisibility="Auto">
-                                                        <ItemsPresenter VerticalAlignment="Top" />
-                                                    </ScrollViewer>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </ContextMenu.Template>
-
-                                        <ContextMenu.ItemContainerStyle>
-                                            <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
-                                                <Setter Property="Command" Value="{Binding DataContext.SelectOptionCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
-                                                <Setter Property="CommandParameter" Value="{Binding}" />
-                                                <Setter Property="Header" Value="{Binding DisplayOption}" />
-                                                <Setter Property="Padding" Value="8,6" />
-                                            </Style>
-                                        </ContextMenu.ItemContainerStyle>
-                                    </ContextMenu>
-                                </ui:DropDownButton.Flyout>
-                            </ui:DropDownButton>
                         </StackPanel>
                     </DataTemplate>
 
