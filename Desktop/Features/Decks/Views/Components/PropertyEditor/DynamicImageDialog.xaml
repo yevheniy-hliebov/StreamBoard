@@ -1,0 +1,208 @@
+﻿<dialogs:BaseDialog x:Class="StreamTabula.Features.Decks.Views.Components.PropertyEditor.DynamicImageDialog"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dialogs="clr-namespace:StreamTabula.Components.Dialogs"
+                    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+                    xmlns:local="clr-namespace:StreamTabula.Features.Decks.Views.Components.PropertyEditor"
+                    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                    Width="600"
+                    MinWidth="600"
+                    MaxWidth="600"
+                    Height="600"
+                    MinHeight="600"
+                    MaxHeight="600">
+
+    <dialogs:BaseDialogContent Title="Dynamic Image">
+        <dialogs:BaseDialogContent.DialogContent>
+            <Grid>
+                <Grid.Resources>
+                    <BooleanToVisibilityConverter x:Key="BoolToVis" />
+                </Grid.Resources>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="Default Image"
+                           Margin="0,0,0,10"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontSize="16"
+                           FontWeight="Bold" />
+
+                <local:ImagePicker Grid.Row="1"
+                                   HorizontalAlignment="Center"
+                                   Width="100"
+                                   Height="100"
+                                   ImagePath="{Binding DefaultImage, UpdateSourceTrigger=PropertyChanged}"
+                                   Command="{Binding PickDefaultImageCommand}" />
+
+                <Separator Grid.Row="2"
+                           Margin="0,15,0,15" />
+
+                <StackPanel Grid.Row="3"
+                            Margin="0,0,0,15"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <TextBlock Width="120"
+                               Text="Variable Name"
+                               Margin="0,0,15,0"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center" />
+
+                    <ui:TextBox Width="230"
+                                VerticalAlignment="Center"
+                                Text="{Binding TriggerVariable, UpdateSourceTrigger=PropertyChanged}"
+                                PlaceholderText="Enter a global/temp variable..." />
+                </StackPanel>
+
+                <StackPanel Grid.Row="4"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <TextBlock Width="120"
+                               Text="Change image"
+                               Margin="0,0,15,0"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center" />
+
+                    <controls:DropdownSelector Width="230"
+                                               IconName="FitPage24"
+                                               ItemsSource="{Binding TriggerConditions}"
+                                               SelectedItem="{Binding SelectedTriggerCondition}" />
+                </StackPanel>
+
+                <ui:Button Grid.Row="5"
+                           Content="Add condition"
+                           Icon="Add24"
+                           Command="{Binding AddConditionCommand}"
+                           HorizontalAlignment="Center"
+                           Margin="0,15,0,10" />
+
+                <ScrollViewer Grid.Row="6"
+                              VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Conditions}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,5,0,5"
+                                      HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <ui:TextBox Grid.Column="0"
+                                                Width="120"
+                                                Height="40"
+                                                Margin="0,0,10,0"
+                                                PlaceholderText="Value"
+                                                Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}">
+                                        <ui:TextBox.Style>
+                                            <Style TargetType="ui:TextBox"
+                                                   BasedOn="{StaticResource {x:Type ui:TextBox}}">
+                                                <Setter Property="Visibility"
+                                                        Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding DataContext.IsEqualMode, RelativeSource={RelativeSource AncestorType=dialogs:BaseDialog}}"
+                                                                 Value="True">
+                                                        <Setter Property="Visibility"
+                                                                Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:TextBox.Style>
+                                    </ui:TextBox>
+
+                                    <ui:TextBox Grid.Column="1"
+                                                Width="80"
+                                                Height="40"
+                                                Margin="0,0,10,0"
+                                                PlaceholderText="From"
+                                                Text="{Binding ValueFrom, UpdateSourceTrigger=PropertyChanged}">
+                                        <ui:TextBox.Style>
+                                            <Style TargetType="ui:TextBox"
+                                                   BasedOn="{StaticResource {x:Type ui:TextBox}}">
+                                                <Setter Property="Visibility"
+                                                        Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding DataContext.IsRangeMode, RelativeSource={RelativeSource AncestorType=dialogs:BaseDialog}}"
+                                                                 Value="True">
+                                                        <Setter Property="Visibility"
+                                                                Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:TextBox.Style>
+                                    </ui:TextBox>
+
+                                    <ui:TextBox Grid.Column="2"
+                                                Width="80"
+                                                Height="40"
+                                                Margin="0,0,10,0"
+                                                PlaceholderText="To"
+                                                Text="{Binding ValueTo, UpdateSourceTrigger=PropertyChanged}">
+                                        <ui:TextBox.Style>
+                                            <Style TargetType="ui:TextBox"
+                                                   BasedOn="{StaticResource {x:Type ui:TextBox}}">
+                                                <Setter Property="Visibility"
+                                                        Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding DataContext.IsRangeMode, RelativeSource={RelativeSource AncestorType=dialogs:BaseDialog}}"
+                                                                 Value="True">
+                                                        <Setter Property="Visibility"
+                                                                Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:TextBox.Style>
+                                    </ui:TextBox>
+
+                                    <local:ImagePicker Grid.Column="3"
+                                                       Width="50"
+                                                       Height="50"
+                                                       Margin="0,0,10,0"
+                                                       ImagePath="{Binding ImagePath, UpdateSourceTrigger=PropertyChanged}"
+                                                       Command="{Binding DataContext.PickConditionImageCommand, RelativeSource={RelativeSource AncestorType=dialogs:BaseDialog}}"
+                                                       CommandParameter="{Binding}" />
+
+                                    <CheckBox Grid.Column="4"
+                                              Content="Blink"
+                                              VerticalAlignment="Center"
+                                              IsChecked="{Binding IsBlinking, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </dialogs:BaseDialogContent.DialogContent>
+
+        <dialogs:BaseDialogContent.Buttons>
+            <StackPanel HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                <ui:Button Margin="0,0,8,0"
+                           Width="100"
+                           Appearance="Primary"
+                           IsDefault="True"
+                           Click="Submit"
+                           Content="Save" />
+                <ui:Button Width="100"
+                           IsCancel="True"
+                           Click="Cancel"
+                           Content="Cancel" />
+            </StackPanel>
+        </dialogs:BaseDialogContent.Buttons>
+    </dialogs:BaseDialogContent>
+</dialogs:BaseDialog>

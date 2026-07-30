@@ -22,7 +22,7 @@ public class BaseDialog : FluentWindow
         SizeToContent = SizeToContent.Height;
     }
 
-    protected void Submit(object sender, RoutedEventArgs e)
+    protected virtual void Submit(object sender, RoutedEventArgs e)
     {
         DialogResult = true;
         Close();
