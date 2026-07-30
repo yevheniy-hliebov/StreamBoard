@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="StreamTabula.Features.Decks.Views.Components.Canvas.DeckButtonView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:StreamTabula.Features.Decks.Views.Components.Canvas"
+             xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+             x:Name="Root">
+    <controls:ClippingBorder CornerRadius="6"
+                             BorderThickness="2"
+                             BorderBrush="#555"
+                             Width="55"
+                             Height="55"
+                             Background="#FF2D2D2D">
+        <Grid ClipToBounds="True">
+            <!-- Default Image -->
+            <Image Source="{Binding ButtonConfig.DynamicImage.DefaultImage, ElementName=Root}"
+                   Stretch="UniformToFill">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Visibility"
+                                Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ButtonConfig.IsBlinking, ElementName=Root}"
+                                         Value="True">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <!-- Display Image -->
+            <controls:BlinkingImage Source="{Binding ButtonConfig.DisplayImage, ElementName=Root, FallbackValue='Assets/Images/banner_background.png'}"
+                                    Stretch="UniformToFill"
+                                    IsBlinking="{Binding ButtonConfig.IsBlinking, ElementName=Root, FallbackValue=True}"
+                                    BlinkDuration="0:0:0.8" />
+        </Grid>
+    </controls:ClippingBorder>
+</UserControl>

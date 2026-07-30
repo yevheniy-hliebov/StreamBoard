@@ -1,6 +1,5 @@
 ﻿using StreamTabula.Core;
 using StreamTabula.Features.Actions.Models;
-using StreamTabula.Features.Decks.ViewModels;
 using StreamTabula.Features.Variables.Models;
 using StreamTabula.Features.Variables.Services;
 using System.Collections.ObjectModel;
@@ -54,6 +53,7 @@ namespace StreamTabula.Features.Decks.Models
                 {
                     EvaluateDisplayImage();
                     OnPropertyChanged(nameof(DisplayImage));
+                    OnPropertyChanged(nameof(IsBlinking));
                 }
             }
         }
@@ -80,7 +80,14 @@ namespace StreamTabula.Features.Decks.Models
             private set => SetProperty(ref _displayImage, value);
         }
 
-        // Викликається після десеріалізації або створення кнопки, щоб передати сервіс
+        private bool _isBlinking;
+        [JsonIgnore]
+        public bool IsBlinking
+        {
+            get => _isBlinking;
+            private set => SetProperty(ref _isBlinking, value);
+        }
+
         public void Initialize(IVariableService variableService)
         {
             if (_variableService != null)
@@ -102,12 +109,12 @@ namespace StreamTabula.Features.Decks.Models
             }
         }
 
-        // Метод можна викликати публічно з редактора після збереження нових умов
         public void EvaluateDisplayImage(string? currentValue = null)
         {
             if (string.IsNullOrWhiteSpace(DynamicImage.TriggerVariable) || DynamicImage.Conditions.Count == 0)
             {
                 DisplayImage = DynamicImage.DefaultImage;
+                IsBlinking = false; 
                 return;
             }
 
@@ -124,6 +131,7 @@ namespace StreamTabula.Features.Decks.Models
                 if (match != null && !string.IsNullOrWhiteSpace(match.ImagePath))
                 {
                     DisplayImage = match.ImagePath;
+                    IsBlinking = match.IsBlinking;
                     return;
                 }
             }
@@ -139,6 +147,7 @@ namespace StreamTabula.Features.Decks.Models
                             if (numValue >= from && numValue <= to && !string.IsNullOrWhiteSpace(condition.ImagePath))
                             {
                                 DisplayImage = condition.ImagePath;
+                                IsBlinking = condition.IsBlinking;
                                 return;
                             }
                         }
@@ -146,8 +155,8 @@ namespace StreamTabula.Features.Decks.Models
                 }
             }
 
-            // Якщо жодна умова не виконана, показуємо дефолтне зображення
             DisplayImage = DynamicImage.DefaultImage;
+            IsBlinking = false;
         }
 
         public void ResetAppearance()

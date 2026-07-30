@@ -2,13 +2,20 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style TargetType="ToolTip">
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="Padding" Value="8,4" />
-        <Setter Property="Background" Value="{DynamicResource SolidBackgroundFillColorBaseBrush}" />
-        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="HasDropShadow" Value="True" />
+        <Setter Property="FontSize"
+                Value="12" />
+        <Setter Property="Padding"
+                Value="8,4" />
+        <Setter Property="Background"
+                Value="{DynamicResource SolidBackgroundFillColorBaseBrush}" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource DividerStrokeColorDefaultBrush}" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="HasDropShadow"
+                Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToolTip">
@@ -17,11 +24,25 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="Content"
+                     Value="{x:Null}">
+                <Setter Property="Visibility"
+                        Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="Content"
+                     Value="">
+                <Setter Property="Visibility"
+                        Value="Collapsed" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

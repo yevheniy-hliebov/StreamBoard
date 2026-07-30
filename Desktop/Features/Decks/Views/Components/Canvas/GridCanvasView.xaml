@@ -30,7 +30,7 @@
                             DropCommand="{Binding ReceiveDropCommand}">
 
                 <dd:DraggableWrapper Payload="{Binding}">
-                    <local:DeckButtonSlotView Margin="4"
+                    <!--<local:DeckButtonSlotView Margin="4"
                                               ButtonBackground="{Binding Config.BackgroundColor, FallbackValue=#2B2B2B}"
                                               ButtonIndex="{Binding Index}"
                                               ButtonName="{Binding Config.Name}"
@@ -38,7 +38,9 @@
                                               CommandParameter="{Binding}"
                                               Cursor="Hand"
                                               ImagePath="{Binding Config.DisplayImage}"
-                                              IsSelected="{Binding IsSelected}" />
+                                              IsSelected="{Binding IsSelected}" />-->
+                    <local:DeckButtonView Margin="4"
+                                          ButtonConfig="{Binding Config}" />
                 </dd:DraggableWrapper>
 
             </dd:DropWrapper>
