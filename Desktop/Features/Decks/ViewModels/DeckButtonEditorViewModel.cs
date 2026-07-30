@@ -65,12 +65,12 @@ namespace StreamTabula.Features.Decks.ViewModels
         private void ExecutePickImage()
         {
             if (EditingSlot?.Config == null) return;
-            
-            var dialog = new ImageLibraryDialog();
+
+            var dialog = new DynamicImageDialog(EditingSlot.Config.DynamicImage);
 
             if (dialog.ShowDialog() == true && dialog.Result != null)
             {
-                EditingSlot.Config.ImagePath = dialog.Result.Path;
+                EditingSlot.Config.DynamicImage = dialog.Result;
             }
         }
 
@@ -92,7 +92,7 @@ namespace StreamTabula.Features.Decks.ViewModels
         private void OnConfigPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName is nameof(DeckButtonConfig.Name)
-                or nameof(DeckButtonConfig.ImagePath)
+                or nameof(DeckButtonConfig.DynamicImage)
                 or nameof(DeckButtonConfig.BackgroundColor))
             {
                 _storage.Save();

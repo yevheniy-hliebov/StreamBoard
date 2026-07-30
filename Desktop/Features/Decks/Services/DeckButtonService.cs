@@ -2,12 +2,16 @@
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Services;
 using StreamTabula.Features.Decks.Models;
+using StreamTabula.Features.Variables.Services;
 
 namespace StreamTabula.Features.Decks.Services
 {
     public interface IDeckButtonService
     {
         public BaseCanvasConfig CanvasConfig { get; }
+
+        public event Action<int, DeckButtonConfig>? ButtonAppearanceChanged;
+
         public Dictionary<string, DeckButtonConfig> GetCurrentButtonMap();
         public DeckButtonConfig GetOrCreateButton(int index);
         
@@ -33,15 +37,19 @@ namespace StreamTabula.Features.Decks.Services
         private readonly DeckStorage _storage;
         private readonly DeckProfile _profile;
         private readonly IClipboardService _clipboardService;
+        private readonly IVariableService _variableService;
 
         public event Action<int, int>? ButtonsSwapped;
         public event Action<int, DeckButtonConfig>? ButtonChanged;
 
-        public DeckButtonService(DeckStorage storage, IClipboardService clipboardService)
+        public event Action<int, DeckButtonConfig>? ButtonAppearanceChanged;
+
+        public DeckButtonService(DeckStorage storage, IClipboardService clipboardService, IVariableService variableService)
         {
             _storage = storage;
             _profile = _storage.Current;
             _clipboardService = clipboardService;
+            _variableService = variableService;
         }
 
         public BaseCanvasConfig CanvasConfig => _profile.CanvasConfig;
@@ -54,6 +62,16 @@ namespace StreamTabula.Features.Decks.Services
                 map = new Dictionary<string, DeckButtonConfig>();
                 _profile.ButtonMaps[selectedId] = map;
             }
+
+            foreach (var kvp in map)
+            {
+                var config = kvp.Value;
+                config.Initialize(_variableService);
+
+                config.PropertyChanged -= Config_PropertyChanged;
+                config.PropertyChanged += Config_PropertyChanged;
+            }
+
             return map;
         }
 
@@ -65,6 +83,10 @@ namespace StreamTabula.Features.Decks.Services
             if (!map.TryGetValue(key, out var config))
             {
                 config = new DeckButtonConfig();
+                config.Initialize(_variableService);
+
+                config.PropertyChanged += Config_PropertyChanged;
+
                 map[key] = config;
                 _storage.Save();
             }
@@ -129,6 +151,8 @@ namespace StreamTabula.Features.Decks.Services
             var newConfig = _clipboardService.Paste<DeckButtonConfig>();
             if (newConfig == null) return;
 
+            newConfig.Initialize(_variableService);
+
             var map = GetCurrentButtonMap();
             map[index.ToString()] = newConfig;
 
@@ -160,6 +184,25 @@ namespace StreamTabula.Features.Decks.Services
         public void SaveChanges()
         {
             _storage.Save();
+        }
+
+        private void Config_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (sender is DeckButtonConfig config)
+            {
+                if (e.PropertyName is nameof(DeckButtonConfig.DisplayImage) or
+                    nameof(DeckButtonConfig.Name) or
+                    nameof(DeckButtonConfig.BackgroundColor))
+                {
+                    var map = GetCurrentButtonMap();
+                    var item = map.FirstOrDefault(kvp => kvp.Value == config);
+
+                    if (item.Key != null && int.TryParse(item.Key, out int index))
+                    {
+                        ButtonAppearanceChanged?.Invoke(index, config);
+                    }
+                }
+            }
         }
     }
 }

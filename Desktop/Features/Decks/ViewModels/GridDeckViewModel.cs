@@ -6,6 +6,7 @@ using StreamTabula.Features.Decks.Models;
 using StreamTabula.Features.Decks.Services;
 using StreamTabula.Features.Servers.Models;
 using StreamTabula.Features.Servers.Services;
+using StreamTabula.Features.Variables.Services;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -33,11 +34,12 @@ namespace StreamTabula.Features.Decks.ViewModels
             ActionRegistry registry,
             WebsocketManager wsManager,
             IClipboardService clipboard,
-            IDialogService dialogService
+            IDialogService dialogService,
+            IVariableService variableService
         )
         {
             var _pageServise = new DeckPageService(storage, clipboard);
-            var _buttonServise = new DeckButtonService(storage, clipboard);
+            var _buttonServise = new DeckButtonService(storage, clipboard, variableService);
 
             Pages = new DeckPagesViewModel(storage, _pageServise, dialogService, EditorState);
             Library = new ActionLibraryViewModel(registry);
@@ -53,6 +55,7 @@ namespace StreamTabula.Features.Decks.ViewModels
             Editor.ButtonAppearanceChanged += OnButtonAppearanceChanged;
             _buttonServise.ButtonsSwapped += OnButtonsSwapped;
             _buttonServise.ButtonChanged += OnButtonChanged;
+            _buttonServise.ButtonAppearanceChanged += OnRuntimeButtonAppearanceChanged;
 
             ToggleClickCommand = new RelayCommand(_ => EditorState.IsClickMode = !EditorState.IsClickMode);
         }
@@ -136,11 +139,17 @@ namespace StreamTabula.Features.Decks.ViewModels
             });
         }
 
+        private void OnRuntimeButtonAppearanceChanged(int index, DeckButtonConfig config)
+        {
+            OnButtonChanged(index, config);
+        }
+
         private void OnButtonChanged(int index, DeckButtonConfig config)
         {
             var name = config.Name;
             var bgColor = config.BackgroundColor;
-            var imgPath = config.ImagePath;
+
+            var imgPath = config.DisplayImage ?? config.DynamicImage.DefaultImage;
 
             _ = _wsManager.BroadcastAsync(WebsocketMessageType.ButtonUpdated, new
             {

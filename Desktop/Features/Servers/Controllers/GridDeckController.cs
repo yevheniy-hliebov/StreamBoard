@@ -76,7 +76,7 @@ namespace StreamTabula.Features.Servers.Controllers
                     {
                         name = kvp.Value.Name,
                         background_color = kvp.Value.BackgroundColor,
-                        image_path = kvp.Value.ImagePath
+                        image_path = kvp.Value.DisplayImage ?? kvp.Value.DynamicImage.DefaultImage
                     }
                 )
             };
@@ -101,7 +101,9 @@ namespace StreamTabula.Features.Servers.Controllers
                 return;
             }
 
-            string? physicalPath = ResolvePhysicalPath(buttonConfig.ImagePath);
+            var targetImagePath = buttonConfig.DisplayImage ?? buttonConfig.DynamicImage.DefaultImage;
+
+            string? physicalPath = ResolvePhysicalPath(targetImagePath);
 
             if (string.IsNullOrEmpty(physicalPath) || !File.Exists(physicalPath))
             {
