@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="StreamTabula.Features.Integrations.Twitch.Views.Components.TwitchRoundAvatar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:StreamTabula.Features.Integrations.Twitch.Converters"
+             x:Name="Root">
+
+    <UserControl.Resources>
+        <converters:FastAvatarConverter x:Key="FastAvatar" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Ellipse Fill="{DynamicResource SystemControlBackgroundAltMediumBrush}" />
+
+        <Ellipse>
+            <Ellipse.Fill>
+                <ImageBrush Stretch="UniformToFill"
+                            ImageSource="{Binding ImageUrl, ElementName=Root, Converter={StaticResource FastAvatar}, FallbackValue={x:Null}, IsAsync=True}" />
+            </Ellipse.Fill>
+        </Ellipse>
+    </Grid>
+</UserControl>
