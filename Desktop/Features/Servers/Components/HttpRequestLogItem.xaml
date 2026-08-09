@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:local="clr-namespace:StreamTabula.Features.Servers.Components"
-             xmlns:helpers="clr-namespace:StreamTabula.Helpers">
-    
+             xmlns:converters="clr-namespace:StreamTabula.Features.Servers.Converters">
+
     <UserControl.Resources>
-        <helpers:StatusCodeToAppearanceConverter x:Key="StatusConverter" />
+        <converters:StatusCodeToAppearanceConverter x:Key="StatusConverter" />
     </UserControl.Resources>
 
     <Grid Margin="0,4" VerticalAlignment="Center">
