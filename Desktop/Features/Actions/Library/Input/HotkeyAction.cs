@@ -1,11 +1,11 @@
-using System.Diagnostics;
+using StreamTabula.Core.Interop;
+using StreamTabula.Core.Models;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Actions.Exceptions;
+using StreamTabula.Features.Actions.Models;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using System.Windows.Input;
-using StreamTabula.Core.Models;
-using StreamTabula.Features.Actions.Models;
-using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Helpers;
 
 namespace StreamTabula.Features.Actions.Library.Input
 {
@@ -94,42 +94,42 @@ namespace StreamTabula.Features.Actions.Library.Input
 
             try
             {
-                var inputs = new List<Win32InputHelper.INPUT>();
+                var inputs = new List<Win32Input.INPUT>();
 
-                if (Ctrl) inputs.Add(Win32InputHelper.CreateInput(Win32InputHelper.VK_CONTROL, false));
-                if (Shift) inputs.Add(Win32InputHelper.CreateInput(Win32InputHelper.VK_SHIFT, false));
-                if (Alt) inputs.Add(Win32InputHelper.CreateInput(Win32InputHelper.VK_MENU, false));
-                if (Win) inputs.Add(Win32InputHelper.CreateInput(Win32InputHelper.VK_LWIN, false));
+                if (Ctrl) inputs.Add(Win32Input.CreateInput(Win32Input.VK_CONTROL, isKeyUp: false));
+                if (Shift) inputs.Add(Win32Input.CreateInput(Win32Input.VK_SHIFT, isKeyUp: false));
+                if (Alt) inputs.Add(Win32Input.CreateInput(Win32Input.VK_MENU, isKeyUp: false));
+                if (Win) inputs.Add(Win32Input.CreateInput(Win32Input.VK_LWIN, isKeyUp: false));
 
                 if (!string.IsNullOrWhiteSpace(KeyToPress))
                 {
                     ushort vk = GetVirtualKeyCode(KeyToPress);
                     if (vk != 0)
                     {
-                        inputs.Add(Win32InputHelper.CreateInput(vk, false)); // Key Down
-                        inputs.Add(Win32InputHelper.CreateInput(vk, true));  // Key Up
+                        inputs.Add(Win32Input.CreateInput(vk, isKeyUp: false)); 
+                        inputs.Add(Win32Input.CreateInput(vk, isKeyUp: true));
                     }
                 }
 
-                if (Win) inputs.Add(Win32InputHelper.CreateInput(Win32InputHelper.VK_LWIN, true));
-                if (Alt) inputs.Add(Win32InputHelper.CreateInput(Win32InputHelper.VK_MENU, true));
-                if (Shift) inputs.Add(Win32InputHelper.CreateInput(Win32InputHelper.VK_SHIFT, true));
-                if (Ctrl) inputs.Add(Win32InputHelper.CreateInput(Win32InputHelper.VK_CONTROL, true));
+                if (Win) inputs.Add(Win32Input.CreateInput(Win32Input.VK_LWIN, isKeyUp: true));
+                if (Alt) inputs.Add(Win32Input.CreateInput(Win32Input.VK_MENU, isKeyUp: true));
+                if (Shift) inputs.Add(Win32Input.CreateInput(Win32Input.VK_SHIFT, isKeyUp: true));
+                if (Ctrl) inputs.Add(Win32Input.CreateInput(Win32Input.VK_CONTROL, isKeyUp: true));
 
                 if (inputs.Count > 0)
                 {
-                    uint result = Win32InputHelper.SendInput((uint)inputs.Count, inputs.ToArray(), Win32InputHelper.INPUT.Size);
+                    uint result = Win32Input.SendInput((uint)inputs.Count, inputs.ToArray(), Win32Input.INPUT.Size);
 
                     if (result == 0)
                     {
-                        int error = Marshal.GetLastWin32Error();
-                        Debug.WriteLine($"SendInput failed with Win32 Error: {error}");
+                        int errorCode = Marshal.GetLastWin32Error();
+                        throw new HotkeyExecutionException($"SendInput failed with Win32 Error code: {errorCode}");
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is not HotkeyExecutionException)
             {
-                Debug.WriteLine($"Could not simulate hotkey: {ex.Message}");
+                throw new HotkeyExecutionException($"Failed to simulate hotkey: {Label}", ex);
             }
 
             return Task.CompletedTask;
