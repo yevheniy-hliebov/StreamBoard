@@ -3,6 +3,7 @@ using StreamTabula.Core.Models;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Helpers;
+using StreamTabula.Core.Services.Audio;
 
 namespace StreamTabula.Features.Actions.Library.System
 {
@@ -67,7 +68,8 @@ namespace StreamTabula.Features.Actions.Library.System
                 int remainingMs = DelayMs;
                 while (remainingMs > 0)
                 {
-                    AudioPlayerService.Play("Assets/Sounds/tick.mp3", SoundVolume);
+                    var audioPlayer = new AudioPlayer();
+                    audioPlayer.Play("Assets/Sounds/tick.mp3", SoundVolume);
 
                     int sleepTime = Math.Min(remainingMs, 1000);
                     await Task.Delay(sleepTime);

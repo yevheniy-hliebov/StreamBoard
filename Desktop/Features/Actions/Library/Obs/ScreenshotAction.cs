@@ -1,12 +1,13 @@
+using Microsoft.Extensions.DependencyInjection;
+using StreamTabula.Core.Models;
+using StreamTabula.Core.Services.Audio;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Helpers;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Core.Models;
-using StreamTabula.Features.Actions.Models;
-using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Features.Integrations.Obs.Services;
-using StreamTabula.Helpers;
 
 namespace StreamTabula.Features.Actions.Library.Obs
 {
@@ -118,7 +119,8 @@ namespace StreamTabula.Features.Actions.Library.Obs
 
                     if (PlaySoundOnComplete)
                     {
-                        AudioPlayerService.Play("Assets/Sounds/shutter.mp3", SoundVolume);
+                        var audioPlayer = new AudioPlayer();
+                        audioPlayer.Play("Assets/Sounds/shutter.mp3", SoundVolume);
                     }
                 }
             }
