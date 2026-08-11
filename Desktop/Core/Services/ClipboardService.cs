@@ -1,6 +1,7 @@
 ﻿using StreamTabula.Components.Controls;
 using StreamTabula.Core.Models;
-using StreamTabula.Helpers;
+using StreamTabula.Core.Serialization;
+using System.Text.Json;
 using Wpf.Ui;
 using Wpf.Ui.Controls;
 
@@ -35,7 +36,7 @@ namespace StreamTabula.Core.Services
         {
             if (item == null) return;
 
-            _clipboardDataJson = JsonHelper.SerializeToString(item);
+            _clipboardDataJson = JsonSerializer.Serialize(item, GlobalJsonOptions.Default);
             _currentDataType = typeof(T);
 
             ClipboardChanged?.Invoke();
@@ -47,7 +48,7 @@ namespace StreamTabula.Core.Services
         {
             if (item == null) return;
 
-            _clipboardDataJson = JsonHelper.SerializeToString(item);
+            _clipboardDataJson = JsonSerializer.Serialize(item, GlobalJsonOptions.Default);
             _currentDataType = typeof(T);
 
             ClipboardChanged?.Invoke();
@@ -62,7 +63,7 @@ namespace StreamTabula.Core.Services
                 return default;
             }
 
-            return JsonHelper.DeserializeFromString<T>(_clipboardDataJson);
+            return JsonSerializer.Deserialize<T>(_clipboardDataJson, GlobalJsonOptions.Default);
         }
 
         public bool HasDataOfType<T>()
@@ -80,12 +81,7 @@ namespace StreamTabula.Core.Services
 
         private void ShowNotification<T>(bool isCut)
         {
-            string itemName = typeof(T).Name;
-
-            if (itemName.Contains("PageClipboardPayload")) itemName = "Page";
-            else if (itemName.Contains("DeckButtonConfig")) itemName = "Button";
-            else if (itemName.Contains("Action")) itemName = "Action";
-            else itemName = "Item";
+            string itemName = GetFriendlyName(typeof(T));
 
             string actionVerb = isCut ? "cut" : "copied";
             string title = isCut ? "Cut" : "Copied";
@@ -99,6 +95,17 @@ namespace StreamTabula.Core.Services
                 new FluentIcon { IconType = icon },
                 TimeSpan.FromSeconds(2)
             );
+        }
+
+        private static string GetFriendlyName(Type type)
+        {
+            string name = type.Name;
+
+            if (name.Contains("PageClipboardPayload")) return "Page";
+            if (name.Contains("DeckButtonConfig")) return "Button";
+            if (name.Contains("Action")) return "Action";
+
+            return "Item";
         }
     }
 }

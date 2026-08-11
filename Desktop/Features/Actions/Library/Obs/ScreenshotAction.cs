@@ -4,7 +4,6 @@ using StreamTabula.Core.Services.Audio;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Integrations.Obs.Services;
-using StreamTabula.Helpers;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json.Serialization;
