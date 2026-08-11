@@ -1,4 +1,5 @@
 ﻿using StreamTabula.Core;
+using StreamTabula.Core.Mvvm;
 using StreamTabula.Core.Services;
 using StreamTabula.Features.Actions.Services;
 using StreamTabula.Features.Decks.Models;

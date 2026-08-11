@@ -1,5 +1,5 @@
 ﻿using StreamTabula.Components.Controls;
-using StreamTabula.Core.Models;
+using StreamTabula.Components.Enums;
 using StreamTabula.Core.Serialization;
 using System.Text.Json;
 using Wpf.Ui;

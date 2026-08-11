@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using StreamTabula.Core;
+using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Integrations.Twitch.Models;
 using StreamTabula.Features.Integrations.Twitch.Services;
 

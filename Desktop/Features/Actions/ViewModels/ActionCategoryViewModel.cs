@@ -1,5 +1,5 @@
-﻿using StreamTabula.Core;
-using StreamTabula.Core.Models;
+﻿using StreamTabula.Components.Enums;
+using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Actions.Services;
 using StreamTabula.Features.Integrations.Common.Models;
 using System.Collections.ObjectModel;

@@ -1,5 +1,5 @@
 using Microsoft.Win32;
-using StreamTabula.Core;
+using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Actions.Models;
 using System.Reflection;
 using System.Windows.Input;

@@ -13,8 +13,8 @@
                 <ui:ThemesDictionary Theme="Light" />
                 <ui:ControlsDictionary />
 
-                <ResourceDictionary Source="/Core/Styles/ToolTipStyles.xaml" />
-                <ResourceDictionary Source="/Core/Styles/ControlStyles.xaml" />
+                <ResourceDictionary Source="/Themes/ToolTipStyles.xaml" />
+                <ResourceDictionary Source="/Themes/ControlStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

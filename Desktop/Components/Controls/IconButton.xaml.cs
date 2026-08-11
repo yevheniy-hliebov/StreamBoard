@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using StreamTabula.Core.Models;
+using StreamTabula.Components.Enums;
 
 namespace StreamTabula.Components.Controls
 {

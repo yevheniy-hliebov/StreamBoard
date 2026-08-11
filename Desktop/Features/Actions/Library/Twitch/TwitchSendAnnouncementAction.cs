@@ -1,11 +1,11 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Core.Models;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Integrations.Twitch.Models;
 using StreamTabula.Features.Integrations.Twitch.Services;
+using StreamTabula.Components.Enums;
 
 namespace StreamTabula.Features.Actions.Library.Twitch
 {

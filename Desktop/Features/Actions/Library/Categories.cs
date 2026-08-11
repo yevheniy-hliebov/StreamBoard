@@ -1,7 +1,7 @@
-using StreamTabula.Core.Models;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Integrations.Common.Models;
+using StreamTabula.Components.Enums;
 
 namespace StreamTabula.Features.Actions.Library
 {

@@ -1,6 +1,6 @@
 using StreamTabula.Components.Controls;
 
-namespace StreamTabula.Core.Models
+namespace StreamTabula.Components.Enums
 {
     public enum FluentIconType
     {

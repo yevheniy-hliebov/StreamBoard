@@ -1,4 +1,4 @@
-﻿using StreamTabula.Core;
+﻿using StreamTabula.Core.Mvvm;
 using System.Text.Json.Serialization;
 
 namespace StreamTabula.Features.Decks.Models

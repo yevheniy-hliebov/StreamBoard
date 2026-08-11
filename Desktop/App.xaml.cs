@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Core.AppStartup;
-using StreamTabula.Core.DI;
+using StreamTabula.Bootstrapping;
 using System.Windows;
 
 namespace StreamTabula

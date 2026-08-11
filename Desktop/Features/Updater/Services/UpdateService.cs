@@ -4,10 +4,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using NuGet.Versioning;
-using StreamTabula.Core.Constants;
 using StreamTabula.Features.Updater.Models;
 using System.IO.Compression;
 using System.Windows;
+using StreamTabula.Features.Updater.Constants;
 
 namespace StreamTabula.Features.Updater.Services
 {

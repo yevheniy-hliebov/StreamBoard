@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Core.Models;
+using StreamTabula.Components.Enums;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Decks.Services;

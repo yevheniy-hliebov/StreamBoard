@@ -1,10 +1,10 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Core.Models;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Components.Enums;
 
 namespace StreamTabula.Features.Actions.Library.Obs
 {

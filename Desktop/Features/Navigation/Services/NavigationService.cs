@@ -1,4 +1,3 @@
-using StreamTabula.Core.Models;
 using StreamTabula.Features.Decks.Views.Pages;
 using StreamTabula.Features.Home.Pages;
 using StreamTabula.Features.Integrations.Common.Views.Pages;
@@ -8,6 +7,7 @@ using StreamTabula.Features.Servers.Pages;
 using StreamTabula.Features.Settings.Pages;
 using StreamTabula.Features.Integrations.Common.Models;
 using StreamTabula.Features.Navigation.Models;
+using StreamTabula.Components.Enums;
 
 namespace StreamTabula.Features.Navigation.Services
 {

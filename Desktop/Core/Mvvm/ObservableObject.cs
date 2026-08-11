@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace StreamTabula.Core
+namespace StreamTabula.Core.Mvvm
 {
     public class ObservableObject : INotifyPropertyChanged
     {

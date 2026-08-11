@@ -1,4 +1,4 @@
-﻿using StreamTabula.Core;
+﻿using StreamTabula.Core.Mvvm;
 using System.Windows.Input;
 
 namespace StreamTabula.Features.Decks.Models

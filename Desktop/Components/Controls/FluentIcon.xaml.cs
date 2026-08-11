@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using System.Windows;
-using StreamTabula.Core.Models;
+using StreamTabula.Components.Enums;
 using Wpf.Ui.Controls;
 
 namespace StreamTabula.Components.Controls

@@ -20,7 +20,7 @@ using StreamTabula.Features.Updater.ViewModels;
 using System.Net.Http;
 using Wpf.Ui;
 
-namespace StreamTabula.Core.DI
+namespace StreamTabula.Bootstrapping
 {
     public static class ServiceRegistration
     {

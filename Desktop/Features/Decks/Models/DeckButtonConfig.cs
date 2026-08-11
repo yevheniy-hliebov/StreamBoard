@@ -1,4 +1,4 @@
-﻿using StreamTabula.Core;
+﻿using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Actions.Models;
 using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;

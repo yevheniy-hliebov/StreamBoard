@@ -1,5 +1,5 @@
+using StreamTabula.Components.Enums;
 using StreamTabula.Core.Interop;
-using StreamTabula.Core.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Actions.Exceptions;
 using StreamTabula.Features.Actions.Models;

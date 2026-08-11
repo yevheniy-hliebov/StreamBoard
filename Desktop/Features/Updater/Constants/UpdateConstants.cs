@@ -1,4 +1,4 @@
-namespace StreamTabula.Core.Constants
+namespace StreamTabula.Features.Updater.Constants
 {
     public static class UpdateConstants
     {

@@ -1,5 +1,5 @@
 using System.Collections.ObjectModel;
-using StreamTabula.Core;
+using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Integrations.Common.Models;
 using StreamTabula.Features.Integrations.Obs.Models;
 using StreamTabula.Features.Integrations.Obs.Services;

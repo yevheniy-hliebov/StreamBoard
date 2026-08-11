@@ -11,9 +11,7 @@ using StreamTabula.Features.Updater.ViewModels;
 using System.Windows;
 using Wpf.Ui.Appearance;
 
-
-
-namespace StreamTabula.Core.AppStartup
+namespace StreamTabula.Bootstrapping
 {
     public static class AppInitializer
     {

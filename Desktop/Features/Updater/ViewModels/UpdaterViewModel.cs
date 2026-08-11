@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using StreamTabula.Core;
+using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Settings.Services;
 using StreamTabula.Features.Updater.Models;
 using StreamTabula.Features.Updater.Services;

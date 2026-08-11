@@ -1,9 +1,9 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
-using StreamTabula.Core.Models;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Components.Enums;
 
 namespace StreamTabula.Features.Actions.Library.System
 {

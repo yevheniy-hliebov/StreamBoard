@@ -1,4 +1,4 @@
-﻿using StreamTabula.Core.Models;
+﻿using StreamTabula.Components.Enums;
 
 namespace StreamTabula.Features.Actions.Models
 {

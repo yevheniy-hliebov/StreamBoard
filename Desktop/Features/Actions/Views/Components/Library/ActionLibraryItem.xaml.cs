@@ -1,4 +1,4 @@
-﻿using StreamTabula.Core.Models;
+﻿using StreamTabula.Components.Enums;
 using System.Windows;
 using System.Windows.Controls;
 

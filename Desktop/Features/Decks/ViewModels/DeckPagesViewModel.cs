@@ -1,5 +1,6 @@
 ﻿using GongSolutions.Wpf.DragDrop;
 using StreamTabula.Core;
+using StreamTabula.Core.Mvvm;
 using StreamTabula.Core.Services;
 using StreamTabula.Features.Decks.Models;
 using StreamTabula.Features.Decks.Services;

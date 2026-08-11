@@ -1,5 +1,5 @@
 using System.Reflection;
-using StreamTabula.Core;
+using StreamTabula.Core.Mvvm;
 
 namespace StreamTabula.Features.Actions.ViewModels
 {

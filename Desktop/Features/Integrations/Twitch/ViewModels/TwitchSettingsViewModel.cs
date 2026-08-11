@@ -1,4 +1,4 @@
-using StreamTabula.Core;
+using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Integrations.Twitch.Services;
 
 namespace StreamTabula.Features.Integrations.Twitch.ViewModels

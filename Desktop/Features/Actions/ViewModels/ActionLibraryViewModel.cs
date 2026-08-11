@@ -1,4 +1,4 @@
-﻿using StreamTabula.Core;
+﻿using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Actions.Services;
 
 namespace StreamTabula.Features.Actions.ViewModels

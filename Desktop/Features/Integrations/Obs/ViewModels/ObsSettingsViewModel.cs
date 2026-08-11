@@ -1,5 +1,5 @@
 using System.Windows.Input;
-using StreamTabula.Core;
+using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Integrations.Common.Models;
 using StreamTabula.Features.Integrations.Common.Services;
 using StreamTabula.Features.Integrations.Obs.Services;

@@ -1,4 +1,4 @@
-using StreamTabula.Core;
+using StreamTabula.Core.Mvvm;
 
 namespace StreamTabula.Features.Integrations.Common.Models
 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using StreamTabula.Core;
+using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Navigation.Services;
 using StreamTabula.Features.Settings.Services;
 using StreamTabula.Features.Updater.ViewModels;

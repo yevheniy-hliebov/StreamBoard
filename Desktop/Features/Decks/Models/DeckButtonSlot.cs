@@ -1,4 +1,4 @@
-﻿using StreamTabula.Core;
+﻿using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Actions.Services;
 using System.Windows.Input;
 using Wpf.Ui.Input;
