@@ -6,9 +6,8 @@
     xmlns:integrations="clr-namespace:StreamTabula.Features.Integrations.Common.Views.Components"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navigation="clr-namespace:StreamTabula.Features.Navigation.Views.Components"
-    xmlns:titlebar="clr-namespace:StreamTabula.Components.TitleBar"
+    xmlns:shell="clr-namespace:StreamTabula.Shell"
     xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
-    xmlns:tray="clr-namespace:StreamTabula.Components.Tray"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="StreamTabula"
     ExtendsContentIntoTitleBar="True"
@@ -22,13 +21,13 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <tray:TrayIconView />
+        <shell:TrayIconView />
 
-        <titlebar:MainTitleBar
+        <shell:TitleBar
             Title="{Binding AppInfo.AppName, RelativeSource={RelativeSource AncestorType=Window}}"
             Grid.Row="0"
             Subtitle="{Binding AppVersion, RelativeSource={RelativeSource AncestorType=Window}}">
-            <titlebar:MainTitleBar.RightContent>
+            <shell:TitleBar.RightContent>
                 <StackPanel Orientation="Horizontal">
 
                     <integrations:ConnectionStateMenu Margin="0,0,8,0" Items="{Binding Integrations}">
@@ -39,8 +38,8 @@
 
                     <controls:AdminStatusIcon />
                 </StackPanel>
-            </titlebar:MainTitleBar.RightContent>
-        </titlebar:MainTitleBar>
+            </shell:TitleBar.RightContent>
+        </shell:TitleBar>
 
         <navigation:MainNavView x:Name="RootNavView" Grid.Row="1" />
 

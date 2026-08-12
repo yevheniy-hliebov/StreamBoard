@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:dialogs="clr-namespace:StreamTabula.Components.Dialogs"
              xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
-             xmlns:titlebar="clr-namespace:StreamTabula.Components.TitleBar"
+             xmlns:shell="clr-namespace:StreamTabula.Shell"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              x:Name="Root">
 
@@ -14,7 +14,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <titlebar:MainTitleBar Grid.Row="0"
+        <shell:TitleBar Grid.Row="0"
                                Title="{Binding Title, ElementName=Root}"
                                ShowAppIcon="False"
                                ShowMinimize="False"
