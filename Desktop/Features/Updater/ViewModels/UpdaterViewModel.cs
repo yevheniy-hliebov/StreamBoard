@@ -1,12 +1,11 @@
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Input;
-using StreamTabula.Core;
 using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Settings.Services;
 using StreamTabula.Features.Updater.Models;
 using StreamTabula.Features.Updater.Services;
 using StreamTabula.Features.Updater.Views.Components;
+using System.Diagnostics;
+using System.Windows;
+using Wpf.Ui.Input;
 
 namespace StreamTabula.Features.Updater.ViewModels
 {
@@ -16,9 +15,9 @@ namespace StreamTabula.Features.Updater.ViewModels
         private readonly UpdateService _updateService;
         private readonly SettingsStorage _settingsStorage;
 
-        public ICommand OpenUpdateDialogCommand { get; }
-        public ICommand UpdateNowCommand { get; }
-        public ICommand SkipVersionCommand { get; }
+        public IRelayCommand<object?> OpenUpdateDialogCommand { get; }
+        public IRelayCommand<object?> UpdateNowCommand { get; }
+        public IRelayCommand<object?> SkipVersionCommand { get; }
 
         public UpdaterViewModel(AppInfoService appInfoService, UpdateService updateService, SettingsStorage settingsStorage)
         {
@@ -26,14 +25,11 @@ namespace StreamTabula.Features.Updater.ViewModels
             _updateService = updateService;
             _settingsStorage = settingsStorage;
 
-            OpenUpdateDialogCommand = new RelayCommand(_ => OpenUpdateDialog());
+            OpenUpdateDialogCommand = new RelayCommand<object?>(_ => OpenUpdateDialog());
 
-            UpdateNowCommand = new RelayCommand(_ =>
-            {
-                _ = StartUpdateProcessAsync();
-            });
+            UpdateNowCommand = new RelayCommand<object?>(async _ => await StartUpdateProcessAsync());
 
-            SkipVersionCommand = new RelayCommand(_ =>
+            SkipVersionCommand = new RelayCommand<object?>(_ =>
             {
                 if (LatestReleaseInfo != null)
                 {

@@ -1,5 +1,4 @@
-﻿using StreamTabula.Core;
-using StreamTabula.Core.Mvvm;
+﻿using StreamTabula.Core.Mvvm;
 using StreamTabula.Core.Services;
 using StreamTabula.Features.Actions.Services;
 using StreamTabula.Features.Actions.ViewModels;
@@ -8,7 +7,7 @@ using StreamTabula.Features.Decks.Services;
 using StreamTabula.Features.Servers.Models;
 using StreamTabula.Features.Servers.Services;
 using System.ComponentModel;
-using System.Windows.Input;
+using Wpf.Ui.Input;
 
 namespace StreamTabula.Features.Decks.ViewModels
 {
@@ -27,7 +26,7 @@ namespace StreamTabula.Features.Decks.ViewModels
 
         private CancellationTokenSource? _buttonDebounceCts;
 
-        public ICommand ToggleClickCommand { get; }
+        public IRelayCommand<object?> ToggleClickCommand { get; }
 
         public GridDeckViewModel(
             GridDeckStorage storage,
@@ -55,7 +54,7 @@ namespace StreamTabula.Features.Decks.ViewModels
             _buttonServise.ButtonsSwapped += OnButtonsSwapped;
             _buttonServise.ButtonChanged += OnButtonChanged;
 
-            ToggleClickCommand = new RelayCommand(_ => EditorState.IsClickMode = !EditorState.IsClickMode);
+            ToggleClickCommand = new RelayCommand<object?>(_ => EditorState.IsClickMode = !EditorState.IsClickMode);
         }
 
         private void OnCanvasPropertyChanged(object? sender, PropertyChangedEventArgs e)

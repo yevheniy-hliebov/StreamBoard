@@ -1,60 +1,58 @@
 using Microsoft.Win32;
-using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Actions.Models;
 using System.Reflection;
-using System.Windows.Input;
+using Wpf.Ui.Input;
 
-namespace StreamTabula.Features.Actions.ViewModels
+namespace StreamTabula.Features.Actions.ViewModels;
+
+public class PathFieldViewModel(
+    string label,
+    string? hint,
+    object targetAction,
+    PropertyInfo property,
+    PathSelectionType selectionType,
+    string filter
+) : ActionFieldViewModel(label, hint, targetAction, property)
 {
-    public class PathFieldViewModel(
-        string label,
-        string? hint,
-        object targetAction,
-        PropertyInfo property,
-        PathSelectionType selectionType,
-        string filter
-    ) : ActionFieldViewModel(label, hint, targetAction, property)
+    public string Value
     {
-        public string Value
+        get => Property.GetValue(TargetAction) as string ?? "";
+        set
         {
-            get => Property.GetValue(TargetAction) as string ?? "";
-            set
+            Property.SetValue(TargetAction, value);
+            OnPropertyChanged();
+        }
+    }
+
+    public IRelayCommand<object?> BrowseCommand => new RelayCommand<object?>(_ => Browse());
+
+    private void Browse()
+    {
+        if (selectionType == PathSelectionType.File)
+        {
+            var dialog = new OpenFileDialog
             {
-                Property.SetValue(TargetAction, value);
-                OnPropertyChanged();
+                Title = Label,
+                Filter = filter,
+                FileName = Value
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                Value = dialog.FileName;
             }
         }
-
-        public ICommand BrowseCommand => new RelayCommand(_ => Browse());
-
-        private void Browse()
+        else
         {
-            if (selectionType == PathSelectionType.File)
+            var dialog = new OpenFolderDialog
             {
-                var dialog = new OpenFileDialog
-                {
-                    Title = Label,
-                    Filter = filter,
-                    FileName = Value
-                };
+                Title = Label,
+                InitialDirectory = string.IsNullOrWhiteSpace(Value) ? null : Value
+            };
 
-                if (dialog.ShowDialog() == true)
-                {
-                    Value = dialog.FileName;
-                }
-            }
-            else
+            if (dialog.ShowDialog() == true)
             {
-                var dialog = new OpenFolderDialog
-                {
-                    Title = Label,
-                    InitialDirectory = string.IsNullOrWhiteSpace(Value) ? null : Value
-                };
-
-                if (dialog.ShowDialog() == true)
-                {
-                    Value = dialog.FolderName;
-                }
+                Value = dialog.FolderName;
             }
         }
     }

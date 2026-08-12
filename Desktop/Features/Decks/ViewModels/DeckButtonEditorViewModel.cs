@@ -1,12 +1,11 @@
-﻿using StreamTabula.Core;
-using StreamTabula.Core.Mvvm;
+﻿using StreamTabula.Core.Mvvm;
 using StreamTabula.Core.Services;
 using StreamTabula.Features.Actions.Services;
 using StreamTabula.Features.Actions.ViewModels;
 using StreamTabula.Features.Decks.Models;
 using StreamTabula.Features.Decks.Services;
 using System.ComponentModel;
-using System.Windows.Input;
+using Wpf.Ui.Input;
 
 namespace StreamTabula.Features.Decks.ViewModels
 {
@@ -42,7 +41,7 @@ namespace StreamTabula.Features.Decks.ViewModels
             }
         }
 
-        public ICommand ClearButtonCommand { get; }
+        public IRelayCommand<object?> ClearButtonCommand { get; }
 
         public event Action<DeckButtonSlot>? ButtonAppearanceChanged;
 
@@ -57,7 +56,7 @@ namespace StreamTabula.Features.Decks.ViewModels
                 actionService: actionService
             );
 
-            ClearButtonCommand = new RelayCommand(async _ => await OnClearButtonAppearance());
+            ClearButtonCommand = new RelayCommand<object?>(async _ => await OnClearButtonAppearance());
         }
 
         private async Task OnClearButtonAppearance()
