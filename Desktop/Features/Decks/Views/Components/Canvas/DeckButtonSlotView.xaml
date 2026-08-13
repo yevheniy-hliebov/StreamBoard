@@ -2,9 +2,10 @@
     x:Class="StreamTabula.Features.Decks.Views.Components.Canvas.DeckButtonSlotView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:StreamTabula.Components.Controls">
+    xmlns:layout="clr-namespace:StreamTabula.Controls.Layout"
+    xmlns:icons="clr-namespace:StreamTabula.Controls.Icons">
 
-    <controls:ClippingBorder
+    <layout:ClippingBorder
         Width="45"
         Height="45"
         Background="{Binding ButtonBackground, RelativeSource={RelativeSource AncestorType=UserControl}}"
@@ -14,14 +15,14 @@
         ToolTipService.Placement="Center"
         ToolTipService.VerticalOffset="35">
 
-        <controls:ClippingBorder.InputBindings>
+        <layout:ClippingBorder.InputBindings>
             <MouseBinding
                 Command="{Binding Command, RelativeSource={RelativeSource AncestorType=UserControl}}"
                 CommandParameter="{Binding CommandParameter, RelativeSource={RelativeSource AncestorType=UserControl}}"
                 MouseAction="LeftClick" />
-        </controls:ClippingBorder.InputBindings>
+        </layout:ClippingBorder.InputBindings>
 
-        <controls:ClippingBorder.Style>
+        <layout:ClippingBorder.Style>
             <Style TargetType="Border">
                 <Setter Property="BorderBrush" Value="#555" />
                 <Setter Property="ToolTip" Value="{Binding ButtonName, RelativeSource={RelativeSource AncestorType=UserControl}}" />
@@ -37,7 +38,7 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-        </controls:ClippingBorder.Style>
+        </layout:ClippingBorder.Style>
 
         <Grid>
             <Image
@@ -61,15 +62,15 @@
                 </Image.Style>
             </Image>
 
-            <controls:FluentIcon
+            <icons:FluentIcon
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontSize="18"
                 Foreground="#FFA500"
                 IconType="Warning"
                 ToolTip="The image at the specified path was not found or has been deleted.">
-                <controls:FluentIcon.Style>
-                    <Style TargetType="controls:FluentIcon">
+                <icons:FluentIcon.Style>
+                    <Style TargetType="icons:FluentIcon">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsImageMissing, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
@@ -77,9 +78,9 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </controls:FluentIcon.Style>
-            </controls:FluentIcon>
+                </icons:FluentIcon.Style>
+            </icons:FluentIcon>
         </Grid>
 
-    </controls:ClippingBorder>
+    </layout:ClippingBorder>
 </UserControl>

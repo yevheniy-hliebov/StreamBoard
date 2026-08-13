@@ -2,7 +2,7 @@
     x:Class="StreamTabula.Features.Actions.Views.Components.Library.CategoryExpander"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+    xmlns:icons="clr-namespace:StreamTabula.Controls.Icons"
     xmlns:ic="clr-namespace:StreamTabula.Features.Integrations.Common.Views.Components"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     x:Name="Root">
@@ -59,14 +59,14 @@
                                     </ic:IntegrationIcon.Style>
                                 </ic:IntegrationIcon>
 
-                                <controls:FluentIcon
+                                <icons:FluentIcon
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     FontSize="20"
                                     Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                     IconType="{Binding Icon, RelativeSource={RelativeSource AncestorType=UserControl}}">
-                                    <controls:FluentIcon.Style>
-                                        <Style TargetType="controls:FluentIcon">
+                                    <icons:FluentIcon.Style>
+                                        <Style TargetType="icons:FluentIcon">
                                             <Setter Property="Visibility" Value="Collapsed" />
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IntegrationIcon, ElementName=Root}" Value="{x:Null}">
@@ -74,8 +74,8 @@
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </controls:FluentIcon.Style>
-                                </controls:FluentIcon>
+                                    </icons:FluentIcon.Style>
+                                </icons:FluentIcon>
                             </Grid>
 
                             <TextBlock
@@ -86,7 +86,7 @@
                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                 Text="{Binding Title, ElementName=Root}" />
 
-                            <controls:FluentIcon
+                            <icons:FluentIcon
                                 x:Name="ChevronIcon"
                                 Grid.Column="2"
                                 VerticalAlignment="Center"
@@ -94,10 +94,10 @@
                                 Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                 IconType="ChevronDown"
                                 RenderTransformOrigin="0.5,0.5">
-                                <controls:FluentIcon.RenderTransform>
+                                <icons:FluentIcon.RenderTransform>
                                     <RotateTransform Angle="0" />
-                                </controls:FluentIcon.RenderTransform>
-                            </controls:FluentIcon>
+                                </icons:FluentIcon.RenderTransform>
+                            </icons:FluentIcon>
                         </Grid>
                     </Border>
 

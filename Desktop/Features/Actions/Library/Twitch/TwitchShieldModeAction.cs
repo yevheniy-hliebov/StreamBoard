@@ -4,85 +4,84 @@ using Microsoft.Extensions.DependencyInjection;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Integrations.Twitch.Services;
-using StreamTabula.Components.Enums;
+using StreamTabula.Controls.Icons;
 
-namespace StreamTabula.Features.Actions.Library.Twitch
+namespace StreamTabula.Features.Actions.Library.Twitch;
+
+[ActionDiscriminator("twitch_shield_mode")]
+public class TwitchShieldModeAction : TwitchBaseAction
 {
-    [ActionDiscriminator("twitch_shield_mode")]
-    public class TwitchShieldModeAction : TwitchBaseAction
+    public static readonly ActionMetadata StaticMetadata = new(
+        Name: "Shield Mode",
+        DialogTitle: "Shield Mode Settings",
+        Icon: FluentIconType.DefenderApp
+    );
+
+    [JsonIgnore]
+    public override ActionMetadata Metadata => StaticMetadata;
+
+    private string _shieldModeState = "Toggle";
+
+    [DropdownField("State", typeof(TwitchShieldModeStateOptionsProvider), Hint = "Select action...")]
+    [JsonPropertyName("shield_mode_state")]
+    public string ShieldModeState
     {
-        public static readonly ActionMetadata StaticMetadata = new(
-            Name: "Shield Mode",
-            DialogTitle: "Shield Mode Settings",
-            Icon: FluentIconType.DefenderApp
-        );
-
-        [JsonIgnore]
-        public override ActionMetadata Metadata => StaticMetadata;
-
-        private string _shieldModeState = "Toggle";
-
-        [DropdownField("State", typeof(TwitchShieldModeStateOptionsProvider), Hint = "Select action...")]
-        [JsonPropertyName("shield_mode_state")]
-        public string ShieldModeState
+        get => _shieldModeState;
+        set
         {
-            get => _shieldModeState;
-            set
-            {
-                if (SetProperty(ref _shieldModeState, value))
-                    OnPropertyChanged(nameof(Label));
-            }
+            if (SetProperty(ref _shieldModeState, value))
+                OnPropertyChanged(nameof(Label));
         }
+    }
 
-        [JsonIgnore]
-        public override string Label => $"{Metadata.Name} ({ShieldModeState})";
+    [JsonIgnore]
+    public override string Label => $"{Metadata.Name} ({ShieldModeState})";
 
-        public override async Task ExecuteAsync(object? data = null)
+    public override async Task ExecuteAsync(object? data = null)
+    {
+        try
         {
-            try
-            {
-                var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
-                var broadcaster = gateway.Broadcaster;
+            var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
+            var broadcaster = gateway.Broadcaster;
 
-                if (!broadcaster.IsAuth || broadcaster.User?.Id == null || broadcaster.Api == null)
+            if (!broadcaster.IsAuth || broadcaster.User?.Id == null || broadcaster.Api == null)
+            {
+                return;
+            }
+
+            string broadcasterId = broadcaster.User.Id;
+            string moderatorId = broadcasterId;
+
+            bool targetState = false;
+
+            if (ShieldModeState == "Toggle")
+            {
+                var currentStatus = await broadcaster.Api.Moderation.GetShieldModeStatus(broadcasterId, moderatorId);
+
+                if (currentStatus == null)
                 {
+                    Debug.WriteLine("[Twitch Shield Mode] Failed to retrieve current status for Toggle.");
                     return;
                 }
 
-                string broadcasterId = broadcaster.User.Id;
-                string moderatorId = broadcasterId;
-
-                bool targetState = false;
-
-                if (ShieldModeState == "Toggle")
-                {
-                    var currentStatus = await broadcaster.Api.Moderation.GetShieldModeStatus(broadcasterId, moderatorId);
-
-                    if (currentStatus == null)
-                    {
-                        Debug.WriteLine("[Twitch Shield Mode] Failed to retrieve current status for Toggle.");
-                        return;
-                    }
-
-                    targetState = !currentStatus.IsActive;
-                }
-                else
-                {
-                    targetState = ShieldModeState == "Enable";
-                }
-
-                await broadcaster.Api.Moderation.UpdateShieldModeStatus(broadcasterId, moderatorId, targetState);
+                targetState = !currentStatus.IsActive;
             }
-            catch (Exception ex)
+            else
             {
-                Debug.WriteLine($"[Twitch Shield Mode] Error: {ex.Message}");
+                targetState = ShieldModeState == "Enable";
             }
-        }
 
-        public override BaseAction Copy() => new TwitchShieldModeAction
+            await broadcaster.Api.Moderation.UpdateShieldModeStatus(broadcasterId, moderatorId, targetState);
+        }
+        catch (Exception ex)
         {
-            Id = this.Id,
-            ShieldModeState = this.ShieldModeState
-        };
+            Debug.WriteLine($"[Twitch Shield Mode] Error: {ex.Message}");
+        }
     }
+
+    public override BaseAction Copy() => new TwitchShieldModeAction
+    {
+        Id = this.Id,
+        ShieldModeState = this.ShieldModeState
+    };
 }

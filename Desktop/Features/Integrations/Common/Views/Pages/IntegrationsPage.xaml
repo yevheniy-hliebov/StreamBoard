@@ -1,37 +1,41 @@
 ﻿<nav:NavigationHubPage x:Class="StreamTabula.Features.Integrations.Common.Views.Pages.IntegrationsPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:local="clr-namespace:StreamTabula.Features.Integrations.Common.Views.Components"
-      xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
-      xmlns:cards="clr-namespace:StreamTabula.Components.Cards"
-      xmlns:nav="clr-namespace:StreamTabula.Features.Navigation.Views.Components"
-      Title="IntegrationsPage">
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:local="clr-namespace:StreamTabula.Features.Integrations.Common.Views.Components"
+                       xmlns:typography="clr-namespace:StreamTabula.Controls.Typography"
+                       xmlns:cards="clr-namespace:StreamTabula.Controls.Cards"
+                       xmlns:nav="clr-namespace:StreamTabula.Features.Navigation.Views.Components"
+                       Title="IntegrationsPage">
 
     <StackPanel Margin="16">
         <StackPanel.Resources>
             <Style TargetType="cards:NavigationCard">
-                <Setter Property="Margin" Value="0,0,0,12" />
-                <EventSetter Event="PreviewMouseLeftButtonUp" Handler="OnCardClick" />
+                <Setter Property="Margin"
+                        Value="0,0,0,12" />
+                <EventSetter Event="PreviewMouseLeftButtonUp"
+                             Handler="OnCardClick" />
             </Style>
         </StackPanel.Resources>
 
-        <controls:PageTitle Text="Integrations" />
+        <typography:PageTitle Text="Integrations" />
 
         <cards:NavigationCard Title="OBS Studio"
                               Description="Configure WebSocket server settings to control your scenes and sources"
                               IsChevronVisible="True"
                               IconPosition="Left">
             <cards:NavigationCard.Icon>
-                <local:IntegrationIcon IconType="Obs" Size="25" />
+                <local:IntegrationIcon IconType="Obs"
+                                       Size="25" />
             </cards:NavigationCard.Icon>
         </cards:NavigationCard>
 
-        <cards:NavigationCard Title="Twitch" 
+        <cards:NavigationCard Title="Twitch"
                               Description="Link your broadcaster and bot accounts to manage stream"
                               IsChevronVisible="True"
                               IconPosition="Left">
             <cards:NavigationCard.Icon>
-                <local:IntegrationIcon IconType="Twitch" Size="25" />
+                <local:IntegrationIcon IconType="Twitch"
+                                       Size="25" />
             </cards:NavigationCard.Icon>
         </cards:NavigationCard>
     </StackPanel>

@@ -2,7 +2,8 @@
     x:Class="StreamTabula.Features.Actions.Views.Components.Editor.ActionListItem"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+    xmlns:inputs="clr-namespace:StreamTabula.Controls.Inputs"
+    xmlns:icons="clr-namespace:StreamTabula.Controls.Icons"
     x:Name="Root">
 
     <Border Padding="5" CornerRadius="4">
@@ -21,7 +22,7 @@
                 Margin="0,0,4,0"
                 VerticalAlignment="Center">
 
-                <controls:FluentIcon
+                <icons:FluentIcon
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="14"
@@ -37,7 +38,7 @@
                 Text="{Binding Text, ElementName=Root}"
                 TextTrimming="CharacterEllipsis" />
 
-            <controls:IconButton
+            <inputs:IconButton
                 Grid.Column="2"
                 Margin="4,0,0,0"
                 VerticalAlignment="Center"

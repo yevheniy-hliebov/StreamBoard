@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Components.Cards;
+using StreamTabula.Controls.Cards;
 using StreamTabula.Features.Navigation.Services;
 using System.Windows.Controls;
 using System.Windows.Input;

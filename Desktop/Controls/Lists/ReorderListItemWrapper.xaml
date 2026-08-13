@@ -1,0 +1,42 @@
+﻿<ContentControl x:Class="StreamTabula.Controls.Lists.ReorderListItemWrapper"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:icons="clr-namespace:StreamTabula.Controls.Icons"
+                xmlns:local="clr-namespace:StreamTabula.Controls.Lists">
+
+    <ContentControl.Template>
+        <ControlTemplate TargetType="{x:Type local:ReorderListItemWrapper}">
+            <Grid Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <ContentPresenter Grid.Column="0" Content="{TemplateBinding Content}" VerticalAlignment="Center" />
+
+                <icons:FluentIcon Grid.Column="1"
+                                     IconType="GripperBarHorizontal"
+                                     FontSize="14"
+                                     Cursor="Hand"
+                                     Margin="5,0,0,0">
+                    <icons:FluentIcon.Style>
+                        <Style TargetType="{x:Type icons:FluentIcon}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding ShowDragHandle, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ReorderListItemWrapper}}}" Value="True" />
+
+                                        <Condition Binding="{Binding IsDragEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ReorderListView}}}" Value="True" />
+                                    </MultiDataTrigger.Conditions>
+
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </icons:FluentIcon.Style>
+                </icons:FluentIcon>
+            </Grid>
+        </ControlTemplate>
+    </ContentControl.Template>
+</ContentControl>

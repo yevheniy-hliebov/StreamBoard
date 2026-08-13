@@ -1,4 +1,4 @@
-﻿using StreamTabula.Components.Enums;
+﻿using StreamTabula.Controls.Icons;
 using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Servers.Components;
 using StreamTabula.Features.Servers.Models;

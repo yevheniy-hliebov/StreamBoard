@@ -4,85 +4,84 @@ using Microsoft.Extensions.DependencyInjection;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Integrations.Twitch.Services;
-using StreamTabula.Components.Enums;
+using StreamTabula.Controls.Icons;
 
-namespace StreamTabula.Features.Actions.Library.Twitch
+namespace StreamTabula.Features.Actions.Library.Twitch;
+
+[ActionDiscriminator("twitch_send_shoutout")]
+public class TwitchSendShoutoutAction : TwitchBaseAction
 {
-    [ActionDiscriminator("twitch_send_shoutout")]
-    public class TwitchSendShoutoutAction : TwitchBaseAction
+    public static readonly ActionMetadata StaticMetadata = new(
+        Name: "Send Shoutout",
+        DialogTitle: "Send Shoutout Settings",
+        Icon: FluentIconType.People
+    );
+
+    [JsonIgnore]
+    public override ActionMetadata Metadata => StaticMetadata;
+
+    private string _username = string.Empty;
+
+    [InputField("Username", Hint = "Enter username...")]
+    [JsonPropertyName("title")]
+    public string Username
     {
-        public static readonly ActionMetadata StaticMetadata = new(
-            Name: "Send Shoutout",
-            DialogTitle: "Send Shoutout Settings",
-            Icon: FluentIconType.People
-        );
-
-        [JsonIgnore]
-        public override ActionMetadata Metadata => StaticMetadata;
-
-        private string _username = string.Empty;
-
-        [InputField("Username", Hint = "Enter username...")]
-        [JsonPropertyName("title")]
-        public string Username
+        get => _username;
+        set
         {
-            get => _username;
-            set
-            {
-                _username = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(Label));
-            }
+            _username = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(Label));
         }
+    }
 
-        [JsonIgnore]
-        public override string Label
+    [JsonIgnore]
+    public override string Label
+    {
+        get
         {
-            get
+            if (string.IsNullOrEmpty(Username))
             {
-                if (string.IsNullOrEmpty(Username))
-                {
-                    return Metadata.Name;
-                }
-                return $"{Metadata.Name} ({Username})";
+                return Metadata.Name;
             }
+            return $"{Metadata.Name} ({Username})";
         }
+    }
 
-        public override async Task ExecuteAsync(object? data = null)
+    public override async Task ExecuteAsync(object? data = null)
+    {
+        if (string.IsNullOrWhiteSpace(Username)) return;
+
+        try
         {
-            if (string.IsNullOrWhiteSpace(Username)) return;
+            var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
+            var broadcaster = gateway.Broadcaster;
 
-            try
+            if (broadcaster.IsAuth && broadcaster.User != null)
             {
-                var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
-                var broadcaster = gateway.Broadcaster;
+                string? broadcasterId = gateway.Broadcaster.User?.Id;
 
-                if (broadcaster.IsAuth && broadcaster.User != null)
+                if (broadcasterId != null && broadcaster.Api != null)
                 {
-                    string? broadcasterId = gateway.Broadcaster.User?.Id;
+                    var toBroadcasterId = await broadcaster.Api.Users.GetUserIdByLogin(Username);
 
-                    if (broadcasterId != null && broadcaster.Api != null)
+                    if (toBroadcasterId != null)
                     {
-                        var toBroadcasterId = await broadcaster.Api.Users.GetUserIdByLogin(Username);
-
-                        if (toBroadcasterId != null)
-                        {
-                            await broadcaster.Api.Chat.SendShoutout(broadcasterId, toBroadcasterId, broadcasterId);
-                        }
+                        await broadcaster.Api.Chat.SendShoutout(broadcasterId, toBroadcasterId, broadcasterId);
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Twitch send shoutout error: {ex.Message}");
-                throw;
-            }
         }
-
-        public override BaseAction Copy() => new TwitchSendShoutoutAction
+        catch (Exception ex)
         {
-            Id = this.Id,
-            Username = this.Username
-        };
+            Debug.WriteLine($"Twitch send shoutout error: {ex.Message}");
+            throw;
+        }
     }
+
+    public override BaseAction Copy() => new TwitchSendShoutoutAction
+    {
+        Id = this.Id,
+        Username = this.Username
+    };
 }

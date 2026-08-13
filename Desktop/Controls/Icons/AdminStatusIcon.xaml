@@ -1,0 +1,16 @@
+﻿<UserControl
+    x:Class="StreamTabula.Controls.Icons.AdminStatusIcon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:StreamTabula.Controls.Icons"
+    Visibility="Collapsed"
+    Foreground="{DynamicResource SystemFillColorSuccessBrush}">
+
+    <local:FluentIcon
+        Margin="10,0,10,0"
+        FontSize="16"
+        Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=UserControl}}"
+        IconType="Admin"
+        ToolTip="Running as Administrator" />
+
+</UserControl>

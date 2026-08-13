@@ -1,5 +1,4 @@
-﻿using StreamTabula.Components.Controls;
-using StreamTabula.Components.Enums;
+﻿using StreamTabula.Controls.Icons;
 using StreamTabula.Core.Serialization;
 using System.Text.Json;
 using Wpf.Ui;

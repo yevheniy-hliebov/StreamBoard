@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:avm="clr-namespace:StreamTabula.Features.Actions.ViewModels"
-    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+    xmlns:icons="clr-namespace:StreamTabula.Controls.Icons"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
     <Grid>
@@ -85,7 +85,7 @@
                                     VerticalAlignment="Center"
                                     Appearance="Transparent"
                                     Command="{Binding BrowseCommand}">
-                                    <controls:FluentIcon FontSize="14" IconType="Folder" />
+                                    <icons:FluentIcon FontSize="14" IconType="Folder" />
                                 </ui:Button>
                             </Grid>
                         </StackPanel>

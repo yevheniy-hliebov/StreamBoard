@@ -1,34 +1,33 @@
-﻿using StreamTabula.Components.Enums;
+﻿using StreamTabula.Controls.Icons;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace StreamTabula.Features.Actions.Views.Components.Library
+namespace StreamTabula.Features.Actions.Views.Components.Library;
+
+public partial class ActionLibraryItem : UserControl
 {
-    public partial class ActionLibraryItem : UserControl
+    public static readonly DependencyProperty IconProperty =
+        DependencyProperty.Register("Icon", typeof(FluentIconType), typeof(ActionLibraryItem),
+            new PropertyMetadata(FluentIconType.Checkbox));
+
+    public static readonly DependencyProperty TextProperty =
+        DependencyProperty.Register("Text", typeof(string), typeof(ActionLibraryItem),
+            new PropertyMetadata(string.Empty));
+
+    public FluentIconType Icon
     {
-        public static readonly DependencyProperty IconProperty =
-            DependencyProperty.Register("Icon", typeof(FluentIconType), typeof(ActionLibraryItem),
-                new PropertyMetadata(FluentIconType.Checkbox));
+        get => (FluentIconType)GetValue(IconProperty);
+        set => SetValue(IconProperty, value);
+    }
 
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(ActionLibraryItem),
-                new PropertyMetadata(string.Empty));
+    public string Text
+    {
+        get => (string)GetValue(TextProperty);
+        set => SetValue(TextProperty, value);
+    }
 
-        public FluentIconType Icon
-        {
-            get => (FluentIconType)GetValue(IconProperty);
-            set => SetValue(IconProperty, value);
-        }
-
-        public string Text
-        {
-            get => (string)GetValue(TextProperty);
-            set => SetValue(TextProperty, value);
-        }
-
-        public ActionLibraryItem()
-        {
-            InitializeComponent();
-        }
+    public ActionLibraryItem()
+    {
+        InitializeComponent();
     }
 }

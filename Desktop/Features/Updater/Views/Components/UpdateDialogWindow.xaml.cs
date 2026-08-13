@@ -1,12 +1,11 @@
-using StreamTabula.Components.Dialogs;
+using StreamTabula.Controls.Dialogs;
 
-namespace StreamTabula.Features.Updater.Views.Components
+namespace StreamTabula.Features.Updater.Views.Components;
+
+public partial class UpdateDialogWindow : BaseDialog
 {
-    public partial class UpdateDialogWindow : BaseDialog
+    public UpdateDialogWindow()
     {
-        public UpdateDialogWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

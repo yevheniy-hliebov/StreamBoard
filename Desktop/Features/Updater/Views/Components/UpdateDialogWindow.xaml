@@ -1,8 +1,8 @@
 <dialogs:BaseDialog x:Class="StreamTabula.Features.Updater.Views.Components.UpdateDialogWindow"
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:dialogs="clr-namespace:StreamTabula.Components.Dialogs"
-                    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
+                    xmlns:dialogs="clr-namespace:StreamTabula.Controls.Dialogs"
+                    xmlns:icons="clr-namespace:StreamTabula.Controls.Icons"
                     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                     Height="230"
                     MinHeight="230"
@@ -55,7 +55,7 @@
                         </Style>
                     </StackPanel.Style>
 
-                    <controls:FluentIcon Margin="0,0,0,16"
+                    <icons:FluentIcon Margin="0,0,0,16"
                                          HorizontalAlignment="Center"
                                          FontSize="48"
                                          Foreground="#4CAF50"
@@ -94,7 +94,7 @@
                         </Style>
                     </StackPanel.Style>
 
-                    <controls:FluentIcon Margin="0,0,0,16"
+                    <icons:FluentIcon Margin="0,0,0,16"
                                          HorizontalAlignment="Center"
                                          FontSize="48"
                                          IconType="Cloud" />
@@ -146,7 +146,7 @@
                         </Style>
                     </StackPanel.Style>
 
-                    <controls:FluentIcon Margin="0,0,0,16"
+                    <icons:FluentIcon Margin="0,0,0,16"
                                          HorizontalAlignment="Center"
                                          FontSize="48"
                                          IconType="Download" />

@@ -1,66 +1,66 @@
-﻿<UserControl
-    x:Class="StreamTabula.Features.Actions.Views.Components.Editor.ActionListView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:cdd="clr-namespace:CustomDragDropLib;assembly=CustomDragDropLib"
-    xmlns:controls="clr-namespace:StreamTabula.Components.Controls"
-    xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
-    xmlns:local="clr-namespace:StreamTabula.Features.Actions.Views.Components.Editor"
-    xmlns:reorder="clr-namespace:StreamTabula.Components.Controls.ReorderList"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+﻿<UserControl x:Class="StreamTabula.Features.Actions.Views.Components.Editor.ActionListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:cdd="clr-namespace:CustomDragDropLib;assembly=CustomDragDropLib"
+             xmlns:layout="clr-namespace:StreamTabula.Controls.Layout"
+             xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+             xmlns:local="clr-namespace:StreamTabula.Features.Actions.Views.Components.Editor"
+             xmlns:reorder="clr-namespace:StreamTabula.Controls.Lists"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
     <UserControl.InputBindings>
-        <KeyBinding Modifiers="Ctrl" Key="C" 
-                    Command="{Binding CopyActionCommand}" 
+        <KeyBinding Modifiers="Ctrl"
+                    Key="C"
+                    Command="{Binding CopyActionCommand}"
                     CommandParameter="{Binding SelectedAction.Id}" />
 
-        <KeyBinding Modifiers="Ctrl" Key="X" 
-                    Command="{Binding CutActionCommand}" 
+        <KeyBinding Modifiers="Ctrl"
+                    Key="X"
+                    Command="{Binding CutActionCommand}"
                     CommandParameter="{Binding SelectedAction.Id}" />
 
-        <KeyBinding Modifiers="Ctrl" Key="D" 
-                    Command="{Binding DuplicateActionCommand}" 
+        <KeyBinding Modifiers="Ctrl"
+                    Key="D"
+                    Command="{Binding DuplicateActionCommand}"
                     CommandParameter="{Binding SelectedAction.Id}" />
 
-        <KeyBinding Key="Delete" 
-                    Command="{Binding DeleteActionCommand}" 
+        <KeyBinding Key="Delete"
+                    Command="{Binding DeleteActionCommand}"
                     CommandParameter="{Binding SelectedAction.Id}" />
 
-        <KeyBinding Modifiers="Ctrl" Key="V" 
+        <KeyBinding Modifiers="Ctrl"
+                    Key="V"
                     Command="{Binding PasteActionCommand}" />
     </UserControl.InputBindings>
 
-    <cdd:DropWrapper
-        Margin="0"
-        Padding="2"
-        DragOverBackground="Transparent"
-        DragOverBorderBrush="{DynamicResource AccentTextFillColorPrimaryBrush}"
-        DropCommand="{Binding ReceiveActionDropCommand}">
-        <controls:ConstrainedScrollBorder>
+    <cdd:DropWrapper Margin="0"
+                     Padding="2"
+                     DragOverBackground="Transparent"
+                     DragOverBorderBrush="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                     DropCommand="{Binding ReceiveActionDropCommand}">
+        <layout:ConstrainedScrollBorder>
 
-            <reorder:ReorderListView
-                SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
-                HorizontalContentAlignment="Stretch"
-                dd:DragDrop.DropHandler="{Binding}"
-                dd:DragDrop.IsDragSource="True"
-                dd:DragDrop.IsDropTarget="True"
-                ItemsSource="{Binding Actions}"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <reorder:ReorderListView SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
+                                     HorizontalContentAlignment="Stretch"
+                                     dd:DragDrop.DropHandler="{Binding}"
+                                     dd:DragDrop.IsDragSource="True"
+                                     dd:DragDrop.IsDropTarget="True"
+                                     ItemsSource="{Binding Actions}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
                 <reorder:ReorderListView.ItemTemplate>
                     <DataTemplate>
-                        <reorder:ReorderListItemWrapper ShowDragHandle="True" UseDragHandle="True">
-                            <local:ActionListItem
-                                ActionId="{Binding Id}"
-                                DeleteCommand="{Binding DataContext.DeleteActionCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
-                                Icon="{Binding Metadata.Icon}"
-                                Text="{Binding FullLabel}">
+                        <reorder:ReorderListItemWrapper ShowDragHandle="True"
+                                                        UseDragHandle="True">
+                            <local:ActionListItem ActionId="{Binding Id}"
+                                                  DeleteCommand="{Binding DataContext.DeleteActionCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
+                                                  Icon="{Binding Metadata.Icon}"
+                                                  Text="{Binding FullLabel}">
 
                                 <local:ActionListItem.InputBindings>
-                                    <MouseBinding 
-                                        Command="{Binding DataContext.OpenEditDialogCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
-                                        CommandParameter="{Binding Id}"
-                                        MouseAction="LeftDoubleClick" />
+                                    <MouseBinding Command="{Binding DataContext.OpenEditDialogCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
+                                                  CommandParameter="{Binding Id}"
+                                                  MouseAction="LeftDoubleClick" />
                                 </local:ActionListItem.InputBindings>
 
                             </local:ActionListItem>
@@ -68,6 +68,6 @@
                     </DataTemplate>
                 </reorder:ReorderListView.ItemTemplate>
             </reorder:ReorderListView>
-        </controls:ConstrainedScrollBorder>
+        </layout:ConstrainedScrollBorder>
     </cdd:DropWrapper>
 </UserControl>

@@ -3,45 +3,44 @@ using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Components.Enums;
+using StreamTabula.Controls.Icons;
 
-namespace StreamTabula.Features.Actions.Library.System
+namespace StreamTabula.Features.Actions.Library.System;
+
+[ActionDiscriminator("lock_pc")]
+public class LockPCAction : SystemBaseAction
 {
-    [ActionDiscriminator("lock_pc")]
-    public class LockPCAction : SystemBaseAction
+    public static readonly ActionMetadata StaticMetadata = new(
+        Name: "Lock PC",
+        DialogTitle: "Lock Workstation",
+        Icon: FluentIconType.Lock
+    );
+
+    [JsonIgnore]
+    public override ActionMetadata Metadata => StaticMetadata;
+
+    [JsonIgnore]
+    public override string Label => Metadata.Name;
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern bool LockWorkStation();
+
+    public override Task ExecuteAsync(object? data = null)
     {
-        public static readonly ActionMetadata StaticMetadata = new(
-            Name: "Lock PC",
-            DialogTitle: "Lock Workstation",
-            Icon: FluentIconType.Lock
-        );
-
-        [JsonIgnore]
-        public override ActionMetadata Metadata => StaticMetadata;
-
-        [JsonIgnore]
-        public override string Label => Metadata.Name;
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern bool LockWorkStation();
-
-        public override Task ExecuteAsync(object? data = null)
+        try
         {
-            try
-            {
-                LockWorkStation();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Could not lock PC: {ex.Message}");
-            }
-
-            return Task.CompletedTask;
+            LockWorkStation();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Could not lock PC: {ex.Message}");
         }
 
-        public override BaseAction Copy() => new LockPCAction
-        {
-            Id = this.Id
-        };
+        return Task.CompletedTask;
     }
+
+    public override BaseAction Copy() => new LockPCAction
+    {
+        Id = this.Id
+    };
 }

@@ -1,4 +1,4 @@
-﻿using StreamTabula.Components.Dialogs;
+﻿using StreamTabula.Controls.Dialogs;
 using System.Windows;
 
 namespace StreamTabula.Core.Services
