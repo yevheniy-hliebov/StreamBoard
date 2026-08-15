@@ -22,14 +22,14 @@
 
         <shell:TrayIconView />
 
-        <shell:TitleBar Title="{Binding AppInfo.AppName, RelativeSource={RelativeSource AncestorType=Window}}"
+        <shell:TitleBar Title="{Binding AppInfo.AppName}"
                         Grid.Row="0"
-                        Subtitle="{Binding AppVersion, RelativeSource={RelativeSource AncestorType=Window}}">
+                        Subtitle="{Binding AppVersion}">
             <shell:TitleBar.RightContent>
                 <StackPanel Orientation="Horizontal">
 
                     <integrations:ConnectionStateMenu Margin="0,0,8,0"
-                                                      Items="{Binding Integrations}">
+                                                      Items="{Binding IntegrationsVM.Integrations}">
                         <integrations:ConnectionStateMenu.LayoutTransform>
                             <ScaleTransform ScaleX="0.8"
                                             ScaleY="0.8" />

@@ -26,6 +26,8 @@ namespace StreamTabula.Bootstrapping
     {
         public static void AddApplicationServices(this IServiceCollection services)
         {
+            services.AddSingleton<MainWindow>();
+
             services.AddSingleton<Features.Navigation.Services.NavigationService>();
             services.AddSingleton<ISnackbarService, SnackbarService>();
             services.AddSingleton<IClipboardService, ClipboardService>();

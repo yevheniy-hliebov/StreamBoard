@@ -19,6 +19,10 @@ namespace StreamTabula
         {
             base.OnStartup(e);
             await AppInitializer.InitializeAsync(ServiceProvider);
+
+            var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+
+            mainWindow.Show();
         }
     }
 }
