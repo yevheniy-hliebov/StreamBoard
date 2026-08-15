@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="StreamTabula.Features.Home.Views.Controls.HomeBanner"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="Root">
+
+    <Border Height="112"
+            CornerRadius="8"
+            SnapsToDevicePixels="True">
+
+        <Border.Background>
+            <ImageBrush Stretch="UniformToFill"
+                        ImageSource="{Binding BannerImage, ElementName=Root, TargetNullValue='pack://application:,,,/StreamTabula;component/Assets/Images/banner_background.png'}" />
+        </Border.Background>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0"
+                   Width="80"
+                   Height="80"
+                   Margin="16,0,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   RenderOptions.BitmapScalingMode="HighQuality"
+                   Source="{Binding LogoImage, ElementName=Root, TargetNullValue='pack://application:,,,/StreamTabula;component/Assets/Images/logo.png'}" />
+
+            <StackPanel Grid.Column="1"
+                        Margin="12,0,0,0"
+                        VerticalAlignment="Center">
+
+                <TextBlock Margin="0,0,0,0"
+                           FontSize="40"
+                           FontWeight="SemiBold"
+                           Foreground="White"
+                           LineHeight="52"
+                           Text="{Binding AppName, ElementName=Root}" />
+
+                <TextBlock Margin="0,0,0,12"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="White"
+                           LineHeight="20"
+                           Text="{Binding CurrentVersion, ElementName=Root}" />
+            </StackPanel>
+
+            <TextBlock Grid.Column="1"
+                       Margin="0,0,16,16"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       FontSize="12"
+                       Foreground="White"
+                       Opacity="0.7">
+                <Run Text="Created by " />
+                <Run Text="{Binding AuthorName, ElementName=Root, Mode=OneWay}" />
+                <Run Text=" (" />
+                
+                <Hyperlink Foreground="White"
+                           Click="Hyperlink_Click">
+                    <Run Text="{Binding LinkText, ElementName=Root, Mode=OneWay}" />
+                </Hyperlink>
+                
+                <Run Text=")" />
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="4"
+                                      Direction="315"
+                                      Opacity="0.63"
+                                      ShadowDepth="2.8"
+                                      Color="Black" />
+                </TextBlock.Effect>
+            </TextBlock>
+        </Grid>
+    </Border>
+</UserControl>

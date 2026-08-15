@@ -2,18 +2,14 @@
 using StreamTabula.Features.Settings.ViewModels;
 using System.Windows.Controls;
 
-namespace StreamTabula.Features.Settings.Pages
-{
-    /// <summary>
-    /// Interaction logic for SettingsPage.xaml
-    /// </summary>
-    public partial class SettingsPage : Page
-    {
-        public SettingsPage()
-        {
-            InitializeComponent();
+namespace StreamTabula.Features.Settings.Pages;
 
-            this.DataContext = App.ServiceProvider.GetRequiredService<SettingsViewModel>();
-        }
+public partial class SettingsPage : Page
+{
+    public SettingsPage()
+    {
+        InitializeComponent();
+
+        this.DataContext = App.ServiceProvider.GetRequiredService<SettingsViewModel>();
     }
 }

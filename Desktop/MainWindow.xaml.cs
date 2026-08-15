@@ -17,10 +17,12 @@ public partial class MainWindow : FluentWindow
     private readonly WindowBoundsManager _boundsManager;
 
     public MainWindow(
+        IServiceProvider serviceProvider,
         ISnackbarService snackbarService,
         IntegrationsViewModel integrationsViewModel,
         SettingsStorage settings,
-        AppInfoService appInfoService)
+        AppInfoService appInfoService,
+        StreamTabula.Features.Navigation.Services.NavigationService navService)
     {
         InitializeComponent();
 
@@ -34,6 +36,9 @@ public partial class MainWindow : FluentWindow
         snackbarService.SetSnackbarPresenter(RootSnackbarPresenter);
 
         _boundsManager = new WindowBoundsManager(this, settings);
+
+        RootNavView.Initialize(serviceProvider, navService, settings);
+
         TextBoxFocusHelper.Attach(this);
     }
 }

@@ -4,13 +4,20 @@ using StreamTabula.Core.Services;
 using StreamTabula.Features.Actions.Services;
 using StreamTabula.Features.Decks.Services;
 using StreamTabula.Features.Decks.ViewModels;
+using StreamTabula.Features.Decks.Views.Pages;
+using StreamTabula.Features.Home.Views.Pages;
 using StreamTabula.Features.Integrations.Common.Services;
 using StreamTabula.Features.Integrations.Common.ViewModels;
+using StreamTabula.Features.Integrations.Common.Views.Pages;
 using StreamTabula.Features.Integrations.Obs.Services;
 using StreamTabula.Features.Integrations.Obs.ViewModels;
+using StreamTabula.Features.Integrations.Obs.Views.Pages;
 using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Features.Integrations.Twitch.ViewModels;
+using StreamTabula.Features.Integrations.Twitch.Views.Pages;
 using StreamTabula.Features.Servers.Controllers;
+using StreamTabula.Features.Servers.Pages;
+using StreamTabula.Features.Settings.Pages;
 using StreamTabula.Features.Servers.Services;
 using StreamTabula.Features.Servers.ViewModels;
 using StreamTabula.Features.Settings.Services;
@@ -29,6 +36,16 @@ namespace StreamTabula.Bootstrapping
             services.AddSingleton<MainWindow>();
 
             services.AddSingleton<Features.Navigation.Services.NavigationService>();
+
+            // Pages
+            services.AddTransient<HomePage>();
+            services.AddTransient<GridDeckPage>();
+            services.AddTransient<IntegrationsPage>();
+            services.AddTransient<ObsSettingsPage>();
+            services.AddTransient<TwitchSettingsPage>();
+            services.AddTransient<LocalServerPage>();
+            services.AddTransient<SettingsPage>();
+
             services.AddSingleton<ISnackbarService, SnackbarService>();
             services.AddSingleton<IClipboardService, ClipboardService>();
             services.AddSingleton<IDialogService, DialogService>();

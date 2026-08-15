@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Controls.Icons;
+﻿using StreamTabula.Controls.Icons;
 using StreamTabula.Features.Integrations.Common.Views.Components;
 using StreamTabula.Features.Navigation.Services;
 using StreamTabula.Features.Settings.Services;
@@ -11,12 +10,23 @@ namespace StreamTabula.Features.Navigation.Views.Components;
 
 public partial class MainNavView : UserControl
 {
+    private NavigationService? _pageService;
+    private SettingsStorage? _settings;
+
     public NavigationView GetNavigation() => RootNavigation;
 
     public MainNavView()
     {
         InitializeComponent();
         Loaded += OnLoaded;
+    }
+
+    public void Initialize(IServiceProvider serviceProvider, NavigationService pageService, SettingsStorage settings)
+    {
+        _pageService = pageService;
+        _settings = settings;
+
+        RootNavigation.SetServiceProvider(serviceProvider);
 
         BuildNavigationMenu();
     }
@@ -25,25 +35,24 @@ public partial class MainNavView : UserControl
     {
         Loaded -= OnLoaded;
 
-        var settings = App.ServiceProvider.GetRequiredService<SettingsStorage>();
-        var pageService = App.ServiceProvider.GetRequiredService<NavigationService>();
+        if (_pageService == null || _settings == null) return;
 
-        bool hadPendingNavigation = pageService.RegisterNavigationControl(RootNavigation);
+        bool hadPendingNavigation = _pageService.RegisterNavigationControl(RootNavigation);
 
         if (!hadPendingNavigation)
         {
-            var startupPage = settings.Current.StartupPage;
-            pageService.NavigateTo(startupPage);
+            var startupPage = _settings.Current.StartupPage;
+            _pageService.NavigateTo(startupPage);
         }
     }
 
     private void BuildNavigationMenu()
     {
-        var pageService = App.ServiceProvider.GetRequiredService<NavigationService>();
+        if (_pageService == null) return;
 
         var parentMenus = new Dictionary<string, NavigationViewItem>();
 
-        foreach (var page in pageService.AllPages)
+        foreach (var page in _pageService.AllPages)
         {
             var navItem = new NavigationViewItem
             {
