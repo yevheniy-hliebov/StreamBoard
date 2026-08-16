@@ -1,10 +1,9 @@
 ﻿using StreamTabula.Core.Services;
 using StreamTabula.Features.Servers.Models;
 
-namespace StreamTabula.Features.Servers.Services
+namespace StreamTabula.Features.Servers.Services;
+
+public class ServerConfigsStorage : JsonFileStorage<ServerConfigs>
 {
-    public class ServerConfigsStorage : JsonFileStorage<ServerConfigs>
-    {
-        public ServerConfigsStorage() : base("servers.json") { }
-    }
+    public ServerConfigsStorage() : base("servers.json") { }
 }

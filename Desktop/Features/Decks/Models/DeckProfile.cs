@@ -1,10 +1,14 @@
-﻿using StreamTabula.Core.Mvvm;
+﻿using StreamTabula.Core.Models;
+using StreamTabula.Core.Mvvm;
 using System.Text.Json.Serialization;
 
 namespace StreamTabula.Features.Decks.Models
 {
-    public class DeckProfile : ObservableObject
+    public class DeckProfile : ObservableObject, IVersionedConfig
     {
+        [JsonPropertyName("config_version")]
+        public int ConfigVersion { get; set; } = 1;
+
         [JsonPropertyName("pages")]
         public DeckPagesState PagesState { get; set; } = new();
 

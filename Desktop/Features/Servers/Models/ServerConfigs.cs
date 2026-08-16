@@ -1,12 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using StreamTabula.Core.Models;
+using System.Text.Json.Serialization;
 
-namespace StreamTabula.Features.Servers.Models
+namespace StreamTabula.Features.Servers.Models;
+
+public class ServerConfigs : IVersionedConfig
 {
-    public class ServerConfigs
-    {
-        [JsonPropertyName("local_server")]
-        public LocalServerConfig Local { get; set; } = new();
+    [JsonPropertyName("config_version")]
+    public int ConfigVersion { get; set; } = 1;
 
-        // There will be other types of servers
-    }
+    [JsonPropertyName("local_server")]
+    public LocalServerConfig Local { get; set; } = new();
 }

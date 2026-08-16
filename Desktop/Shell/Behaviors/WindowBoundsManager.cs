@@ -22,10 +22,10 @@ public class WindowBoundsManager
     {
         var config = _settings.Current;
 
-        if (config.StartMinimized)
+        if (config.Startup.StartMinimized)
             _window.WindowState = WindowState.Minimized;
 
-        if (config.WindowWidth <= 0 || config.WindowHeight <= 0)
+        if (config.Window.Width <= 0 || config.Window.Height <= 0)
         {
             _window.Width = SystemParameters.WorkArea.Width * 0.8;
             _window.Height = SystemParameters.WorkArea.Height * 0.8;
@@ -34,10 +34,10 @@ public class WindowBoundsManager
         }
         else
         {
-            _window.Width = config.WindowWidth;
-            _window.Height = config.WindowHeight;
-            _window.Left = config.WindowLeft;
-            _window.Top = config.WindowTop;
+            _window.Width = config.Window.Width;
+            _window.Height = config.Window.Height;
+            _window.Left = config.Window.Left;
+            _window.Top = config.Window.Top;
 
             if (_window.Left < SystemParameters.VirtualScreenLeft || _window.Left >= SystemParameters.VirtualScreenWidth ||
                 _window.Top < SystemParameters.VirtualScreenTop || _window.Top >= SystemParameters.VirtualScreenHeight)
@@ -46,14 +46,14 @@ public class WindowBoundsManager
                 _window.Top = (SystemParameters.WorkArea.Height - _window.Height) / 2 + SystemParameters.WorkArea.Top;
             }
 
-            if (config.IsWindowMaximized)
+            if (config.Window.IsMaximized)
                 _window.WindowState = WindowState.Maximized;
         }
     }
 
     private void OnStateChanged(object? sender, EventArgs e)
     {
-        if (_settings.Current.MinimizeToTray && _window.WindowState == WindowState.Minimized)
+        if (_settings.Current.Startup.MinimizeToTray && _window.WindowState == WindowState.Minimized)
         {
             _window.Hide();
         }
@@ -65,26 +65,26 @@ public class WindowBoundsManager
 
         if (_window.WindowState == WindowState.Maximized)
         {
-            config.IsWindowMaximized = true;
-            config.WindowWidth = _window.RestoreBounds.Width;
-            config.WindowHeight = _window.RestoreBounds.Height;
-            config.WindowLeft = _window.RestoreBounds.Left;
-            config.WindowTop = _window.RestoreBounds.Top;
+            config.Window.IsMaximized = true;
+            config.Window.Width = _window.RestoreBounds.Width;
+            config.Window.Height = _window.RestoreBounds.Height;
+            config.Window.Left = _window.RestoreBounds.Left;
+            config.Window.Top = _window.RestoreBounds.Top;
         }
         else if (_window.WindowState == WindowState.Normal)
         {
-            config.IsWindowMaximized = false;
-            config.WindowWidth = _window.Width;
-            config.WindowHeight = _window.Height;
-            config.WindowLeft = _window.Left;
-            config.WindowTop = _window.Top;
+            config.Window.IsMaximized = false;
+            config.Window.Width = _window.Width;
+            config.Window.Height = _window.Height;
+            config.Window.Left = _window.Left;
+            config.Window.Top = _window.Top;
         }
         else if (_window.WindowState == WindowState.Minimized)
         {
-            config.WindowWidth = _window.RestoreBounds.Width;
-            config.WindowHeight = _window.RestoreBounds.Height;
-            config.WindowLeft = _window.RestoreBounds.Left;
-            config.WindowTop = _window.RestoreBounds.Top;
+            config.Window.Width = _window.RestoreBounds.Width;
+            config.Window.Height = _window.RestoreBounds.Height;
+            config.Window.Left = _window.RestoreBounds.Left;
+            config.Window.Top = _window.RestoreBounds.Top;
         }
 
         _settings.Save();

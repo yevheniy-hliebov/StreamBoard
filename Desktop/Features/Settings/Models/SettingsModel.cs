@@ -1,50 +1,26 @@
-﻿using System.Text.Json.Serialization;
+﻿using StreamTabula.Core.Models;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace StreamTabula.Features.Settings.Models;
 
-public class SettingsModel
+public class SettingsModel : IVersionedConfig
 {
+    [JsonPropertyName("config_version")]
+    public int ConfigVersion { get; set; } = 2;
 
-    [JsonPropertyName("startup_page")]
-    public string StartupPage { get; set; } = "Home";
+    [JsonPropertyName("startup")]
+    public StartupSettings Startup { get; set; } = new();
 
-    [JsonPropertyName("minimize_to_tray")]
-    public bool MinimizeToTray { get; set; } = false;
+    [JsonPropertyName("appearance")]
+    public AppearanceSettings Appearance { get; set; } = new();
 
-    [JsonPropertyName("start_minimized")]
-    public bool StartMinimized { get; set; } = false;
+    [JsonPropertyName("updates")]
+    public UpdateSettings Updates { get; set; } = new();
 
-    [JsonPropertyName("startup_with_windows")]
-    public bool StartupWithWindows { get; set; } = false;
+    [JsonPropertyName("window")]
+    public WindowSettings Window { get; set; } = new();
 
-    [JsonPropertyName("run_as_admin")]
-    public bool RunAsAdmin { get; set; } = false;
-
-    
-    [JsonPropertyName("theme")]
-    public string Theme { get; set; } = "Dark";
-
-    
-    [JsonPropertyName("update_channel")]
-    public string UpdateChannel { get; set; } = "Stable releases";
-
-    [JsonPropertyName("skipped_version")]
-    public string? SkippedVersion { get; set; } = null;
-
-    
-    
-    [JsonPropertyName("window_width")]
-    public double WindowWidth { get; set; } = 0;
-    
-    [JsonPropertyName("window_height")]
-    public double WindowHeight { get; set; } = 0;
-    
-    [JsonPropertyName("window_left")]
-    public double WindowLeft { get; set; } = 0;
-   
-    [JsonPropertyName("window_top")]
-    public double WindowTop { get; set; } = 0;
-    
-    [JsonPropertyName("is_window_maximized")]
-    public bool IsWindowMaximized { get; set; } = false;
+    [JsonExtensionData]
+    public Dictionary<string, JsonElement>? OldProperties { get; set; }
 }

@@ -34,11 +34,11 @@ namespace StreamTabula.Bootstrapping
 
             // Theme
             ApplicationThemeManager.Apply(
-                settingStorage.Current.Theme == "Dark" ? ApplicationTheme.Dark : ApplicationTheme.Light
+                settingStorage.Current.Appearance.Theme == "Dark" ? ApplicationTheme.Dark : ApplicationTheme.Light
             );
 
             // Run as admin
-            if (settingStorage.Current.RunAsAdmin && !AdminPrivilegeHelper.IsRunningAsAdministrator())
+            if (settingStorage.Current.Startup.RunAsAdmin && !AdminPrivilegeHelper.IsRunningAsAdministrator())
             {
                 if (_mutex != null)
                 {

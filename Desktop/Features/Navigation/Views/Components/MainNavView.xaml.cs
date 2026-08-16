@@ -41,7 +41,7 @@ public partial class MainNavView : UserControl
 
         if (!hadPendingNavigation)
         {
-            var startupPage = _settings.Current.StartupPage;
+            var startupPage = _settings.Current.Startup.StartupPage;
             _pageService.NavigateTo(startupPage);
         }
     }

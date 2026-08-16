@@ -33,11 +33,11 @@ public class SettingsViewModel : ObservableObject
 
     public bool IsDarkTheme
     {
-        get => storage.Current.Theme == "Dark";
+        get => storage.Current.Appearance.Theme == "Dark";
         set
         {
             if (IsDarkTheme == value) return;
-            storage.Current.Theme = value ? "Dark" : "Light";
+            storage.Current.Appearance.Theme = value ? "Dark" : "Light";
             storage.Save();
 
             ApplicationThemeManager.Apply(value ? ApplicationTheme.Dark : ApplicationTheme.Light);
@@ -47,11 +47,11 @@ public class SettingsViewModel : ObservableObject
 
     public bool MinimizeToTray
     {
-        get => storage.Current.MinimizeToTray;
+        get => storage.Current.Startup.MinimizeToTray;
         set
         {
-            if (storage.Current.MinimizeToTray == value) return;
-            storage.Current.MinimizeToTray = value;
+            if (storage.Current.Startup.MinimizeToTray == value) return;
+            storage.Current.Startup.MinimizeToTray = value;
             storage.Save();
             OnPropertyChanged();
         }
@@ -59,11 +59,11 @@ public class SettingsViewModel : ObservableObject
 
     public bool StartMinimized
     {
-        get => storage.Current.StartMinimized;
+        get => storage.Current.Startup.StartMinimized;
         set
         {
-            if (storage.Current.StartMinimized == value) return;
-            storage.Current.StartMinimized = value;
+            if (storage.Current.Startup.StartMinimized == value) return;
+            storage.Current.Startup.StartMinimized = value;
             storage.Save();
             OnPropertyChanged();
         }
@@ -71,11 +71,11 @@ public class SettingsViewModel : ObservableObject
 
     public bool StartupWithWindows
     {
-        get => storage.Current.StartupWithWindows;
+        get => storage.Current.Startup.StartupWithWindows;
         set
         {
-            if (storage.Current.StartupWithWindows == value) return;
-            storage.Current.StartupWithWindows = value;
+            if (storage.Current.Startup.StartupWithWindows == value) return;
+            storage.Current.Startup.StartupWithWindows = value;
             storage.Save();
 
             _ = WindowsStartupHelper.SetStartWithWindowsAsync(updaterViewModel.AppInfo.AppName, value);
@@ -86,11 +86,11 @@ public class SettingsViewModel : ObservableObject
 
     public bool RunAsAdmin
     {
-        get => storage.Current.RunAsAdmin;
+        get => storage.Current.Startup.RunAsAdmin;
         set
         {
-            if (storage.Current.RunAsAdmin == value) return;
-            storage.Current.RunAsAdmin = value;
+            if (storage.Current.Startup.RunAsAdmin == value) return;
+            storage.Current.Startup.RunAsAdmin = value;
             storage.Save();
             OnPropertyChanged();
         }
@@ -100,11 +100,11 @@ public class SettingsViewModel : ObservableObject
 
     public string StartupPage
     {
-        get => storage.Current.StartupPage;
+        get => storage.Current.Startup.StartupPage;
         set
         {
-            if (storage.Current.StartupPage == value) return;
-            storage.Current.StartupPage = value;
+            if (storage.Current.Startup.StartupPage == value) return;
+            storage.Current.Startup.StartupPage = value;
             storage.Save();
             OnPropertyChanged();
         }
@@ -112,11 +112,11 @@ public class SettingsViewModel : ObservableObject
 
     public string UpdateChannel
     {
-        get => storage.Current.UpdateChannel;
+        get => storage.Current.Updates.UpdateChannel;
         set
         {
-            if (storage.Current.UpdateChannel == value) return;
-            storage.Current.UpdateChannel = value;
+            if (storage.Current.Updates.UpdateChannel == value) return;
+            storage.Current.Updates.UpdateChannel = value;
             storage.Save();
             OnPropertyChanged();
         }

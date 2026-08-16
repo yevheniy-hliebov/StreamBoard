@@ -1,10 +1,11 @@
 ﻿using System.IO;
 using System.Text.Json;
+using StreamTabula.Core.Models;
 using StreamTabula.Core.Serialization;
 
 namespace StreamTabula.Core.Services;
 
-public abstract class JsonFileStorage<T> where T : class, new()
+public abstract class JsonFileStorage<T> where T : class, IVersionedConfig, new()
 {
     private readonly string _filePath;
 
@@ -25,6 +26,8 @@ public abstract class JsonFileStorage<T> where T : class, new()
 
     public void Load()
     {
+        bool needsSave = false;
+
         lock (_fileLock)
         {
             if (!File.Exists(_filePath))
@@ -37,6 +40,8 @@ public abstract class JsonFileStorage<T> where T : class, new()
             {
                 string json = File.ReadAllText(_filePath);
                 Current = JsonSerializer.Deserialize<T>(json, GlobalJsonOptions.Default) ?? new T();
+
+                needsSave = Migrate();
             }
             catch (JsonException ex)
             {
@@ -47,6 +52,8 @@ public abstract class JsonFileStorage<T> where T : class, new()
                 Current = new T();
             }
         }
+
+        if (needsSave) Save();
     }
 
     public void Save()
@@ -73,4 +80,9 @@ public abstract class JsonFileStorage<T> where T : class, new()
         }
         catch { /* Ignore backup errors */ }
     }
+
+    /// <summary>
+    /// Migration logic. The base class now SEES the config version!
+    /// </summary>
+    protected virtual bool Migrate() => false;
 }

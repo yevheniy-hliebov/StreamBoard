@@ -33,7 +33,7 @@ namespace StreamTabula.Features.Updater.ViewModels
             {
                 if (LatestReleaseInfo != null)
                 {
-                    _settingsStorage.Current.SkippedVersion = LatestReleaseInfo.TagName;
+                    _settingsStorage.Current.Updates.SkippedVersion = LatestReleaseInfo.TagName;
                     _settingsStorage.Save();
                 }
             });
@@ -89,7 +89,7 @@ namespace StreamTabula.Features.Updater.ViewModels
         {
             await Task.Delay(600);
 
-            var receiveBetaUpdates = _settingsStorage.Current.UpdateChannel == "Beta releases";
+            var receiveBetaUpdates = _settingsStorage.Current.Updates.UpdateChannel == "Beta releases";
             var releaseInfo = await _updateService.CheckForUpdatesAsync(AppInfo, receiveBetaUpdates);
 
             LatestReleaseInfo = releaseInfo;
@@ -108,12 +108,12 @@ namespace StreamTabula.Features.Updater.ViewModels
         {
             try
             {
-                var receiveBetaUpdates = _settingsStorage.Current.UpdateChannel == "Beta releases";
+                var receiveBetaUpdates = _settingsStorage.Current.Updates.UpdateChannel == "Beta releases";
                 var releaseInfo = await _updateService.CheckForUpdatesAsync(AppInfo, receiveBetaUpdates);
 
                 if (releaseInfo != null)
                 {
-                    if (_settingsStorage.Current.SkippedVersion == releaseInfo.TagName)
+                    if (_settingsStorage.Current.Updates.SkippedVersion == releaseInfo.TagName)
                     {
                         return;
                     }
