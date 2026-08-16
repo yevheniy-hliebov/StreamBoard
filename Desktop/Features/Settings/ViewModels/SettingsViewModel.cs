@@ -1,126 +1,128 @@
-﻿using Microsoft.Win32;
-using StreamTabula.Core.Mvvm;
+﻿using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Navigation.Services;
+using StreamTabula.Features.Settings.Helpers;
 using StreamTabula.Features.Settings.Services;
 using StreamTabula.Features.Updater.ViewModels;
 using System.Windows.Input;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Input;
 
-namespace StreamTabula.Features.Settings.ViewModels
+namespace StreamTabula.Features.Settings.ViewModels;
+
+public class SettingsViewModel : ObservableObject
 {
-    public class SettingsViewModel(
+    private readonly SettingsStorage storage;
+    private readonly UpdaterViewModel updaterViewModel;
+    public IRelayCommand<object> RestartAsAdminCommand { get; }
+
+    public SettingsViewModel(
         SettingsStorage storage,
-        StartupService startupService,
-        PrivilegeService privilegeService,
         NavigationService pageService,
-        UpdaterViewModel updaterViewModel
-    ) : ObservableObject
+        UpdaterViewModel updaterViewModel)
     {
-        private readonly SettingsStorage _storage = storage;
-        private readonly StartupService _startupService = startupService;
-        private readonly PrivilegeService _privilegeService = privilegeService;
-        private readonly UpdaterViewModel _updaterViewModel = updaterViewModel;
+        this.storage = storage;
+        this.updaterViewModel = updaterViewModel;
+        AvailableStartupPages = pageService.AllPages.Select(p => p.Name).ToList();
 
-        public bool IsDarkTheme
-        {
-            get => _storage.Current.Theme == "Dark";
-            set
-            {
-                if (IsDarkTheme == value) return;
-                _storage.Current.Theme = value ? "Dark" : "Light";
-                _storage.Save();
-
-                ApplicationThemeManager.Apply(value ? ApplicationTheme.Dark : ApplicationTheme.Light);
-                OnPropertyChanged();
-            }
-        }
-
-        public bool MinimizeToTray
-        {
-            get => _storage.Current.MinimizeToTray;
-            set
-            {
-                if (_storage.Current.MinimizeToTray == value) return;
-                _storage.Current.MinimizeToTray = value;
-                _storage.Save();
-                OnPropertyChanged();
-            }
-        }
-
-        public bool StartMinimized
-        {
-            get => _storage.Current.StartMinimized;
-            set
-            {
-                if (_storage.Current.StartMinimized == value) return;
-                _storage.Current.StartMinimized = value;
-                _storage.Save();
-                OnPropertyChanged();
-            }
-        }
-
-        public bool StartupWithWindows
-        {
-            get => _storage.Current.StartupWithWindows;
-            set
-            {
-                if (_storage.Current.StartupWithWindows == value) return;
-                _storage.Current.StartupWithWindows = value;
-                _storage.Save();
-
-                _startupService.SetStartup(value);
-
-                OnPropertyChanged();
-            }
-        }
-
-        public bool RunAsAdmin
-        {
-            get => _storage.Current.RunAsAdmin;
-            set
-            {
-                if (_storage.Current.RunAsAdmin == value) return;
-                _storage.Current.RunAsAdmin = value;
-                _storage.Save();
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsRunAsAdmin => _privilegeService.IsRunAsAdmin();
-
-        public ICommand RestartAsAdminCommand => new RelayCommand<object>(_ => _privilegeService.RestartAsAdmin());
-
-        public List<string> AvailableStartupPages { get; } = pageService.AllPages.Select(p => p.Name).ToList();
-
-        public string StartupPage
-        {
-            get => _storage.Current.StartupPage;
-            set
-            {
-                if (_storage.Current.StartupPage == value) return;
-                _storage.Current.StartupPage = value;
-                _storage.Save();
-                OnPropertyChanged();
-            }
-        }
-
-        public List<string> AvailableUpdateChannels { get; } = ["Stable releases", "Beta releases"];
-
-        public string UpdateChannel
-        {
-            get => _storage.Current.UpdateChannel;
-            set
-            {
-                if (_storage.Current.UpdateChannel == value) return;
-                _storage.Current.UpdateChannel = value;
-                _storage.Save();
-                OnPropertyChanged();
-            }
-        }
-
-        public string CurrentVersion => $"Current version: v{_updaterViewModel.AppInfo.CurrentVersion}";
-
-        public ICommand CheckForUpdatesCommand => _updaterViewModel.OpenUpdateDialogCommand;
+        RestartAsAdminCommand = new RelayCommand<object>(_ => AdminPrivilegeHelper.RestartAsAdministrator());
     }
+
+    public List<string> AvailableStartupPages { get; }
+
+    public List<string> AvailableUpdateChannels { get; } = ["Stable releases", "Beta releases"];
+
+    public bool IsDarkTheme
+    {
+        get => storage.Current.Theme == "Dark";
+        set
+        {
+            if (IsDarkTheme == value) return;
+            storage.Current.Theme = value ? "Dark" : "Light";
+            storage.Save();
+
+            ApplicationThemeManager.Apply(value ? ApplicationTheme.Dark : ApplicationTheme.Light);
+            OnPropertyChanged();
+        }
+    }
+
+    public bool MinimizeToTray
+    {
+        get => storage.Current.MinimizeToTray;
+        set
+        {
+            if (storage.Current.MinimizeToTray == value) return;
+            storage.Current.MinimizeToTray = value;
+            storage.Save();
+            OnPropertyChanged();
+        }
+    }
+
+    public bool StartMinimized
+    {
+        get => storage.Current.StartMinimized;
+        set
+        {
+            if (storage.Current.StartMinimized == value) return;
+            storage.Current.StartMinimized = value;
+            storage.Save();
+            OnPropertyChanged();
+        }
+    }
+
+    public bool StartupWithWindows
+    {
+        get => storage.Current.StartupWithWindows;
+        set
+        {
+            if (storage.Current.StartupWithWindows == value) return;
+            storage.Current.StartupWithWindows = value;
+            storage.Save();
+
+            _ = WindowsStartupHelper.SetStartWithWindowsAsync(updaterViewModel.AppInfo.AppName, value);
+
+            OnPropertyChanged();
+        }
+    }
+
+    public bool RunAsAdmin
+    {
+        get => storage.Current.RunAsAdmin;
+        set
+        {
+            if (storage.Current.RunAsAdmin == value) return;
+            storage.Current.RunAsAdmin = value;
+            storage.Save();
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsRunAsAdmin => AdminPrivilegeHelper.IsRunningAsAdministrator();
+
+    public string StartupPage
+    {
+        get => storage.Current.StartupPage;
+        set
+        {
+            if (storage.Current.StartupPage == value) return;
+            storage.Current.StartupPage = value;
+            storage.Save();
+            OnPropertyChanged();
+        }
+    }
+
+    public string UpdateChannel
+    {
+        get => storage.Current.UpdateChannel;
+        set
+        {
+            if (storage.Current.UpdateChannel == value) return;
+            storage.Current.UpdateChannel = value;
+            storage.Save();
+            OnPropertyChanged();
+        }
+    }
+
+    public string CurrentVersion => $"Current version: v{updaterViewModel.AppInfo.CurrentVersion}";
+
+    public ICommand CheckForUpdatesCommand => updaterViewModel.OpenUpdateDialogCommand;
 }

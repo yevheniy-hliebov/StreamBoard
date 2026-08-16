@@ -1,29 +1,34 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using StreamTabula.Core.Services;
-using StreamTabula.Features.Actions.Services;
+
 using StreamTabula.Features.Decks.Services;
-using StreamTabula.Features.Decks.ViewModels;
-using StreamTabula.Features.Decks.Views.Pages;
-using StreamTabula.Features.Home.Views.Pages;
+using StreamTabula.Features.Actions.Services;
 using StreamTabula.Features.Integrations.Common.Services;
-using StreamTabula.Features.Integrations.Common.ViewModels;
-using StreamTabula.Features.Integrations.Common.Views.Pages;
 using StreamTabula.Features.Integrations.Obs.Services;
-using StreamTabula.Features.Integrations.Obs.ViewModels;
-using StreamTabula.Features.Integrations.Obs.Views.Pages;
 using StreamTabula.Features.Integrations.Twitch.Services;
-using StreamTabula.Features.Integrations.Twitch.ViewModels;
-using StreamTabula.Features.Integrations.Twitch.Views.Pages;
-using StreamTabula.Features.Servers.Controllers;
-using StreamTabula.Features.Servers.Pages;
-using StreamTabula.Features.Settings.Pages;
-using StreamTabula.Features.Servers.Services;
-using StreamTabula.Features.Servers.ViewModels;
 using StreamTabula.Features.Settings.Services;
-using StreamTabula.Features.Settings.ViewModels;
+using StreamTabula.Features.Servers.Services;
 using StreamTabula.Features.Updater.Services;
+
+using StreamTabula.Features.Home.Views.Pages;
+using StreamTabula.Features.Decks.Views.Pages;
+using StreamTabula.Features.Integrations.Common.Views.Pages;
+using StreamTabula.Features.Integrations.Obs.Views.Pages;
+using StreamTabula.Features.Integrations.Twitch.Views.Pages;
+using StreamTabula.Features.Servers.Pages;
+using StreamTabula.Features.Settings.Views.Pages;
+
+using StreamTabula.Features.Decks.ViewModels;
+using StreamTabula.Features.Integrations.Common.ViewModels;
+using StreamTabula.Features.Integrations.Obs.ViewModels;
+using StreamTabula.Features.Integrations.Twitch.ViewModels;
+using StreamTabula.Features.Servers.ViewModels;
+using StreamTabula.Features.Settings.ViewModels;
 using StreamTabula.Features.Updater.ViewModels;
+
+using StreamTabula.Features.Servers.Controllers;
+
 using System.Net.Http;
 using Wpf.Ui;
 
@@ -52,8 +57,6 @@ namespace StreamTabula.Bootstrapping
 
             services.AddSingleton<SettingsStorage>();
             services.AddSingleton<ServerConfigsStorage>();
-            services.AddSingleton<StartupService>();
-            services.AddSingleton<PrivilegeService>();
             services.AddSingleton<GridDeckStorage>();
             services.AddSingleton<KeyboardDeckStorage>();
             services.AddSingleton<ActionRegistry>();

@@ -3,11 +3,11 @@ using StreamTabula.Features.Integrations.Common.Views.Pages;
 using StreamTabula.Features.Integrations.Obs.Views.Pages;
 using StreamTabula.Features.Integrations.Twitch.Views.Pages;
 using StreamTabula.Features.Servers.Pages;
-using StreamTabula.Features.Settings.Pages;
 using StreamTabula.Features.Integrations.Common.Models;
 using StreamTabula.Features.Navigation.Models;
 using StreamTabula.Controls.Icons;
 using StreamTabula.Features.Home.Views.Pages;
+using StreamTabula.Features.Settings.Views.Pages;
 
 namespace StreamTabula.Features.Navigation.Services;
 

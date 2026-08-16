@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Settings.Services;
+﻿using StreamTabula.Features.Settings.Helpers;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,19 +17,10 @@ public partial class AdminStatusIcon : UserControl
     {
         Loaded -= OnLoaded;
 
-        var privilegeService = App.ServiceProvider.GetRequiredService<PrivilegeService>();
-
-        if (privilegeService != null)
+        bool isAdmin = AdminPrivilegeHelper.IsRunningAsAdministrator();
+        if (isAdmin)
         {
-            bool isAdmin = privilegeService.IsRunAsAdmin();
-            if (isAdmin)
-            {
-                Visibility = Visibility.Visible;
-            }
-            else
-            {
-                Visibility = Visibility.Collapsed;
-            }
+            Visibility = Visibility.Visible;
         }
         else
         {

@@ -6,6 +6,7 @@ using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Features.Servers.Controllers;
 using StreamTabula.Features.Servers.Models;
 using StreamTabula.Features.Servers.Services;
+using StreamTabula.Features.Settings.Helpers;
 using StreamTabula.Features.Settings.Services;
 using StreamTabula.Features.Updater.ViewModels;
 using System.Windows;
@@ -30,7 +31,6 @@ namespace StreamTabula.Bootstrapping
             }
 
             var settingStorage = serviceProvider.GetRequiredService<SettingsStorage>();
-            var privilegeService = serviceProvider.GetRequiredService<PrivilegeService>();
 
             // Theme
             ApplicationThemeManager.Apply(
@@ -38,7 +38,7 @@ namespace StreamTabula.Bootstrapping
             );
 
             // Run as admin
-            if (settingStorage.Current.RunAsAdmin && !privilegeService.IsRunAsAdmin())
+            if (settingStorage.Current.RunAsAdmin && !AdminPrivilegeHelper.IsRunningAsAdministrator())
             {
                 if (_mutex != null)
                 {
@@ -47,7 +47,7 @@ namespace StreamTabula.Bootstrapping
                     _mutex = null;
                 }
 
-                privilegeService.RestartAsAdmin();
+                AdminPrivilegeHelper.RestartAsAdministrator();
                 Application.Current.Shutdown();
                 return;
             }

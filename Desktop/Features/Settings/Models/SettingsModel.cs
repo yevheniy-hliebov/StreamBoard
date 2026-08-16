@@ -1,50 +1,50 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace StreamTabula.Features.Settings.Models
+namespace StreamTabula.Features.Settings.Models;
+
+public class SettingsModel
 {
-    public class SettingsModel
-    {
-        [JsonPropertyName("startup_page")]
-        public string StartupPage { get; set; } = "Home";
 
-        [JsonPropertyName("minimize_to_tray")]
-        public bool MinimizeToTray { get; set; } = false;
+    [JsonPropertyName("startup_page")]
+    public string StartupPage { get; set; } = "Home";
 
-        [JsonPropertyName("start_minimized")]
-        public bool StartMinimized { get; set; } = false;
+    [JsonPropertyName("minimize_to_tray")]
+    public bool MinimizeToTray { get; set; } = false;
 
-        [JsonPropertyName("startup_with_windows")]
-        public bool StartupWithWindows { get; set; } = false;
+    [JsonPropertyName("start_minimized")]
+    public bool StartMinimized { get; set; } = false;
 
-        [JsonPropertyName("run_as_admin")]
-        public bool RunAsAdmin { get; set; } = false;
+    [JsonPropertyName("startup_with_windows")]
+    public bool StartupWithWindows { get; set; } = false;
 
-        
-        [JsonPropertyName("theme")]
-        public string Theme { get; set; } = "Dark";
+    [JsonPropertyName("run_as_admin")]
+    public bool RunAsAdmin { get; set; } = false;
 
-        
-        [JsonPropertyName("update_channel")]
-        public string UpdateChannel { get; set; } = "Stable releases";
+    
+    [JsonPropertyName("theme")]
+    public string Theme { get; set; } = "Dark";
 
-        [JsonPropertyName("skipped_version")]
-        public string? SkippedVersion { get; set; } = null;
+    
+    [JsonPropertyName("update_channel")]
+    public string UpdateChannel { get; set; } = "Stable releases";
 
-        
-        
-        [JsonPropertyName("window_width")]
-        public double WindowWidth { get; set; } = 0;
-        
-        [JsonPropertyName("window_height")]
-        public double WindowHeight { get; set; } = 0;
-        
-        [JsonPropertyName("window_left")]
-        public double WindowLeft { get; set; } = 0;
-       
-        [JsonPropertyName("window_top")]
-        public double WindowTop { get; set; } = 0;
-        
-        [JsonPropertyName("is_window_maximized")]
-        public bool IsWindowMaximized { get; set; } = false;
-    }
+    [JsonPropertyName("skipped_version")]
+    public string? SkippedVersion { get; set; } = null;
+
+    
+    
+    [JsonPropertyName("window_width")]
+    public double WindowWidth { get; set; } = 0;
+    
+    [JsonPropertyName("window_height")]
+    public double WindowHeight { get; set; } = 0;
+    
+    [JsonPropertyName("window_left")]
+    public double WindowLeft { get; set; } = 0;
+   
+    [JsonPropertyName("window_top")]
+    public double WindowTop { get; set; } = 0;
+    
+    [JsonPropertyName("is_window_maximized")]
+    public bool IsWindowMaximized { get; set; } = false;
 }
