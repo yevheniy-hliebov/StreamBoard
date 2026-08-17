@@ -71,31 +71,26 @@ public class SourceVisibilityAction : ObsBaseAction
 
         try
         {
-            var targetInfo = obsService.Obs.GetSourceParentAndId(SceneName, SourceName);
+            var sourceInfo = obsService.SceneService.GetSourceInfo(SceneName, SourceName);
 
-            if (targetInfo == null)
+            if (sourceInfo == null)
             {
                 Debug.WriteLine($"[OBS Visibility] Джерело '{SourceName}' не знайдено у '{SceneName}'.");
                 return;
             }
 
-            string actualParent = targetInfo.Value.ParentName;
-            int itemId = targetInfo.Value.SourceId;
+            bool visibility = false;
 
-            switch (VisibilityState)
+            if (VisibilityState == "Show")
             {
-                case "Show":
-                    obsService.Obs.SetSceneItemEnabled(actualParent, itemId, true);
-                    break;
-                case "Hide":
-                    obsService.Obs.SetSceneItemEnabled(actualParent, itemId, false);
-                    break;
-                case "Toggle":
-                default:
-                    bool isEnabled = obsService.Obs.GetSceneItemEnabled(actualParent, itemId);
-                    obsService.Obs.SetSceneItemEnabled(actualParent, itemId, !isEnabled);
-                    break;
+                visibility = true;
             }
+            else if (VisibilityState == "Toggle")
+            {
+                visibility = obsService.Obs.GetSceneItemEnabled(sourceInfo.ParentName, sourceInfo.Id);
+            }
+
+            obsService.Obs.SetSceneItemEnabled(sourceInfo.ParentName, sourceInfo.Id, visibility);
         }
         catch (Exception ex)
         {

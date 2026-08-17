@@ -31,6 +31,7 @@ using StreamTabula.Features.Servers.Controllers;
 
 using System.Net.Http;
 using Wpf.Ui;
+using OBSWebsocketDotNet;
 
 namespace StreamTabula.Bootstrapping
 {
@@ -62,14 +63,18 @@ namespace StreamTabula.Bootstrapping
             services.AddSingleton<ActionRegistry>();
 
             services.AddSingleton<IntegrationsStorage>();
+            services.AddSingleton<IOBSWebsocket, OBSWebsocket>();
+            services.AddSingleton<IOBSSceneService, OBSSceneService>();
 
             services.AddSingleton<ObsService>(sp =>
             {
-                var storage = sp.GetRequiredService<IntegrationsStorage>();
+                var obs = sp.GetRequiredService<IOBSWebsocket>();
+                var sceneService = sp.GetRequiredService<IOBSSceneService>();
 
+                var storage = sp.GetRequiredService<IntegrationsStorage>();
                 var obsSettings = storage.Current.Obs;
 
-                return new ObsService(obsSettings);
+                return new ObsService(obs, sceneService, obsSettings);
             });
 
             services.AddMemoryCache();

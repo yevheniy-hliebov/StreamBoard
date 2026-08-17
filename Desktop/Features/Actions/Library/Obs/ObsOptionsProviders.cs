@@ -70,17 +70,17 @@ namespace StreamTabula.Features.Actions.Library.Obs
 
             try
             {
-                List<ObsSourceItem> allSources = obsService.Obs.GetAllSourcesDetailsInScene(sceneName);
+                var allSources = obsService.SceneService.GetSourceList(sceneName);
 
                 var options = allSources.Select(src =>
                 {
                     string displayOption = src.Name;
 
-                    if (src.IsGroup)
+                    if (src.Type == OBSSourceType.Group)
                         displayOption = $"📁 {src.Name}";
-                    else if (src.IsNestedScene)
-                        displayOption = src.IsInGroup ? $"   └─ 🎬 {src.Name}" : $"🎬 {src.Name}";
-                    else if (src.IsInGroup)
+                    else if (src.Type == OBSSourceType.Group)
+                        displayOption = src.IsPartOfGroup ? $"   └─ 🎬 {src.Name}" : $"🎬 {src.Name}";
+                    else if (src.IsPartOfGroup)
                         displayOption = $"   └─ {src.Name}";
 
                     string displaySelectedOption = src.Name;
