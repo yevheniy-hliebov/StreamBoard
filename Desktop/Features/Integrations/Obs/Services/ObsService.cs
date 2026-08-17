@@ -11,8 +11,8 @@ namespace StreamTabula.Features.Integrations.Obs.Services
         private readonly ObsConnectionSettings _settings;
         private CancellationTokenSource? _reconnectCts;
 
-        private ConnectionState _connectionState = ConnectionState.NotConnected;
-        public ConnectionState ConnectionState
+        private ConnectionStatus _connectionState = ConnectionStatus.NotConnected;
+        public ConnectionStatus ConnectionState
         {
             get => _connectionState;
             private set
@@ -37,11 +37,11 @@ namespace StreamTabula.Features.Integrations.Obs.Services
 
         public void Connect()
         {
-            if (Obs.IsConnected || ConnectionState == ConnectionState.Connecting)
+            if (Obs.IsConnected || ConnectionState == ConnectionStatus.Connecting)
                 return;
 
             StopReconnect();
-            ConnectionState = ConnectionState.Connecting;
+            ConnectionState = ConnectionStatus.Connecting;
 
             try
             {
@@ -50,7 +50,7 @@ namespace StreamTabula.Features.Integrations.Obs.Services
             }
             catch
             {
-                ConnectionState = ConnectionState.Failed;
+                ConnectionState = ConnectionStatus.Failed;
                 if (_settings.AutoReconnect) TryReconnect();
             }
         }
@@ -61,31 +61,31 @@ namespace StreamTabula.Features.Integrations.Obs.Services
 
             if (Obs.IsConnected)
             {
-                ConnectionState = ConnectionState.Disconnecting;
+                ConnectionState = ConnectionStatus.Disconnecting;
                 Obs.Disconnect();
             }
             else
             {
-                ConnectionState = ConnectionState.NotConnected;
+                ConnectionState = ConnectionStatus.NotConnected;
             }
         }
 
         private void OnConnected(object? sender, EventArgs e)
         {
             StopReconnect();
-            ConnectionState = ConnectionState.Connected;
+            ConnectionState = ConnectionStatus.Connected;
         }
 
         private void OnDisconnected(object? sender, ObsDisconnectionInfo e)
         {
             // Якщо ми ініціювали відключення самі
-            if (ConnectionState == ConnectionState.Disconnecting)
+            if (ConnectionState == ConnectionStatus.Disconnecting)
             {
-                ConnectionState = ConnectionState.NotConnected;
+                ConnectionState = ConnectionStatus.NotConnected;
                 return;
             }
 
-            ConnectionState = ConnectionState.Failed;
+            ConnectionState = ConnectionStatus.Failed;
 
             if (_settings.AutoReconnect)
                 TryReconnect();
@@ -108,7 +108,7 @@ namespace StreamTabula.Features.Integrations.Obs.Services
 
                         if (Obs.IsConnected) break;
 
-                        ConnectionState = ConnectionState.Connecting;
+                        ConnectionState = ConnectionStatus.Connecting;
                         var url = $"ws://{_settings.Address}:{_settings.Port}";
                         Obs.ConnectAsync(url, _settings.Password);
 

@@ -1,12 +1,11 @@
-<UserControl
-    x:Class="StreamTabula.Features.Integrations.Common.Views.Components.ConnectionStateMenu"
+<UserControl x:Class="StreamTabula.Features.Integrations.Common.Views.Controls.IntegrationsStatusMenu"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:StreamTabula.Features.Integrations.Common.Views.Components"
+             xmlns:local="clr-namespace:StreamTabula.Features.Integrations.Common.Views.Controls"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     x:Name="RootMenu">
 
-    <ui:DropDownButton x:Name="ParentButton" Tag="{Binding Items, ElementName=RootMenu}">
+    <ui:DropDownButton x:Name="ParentButton" Tag="{Binding Integrations, ElementName=RootMenu}">
         <ui:DropDownButton.Content>
             <StackPanel Orientation="Horizontal">
                 <Border
@@ -44,10 +43,7 @@
 
                 <ContextMenu.ItemTemplate>
                     <DataTemplate>
-                        <local:ConnectionMenuItem
-                            Title="{Binding Name}"
-                            State="{Binding State}"
-                            TargetPageType="{Binding TargetPageType}" />
+                        <local:IntegrationMenuItem Integration="{Binding}" />
                     </DataTemplate>
                 </ContextMenu.ItemTemplate>
             </ContextMenu>

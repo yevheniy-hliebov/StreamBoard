@@ -1,8 +1,8 @@
-<UserControl x:Class="StreamTabula.Features.Integrations.Common.Views.Components.IntegrationPageHeader"
+<UserControl x:Class="StreamTabula.Features.Integrations.Common.Views.Controls.IntegrationPageHeader"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:typography="clr-namespace:StreamTabula.Controls.Typography"
-             xmlns:local="clr-namespace:StreamTabula.Features.Integrations.Common.Views.Components"
+             xmlns:icons="clr-namespace:StreamTabula.Controls.Icons"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              x:Name="Root">
 
@@ -10,7 +10,7 @@
                 DataContext="{Binding ElementName=Root}">
         <StackPanel Margin="0,0,0,8"
                     Orientation="Horizontal">
-            <local:IntegrationIcon Margin="0,0,8,0"
+            <icons:IntegrationIcon Margin="0,0,8,0"
                                    VerticalAlignment="Center"
                                    IconType="{Binding IconType}"
                                    Size="25" />

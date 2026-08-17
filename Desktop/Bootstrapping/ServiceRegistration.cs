@@ -61,11 +61,11 @@ namespace StreamTabula.Bootstrapping
             services.AddSingleton<KeyboardDeckStorage>();
             services.AddSingleton<ActionRegistry>();
 
-            services.AddSingleton<IntegrationConnectionStorage>();
+            services.AddSingleton<IntegrationsStorage>();
 
             services.AddSingleton<ObsService>(sp =>
             {
-                var storage = sp.GetRequiredService<IntegrationConnectionStorage>();
+                var storage = sp.GetRequiredService<IntegrationsStorage>();
 
                 var obsSettings = storage.Current.Obs;
 

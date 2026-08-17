@@ -4,7 +4,7 @@ using StreamTabula.Features.Integrations.Twitch.Views.Pages;
 
 namespace StreamTabula.Features.Integrations.Twitch.Models
 {
-    public class TwitchIntegrationState : IntegrationStateModel
+    public class TwitchIntegrationState : IntegrationStatusModel
     {
         private readonly TwitchAccountManager _manager;
 
@@ -22,9 +22,9 @@ namespace StreamTabula.Features.Integrations.Twitch.Models
 
         private void UpdateStatus()
         {
-            State = _manager.IsAuth
-                ? ConnectionState.Connected
-                : ConnectionState.NotConnected;
+            Status = _manager.IsAuth
+                ? ConnectionStatus.Connected
+                : ConnectionStatus.NotConnected;
         }
     }
 }

@@ -10,10 +10,10 @@ namespace StreamTabula.Features.Integrations.Obs.ViewModels
 {
     public class ObsSettingsViewModel : ObservableObject
     {
-        private IntegrationConnectionStorage _storage;
+        private IntegrationsStorage _storage;
         private ObsService _obsService;
 
-        public ObsSettingsViewModel(IntegrationConnectionStorage storage, ObsService obsService)
+        public ObsSettingsViewModel(IntegrationsStorage storage, ObsService obsService)
         {
             _storage = storage;
             _obsService = obsService;
@@ -34,15 +34,15 @@ namespace StreamTabula.Features.Integrations.Obs.ViewModels
         {
             get
             {
-                if (_obsService.ConnectionState == ConnectionState.NotConnected)
+                if (_obsService.ConnectionState == ConnectionStatus.NotConnected)
                 {
                     return "Not connected";
                 }
-                if (_obsService.ConnectionState == ConnectionState.Connecting)
+                if (_obsService.ConnectionState == ConnectionStatus.Connecting)
                 {
                     return "Connecting...";
                 }
-                if (_obsService.ConnectionState == ConnectionState.Disconnecting)
+                if (_obsService.ConnectionState == ConnectionStatus.Disconnecting)
                 {
                     return "Disconnecting...";
                 }
@@ -52,16 +52,16 @@ namespace StreamTabula.Features.Integrations.Obs.ViewModels
 
         public string ActionButtonText => _obsService.ConnectionState switch
         {
-            ConnectionState.NotConnected => "Connect",
-            ConnectionState.Failed => "Connect",
-            ConnectionState.Connecting => "Connecting...",
-            ConnectionState.Connected => "Disconnect",
-            ConnectionState.Disconnecting => "Disconnecting...",
+            ConnectionStatus.NotConnected => "Connect",
+            ConnectionStatus.Failed => "Connect",
+            ConnectionStatus.Connecting => "Connecting...",
+            ConnectionStatus.Connected => "Disconnect",
+            ConnectionStatus.Disconnecting => "Disconnecting...",
             _ => "Status Unknown"
         };
 
         public bool IsProcessing =>
-            _obsService.ConnectionState == ConnectionState.Connecting || _obsService.ConnectionState == ConnectionState.Disconnecting;
+            _obsService.ConnectionState == ConnectionStatus.Connecting || _obsService.ConnectionState == ConnectionStatus.Disconnecting;
 
         public ICommand ToggleConnectionCommand => new RelayCommand<object>(async _ =>
         {
@@ -189,6 +189,6 @@ namespace StreamTabula.Features.Integrations.Obs.ViewModels
             }
         }
 
-        public bool CanEditSettings => _obsService.ConnectionState == ConnectionState.NotConnected || _obsService.ConnectionState == ConnectionState.Failed;
+        public bool CanEditSettings => _obsService.ConnectionState == ConnectionStatus.NotConnected || _obsService.ConnectionState == ConnectionStatus.Failed;
     }
 }

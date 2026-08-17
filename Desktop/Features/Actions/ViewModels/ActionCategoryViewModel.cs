@@ -1,7 +1,6 @@
 ﻿using StreamTabula.Controls.Icons;
 using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Actions.Services;
-using StreamTabula.Features.Integrations.Common.Models;
 using System.Collections.ObjectModel;
 
 namespace StreamTabula.Features.Actions.ViewModels;

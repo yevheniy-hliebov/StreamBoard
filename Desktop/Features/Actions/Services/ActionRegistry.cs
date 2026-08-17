@@ -2,7 +2,6 @@
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.ViewModels;
-using StreamTabula.Features.Integrations.Common.Models;
 using System.Reflection;
 
 namespace StreamTabula.Features.Actions.Services;

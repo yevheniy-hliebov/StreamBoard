@@ -4,7 +4,7 @@ using StreamTabula.Features.Integrations.Obs.Views.Pages;
 
 namespace StreamTabula.Features.Integrations.Obs.Models
 {
-    public class ObsIntegrationState : IntegrationStateModel
+    public class ObsIntegrationState : IntegrationStatusModel
     {
         private readonly ObsService _obsService;
 
@@ -13,7 +13,7 @@ namespace StreamTabula.Features.Integrations.Obs.Models
             _obsService = obsService;
             Name = "OBS Studio";
 
-            State = _obsService.ConnectionState;
+            Status = _obsService.ConnectionState;
 
             TargetPageType = typeof(ObsSettingsPage);
 
@@ -21,7 +21,7 @@ namespace StreamTabula.Features.Integrations.Obs.Models
             {
                 if (e.PropertyName == nameof(ObsService.ConnectionState))
                 {
-                    State = _obsService.ConnectionState;
+                    Status = _obsService.ConnectionState;
                 }
             };
         }

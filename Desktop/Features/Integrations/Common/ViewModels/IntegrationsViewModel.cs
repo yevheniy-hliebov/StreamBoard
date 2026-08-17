@@ -6,19 +6,18 @@ using StreamTabula.Features.Integrations.Obs.Services;
 using StreamTabula.Features.Integrations.Twitch.Models;
 using StreamTabula.Features.Integrations.Twitch.Services;
 
-namespace StreamTabula.Features.Integrations.Common.ViewModels
-{
-    public class IntegrationsViewModel : ObservableObject
-    {
-        public ObservableCollection<IntegrationStateModel> Integrations { get; set; }
+namespace StreamTabula.Features.Integrations.Common.ViewModels;
 
-        public IntegrationsViewModel(ObsService obsService, TwitchAccountsGateway twitchGateway)
-        {
-            Integrations = [
-                new ObsIntegrationState(obsService),
-                new TwitchIntegrationState(twitchGateway.Broadcaster),
-                new TwitchIntegrationState(twitchGateway.Bot)
-            ];
-        }
+public class IntegrationsViewModel : ObservableObject
+{
+    public ObservableCollection<IntegrationStatusModel> IntegrationConnectionStatus { get; set; }
+
+    public IntegrationsViewModel(ObsService obsService, TwitchAccountsGateway twitchGateway)
+    {
+        IntegrationConnectionStatus = [
+            new ObsIntegrationState(obsService),
+            new TwitchIntegrationState(twitchGateway.Broadcaster),
+            new TwitchIntegrationState(twitchGateway.Bot)
+        ];
     }
 }

@@ -4,7 +4,7 @@ using StreamTabula.Features.Integrations.Obs.Models;
 
 namespace StreamTabula.Features.Integrations.Common.Models;
 
-public class IntegrationConnectionSettings : IVersionedConfig
+public class IntegrationsConfig : IVersionedConfig
 {
     [JsonPropertyName("config_version")]
     public int ConfigVersion { get; set; } = 1;

@@ -3,7 +3,7 @@ using StreamTabula.Features.Integrations.Common.Models;
 
 namespace StreamTabula.Features.Integrations.Common.Services;
 
-public class IntegrationConnectionStorage : JsonFileStorage<IntegrationConnectionSettings>
+public class IntegrationsStorage : JsonFileStorage<IntegrationsConfig>
 {
-    public IntegrationConnectionStorage() : base("integraions.json") { }
+    public IntegrationsStorage() : base("integraions.json") { }
 }

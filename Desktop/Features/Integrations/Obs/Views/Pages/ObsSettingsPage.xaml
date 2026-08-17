@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:cards="clr-namespace:StreamTabula.Controls.Cards"
       xmlns:inputs="clr-namespace:StreamTabula.Controls.Inputs"
-      xmlns:ic="clr-namespace:StreamTabula.Features.Integrations.Common.Views.Components"
+      xmlns:ic="clr-namespace:StreamTabula.Features.Integrations.Common.Views.Controls"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       Title="ObsSettingsPage">
 

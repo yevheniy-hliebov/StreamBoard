@@ -1,6 +1,5 @@
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Features.Integrations.Common.Models;
 using StreamTabula.Controls.Icons;
 
 namespace StreamTabula.Features.Actions.Library;

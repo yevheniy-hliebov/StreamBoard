@@ -1,5 +1,4 @@
 ﻿using StreamTabula.Controls.Icons;
-using StreamTabula.Features.Integrations.Common.Views.Components;
 using StreamTabula.Features.Navigation.Services;
 using StreamTabula.Features.Settings.Services;
 using System.Windows;

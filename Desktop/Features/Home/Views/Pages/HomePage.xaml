@@ -5,7 +5,6 @@
                        xmlns:local_controls="clr-namespace:StreamTabula.Features.Home.Views.Controls"
                        xmlns:icons="clr-namespace:StreamTabula.Controls.Icons"
                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                       xmlns:ic="clr-namespace:StreamTabula.Features.Integrations.Common.Views.Components"
                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                        xmlns:nav="clr-namespace:StreamTabula.Features.Navigation.Views.Components"
@@ -60,7 +59,7 @@
                                   Description="Configure WebSocket connection settings with OBS and view current status."
                                   IconPosition="Top">
                 <cards:NavigationCard.Icon>
-                    <ic:IntegrationIcon IconType="Obs"
+                    <icons:IntegrationIcon IconType="Obs"
                                         Size="28" />
                 </cards:NavigationCard.Icon>
             </cards:NavigationCard>
@@ -69,7 +68,7 @@
                                   Description="Manage account authentications and view connection status."
                                   IconPosition="Top">
                 <cards:NavigationCard.Icon>
-                    <ic:IntegrationIcon IconType="Twitch"
+                    <icons:IntegrationIcon IconType="Twitch"
                                         Size="28" />
                 </cards:NavigationCard.Icon>
             </cards:NavigationCard>
