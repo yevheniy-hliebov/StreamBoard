@@ -62,11 +62,11 @@ namespace StreamTabula.Bootstrapping
 
             // OBS Connection
             var integrationStorage = serviceProvider.GetRequiredService<IntegrationsStorage>();
-            var obsService = serviceProvider.GetRequiredService<ObsService>();
+            var obsService = serviceProvider.GetRequiredService<IOBSConnectionService>();
 
             if (integrationStorage.Current.Obs.AutoConnectOnStartup && !obsService.IsConnected)
             {
-                obsService.Connect();
+                await obsService.ConnectAsync();
             }
 
             // System Http Server

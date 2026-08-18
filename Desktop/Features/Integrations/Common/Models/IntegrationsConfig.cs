@@ -10,5 +10,5 @@ public class IntegrationsConfig : IVersionedConfig
     public int ConfigVersion { get; set; } = 1;
 
     [JsonPropertyName("obs")]
-    public ObsConnectionSettings Obs { get; set; } = new();
+    public OBSConnectionSettings Obs { get; set; } = new();
 }

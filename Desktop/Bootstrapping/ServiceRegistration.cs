@@ -66,14 +66,14 @@ public static class ServiceRegistration
         services.AddSingleton<IOBSWebsocket, OBSWebsocket>();
         services.AddSingleton<IOBSSceneService, OBSSceneService>();
 
-        services.AddSingleton<ObsService>(sp =>
+        services.AddSingleton<IOBSConnectionService>(sp =>
         {
             var obs = sp.GetRequiredService<IOBSWebsocket>();
 
             var storage = sp.GetRequiredService<IntegrationsStorage>();
             var obsSettings = storage.Current.Obs;
 
-            return new ObsService(obs, obsSettings);
+            return new OBSConnectionService(obs, obsSettings);
         });
 
         services.AddMemoryCache();
@@ -109,7 +109,7 @@ public static class ServiceRegistration
 
         services.AddSingleton<GridDeckViewModel>();
         services.AddSingleton<IntegrationsViewModel>();
-        services.AddSingleton<ObsSettingsViewModel>();
+        services.AddSingleton<OBSSettingsViewModel>();
         services.AddSingleton<TwitchSettingsViewModel>();
         services.AddSingleton<LocalServerViewModel>();
         services.AddSingleton<SettingsViewModel>();

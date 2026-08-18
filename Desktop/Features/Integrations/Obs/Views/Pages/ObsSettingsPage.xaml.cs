@@ -10,7 +10,7 @@ namespace StreamTabula.Features.Integrations.Obs.Views.Pages
         {
             InitializeComponent();
 
-            this.DataContext = App.ServiceProvider.GetRequiredService<ObsSettingsViewModel>();
+            this.DataContext = App.ServiceProvider.GetRequiredService<OBSSettingsViewModel>();
         }
     }
 }
