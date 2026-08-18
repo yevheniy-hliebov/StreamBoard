@@ -33,88 +33,86 @@ using System.Net.Http;
 using Wpf.Ui;
 using OBSWebsocketDotNet;
 
-namespace StreamTabula.Bootstrapping
+namespace StreamTabula.Bootstrapping;
+
+public static class ServiceRegistration
 {
-    public static class ServiceRegistration
+    public static void AddApplicationServices(this IServiceCollection services)
     {
-        public static void AddApplicationServices(this IServiceCollection services)
+        services.AddSingleton<MainWindow>();
+
+        services.AddSingleton<Features.Navigation.Services.NavigationService>();
+
+        // Pages
+        services.AddTransient<HomePage>();
+        services.AddTransient<GridDeckPage>();
+        services.AddTransient<IntegrationsPage>();
+        services.AddTransient<ObsSettingsPage>();
+        services.AddTransient<TwitchSettingsPage>();
+        services.AddTransient<LocalServerPage>();
+        services.AddTransient<SettingsPage>();
+
+        services.AddSingleton<ISnackbarService, SnackbarService>();
+        services.AddSingleton<IClipboardService, ClipboardService>();
+        services.AddSingleton<IDialogService, DialogService>();
+
+        services.AddSingleton<SettingsStorage>();
+        services.AddSingleton<ServerConfigsStorage>();
+        services.AddSingleton<GridDeckStorage>();
+        services.AddSingleton<KeyboardDeckStorage>();
+        services.AddSingleton<ActionRegistry>();
+
+        services.AddSingleton<IntegrationsStorage>();
+        services.AddSingleton<IOBSWebsocket, OBSWebsocket>();
+        services.AddSingleton<IOBSSceneService, OBSSceneService>();
+
+        services.AddSingleton<ObsService>(sp =>
         {
-            services.AddSingleton<MainWindow>();
+            var obs = sp.GetRequiredService<IOBSWebsocket>();
 
-            services.AddSingleton<Features.Navigation.Services.NavigationService>();
+            var storage = sp.GetRequiredService<IntegrationsStorage>();
+            var obsSettings = storage.Current.Obs;
 
-            // Pages
-            services.AddTransient<HomePage>();
-            services.AddTransient<GridDeckPage>();
-            services.AddTransient<IntegrationsPage>();
-            services.AddTransient<ObsSettingsPage>();
-            services.AddTransient<TwitchSettingsPage>();
-            services.AddTransient<LocalServerPage>();
-            services.AddTransient<SettingsPage>();
+            return new ObsService(obs, obsSettings);
+        });
 
-            services.AddSingleton<ISnackbarService, SnackbarService>();
-            services.AddSingleton<IClipboardService, ClipboardService>();
-            services.AddSingleton<IDialogService, DialogService>();
+        services.AddMemoryCache();
+        services.AddSingleton<HttpClient>();
+        services.AddSingleton<TwitchStorageService>();
+        services.AddSingleton<TwitchAccountsGateway>(sp =>
+        {
+            var cache = sp.GetRequiredService<IMemoryCache>();
+            var http = sp.GetRequiredService<HttpClient>();
+            var storage = sp.GetRequiredService<TwitchStorageService>();
 
-            services.AddSingleton<SettingsStorage>();
-            services.AddSingleton<ServerConfigsStorage>();
-            services.AddSingleton<GridDeckStorage>();
-            services.AddSingleton<KeyboardDeckStorage>();
-            services.AddSingleton<ActionRegistry>();
+            string clientId = "0sn4idtk1x80yrrej0cd66nsapzv86";
 
-            services.AddSingleton<IntegrationsStorage>();
-            services.AddSingleton<IOBSWebsocket, OBSWebsocket>();
-            services.AddSingleton<IOBSSceneService, OBSSceneService>();
-
-            services.AddSingleton<ObsService>(sp =>
-            {
-                var obs = sp.GetRequiredService<IOBSWebsocket>();
-                var sceneService = sp.GetRequiredService<IOBSSceneService>();
-
-                var storage = sp.GetRequiredService<IntegrationsStorage>();
-                var obsSettings = storage.Current.Obs;
-
-                return new ObsService(obs, sceneService, obsSettings);
-            });
-
-            services.AddMemoryCache();
-            services.AddSingleton<HttpClient>();
-            services.AddSingleton<TwitchStorageService>();
-            services.AddSingleton<TwitchAccountsGateway>(sp =>
-            {
-                var cache = sp.GetRequiredService<IMemoryCache>();
-                var http = sp.GetRequiredService<HttpClient>();
-                var storage = sp.GetRequiredService<TwitchStorageService>();
-
-                string clientId = "0sn4idtk1x80yrrej0cd66nsapzv86";
-
-                return new TwitchAccountsGateway(cache, http, storage, clientId);
-            });
+            return new TwitchAccountsGateway(cache, http, storage, clientId);
+        });
 
 
-            services.AddSingleton<WebsocketManager>();
-            services.AddSingleton<LocalServer>(sp =>
-            {
-                var storage = sp.GetRequiredService<ServerConfigsStorage>();
-                var homeController = new HomeController(storage.Current.Local);
-                var gridDeckStorage = sp.GetRequiredService<GridDeckStorage>();
-                var gridDeckController = new GridDeckController(gridDeckStorage);
-                var httpRouter = new HttpRouter([homeController, gridDeckController]);
-                var wsManager = sp.GetRequiredService<WebsocketManager>();
+        services.AddSingleton<WebsocketManager>();
+        services.AddSingleton<LocalServer>(sp =>
+        {
+            var storage = sp.GetRequiredService<ServerConfigsStorage>();
+            var homeController = new HomeController(storage.Current.Local);
+            var gridDeckStorage = sp.GetRequiredService<GridDeckStorage>();
+            var gridDeckController = new GridDeckController(gridDeckStorage);
+            var httpRouter = new HttpRouter([homeController, gridDeckController]);
+            var wsManager = sp.GetRequiredService<WebsocketManager>();
 
-                return new LocalServer(storage.Current.Local, httpRouter, wsManager);
-            });
+            return new LocalServer(storage.Current.Local, httpRouter, wsManager);
+        });
 
-            services.AddSingleton<AppInfoService>();
-            services.AddSingleton<UpdateService>();
+        services.AddSingleton<AppInfoService>();
+        services.AddSingleton<UpdateService>();
 
-            services.AddSingleton<GridDeckViewModel>();
-            services.AddSingleton<IntegrationsViewModel>();
-            services.AddSingleton<ObsSettingsViewModel>();
-            services.AddSingleton<TwitchSettingsViewModel>();
-            services.AddSingleton<LocalServerViewModel>();
-            services.AddSingleton<SettingsViewModel>();
-            services.AddSingleton<UpdaterViewModel>();
-        }
+        services.AddSingleton<GridDeckViewModel>();
+        services.AddSingleton<IntegrationsViewModel>();
+        services.AddSingleton<ObsSettingsViewModel>();
+        services.AddSingleton<TwitchSettingsViewModel>();
+        services.AddSingleton<LocalServerViewModel>();
+        services.AddSingleton<SettingsViewModel>();
+        services.AddSingleton<UpdaterViewModel>();
     }
 }

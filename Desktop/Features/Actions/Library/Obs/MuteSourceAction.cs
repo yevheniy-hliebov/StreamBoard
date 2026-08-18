@@ -3,8 +3,8 @@ using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Features.Integrations.Obs.Services;
 using StreamTabula.Controls.Icons;
+using OBSWebsocketDotNet;
 
 namespace StreamTabula.Features.Actions.Library.Obs;
 
@@ -66,22 +66,22 @@ public class MuteSourceAction : ObsBaseAction
     {
         if (string.IsNullOrWhiteSpace(SourceName)) return;
 
-        var obsService = App.ServiceProvider.GetRequiredService<ObsService>();
-        if (!obsService.IsConnected) return;
+        var obs = App.ServiceProvider.GetRequiredService<IOBSWebsocket>();
+        if (!obs.IsConnected) return;
 
         try
         {
             switch (MuteState)
             {
                 case "Mute":
-                    obsService.Obs.SetInputMute(SourceName, true);
+                    obs.SetInputMute(SourceName, true);
                     break;
                 case "Unmute":
-                    obsService.Obs.SetInputMute(SourceName, false);
+                    obs.SetInputMute(SourceName, false);
                     break;
                 case "Toggle":
                 default:
-                    obsService.Obs.ToggleInputMute(SourceName);
+                    obs.ToggleInputMute(SourceName);
                     break;
             }
         }

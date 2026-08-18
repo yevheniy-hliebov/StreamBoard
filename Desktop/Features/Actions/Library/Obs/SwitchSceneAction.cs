@@ -1,10 +1,10 @@
+using Microsoft.Extensions.DependencyInjection;
+using OBSWebsocketDotNet;
+using StreamTabula.Controls.Icons;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Actions.Models;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Features.Integrations.Obs.Services;
-using StreamTabula.Features.Actions.Models;
-using StreamTabula.Controls.Icons;
 
 namespace StreamTabula.Features.Actions.Library.Obs;
 
@@ -47,11 +47,11 @@ public class SwitchSceneAction : ObsBaseAction
 
         try
         {
-            var obsService = App.ServiceProvider.GetRequiredService<ObsService>();
+            var obs = App.ServiceProvider.GetRequiredService<IOBSWebsocket>();
 
-            if (obsService.IsConnected)
+            if (obs.IsConnected)
             {
-                obsService.Obs.SetCurrentProgramScene(SceneName);
+                obs.SetCurrentProgramScene(SceneName);
             }
             else
             {

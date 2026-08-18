@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
+using OBSWebsocketDotNet;
 using StreamTabula.Controls.Icons;
 using StreamTabula.Core.Services.Audio;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Actions.Models;
-using StreamTabula.Features.Integrations.Obs.Services;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json.Serialization;
@@ -83,12 +83,12 @@ public class ScreenshotAction : ObsBaseAction
 
     public override async Task ExecuteAsync(object? data = null)
     {
-        var obsService = App.ServiceProvider.GetRequiredService<ObsService>();
-        if (!obsService.IsConnected) return;
+        var obs = App.ServiceProvider.GetRequiredService<IOBSWebsocket>();
+        if (!obs.IsConnected) return;
 
         try
         {
-            string targetScene = CaptureActiveScene ? obsService.Obs.GetCurrentProgramScene() : SceneName;
+            string targetScene = CaptureActiveScene ? obs.GetCurrentProgramScene() : SceneName;
 
             if (string.IsNullOrWhiteSpace(targetScene))
             {
@@ -96,7 +96,7 @@ public class ScreenshotAction : ObsBaseAction
                 return;
             }
 
-            string base64Data = obsService.Obs.GetSourceScreenshot(targetScene, "png");
+            string base64Data = obs.GetSourceScreenshot(targetScene, "png");
 
             if (!string.IsNullOrEmpty(base64Data) && base64Data.Contains(","))
             {

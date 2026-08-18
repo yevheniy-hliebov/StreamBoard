@@ -1,10 +1,10 @@
+using Microsoft.Extensions.DependencyInjection;
+using OBSWebsocketDotNet;
+using StreamTabula.Controls.Icons;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Actions.Models;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Actions.Models;
-using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Features.Integrations.Obs.Services;
-using StreamTabula.Controls.Icons;
 
 namespace StreamTabula.Features.Actions.Library.Obs;
 
@@ -35,22 +35,22 @@ public class StreamAction : ObsBaseAction
 
     public override async Task ExecuteAsync(object? data = null)
     {
-        var obsService = App.ServiceProvider.GetRequiredService<ObsService>();
-        if (!obsService.IsConnected) return;
+        var obs = App.ServiceProvider.GetRequiredService<IOBSWebsocket>();
+        if (!obs.IsConnected) return;
 
         try
         {
             switch (StreamState)
             {
                 case "Start":
-                    obsService.Obs.StartStream();
+                    obs.StartStream();
                     break;
                 case "Stop":
-                    obsService.Obs.StopStream();
+                    obs.StopStream();
                     break;
                 case "Toggle":
                 default:
-                    obsService.Obs.ToggleStream();
+                    obs.ToggleStream();
                     break;
             }
         }

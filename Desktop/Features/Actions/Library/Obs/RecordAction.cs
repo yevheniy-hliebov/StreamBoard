@@ -1,10 +1,10 @@
+using Microsoft.Extensions.DependencyInjection;
+using OBSWebsocketDotNet;
+using StreamTabula.Controls.Icons;
+using StreamTabula.Features.Actions.Attributes;
+using StreamTabula.Features.Actions.Models;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Actions.Models;
-using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Features.Integrations.Obs.Services;
-using StreamTabula.Controls.Icons;
 
 namespace StreamTabula.Features.Actions.Library.Obs;
 
@@ -41,31 +41,31 @@ public class RecordAction : ObsBaseAction
 
     public override async Task ExecuteAsync(object? data = null)
     {
-        var obsService = App.ServiceProvider.GetRequiredService<ObsService>();
-        if (!obsService.IsConnected) return;
+        var obs = App.ServiceProvider.GetRequiredService<IOBSWebsocket>();
+        if (!obs.IsConnected) return;
 
         try
         {
             switch (RecordState)
             {
                 case "Start":
-                    obsService.Obs.StartRecord();
+                    obs.StartRecord();
                     break;
                 case "Stop":
-                    obsService.Obs.StopRecord();
+                    obs.StopRecord();
                     break;
                 case "Pause":
-                    obsService.Obs.PauseRecord();
+                    obs.PauseRecord();
                     break;
                 case "Resume":
-                    obsService.Obs.ResumeRecord();
+                    obs.ResumeRecord();
                     break;
                 case "Toggle Pause":
-                    obsService.Obs.ToggleRecordPause();
+                    obs.ToggleRecordPause();
                     break;
                 case "Toggle":
                 default:
-                    obsService.Obs.ToggleRecord();
+                    obs.ToggleRecord();
                     break;
             }
         }

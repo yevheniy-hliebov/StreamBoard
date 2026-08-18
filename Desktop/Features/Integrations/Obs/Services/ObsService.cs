@@ -8,8 +8,7 @@ namespace StreamTabula.Features.Integrations.Obs.Services;
 
 public class ObsService : ObservableObject
 {
-    public readonly IOBSWebsocket Obs;
-    public readonly IOBSSceneService SceneService;
+    private readonly IOBSWebsocket _obs;
     private readonly ObsConnectionSettings _settings;
     private CancellationTokenSource? _reconnectCts;
 
@@ -26,22 +25,21 @@ public class ObsService : ObservableObject
         }
     }
 
-    public bool IsConnected => Obs.IsConnected;
+    public bool IsConnected => _obs.IsConnected;
 
-    public ObsService(IOBSWebsocket obs, IOBSSceneService sceneService,  ObsConnectionSettings settings)
+    public ObsService(IOBSWebsocket obs,  ObsConnectionSettings settings)
     {
-        Obs = obs;
-        SceneService = sceneService;
+        _obs = obs;
 
         _settings = settings;
 
-        Obs.Connected += OnConnected;
-        Obs.Disconnected += OnDisconnected;
+        _obs.Connected += OnConnected;
+        _obs.Disconnected += OnDisconnected;
     }
 
     public void Connect()
     {
-        if (Obs.IsConnected || ConnectionState == ConnectionStatus.Connecting)
+        if (_obs.IsConnected || ConnectionState == ConnectionStatus.Connecting)
             return;
 
         StopReconnect();
@@ -50,7 +48,7 @@ public class ObsService : ObservableObject
         try
         {
             var url = $"ws://{_settings.Address}:{_settings.Port}";
-            Obs.ConnectAsync(url, _settings.Password);
+            _obs.ConnectAsync(url, _settings.Password);
         }
         catch
         {
@@ -63,10 +61,10 @@ public class ObsService : ObservableObject
     {
         StopReconnect();
 
-        if (Obs.IsConnected)
+        if (_obs.IsConnected)
         {
             ConnectionState = ConnectionStatus.Disconnecting;
-            Obs.Disconnect();
+            _obs.Disconnect();
         }
         else
         {
@@ -82,7 +80,6 @@ public class ObsService : ObservableObject
 
     private void OnDisconnected(object? sender, ObsDisconnectionInfo e)
     {
-        // Якщо ми ініціювали відключення самі
         if (ConnectionState == ConnectionStatus.Disconnecting)
         {
             ConnectionState = ConnectionStatus.NotConnected;
@@ -110,11 +107,11 @@ public class ObsService : ObservableObject
                 {
                     await Task.Delay(TimeSpan.FromSeconds(_settings.ReconnectDelay), token);
 
-                    if (Obs.IsConnected) break;
+                    if (_obs.IsConnected) break;
 
                     ConnectionState = ConnectionStatus.Connecting;
                     var url = $"ws://{_settings.Address}:{_settings.Port}";
-                    Obs.ConnectAsync(url, _settings.Password);
+                    _obs.ConnectAsync(url, _settings.Password);
 
                     await Task.Delay(5000, token);
                 }
