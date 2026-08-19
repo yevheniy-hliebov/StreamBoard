@@ -1,9 +1,9 @@
 using System.Windows;
 using StreamTabula.Features.Integrations.Common.Models;
-using StreamTabula.Features.Integrations.Obs.Services;
-using StreamTabula.Features.Integrations.Obs.Views.Pages;
+using StreamTabula.Features.Integrations.OBS.Services;
+using StreamTabula.Features.Integrations.OBS.Views.Pages;
 
-namespace StreamTabula.Features.Integrations.Obs.Models;
+namespace StreamTabula.Features.Integrations.OBS.Models;
 
 public class OBSIntegrationStatus : IntegrationStatusModel, IDisposable
 {
@@ -16,7 +16,7 @@ public class OBSIntegrationStatus : IntegrationStatusModel, IDisposable
 
         Status = _obsService.Status;
 
-        TargetPageType = typeof(ObsSettingsPage);
+        TargetPageType = typeof(OBSSettingsPage);
 
         _obsService.StatusChanged += OnObsStatusChanged;
     }

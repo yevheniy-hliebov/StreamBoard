@@ -1,16 +1,15 @@
 using System.Windows.Controls;
 using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Integrations.Obs.ViewModels;
+using StreamTabula.Features.Integrations.OBS.ViewModels;
 
-namespace StreamTabula.Features.Integrations.Obs.Views.Pages
+namespace StreamTabula.Features.Integrations.OBS.Views.Pages;
+
+public partial class OBSSettingsPage : Page
 {
-    public partial class ObsSettingsPage : Page
+    public OBSSettingsPage()
     {
-        public ObsSettingsPage()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            this.DataContext = App.ServiceProvider.GetRequiredService<OBSSettingsViewModel>();
-        }
+        this.DataContext = App.ServiceProvider.GetRequiredService<OBSSettingsViewModel>();
     }
 }

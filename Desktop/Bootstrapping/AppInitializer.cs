@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using StreamTabula.Features.Actions.Services;
 using StreamTabula.Features.Integrations.Common.Services;
-using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Features.Integrations.OBS.Services;
 using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Features.Servers.Controllers;
 using StreamTabula.Features.Servers.Models;

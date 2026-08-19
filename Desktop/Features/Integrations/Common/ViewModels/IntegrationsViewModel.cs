@@ -1,8 +1,8 @@
 using System.Collections.ObjectModel;
 using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Integrations.Common.Models;
-using StreamTabula.Features.Integrations.Obs.Models;
-using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Features.Integrations.OBS.Models;
+using StreamTabula.Features.Integrations.OBS.Services;
 using StreamTabula.Features.Integrations.Twitch.Models;
 using StreamTabula.Features.Integrations.Twitch.Services;
 

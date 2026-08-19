@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace StreamTabula.Features.Integrations.Obs.Models;
+namespace StreamTabula.Features.Integrations.OBS.Models;
 
 public class OBSConnectionSettings
 {

@@ -3,7 +3,7 @@ using OBSWebsocketDotNet;
 using StreamTabula.Controls.Icons;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Actions.Models;
-using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Features.Integrations.OBS.Services;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 

@@ -3,10 +3,10 @@ using System.Windows.Input;
 using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Integrations.Common.Models;
 using StreamTabula.Features.Integrations.Common.Services;
-using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Features.Integrations.OBS.Services;
 using Wpf.Ui.Input;
 
-namespace StreamTabula.Features.Integrations.Obs.ViewModels;
+namespace StreamTabula.Features.Integrations.OBS.ViewModels;
 
 public class OBSSettingsViewModel : ObservableObject
 {

@@ -1,6 +1,6 @@
 using StreamTabula.Features.Decks.Views.Pages;
 using StreamTabula.Features.Integrations.Common.Views.Pages;
-using StreamTabula.Features.Integrations.Obs.Views.Pages;
+using StreamTabula.Features.Integrations.OBS.Views.Pages;
 using StreamTabula.Features.Integrations.Twitch.Views.Pages;
 using StreamTabula.Features.Servers.Pages;
 using StreamTabula.Features.Navigation.Models;
@@ -21,7 +21,7 @@ public class NavigationService
         new("Grid Deck", typeof(GridDeckPage), FluentIcon: FluentIconType.Grid, AddSeparatorAfter: true),
 
         new("Integrations", typeof(IntegrationsPage), FluentIcon: FluentIconType.Puzzle),
-        new("OBS Studio", typeof(ObsSettingsPage), IntegrationIcon: IntegrationIconType.Obs, ParentName: "Integrations"),
+        new("OBS Studio", typeof(OBSSettingsPage), IntegrationIcon: IntegrationIconType.Obs, ParentName: "Integrations"),
         new("Twitch", typeof(TwitchSettingsPage), IntegrationIcon: IntegrationIconType.Twitch, ParentName: "Integrations", AddSeparatorAfter: true),
 
         new("Local Server", typeof(LocalServerPage), FluentIcon: FluentIconType.Network),

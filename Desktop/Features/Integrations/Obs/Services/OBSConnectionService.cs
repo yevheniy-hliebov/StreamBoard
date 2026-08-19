@@ -1,9 +1,9 @@
 using OBSWebsocketDotNet;
 using OBSWebsocketDotNet.Communication;
 using StreamTabula.Features.Integrations.Common.Models;
-using StreamTabula.Features.Integrations.Obs.Models;
+using StreamTabula.Features.Integrations.OBS.Models;
 
-namespace StreamTabula.Features.Integrations.Obs.Services;
+namespace StreamTabula.Features.Integrations.OBS.Services;
 
 public interface IOBSConnectionService : IDisposable
 {

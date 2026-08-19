@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
 using OBSWebsocketDotNet;
 using OBSWebsocketDotNet.Types;
-using StreamTabula.Features.Integrations.Obs.Models;
+using StreamTabula.Features.Integrations.OBS.Models;
 using System.Reflection;
 
-namespace StreamTabula.Features.Integrations.Obs.Services;
+namespace StreamTabula.Features.Integrations.OBS.Services;
 
 public interface IOBSSceneService
 {

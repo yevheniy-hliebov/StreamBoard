@@ -2,8 +2,8 @@ using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using OBSWebsocketDotNet;
 using StreamTabula.Features.Actions.Models;
-using StreamTabula.Features.Integrations.Obs.Models;
-using StreamTabula.Features.Integrations.Obs.Services;
+using StreamTabula.Features.Integrations.OBS.Models;
+using StreamTabula.Features.Integrations.OBS.Services;
 
 namespace StreamTabula.Features.Actions.Library.Obs;
 

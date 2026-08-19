@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 using StreamTabula.Core.Models;
-using StreamTabula.Features.Integrations.Obs.Models;
+using StreamTabula.Features.Integrations.OBS.Models;
 
 namespace StreamTabula.Features.Integrations.Common.Models;
 

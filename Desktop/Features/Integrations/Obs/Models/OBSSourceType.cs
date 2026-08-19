@@ -1,4 +1,4 @@
-﻿namespace StreamTabula.Features.Integrations.Obs.Models;
+﻿namespace StreamTabula.Features.Integrations.OBS.Models;
 
 public enum OBSSourceType
 {
