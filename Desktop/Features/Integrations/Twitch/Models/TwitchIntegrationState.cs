@@ -12,7 +12,7 @@ namespace StreamTabula.Features.Integrations.Twitch.Models
         {
             _manager = manager;
 
-            Name = $"Twitch {manager.Type}";
+            Name = $"Twitch {manager.Options.Role}";
             TargetPageType = typeof(TwitchSettingsPage);
 
             UpdateStatus();

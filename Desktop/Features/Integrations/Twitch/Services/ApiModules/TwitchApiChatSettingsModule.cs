@@ -4,66 +4,65 @@ using StreamTabula.Features.Integrations.Twitch.Models;
 using StreamTabula.Features.Integrations.Twitch.Models.Requests;
 using StreamTabula.Features.Integrations.Twitch.Models.Responses;
 
-namespace StreamTabula.Features.Integrations.Twitch.Services.ApiModules
+namespace StreamTabula.Features.Integrations.Twitch.Services.ApiModules;
+
+public class TwitchApiChatSettingsModule(ITwitchSession session, HttpClient http)
+    : TwitchApiModule(session, http)
 {
-    public class TwitchApiChatSettingsModule(TwitchAuthContext context, HttpClient http)
-        : TwitchApiModule(context, http)
+    public async Task<TwitchUpdateChatSettingsRequest?> UpdateChatSettings(
+        string broadcasterId,
+        string moderatorId,
+        TwitchUpdateChatSettingsRequest requestData
+    )
     {
-        public async Task<TwitchUpdateChatSettingsRequest?> UpdateChatSettings(
-            string broadcasterId,
-            string moderatorId,
-            TwitchUpdateChatSettingsRequest requestData
-        )
+        var query = $"broadcaster_id={broadcasterId}&moderator_id={moderatorId}";
+
+        try
         {
-            var query = $"broadcaster_id={broadcasterId}&moderator_id={moderatorId}";
+            var response = await SendRequestInternal(HttpMethod.Patch, "/chat/settings", query, requestData);
 
-            try
-            {
-                var response = await SendRequestInternal(HttpMethod.Patch, "/chat/settings", query, requestData);
+            var result = await response.Content.ReadFromJsonAsync<TwitchResponse<TwitchUpdateChatSettingsRequest>>();
 
-                var result = await response.Content.ReadFromJsonAsync<TwitchResponse<TwitchUpdateChatSettingsRequest>>();
-
-                return result?.Data?.FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                if (ex is Exceptions.TwitchApiException) throw;
-                throw new Exception($"Failed to update chat settings: {ex.Message}", ex);
-            }
+            return result?.Data?.FirstOrDefault();
         }
-
-        public async Task ToggleEmoteMode(string broadcasterId, string moderatorId, bool enabled)
+        catch (Exception ex)
         {
-            await UpdateChatSettings(broadcasterId, moderatorId, new TwitchUpdateChatSettingsRequest
-            {
-                EmoteMode = enabled
-            });
+            if (ex is Exceptions.TwitchApiException) throw;
+            throw new Exception($"Failed to update chat settings: {ex.Message}", ex);
         }
+    }
 
-        public async Task ToggleFollowersMode(string broadcasterId, string moderatorId, bool enabled, int durationMinutes = 0)
+    public async Task ToggleEmoteMode(string broadcasterId, string moderatorId, bool enabled)
+    {
+        await UpdateChatSettings(broadcasterId, moderatorId, new TwitchUpdateChatSettingsRequest
         {
-            await UpdateChatSettings(broadcasterId, moderatorId, new TwitchUpdateChatSettingsRequest
-            {
-                FollowerMode = enabled,
-                FollowerModeDuration = enabled ? durationMinutes : null
-            });
-        }
+            EmoteMode = enabled
+        });
+    }
 
-        public async Task ToggleSubscribersMode(string broadcasterId, string moderatorId, bool enabled)
+    public async Task ToggleFollowersMode(string broadcasterId, string moderatorId, bool enabled, int durationMinutes = 0)
+    {
+        await UpdateChatSettings(broadcasterId, moderatorId, new TwitchUpdateChatSettingsRequest
         {
-            await UpdateChatSettings(broadcasterId, moderatorId, new TwitchUpdateChatSettingsRequest
-            {
-                SubscriberMode = enabled
-            });
-        }
+            FollowerMode = enabled,
+            FollowerModeDuration = enabled ? durationMinutes : null
+        });
+    }
 
-        public async Task ToggleSlowMode(string broadcasterId, string moderatorId, bool enabled, int waitTimeSeconds = 30)
+    public async Task ToggleSubscribersMode(string broadcasterId, string moderatorId, bool enabled)
+    {
+        await UpdateChatSettings(broadcasterId, moderatorId, new TwitchUpdateChatSettingsRequest
         {
-            await UpdateChatSettings(broadcasterId, moderatorId, new TwitchUpdateChatSettingsRequest
-            {
-                SlowMode = enabled,
-                SlowModeWaitTime = enabled ? waitTimeSeconds : null
-            });
-        }
+            SubscriberMode = enabled
+        });
+    }
+
+    public async Task ToggleSlowMode(string broadcasterId, string moderatorId, bool enabled, int waitTimeSeconds = 30)
+    {
+        await UpdateChatSettings(broadcasterId, moderatorId, new TwitchUpdateChatSettingsRequest
+        {
+            SlowMode = enabled,
+            SlowModeWaitTime = enabled ? waitTimeSeconds : null
+        });
     }
 }

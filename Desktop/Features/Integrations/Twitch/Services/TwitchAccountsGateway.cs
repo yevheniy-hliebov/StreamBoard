@@ -1,25 +1,31 @@
 using System.Net.Http;
 using Microsoft.Extensions.Caching.Memory;
+using StreamTabula.Core.Services;
 using StreamTabula.Features.Integrations.Twitch.Models;
 
-namespace StreamTabula.Features.Integrations.Twitch.Services
+namespace StreamTabula.Features.Integrations.Twitch.Services;
+
+public class TwitchAccountsGateway : IDisposable
 {
-    public class TwitchAccountsGateway : IDisposable
+    private readonly TwitchStorageService _storage;
+    public ITwitchAccountManager Broadcaster { get; }
+    public ITwitchAccountManager Bot { get; }
+
+    public TwitchAccountsGateway(
+        IMemoryCache cache,
+        HttpClient http,
+        TwitchStorageService storage,
+        IUrlLauncher urlLauncher, 
+        string appClientId
+    )
     {
-        private readonly TwitchStorageService _storage;
-        public TwitchAccountManager Broadcaster { get; }
-        public TwitchAccountManager Bot { get; }
+        _storage = storage;
 
-        public TwitchAccountsGateway(
-            IMemoryCache cache,
-            HttpClient http,
-            TwitchStorageService storage,
-            string appClientId
-        )
+        var broadcasterOptions = new TwitchAuthOptions
         {
-            _storage = storage;
-
-            var broadcasterScopes = new List<string> {
+            ClientId = appClientId,
+            Role = TwitchAccountRole.Broadcaster,
+            Scopes = [
                 "user:read:email",                  // Email in Get Users
                 "channel:manage:broadcast",         // Modify Channel Information
                 "user:write:chat",                  // Send Chat Message
@@ -31,83 +37,86 @@ namespace StreamTabula.Features.Integrations.Twitch.Services
                 "clips:edit",                       // Create Clip
                 "channel:edit:commercial",          // Start Commercial
                 "moderator:manage:shield_mode",     // Update Shield Mode Status
-            };
+            ],
+        };
 
-            Broadcaster = new TwitchAccountManager(
-                type: TwitchUserType.Broadcaster,
-                scopes: broadcasterScopes,
-                appClientId: appClientId,
-                cache: cache,
-                http: http
-            );
+        var broadcasterSession = new TwitchSession(TwitchAccountRole.Broadcaster);
+        var broadcasterApi = new TwitchApiClient(broadcasterSession, http, cache);
 
-            var botScopes = new List<string> {
+        Broadcaster = new TwitchAccountManager(broadcasterOptions, broadcasterSession, urlLauncher, broadcasterApi);
+
+        var botOptions = new TwitchAuthOptions
+        {
+            ClientId = appClientId,
+            Role = TwitchAccountRole.Bot,
+            Scopes = [
                 "user:read:email",                  // Email in Get Users
                 "user:write:chat",                  // Send Chat Message
                 "moderator:manage:announcements",   // Send Chat Announcement
-            };
-            Bot = new TwitchAccountManager(
-                type: TwitchUserType.Bot,
-                scopes: botScopes,
-                appClientId: appClientId,
-                cache: cache,
-                http: http
-            );
+            ],
+        };
 
-            RestoreSessions();
+        var botSession = new TwitchSession(TwitchAccountRole.Bot);
+        var botApi = new TwitchApiClient(botSession, http, cache);
 
-            Broadcaster.UserChanged += () => SyncWithStorage(Broadcaster);
-            Bot.UserChanged += () => SyncWithStorage(Bot);
-        }
+        Bot = new TwitchAccountManager(botOptions, botSession, urlLauncher, botApi);
 
-        private void RestoreSessions()
+        Broadcaster.Session.SessionChanged += OnBroadcasterSessionChanged;
+        Bot.Session.SessionChanged += OnBotSessionChanged;
+
+        _ = RestoreSessionsAsync();
+    }
+
+    private async Task RestoreSessionsAsync()
+    {
+        var broadcasterContext = _storage.LoadContext(TwitchAccountRole.Broadcaster);
+        if (broadcasterContext != null)
         {
-            var broadcasterContext = _storage.LoadContext(TwitchUserType.Broadcaster);
-            if (broadcasterContext != null)
-            {
-                _ = Broadcaster.OnLoginSuccess(broadcasterContext, "restored");
-            }
-
-            var botContext = _storage.LoadContext(TwitchUserType.Bot);
-            if (botContext != null)
-            {
-                _ = Bot.OnLoginSuccess(botContext, "restored");
-            }
+            await Broadcaster.TryRestoreSessionAsync(broadcasterContext);
         }
 
-        private void SyncWithStorage(TwitchAccountManager manager)
+        var botContext = _storage.LoadContext(TwitchAccountRole.Bot);
+        if (botContext != null)
         {
-            if (manager.IsAuth && manager.AuthContext != null)
-            {
-                _storage.SaveContext(manager.Type, manager.AuthContext);
-            }
-            else
-            {
-                _storage.DeleteContext(manager.Type);
-            }
-
-            CheckForDuplicateAccounts();
+            await Bot.TryRestoreSessionAsync(botContext);
         }
+    }
 
-        private void CheckForDuplicateAccounts()
+    private void OnBroadcasterSessionChanged() => SyncWithStorage(Broadcaster);
+    private void OnBotSessionChanged() => SyncWithStorage(Bot);
+
+    private void SyncWithStorage(ITwitchAccountManager manager)
+    {
+        if (manager.Session.IsAuthenticated)
         {
-            if (!Broadcaster.IsAuth || !Bot.IsAuth) return;
-
-            if (Broadcaster.User!.Id == Bot.User!.Id)
-            {
-                Bot.Logout();
-            }
+            _storage.SaveContext(manager.Session.Role, manager.Session.AuthContext!);
         }
-
-        public void Dispose()
+        else
         {
-            Broadcaster.UserChanged -= CheckForDuplicateAccounts;
-            Bot.UserChanged -= CheckForDuplicateAccounts;
-
-            Broadcaster.Dispose();
-            Bot.Dispose();
-
-            GC.SuppressFinalize(this);
+            _storage.DeleteContext(manager.Session.Role);
         }
+
+        CheckForDuplicateAccounts();
+    }
+
+    private void CheckForDuplicateAccounts()
+    {
+        if (!Broadcaster.Session.IsAuthenticated || !Bot.Session.IsAuthenticated) return;
+
+        if (Broadcaster.Session.User!.Id == Bot.Session.User!.Id)
+        {
+            Bot.Logout();
+        }
+    }
+
+    public void Dispose()
+    {
+        Broadcaster.Session.SessionChanged -= OnBroadcasterSessionChanged;
+        Bot.Session.SessionChanged -= OnBotSessionChanged;
+
+        Broadcaster.Dispose();
+        Bot.Dispose();
+
+        GC.SuppressFinalize(this);
     }
 }

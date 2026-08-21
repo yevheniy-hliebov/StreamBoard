@@ -9,14 +9,14 @@ namespace StreamTabula.Features.Integrations.Twitch.Views.Components
     {
         public TwitchProfileCard() => InitializeComponent();
 
-        public TwitchUserIdentify? User
+        public TwitchUserIdentity? User
         {
-            get => (TwitchUserIdentify?)GetValue(UserProperty);
+            get => (TwitchUserIdentity?)GetValue(UserProperty);
             set => SetValue(UserProperty, value);
         }
 
         public static readonly DependencyProperty UserProperty =
-            DependencyProperty.Register(nameof(User), typeof(TwitchUserIdentify), typeof(TwitchProfileCard), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(User), typeof(TwitchUserIdentity), typeof(TwitchProfileCard), new PropertyMetadata(null));
 
         public string AccountRole
         {

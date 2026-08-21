@@ -27,14 +27,14 @@ namespace StreamTabula.Features.Integrations.Twitch.Views.Components
         public static readonly DependencyProperty IsAuthProperty =
             DependencyProperty.Register(nameof(IsAuth), typeof(bool), typeof(TwitchAccountCard), new PropertyMetadata(false));
 
-        public TwitchUserIdentify? User
+        public TwitchUserIdentity? User
         {
-            get { return (TwitchUserIdentify?)GetValue(UserProperty); }
+            get { return (TwitchUserIdentity?)GetValue(UserProperty); }
             set { SetValue(UserProperty, value); }
         }
 
         public static readonly DependencyProperty UserProperty =
-            DependencyProperty.Register(nameof(User), typeof(TwitchUserIdentify), typeof(TwitchAccountCard), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(User), typeof(TwitchUserIdentity), typeof(TwitchAccountCard), new PropertyMetadata(null));
 
         public ICommand LoginCommand
         {

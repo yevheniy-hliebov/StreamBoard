@@ -6,8 +6,8 @@ using StreamTabula.Features.Integrations.Twitch.Models.Responses;
 
 namespace StreamTabula.Features.Integrations.Twitch.Services.ApiModules
 {
-    public class TwitchApiProductionModule(TwitchAuthContext context, HttpClient http)
-        : TwitchApiModule(context, http)
+    public class TwitchApiProductionModule(ITwitchSession session, HttpClient http)
+        : TwitchApiModule(session, http)
     {
         public async Task<TwitchCreateMarkerResponse?> CreateStreamMarker(
             string userId,

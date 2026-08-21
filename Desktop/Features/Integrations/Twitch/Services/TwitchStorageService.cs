@@ -21,7 +21,7 @@ namespace StreamTabula.Features.Integrations.Twitch.Services
             }
         }
 
-        public void SaveContext(TwitchUserType type, TwitchAuthContext context)
+        public void SaveContext(TwitchAccountRole type, TwitchAuthContext context)
         {
             string json = JsonSerializer.Serialize(context);
             byte[] dataToEncrypt = Encoding.UTF8.GetBytes(json);
@@ -35,7 +35,7 @@ namespace StreamTabula.Features.Integrations.Twitch.Services
             File.WriteAllBytes(filePath, encryptedData);
         }
 
-        public TwitchAuthContext? LoadContext(TwitchUserType type)
+        public TwitchAuthContext? LoadContext(TwitchAccountRole type)
         {
             string filePath = GetPathForType(type);
             if (!File.Exists(filePath)) return null;
@@ -59,7 +59,7 @@ namespace StreamTabula.Features.Integrations.Twitch.Services
             }
         }
 
-        public void DeleteContext(TwitchUserType type)
+        public void DeleteContext(TwitchAccountRole type)
         {
             string filePath = GetPathForType(type);
             if (File.Exists(filePath))
@@ -68,7 +68,7 @@ namespace StreamTabula.Features.Integrations.Twitch.Services
             }
         }
 
-        private string GetPathForType(TwitchUserType type)
+        private string GetPathForType(TwitchAccountRole type)
             => Path.Combine(_dataDirectory, $"auth_{type.ToString().ToLower()}.bin");
     }
 }

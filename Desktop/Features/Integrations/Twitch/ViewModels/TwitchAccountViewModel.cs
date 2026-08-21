@@ -16,8 +16,8 @@ public class TwitchAccountViewModel : ObservableObject
         set => SetProperty(ref _isAuth, value);
     }
 
-    private TwitchUserIdentify? _user;
-    public TwitchUserIdentify? User
+    private TwitchUserIdentity? _user;
+    public TwitchUserIdentity? User
     {
         get => _user;
         set => SetProperty(ref _user, value);
@@ -31,7 +31,7 @@ public class TwitchAccountViewModel : ObservableObject
     public TwitchAccountViewModel(TwitchAccountManager manager)
     {
         _manager = manager;
-        AccountRole = manager.Type.ToString();
+        AccountRole = manager.Options.Role.ToString();
 
         LoginCommand = new RelayCommand<object?>(_ => Login());
         LogoutCommand = new RelayCommand<object?>(_ => Logout());

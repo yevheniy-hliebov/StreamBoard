@@ -4,51 +4,50 @@ using StreamTabula.Features.Integrations.Twitch.Models;
 using StreamTabula.Features.Integrations.Twitch.Models.Requests;
 using StreamTabula.Features.Integrations.Twitch.Models.Responses;
 
-namespace StreamTabula.Features.Integrations.Twitch.Services.ApiModules
+namespace StreamTabula.Features.Integrations.Twitch.Services.ApiModules;
+
+public class TwitchApiChannelModule(ITwitchSession session, HttpClient http)
+    : TwitchApiModule(session, http)
 {
-    public class TwitchApiChannelModule(TwitchAuthContext context, HttpClient http)
-        : TwitchApiModule(context, http)
+    public async Task ModifyChannelInfo(string broadcasterId, TwitchModifyChannelRequest requestData)
     {
-        public async Task ModifyChannelInfo(string broadcasterId, TwitchModifyChannelRequest requestData)
-        {
-            string query = $"broadcaster_id={broadcasterId}";
+        string query = $"broadcaster_id={broadcasterId}";
 
-            try
-            {
-                await SendRequestInternal(HttpMethod.Patch, "/channels", query, requestData);
-            }
-            catch (Exception ex)
-            {
-                if (ex is Exceptions.TwitchApiException) throw;
-                throw new Exception($"Failed to update channel info: {ex.Message}", ex);
-            }
+        try
+        {
+            await SendRequestInternal(HttpMethod.Patch, "/channels", query, requestData);
         }
-
-        public async Task UpdateTitle(string broadcasterId, string title)
-            => await ModifyChannelInfo(broadcasterId, new TwitchModifyChannelRequest { Title = title });
-
-        public async Task SetCategory(string broadcasterId, string gameId)
-            => await ModifyChannelInfo(broadcasterId, new TwitchModifyChannelRequest { GameId = gameId });
-
-        public async Task<List<TwitchCategory>> GetCategories(string query)
+        catch (Exception ex)
         {
-            if (string.IsNullOrWhiteSpace(query)) return [];
+            if (ex is Exceptions.TwitchApiException) throw;
+            throw new Exception($"Failed to update channel info: {ex.Message}", ex);
+        }
+    }
 
-            string queryString = $"query={Uri.EscapeDataString(query)}";
+    public async Task UpdateTitle(string broadcasterId, string title)
+        => await ModifyChannelInfo(broadcasterId, new TwitchModifyChannelRequest { Title = title });
 
-            try
-            {
-                var response = await SendRequestInternal(HttpMethod.Get, "/search/categories", queryString);
+    public async Task SetCategory(string broadcasterId, string gameId)
+        => await ModifyChannelInfo(broadcasterId, new TwitchModifyChannelRequest { GameId = gameId });
 
-                var result = await response.Content.ReadFromJsonAsync<TwitchResponse<TwitchCategory>>();
+    public async Task<List<TwitchCategory>> GetCategories(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query)) return [];
 
-                return result?.Data ?? [];
-            }
-            catch (Exception ex)
-            {
-                if (ex is Exceptions.TwitchApiException) throw;
-                throw new Exception($"Failed to search categories: {ex.Message}", ex);
-            }
+        string queryString = $"query={Uri.EscapeDataString(query)}";
+
+        try
+        {
+            var response = await SendRequestInternal(HttpMethod.Get, "/search/categories", queryString);
+
+            var result = await response.Content.ReadFromJsonAsync<TwitchResponse<TwitchCategory>>();
+
+            return result?.Data ?? [];
+        }
+        catch (Exception ex)
+        {
+            if (ex is Exceptions.TwitchApiException) throw;
+            throw new Exception($"Failed to search categories: {ex.Message}", ex);
         }
     }
 }

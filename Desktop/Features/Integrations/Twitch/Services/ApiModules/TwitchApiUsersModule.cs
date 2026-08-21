@@ -5,73 +5,78 @@ using StreamTabula.Features.Integrations.Twitch.Exceptions;
 using StreamTabula.Features.Integrations.Twitch.Models;
 using StreamTabula.Features.Integrations.Twitch.Models.Responses;
 
-namespace StreamTabula.Features.Integrations.Twitch.Services.ApiModules
+namespace StreamTabula.Features.Integrations.Twitch.Services.ApiModules;
+
+public class TwitchApiUsersModule(ITwitchSession session, HttpClient http, IMemoryCache cache)
+    : TwitchApiModule(session, http)
 {
-    public class TwitchApiUsersModule(TwitchAuthContext context, HttpClient http, IMemoryCache cache)
-        : TwitchApiModule(context, http)
+    private readonly IMemoryCache _cache = cache;
+
+    public async Task<TwitchUserIdentity?> GetMe(TwitchAuthContext? overrideContext = null)
+        => await GetUser(login: null, overrideContext: overrideContext);
+
+    public async Task<TwitchUserIdentity?> GetUser(string? login = null, TwitchAuthContext? overrideContext = null)
     {
-        private readonly IMemoryCache _cache = cache;
+        string? query = null;
+        bool isSpecificLogin = !string.IsNullOrWhiteSpace(login);
 
-        public async Task<TwitchUserIdentify?> GetMe() => await GetUser();
-
-        public async Task<TwitchUserIdentify?> GetUser(string? login = null)
+        if (isSpecificLogin)
         {
-            string? query = null;
-            bool isSpecificLogin = !string.IsNullOrWhiteSpace(login);
+            query = $"login={login!.Trim()}";
+        }
 
-            if (isSpecificLogin)
+        try
+        {
+            var response = await SendRequestInternal(
+                HttpMethod.Get,
+                "/users",
+                query,
+                overrideContext: overrideContext);
+
+            var result = await response.Content.ReadFromJsonAsync<TwitchResponse<TwitchUserIdentity>>();
+            var user = result?.Data?.FirstOrDefault();
+
+            if (user != null)
             {
-                query = $"login={login!.Trim()}";
-            }
+                CacheUserId(user.Login, user.Id);
 
-            try
-            {
-                var response = await SendRequestInternal(HttpMethod.Get, "/users", query);
-                var result = await response.Content.ReadFromJsonAsync<TwitchResponse<TwitchUserIdentify>>();
-                var user = result?.Data?.FirstOrDefault();
-
-                if (user != null)
+                if (isSpecificLogin)
                 {
-                    CacheUserId(user.Login, user.Id);
-
-                    if (isSpecificLogin)
-                    {
-                        CacheUserId(login!, user.Id);
-                    }
+                    CacheUserId(login!, user.Id);
                 }
+            }
 
-                return user;
-            }
-            catch (Exception ex)
-            {
-                if (ex is TwitchApiException) throw;
-                throw new Exception($"Failed to get Twitch user: {ex.Message}", ex);
-            }
+            return user;
         }
-
-        public async Task<string?> GetUserIdByLogin(string login)
+        catch (Exception ex)
         {
-            string cleanLogin = login.ToLower().Trim();
-            string cacheKey = $"user_id_{cleanLogin}";
-
-            if (_cache.TryGetValue(cacheKey, out string? cachedId))
-            {
-                return cachedId;
-            }
-
-            var user = await GetUser(cleanLogin);
-            return user?.Id;
+            if (ex is TwitchApiException) throw;
+            throw new InvalidOperationException($"Failed to get Twitch user: {ex.Message}", ex);
         }
+    }
 
-        private void CacheUserId(string login, string id)
+    public async Task<string?> GetUserIdByLogin(string login)
+    {
+        string cleanLogin = login.ToLower().Trim();
+        string cacheKey = $"user_id_{cleanLogin}";
+
+        if (_cache.TryGetValue(cacheKey, out string? cachedId))
         {
-            string cleanLogin = login.ToLower().Trim();
-            string cacheKey = $"user_id_{cleanLogin}";
-
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromDays(1));
-
-            _cache.Set(cacheKey, id, cacheOptions);
+            return cachedId;
         }
+
+        var user = await GetUser(cleanLogin);
+        return user?.Id;
+    }
+
+    private void CacheUserId(string login, string id)
+    {
+        string cleanLogin = login.ToLower().Trim();
+        string cacheKey = $"user_id_{cleanLogin}";
+
+        var cacheOptions = new MemoryCacheEntryOptions()
+            .SetAbsoluteExpiration(TimeSpan.FromDays(1));
+
+        _cache.Set(cacheKey, id, cacheOptions);
     }
 }

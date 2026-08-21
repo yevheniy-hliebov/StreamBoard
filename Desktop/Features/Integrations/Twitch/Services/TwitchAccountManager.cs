@@ -1,139 +1,143 @@
 using System.Diagnostics;
-using System.Net.Http;
-using Microsoft.Extensions.Caching.Memory;
+using StreamTabula.Core.Services;
 using StreamTabula.Features.Integrations.Twitch.Models;
-using StreamTabula.Features.Integrations.Twitch.Services.Auth;
 
-namespace StreamTabula.Features.Integrations.Twitch.Services
+namespace StreamTabula.Features.Integrations.Twitch.Services;
+
+public interface ITwitchAccountManager : IDisposable
 {
-    public class TwitchAccountManager : IDisposable
+    ITwitchSession Session { get; }
+    TwitchApiClient Api { get; }
+
+    void StartLogin();
+    Task FinalizeLogin(TwitchAuthContext context, string state);
+    void Logout();
+
+    Task TryRestoreSessionAsync(TwitchAuthContext context);
+}
+
+public class TwitchAccountManager : ITwitchAccountManager
+{
+    public ITwitchSession Session { get; }
+    public TwitchApiClient Api { get; }
+
+    private string? _cachedLoginState;
+    private readonly TwitchAuthUriBuilder _builder;
+    private readonly IUrlLauncher _urlLauncher;
+    private readonly System.Timers.Timer _pollTimer;
+
+    public TwitchAccountManager(
+        TwitchAuthOptions options,
+        ITwitchSession session,
+        IUrlLauncher urlLauncher,
+        TwitchApiClient api)
     {
-        public TwitchUserType Type { get; private set; }
-        private readonly string _appClientId;
-        private readonly List<string> _requiredScopes;
-        private readonly IMemoryCache _cache;
+        Session = session;
+        Api = api;
 
-        private readonly HttpClient _http;
+        _urlLauncher = urlLauncher;
+        _builder = new TwitchAuthUriBuilder(options);
 
-        public TwitchAuthContext? AuthContext { get; set; }
+        _pollTimer = new System.Timers.Timer(60000);
+        _pollTimer.Elapsed += async (sender, args) => await PollUserAsync();
+    }
 
-        public TwitchUserIdentify? User { get; private set; }
-        public TwitchApiClient? Api { get; private set; }
+    public void StartLogin()
+    {
+        _cachedLoginState = TwitchAuthUriBuilder.GenerateState();
+        string authUrl = _builder.Build(_cachedLoginState);
 
-        public bool IsAuth => User != null;
-
-        public event Action? UserChanged;
-
-        private readonly System.Timers.Timer _pollTimer;
-
-        private string? _cachedLoginState;
-
-        public TwitchAccountManager(
-            TwitchUserType type,
-            List<string> scopes,
-            string appClientId,
-            IMemoryCache cache,
-            HttpClient http)
+        try
         {
-            Type = type;
-            _requiredScopes = scopes;
-            _appClientId = appClientId;
-            _cache = cache;
-            _http = http;
-
-            if (!_http.DefaultRequestHeaders.Contains("Client-Id"))
-            {
-                _http.DefaultRequestHeaders.Add("Client-Id", _appClientId);
-            }
-
-            _pollTimer = new System.Timers.Timer(60000);
-            _pollTimer.Elapsed += async (sender, args) => await PollUser();
+            _urlLauncher.OpenUrl(authUrl);
         }
-
-        public void Login()
+        catch
         {
-            var builder = new TwitchAuthUriBuilder
+            _cachedLoginState = null;
+            throw;
+        }
+    }
+
+    public async Task FinalizeLogin(TwitchAuthContext context, string state)
+    {
+        if (string.IsNullOrWhiteSpace(_cachedLoginState) || _cachedLoginState != state)
+        {
+            _cachedLoginState = null;
+            throw new InvalidOperationException("Invalid or expired OAuth state.");
+        }
+        _cachedLoginState = null;
+
+        try
+        {
+            var user = await Api.Users.GetMe();
+
+            if (user == null)
             {
-                ClientId = _appClientId,
-                RedirectUri = $"http://localhost:13551/twitch/{Type.ToString().ToLower()}",
-                ForceVerify = true,
-                Scopes = _requiredScopes
-            };
-
-            _cachedLoginState = TwitchAuthUriBuilder.GenerateState();
-            string authUrl = builder.Build(_cachedLoginState);
-
-            try
-            {
-                var psi = new ProcessStartInfo
-                {
-                    FileName = authUrl,
-                    UseShellExecute = true
-                };
-
-                Process.Start(psi);
+                throw new InvalidOperationException("Failed to retrieve user profile.");
             }
-            catch (Exception ex)
+
+            Session.SetSession(context, user);
+
+            _pollTimer.Start();
+        }
+        catch (Exception)
+        {
+            Logout();
+            throw;
+        }
+    }
+
+    private async Task PollUserAsync()
+    {
+        if (!Session.IsAuthenticated) return;
+
+        try
+        {
+            var fetchedUser = await Api.Users.GetMe();
+            if (fetchedUser != null)
             {
-                Debug.WriteLine($"Could not open link: {ex.Message}");
+                Session.SetSession(Session.AuthContext!, fetchedUser);
             }
         }
-
-        public async Task OnLoginSuccess(TwitchAuthContext context, string state)
+        catch (Exception ex)
         {
-            AuthContext = context;
+            Debug.WriteLine($"[TwitchPoll] Transient error updating user info: {ex.Message}");
+        }
+    }
 
-            Api = new TwitchApiClient(context, _http, _cache);
+    public void Logout()
+    {
+        _pollTimer.Stop();
+        Session.Clear();
+    }
 
-            await PollUser();
+    public async Task TryRestoreSessionAsync(TwitchAuthContext context)
+    {
+        try
+        {
+            var user = await Api.Users.GetMe(overrideContext: context);
 
-            if (IsAuth)
+            if (user != null)
             {
+                Session.SetSession(context, user);
                 _pollTimer.Start();
             }
-        }
-
-        public void Logout()
-        {
-            _pollTimer.Stop();
-            AuthContext = null;
-            Api = null;
-
-            if (User != null)
-            {
-                User = null;
-                UserChanged?.Invoke();
-            }
-        }
-
-        private async Task PollUser()
-        {
-            if (Api == null) return;
-
-            try
-            {
-                var fetchedUser = await Api.Users.GetMe();
-
-                if (fetchedUser != null)
-                {
-                    User = fetchedUser;
-                    UserChanged?.Invoke();
-                }
-                else
-                {
-                    Logout();
-                }
-            }
-            catch (Exception)
+            else
             {
                 Logout();
             }
         }
-
-        public void Dispose()
+        catch (Exception ex)
         {
-            _pollTimer?.Dispose();
-            GC.SuppressFinalize(this);
+            Debug.WriteLine($"[Twitch] Failed to restore session: {ex.Message}");
+            Logout();
         }
+    }
+
+    public void Dispose()
+    {
+        _pollTimer.Stop();
+        _pollTimer.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

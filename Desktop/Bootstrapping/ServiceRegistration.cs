@@ -79,6 +79,7 @@ public static class ServiceRegistration
         services.AddMemoryCache();
         services.AddSingleton<HttpClient>();
         services.AddSingleton<TwitchStorageService>();
+        services.AddSingleton<IUrlLauncher, UrlLauncher>();
         services.AddSingleton<TwitchAccountsGateway>(sp =>
         {
             var cache = sp.GetRequiredService<IMemoryCache>();
