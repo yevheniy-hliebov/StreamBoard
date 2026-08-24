@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace StreamTabula.Features.Integrations.Twitch.Views.Components;
+namespace StreamTabula.Features.Integrations.Twitch.Views.Controls;
 
 public partial class TwitchRoundAvatar : UserControl
 {
