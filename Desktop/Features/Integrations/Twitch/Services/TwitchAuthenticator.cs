@@ -4,37 +4,31 @@ using StreamTabula.Features.Integrations.Twitch.Models;
 
 namespace StreamTabula.Features.Integrations.Twitch.Services;
 
-public interface ITwitchAccountManager : IDisposable
+public interface ITwitchAuthenticator : IDisposable
 {
-    ITwitchSession Session { get; }
-    TwitchApiClient Api { get; }
-
     void StartLogin();
     Task FinalizeLogin(TwitchAuthContext context, string state);
     void Logout();
-
     Task TryRestoreSessionAsync(TwitchAuthContext context);
 }
 
-public class TwitchAccountManager : ITwitchAccountManager
+public class TwitchAuthenticator : ITwitchAuthenticator
 {
-    public ITwitchSession Session { get; }
-    public TwitchApiClient Api { get; }
-
-    private string? _cachedLoginState;
-    private readonly TwitchAuthUriBuilder _builder;
+    private readonly ITwitchSession _session;
+    private readonly TwitchApiClient _api;
     private readonly IUrlLauncher _urlLauncher;
+    private readonly TwitchAuthUriBuilder _builder;
     private readonly System.Timers.Timer _pollTimer;
+    private string? _cachedLoginState;
 
-    public TwitchAccountManager(
+    public TwitchAuthenticator(
         TwitchAuthOptions options,
         ITwitchSession session,
         IUrlLauncher urlLauncher,
         TwitchApiClient api)
     {
-        Session = session;
-        Api = api;
-
+        _session = session;
+        _api = api;
         _urlLauncher = urlLauncher;
         _builder = new TwitchAuthUriBuilder(options);
 
@@ -69,14 +63,14 @@ public class TwitchAccountManager : ITwitchAccountManager
 
         try
         {
-            var user = await Api.Users.GetMe();
+            var user = await _api.Users.GetMe(overrideContext: context);
 
             if (user == null)
             {
                 throw new InvalidOperationException("Failed to retrieve user profile.");
             }
 
-            Session.SetSession(context, user);
+            _session.SetSession(context, user);
 
             _pollTimer.Start();
         }
@@ -89,14 +83,14 @@ public class TwitchAccountManager : ITwitchAccountManager
 
     private async Task PollUserAsync()
     {
-        if (!Session.IsAuthenticated) return;
+        if (!_session.IsAuthenticated) return;
 
         try
         {
-            var fetchedUser = await Api.Users.GetMe();
+            var fetchedUser = await _api.Users.GetMe();
             if (fetchedUser != null)
             {
-                Session.SetSession(Session.AuthContext!, fetchedUser);
+                _session.SetSession(_session.AuthContext!, fetchedUser);
             }
         }
         catch (Exception ex)
@@ -108,18 +102,18 @@ public class TwitchAccountManager : ITwitchAccountManager
     public void Logout()
     {
         _pollTimer.Stop();
-        Session.Clear();
+        _session.Clear();
     }
 
     public async Task TryRestoreSessionAsync(TwitchAuthContext context)
     {
         try
         {
-            var user = await Api.Users.GetMe(overrideContext: context);
+            var user = await _api.Users.GetMe(overrideContext: context);
 
             if (user != null)
             {
-                Session.SetSession(context, user);
+                _session.SetSession(context, user);
                 _pollTimer.Start();
             }
             else

@@ -7,7 +7,7 @@ namespace StreamTabula.Features.Integrations.Twitch.ViewModels;
 
 public class TwitchAccountViewModel : ObservableObject
 {
-    private readonly TwitchAccountManager _manager;
+    private readonly ITwitchAccount _account;
 
     private bool _isAuth;
     public bool IsAuth
@@ -28,25 +28,25 @@ public class TwitchAccountViewModel : ObservableObject
     public IRelayCommand<object?> LoginCommand { get; }
     public IRelayCommand<object?> LogoutCommand { get; }
 
-    public TwitchAccountViewModel(TwitchAccountManager manager)
+    public TwitchAccountViewModel(ITwitchAccount account)
     {
-        _manager = manager;
-        AccountRole = manager.Options.Role.ToString();
+        _account = account;
+        AccountRole = account.Session.Role.ToString();
 
         LoginCommand = new RelayCommand<object?>(_ => Login());
         LogoutCommand = new RelayCommand<object?>(_ => Logout());
 
-        _manager.UserChanged += UpdateState;
+        _account.Session.SessionChanged += UpdateState;
         UpdateState();
     }
 
     private void UpdateState()
     {
-        IsAuth = _manager.IsAuth;
-        User = IsAuth ? _manager.User : null;
+        IsAuth = _account.Session.IsAuthenticated;
+        User = IsAuth ? _account.Session.User : null;
     }
 
-    private void Login() => _manager.Login();
+    private void Login() => _account.Authenticator.StartLogin();
 
-    private void Logout() => _manager.Logout();
+    private void Logout() => _account.Authenticator.Logout();
 }

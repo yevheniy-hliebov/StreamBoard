@@ -6,23 +6,23 @@ namespace StreamTabula.Features.Integrations.Twitch.Models
 {
     public class TwitchIntegrationState : IntegrationStatusModel
     {
-        private readonly TwitchAccountManager _manager;
+        private readonly ITwitchAccount _account;
 
-        public TwitchIntegrationState(TwitchAccountManager manager)
+        public TwitchIntegrationState(ITwitchAccount manager)
         {
-            _manager = manager;
+            _account = manager;
 
-            Name = $"Twitch {manager.Options.Role}";
+            Name = $"Twitch {manager.Session.Role}";
             TargetPageType = typeof(TwitchSettingsPage);
 
             UpdateStatus();
 
-            _manager.UserChanged += UpdateStatus;
+            _account.Session.SessionChanged += UpdateStatus;
         }
 
         private void UpdateStatus()
         {
-            Status = _manager.IsAuth
+            Status = _account.Session.IsAuthenticated
                 ? ConnectionStatus.Connected
                 : ConnectionStatus.NotConnected;
         }

@@ -80,15 +80,17 @@ public static class ServiceRegistration
         services.AddSingleton<HttpClient>();
         services.AddSingleton<TwitchStorageService>();
         services.AddSingleton<IUrlLauncher, UrlLauncher>();
-        services.AddSingleton<TwitchAccountsGateway>(sp =>
+
+        services.AddSingleton<ITwitchAccountsGateway, TwitchAccountsGateway>(sp =>
         {
             var cache = sp.GetRequiredService<IMemoryCache>();
             var http = sp.GetRequiredService<HttpClient>();
             var storage = sp.GetRequiredService<TwitchStorageService>();
+            var urlLauncher = sp.GetRequiredService<IUrlLauncher>();
 
             string clientId = "0sn4idtk1x80yrrej0cd66nsapzv86";
 
-            return new TwitchAccountsGateway(cache, http, storage, clientId);
+            return new TwitchAccountsGateway(cache, http, urlLauncher, clientId);
         });
 
 

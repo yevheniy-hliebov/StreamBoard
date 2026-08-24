@@ -5,7 +5,7 @@ using System.Net.Http.Json;
 
 namespace StreamTabula.Features.Integrations.Twitch.Services.ApiModules;
 
-public abstract class TwitchApiModule(ITwitchSession session, HttpClient http)
+public abstract class TwitchApiModule(ITwitchSession session, HttpClient http, string clientId)
 {
     protected string BaseApiUrl { get; } = "https://api.twitch.tv/helix";
 
@@ -29,6 +29,7 @@ public abstract class TwitchApiModule(ITwitchSession session, HttpClient http)
         var request = new HttpRequestMessage(method, uriBuilder.Uri);
 
         request.Headers.Add("Authorization", $"Bearer {authContext.AccessToken}");
+        request.Headers.Add("Client-Id", clientId);
 
         if (body != null)
         {

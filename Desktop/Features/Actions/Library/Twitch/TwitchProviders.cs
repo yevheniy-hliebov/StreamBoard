@@ -9,8 +9,8 @@ namespace StreamTabula.Features.Actions.Library.Twitch
     {
         public string GetValue(BaseAction action)
         {
-            var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
-            return gateway?.Broadcaster.User?.Login ?? string.Empty;
+            var gateway = App.ServiceProvider.GetRequiredService<ITwitchAccountsGateway>();
+            return gateway?.Broadcaster.Session.User?.Login ?? string.Empty;
         }
     }
 
@@ -26,12 +26,12 @@ namespace StreamTabula.Features.Actions.Library.Twitch
     {
         public async Task<IEnumerable<SearchResult>> SearchAsync(string query)
         {
-            var gateway = App.ServiceProvider.GetService<TwitchAccountsGateway>();
-            if (gateway?.Broadcaster.Api == null) return [];
+            var gateway = App.ServiceProvider.GetService<ITwitchAccountsGateway>();
+            if (gateway == null) return [];
 
             try
             {
-                var categories = await gateway.Broadcaster.Api.Channel.GetCategories(query);
+                var categories = await gateway!.Broadcaster.Api.Channel.GetCategories(query);
                 return categories.Select(c => new SearchResult { Id = c.Id, DisplayName = c.Name });
             }
             catch

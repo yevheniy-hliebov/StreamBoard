@@ -67,15 +67,15 @@ public class TwitchSetChatModeAction : TwitchBaseAction
     {
         try
         {
-            var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
+            var gateway = App.ServiceProvider.GetRequiredService<ITwitchAccountsGateway>();
             var broadcaster = gateway.Broadcaster;
 
-            if (!broadcaster.IsAuth || broadcaster.User?.Id == null || broadcaster.Api == null)
+            if (!broadcaster.Session.IsAuthenticated || broadcaster.Session.User?.Id == null)
             {
                 return;
             }
 
-            string broadcasterId = broadcaster.User.Id;
+            string broadcasterId = broadcaster.Session.User.Id;
             string moderatorId = broadcasterId;
 
             switch (ChatMode)

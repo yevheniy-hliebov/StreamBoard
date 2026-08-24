@@ -7,8 +7,8 @@ using StreamTabula.Features.Integrations.Twitch.Models.Responses;
 
 namespace StreamTabula.Features.Integrations.Twitch.Services.ApiModules;
 
-public class TwitchApiUsersModule(ITwitchSession session, HttpClient http, IMemoryCache cache)
-    : TwitchApiModule(session, http)
+public class TwitchApiUsersModule(ITwitchSession session, HttpClient http, IMemoryCache cache, string clientId)
+    : TwitchApiModule(session, http, clientId)
 {
     private readonly IMemoryCache _cache = cache;
 

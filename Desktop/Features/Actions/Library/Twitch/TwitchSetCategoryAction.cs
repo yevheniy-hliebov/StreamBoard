@@ -59,12 +59,12 @@ public class TwitchSetCategoryAction : TwitchBaseAction
 
         try
         {
-            var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
+            var gateway = App.ServiceProvider.GetRequiredService<ITwitchAccountsGateway>();
             var broadcaster = gateway.Broadcaster;
 
-            if (broadcaster.IsAuth && broadcaster.User?.Id != null && broadcaster.Api != null)
+            if (broadcaster.Session.IsAuthenticated && broadcaster.Session.User?.Id != null)
             {
-                await broadcaster.Api.Channel.SetCategory(broadcaster.User.Id, CategoryId);
+                await broadcaster.Api.Channel.SetCategory(broadcaster.Session.User.Id, CategoryId);
             }
         }
         catch (Exception ex)

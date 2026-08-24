@@ -12,7 +12,7 @@ public class IntegrationsViewModel : ObservableObject
 {
     public ObservableCollection<IntegrationStatusModel> IntegrationConnectionStatus { get; set; }
 
-    public IntegrationsViewModel(IOBSConnectionService obsService, TwitchAccountsGateway twitchGateway)
+    public IntegrationsViewModel(IOBSConnectionService obsService, ITwitchAccountsGateway twitchGateway)
     {
         IntegrationConnectionStatus = [
             new OBSIntegrationStatus(obsService),

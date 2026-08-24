@@ -2,101 +2,76 @@ using System.Net.Http;
 using Microsoft.Extensions.Caching.Memory;
 using StreamTabula.Core.Services;
 using StreamTabula.Features.Integrations.Twitch.Models;
+using System.IO;
 
 namespace StreamTabula.Features.Integrations.Twitch.Services;
 
-public class TwitchAccountsGateway : IDisposable
+public interface ITwitchAccountsGateway : IDisposable
 {
-    private readonly TwitchStorageService _storage;
-    public ITwitchAccountManager Broadcaster { get; }
-    public ITwitchAccountManager Bot { get; }
+    ITwitchAccount Broadcaster { get; }
+    ITwitchAccount Bot { get; }
+}
+
+public class TwitchAccountsGateway : ITwitchAccountsGateway
+{
+    public ITwitchAccount Broadcaster { get; }
+    public ITwitchAccount Bot { get; }
 
     public TwitchAccountsGateway(
         IMemoryCache cache,
         HttpClient http,
-        TwitchStorageService storage,
-        IUrlLauncher urlLauncher, 
+        IUrlLauncher urlLauncher,
         string appClientId
     )
     {
-        _storage = storage;
+        string dataDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");
 
         var broadcasterOptions = new TwitchAuthOptions
         {
             ClientId = appClientId,
             Role = TwitchAccountRole.Broadcaster,
             Scopes = [
-                "user:read:email",                  // Email in Get Users
-                "channel:manage:broadcast",         // Modify Channel Information
-                "user:write:chat",                  // Send Chat Message
-                "moderator:manage:chat_messages",   // for Delete Chat Messages
-                "moderator:manage:announcements",   // Send Chat Announcement
-                "moderator:manage:shoutouts",       // Send a Shoutout
-                "moderator:manage:chat_settings",   // Update Chat Settings
-                "channel:manage:broadcast",         // Create Stream Marker
-                "clips:edit",                       // Create Clip
-                "channel:edit:commercial",          // Start Commercial
-                "moderator:manage:shield_mode",     // Update Shield Mode Status
+                "user:read:email",
+                "channel:manage:broadcast",
+                "user:write:chat",
+                "moderator:manage:chat_messages",
+                "moderator:manage:announcements",
+                "moderator:manage:shoutouts",
+                "moderator:manage:chat_settings",
+                "channel:manage:broadcast",
+                "clips:edit",
+                "channel:edit:commercial",
+                "moderator:manage:shield_mode",
             ],
         };
 
-        var broadcasterSession = new TwitchSession(TwitchAccountRole.Broadcaster);
-        var broadcasterApi = new TwitchApiClient(broadcasterSession, http, cache);
-
-        Broadcaster = new TwitchAccountManager(broadcasterOptions, broadcasterSession, urlLauncher, broadcasterApi);
+        var broadcasterStorage = new TwitchAuthContextStorage(dataDirectory, TwitchAccountRole.Broadcaster);
+        Broadcaster = new TwitchAccount(broadcasterStorage, broadcasterOptions, urlLauncher, http, cache);
 
         var botOptions = new TwitchAuthOptions
         {
             ClientId = appClientId,
             Role = TwitchAccountRole.Bot,
             Scopes = [
-                "user:read:email",                  // Email in Get Users
-                "user:write:chat",                  // Send Chat Message
-                "moderator:manage:announcements",   // Send Chat Announcement
+                "user:read:email",
+                "user:write:chat",
+                "moderator:manage:announcements",
             ],
         };
 
-        var botSession = new TwitchSession(TwitchAccountRole.Bot);
-        var botApi = new TwitchApiClient(botSession, http, cache);
+        var botStorage = new TwitchAuthContextStorage(dataDirectory, TwitchAccountRole.Bot);
+        Bot = new TwitchAccount(botStorage, botOptions, urlLauncher, http, cache);
 
-        Bot = new TwitchAccountManager(botOptions, botSession, urlLauncher, botApi);
+        Broadcaster.Session.SessionChanged += CheckForDuplicateAccounts;
+        Bot.Session.SessionChanged += CheckForDuplicateAccounts;
 
-        Broadcaster.Session.SessionChanged += OnBroadcasterSessionChanged;
-        Bot.Session.SessionChanged += OnBotSessionChanged;
-
-        _ = RestoreSessionsAsync();
+        _ = InitializeAsync();
     }
 
-    private async Task RestoreSessionsAsync()
+    private async Task InitializeAsync()
     {
-        var broadcasterContext = _storage.LoadContext(TwitchAccountRole.Broadcaster);
-        if (broadcasterContext != null)
-        {
-            await Broadcaster.TryRestoreSessionAsync(broadcasterContext);
-        }
-
-        var botContext = _storage.LoadContext(TwitchAccountRole.Bot);
-        if (botContext != null)
-        {
-            await Bot.TryRestoreSessionAsync(botContext);
-        }
-    }
-
-    private void OnBroadcasterSessionChanged() => SyncWithStorage(Broadcaster);
-    private void OnBotSessionChanged() => SyncWithStorage(Bot);
-
-    private void SyncWithStorage(ITwitchAccountManager manager)
-    {
-        if (manager.Session.IsAuthenticated)
-        {
-            _storage.SaveContext(manager.Session.Role, manager.Session.AuthContext!);
-        }
-        else
-        {
-            _storage.DeleteContext(manager.Session.Role);
-        }
-
-        CheckForDuplicateAccounts();
+        await Broadcaster.InitializeAsync();
+        await Bot.InitializeAsync();
     }
 
     private void CheckForDuplicateAccounts()
@@ -105,14 +80,14 @@ public class TwitchAccountsGateway : IDisposable
 
         if (Broadcaster.Session.User!.Id == Bot.Session.User!.Id)
         {
-            Bot.Logout();
+            Bot.Authenticator.Logout();
         }
     }
 
     public void Dispose()
     {
-        Broadcaster.Session.SessionChanged -= OnBroadcasterSessionChanged;
-        Bot.Session.SessionChanged -= OnBotSessionChanged;
+        Broadcaster.Session.SessionChanged -= CheckForDuplicateAccounts;
+        Bot.Session.SessionChanged -= CheckForDuplicateAccounts;
 
         Broadcaster.Dispose();
         Bot.Dispose();

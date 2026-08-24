@@ -6,8 +6,8 @@ using StreamTabula.Features.Integrations.Twitch.Models.Responses;
 
 namespace StreamTabula.Features.Integrations.Twitch.Services.ApiModules;
 
-public class TwitchApiChatSettingsModule(ITwitchSession session, HttpClient http)
-    : TwitchApiModule(session, http)
+public class TwitchApiChatSettingsModule(ITwitchSession session, HttpClient http, string clientId)
+    : TwitchApiModule(session, http, clientId)
 {
     public async Task<TwitchUpdateChatSettingsRequest?> UpdateChatSettings(
         string broadcasterId,

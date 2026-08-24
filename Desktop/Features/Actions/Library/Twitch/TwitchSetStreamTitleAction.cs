@@ -54,14 +54,14 @@ public class TwitchSetStreamTitleAction : TwitchBaseAction
 
         try
         {
-            var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
+            var gateway = App.ServiceProvider.GetRequiredService<ITwitchAccountsGateway>();
             var broadcaster = gateway.Broadcaster;
 
-            if (broadcaster.IsAuth && broadcaster.User != null)
+            if (broadcaster.Session.IsAuthenticated && broadcaster.Session.User != null)
             {
-                string? broadcasterId = gateway.Broadcaster.User?.Id;
+                string? broadcasterId = gateway.Broadcaster.Session.User?.Id;
 
-                if (broadcasterId != null && broadcaster.Api != null)
+                if (broadcasterId != null)
                 {
                     await broadcaster.Api.Channel.UpdateTitle(broadcasterId, Title);
                 }

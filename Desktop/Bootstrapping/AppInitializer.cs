@@ -70,7 +70,7 @@ namespace StreamTabula.Bootstrapping
             }
 
             // System Http Server
-            var twitchAccountsGateway = serviceProvider.GetRequiredService<TwitchAccountsGateway>();
+            var twitchAccountsGateway = serviceProvider.GetRequiredService<ITwitchAccountsGateway>();
             var twitchController = new TwitchAuthController(twitchAccountsGateway);
             var httpRouter = new HttpRouter([twitchController]);
             var serverConfig = new LocalServerConfig { Port = 13551 };

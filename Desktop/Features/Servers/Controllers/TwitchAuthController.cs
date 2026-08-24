@@ -9,9 +9,9 @@ using System.Text.Json;
 
 namespace StreamTabula.Features.Servers.Controllers
 {
-    public class TwitchAuthController(TwitchAccountsGateway gateway) : IHttpController
+    public class TwitchAuthController(ITwitchAccountsGateway gateway) : IHttpController
     {
-        private readonly TwitchAccountsGateway _gateway = gateway;
+        private readonly ITwitchAccountsGateway _gateway = gateway;
 
         public string RoutePrefix => "/twitch";
 
@@ -41,7 +41,7 @@ namespace StreamTabula.Features.Servers.Controllers
             await ctx.Response.WriteAsync(TwitchAuthTemplates.AuthPageHtml);
         }
 
-        private async Task HandleTokenSubmit(HttpContext ctx, string type)
+        private async Task HandleTokenSubmit(HttpContext ctx, string role)
         {
             try
             {
@@ -65,13 +65,13 @@ namespace StreamTabula.Features.Servers.Controllers
                 var authContext = new TwitchAuthContext(payload.AccessToken, tokenType, scopesList);
                 string state = payload.State ?? string.Empty;
 
-                if (type.ToLower() == "broadcaster")
+                if (role.ToLower() == "broadcaster")
                 {
-                    await _gateway.Broadcaster.OnLoginSuccess(authContext, state);
+                    await _gateway.Broadcaster.Authenticator.FinalizeLogin(authContext, state);
                 }
-                else if (type.ToLower() == "bot")
+                else if (role.ToLower() == "bot")
                 {
-                    await _gateway.Bot.OnLoginSuccess(authContext, state);
+                    await _gateway.Bot.Authenticator.FinalizeLogin(authContext, state);
                 }
 
                 ctx.Response.StatusCode = (int)HttpStatusCode.OK;

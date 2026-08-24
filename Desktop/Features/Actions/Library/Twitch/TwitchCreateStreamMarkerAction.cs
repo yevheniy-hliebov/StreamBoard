@@ -50,10 +50,10 @@ public class TwitchCreateStreamMarkerAction : TwitchBaseAction
     {
         try
         {
-            var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
+            var gateway = App.ServiceProvider.GetRequiredService<ITwitchAccountsGateway>();
             var broadcaster = gateway.Broadcaster;
 
-            if (!broadcaster.IsAuth || broadcaster.User?.Id == null || broadcaster.Api == null)
+            if (!broadcaster.Session.IsAuthenticated || broadcaster.Session.User?.Id == null)
             {
                 return;
             }
@@ -61,7 +61,7 @@ public class TwitchCreateStreamMarkerAction : TwitchBaseAction
             string? finalDescription = string.IsNullOrWhiteSpace(Description) ? null : Description;
 
             await broadcaster.Api.Production.CreateStreamMarker(
-                broadcaster.User.Id,
+                broadcaster.Session.User.Id,
                 finalDescription
             );
         }

@@ -88,28 +88,25 @@ public class TwitchSendAnnouncementAction : TwitchBaseAction
 
         try
         {
-            var gateway = App.ServiceProvider.GetRequiredService<TwitchAccountsGateway>();
+            var gateway = App.ServiceProvider.GetRequiredService<ITwitchAccountsGateway>();
             var moderator = UseBot ? gateway.Bot : gateway.Broadcaster;
 
-            if (moderator.IsAuth && moderator.User != null)
+            if (moderator.Session.IsAuthenticated && moderator.Session.User != null)
             {
                 string? broadcasterId = null;
-                string? broadcasterLogin = gateway.Broadcaster.User?.Login;
-                string moderatorId = moderator.User.Id;
+                string? broadcasterLogin = gateway.Broadcaster.Session.User?.Login;
+                string moderatorId = moderator.Session.User.Id;
 
                 if (Username == broadcasterLogin)
                 {
-                    broadcasterId = gateway.Broadcaster.User?.Id;
+                    broadcasterId = gateway.Broadcaster.Session.User?.Id;
                 }
                 else
                 {
-                    if (moderator.Api != null)
-                    {
-                        broadcasterId = await moderator.Api.Users.GetUserIdByLogin(Username);
-                    }
+                    broadcasterId = await moderator.Api.Users.GetUserIdByLogin(Username);
                 }
 
-                if (broadcasterId != null && moderator.Api != null)
+                if (broadcasterId != null)
                 {
                     Enum.TryParse<TwitchAnnouncementColor>(_color, true, out var colorEnum);
                     await moderator.Api.Chat.SendAnnouncement(broadcasterId, moderatorId, Announcement, colorEnum);
