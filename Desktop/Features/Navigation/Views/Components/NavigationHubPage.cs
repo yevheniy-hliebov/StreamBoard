@@ -10,9 +10,9 @@ namespace StreamTabula.Features.Navigation.Views.Components
     {
         protected readonly NavigationService NavService;
 
-        protected NavigationHubPage()
+        protected NavigationHubPage(NavigationService navService)
         {
-            NavService = App.ServiceProvider.GetRequiredService<NavigationService>();
+            NavService = navService;
         }
 
         protected void OnCardClick(object sender, MouseButtonEventArgs e)
