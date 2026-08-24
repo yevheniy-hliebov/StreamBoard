@@ -1,8 +1,8 @@
 ﻿using StreamTabula.Controls.Icons;
 using StreamTabula.Core.Mvvm;
-using StreamTabula.Features.Servers.Components;
 using StreamTabula.Features.Servers.Models;
 using StreamTabula.Features.Servers.Services;
+using StreamTabula.Features.Servers.Views.Controls;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;

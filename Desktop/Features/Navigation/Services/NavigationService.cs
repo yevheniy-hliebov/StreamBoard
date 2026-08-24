@@ -2,11 +2,11 @@ using StreamTabula.Features.Decks.Views.Pages;
 using StreamTabula.Features.Integrations.Common.Views.Pages;
 using StreamTabula.Features.Integrations.OBS.Views.Pages;
 using StreamTabula.Features.Integrations.Twitch.Views.Pages;
-using StreamTabula.Features.Servers.Pages;
 using StreamTabula.Features.Navigation.Models;
 using StreamTabula.Controls.Icons;
 using StreamTabula.Features.Home.Views.Pages;
 using StreamTabula.Features.Settings.Views.Pages;
+using StreamTabula.Features.Servers.Views.Pages;
 
 namespace StreamTabula.Features.Navigation.Services;
 

@@ -16,7 +16,6 @@ using StreamTabula.Features.Decks.Views.Pages;
 using StreamTabula.Features.Integrations.Common.Views.Pages;
 using StreamTabula.Features.Integrations.OBS.Views.Pages;
 using StreamTabula.Features.Integrations.Twitch.Views.Pages;
-using StreamTabula.Features.Servers.Pages;
 using StreamTabula.Features.Settings.Views.Pages;
 
 using StreamTabula.Features.Decks.ViewModels;
@@ -32,6 +31,7 @@ using StreamTabula.Features.Servers.Controllers;
 using System.Net.Http;
 using Wpf.Ui;
 using OBSWebsocketDotNet;
+using StreamTabula.Features.Servers.Views.Pages;
 
 namespace StreamTabula.Bootstrapping;
 

@@ -1,7 +1,7 @@
 ﻿using StreamTabula.Controls.Dialogs;
 using System.Windows.Media.Imaging;
 
-namespace StreamTabula.Features.Servers.Components;
+namespace StreamTabula.Features.Servers.Views.Controls;
 
 public partial class QrCodeDialogWindow : BaseDialog
 {

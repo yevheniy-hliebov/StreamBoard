@@ -1,4 +1,4 @@
-﻿<dialogs:BaseDialog x:Class="StreamTabula.Features.Servers.Components.QrCodeDialogWindow"
+﻿<dialogs:BaseDialog x:Class="StreamTabula.Features.Servers.Views.Controls.QrCodeDialogWindow"
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dialogs="clr-namespace:StreamTabula.Controls.Dialogs"
