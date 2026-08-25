@@ -16,7 +16,7 @@ public class LocalServerBootstrapper
                 await localServer.Start();
             }
         }
-        catch (InvalidOperationException ex) // Перехоплюємо зайнятий порт
+        catch (InvalidOperationException ex)
         {
             var currentShutdownMode = Application.Current.ShutdownMode;
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
@@ -41,7 +41,7 @@ public class LocalServerBootstrapper
                 navigationService.NavigateTo(typeof(LocalServerPage));
             }
         }
-        catch (Exception ex) // Будь-які інші неочікувані помилки
+        catch (Exception ex)
         {
             var currentShutdownMode = Application.Current.ShutdownMode;
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;

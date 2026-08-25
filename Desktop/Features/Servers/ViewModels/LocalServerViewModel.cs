@@ -152,13 +152,7 @@ public class LocalServerViewModel : ObservableObject
     }
 
     // NetworkIpAddress
-    public string NetworkIpAddress
-    {
-        get
-        {
-            return NetworkHelper.GetLocalIpAddress();
-        }
-    }
+    public string NetworkIpAddress => _server.LocalIPAddress.ToString();
 
     // Port
     public int Port

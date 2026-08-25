@@ -73,8 +73,10 @@ namespace StreamTabula.Bootstrapping
             var twitchAccountsGateway = serviceProvider.GetRequiredService<ITwitchAccountsGateway>();
             var twitchController = new TwitchAuthController(twitchAccountsGateway);
             var httpRouter = new HttpRouter([twitchController]);
+
+            var ipResolver = serviceProvider.GetRequiredService<ILocalIpAddressResolver>();
             var serverConfig = new LocalServerConfig { Port = 13551 };
-            var systemServer = new LocalServer(serverConfig, httpRouter);
+            var systemServer = new LocalServer(ipResolver, serverConfig, httpRouter);
 
             await systemServer.Start();
 

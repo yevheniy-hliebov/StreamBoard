@@ -93,16 +93,18 @@ public static class ServiceRegistration
 
 
         services.AddSingleton<WebsocketManager>();
+        services.AddSingleton<ILocalIpAddressResolver, LocalIpAddressResolver>();
         services.AddSingleton<LocalServer>(sp =>
         {
             var storage = sp.GetRequiredService<ServerConfigsStorage>();
-            var homeController = new HomeController(storage.Current.Local);
+            var ipResolver = sp.GetRequiredService<ILocalIpAddressResolver>();
+            var homeController = new HomeController(storage.Current.Local, ipResolver);
             var gridDeckStorage = sp.GetRequiredService<GridDeckStorage>();
             var gridDeckController = new GridDeckController(gridDeckStorage);
             var httpRouter = new HttpRouter([homeController, gridDeckController]);
             var wsManager = sp.GetRequiredService<WebsocketManager>();
 
-            return new LocalServer(storage.Current.Local, httpRouter, wsManager);
+            return new LocalServer(ipResolver, storage.Current.Local, httpRouter, wsManager);
         });
 
         services.AddSingleton<AppInfoService>();
