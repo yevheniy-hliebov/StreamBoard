@@ -16,17 +16,21 @@ public record HttpRequestLog(string Method, string Endpoint, string IpAddress, i
 
     private static string GetIpAddress(HttpContext ctx)
     {
-        var ip = ctx.Connection.RemoteIpAddress?.ToString();
-        if (ip == "::1")
+        var ip = ctx.Connection.RemoteIpAddress;
+
+        if (ip == null)
+            return "Unknown";
+
+        if (ip.Equals(IPAddress.IPv6Loopback))
         {
             return IPAddress.Loopback.ToString();
         }
 
-        if (ip?.Contains("::ffff:") ?? false)
+        if (ip.IsIPv4MappedToIPv6)
         {
-            ip = ip.Replace("::ffff:", "");
+            return ip.MapToIPv4().ToString();
         }
 
-        return ip ?? "Unknown";
+        return ip.ToString();
     }
 }
