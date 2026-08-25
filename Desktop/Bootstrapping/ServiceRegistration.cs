@@ -92,7 +92,7 @@ public static class ServiceRegistration
         });
 
 
-        services.AddSingleton<WebsocketManager>();
+        services.AddSingleton<IWebSocketBroadcaster, WebSocketBroadcaster>();
         services.AddSingleton<ILocalIpAddressResolver, LocalIpAddressResolver>();
         services.AddSingleton<IQrGenerator, QrGenerator>();
         
@@ -104,9 +104,9 @@ public static class ServiceRegistration
             var gridDeckStorage = sp.GetRequiredService<GridDeckStorage>();
             var gridDeckController = new GridDeckController(gridDeckStorage);
             var httpRouter = new HttpRouter([homeController, gridDeckController]);
-            var wsManager = sp.GetRequiredService<WebsocketManager>();
+            var wsBroadcaster = sp.GetRequiredService<IWebSocketBroadcaster>();
 
-            return new LocalServer(ipResolver, storage.Current.Local, httpRouter, wsManager);
+            return new LocalServer(ipResolver, storage.Current.Local, httpRouter, wsBroadcaster);
         });
 
         services.AddSingleton<AppInfoService>();

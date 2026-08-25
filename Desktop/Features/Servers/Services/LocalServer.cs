@@ -11,7 +11,7 @@ public class LocalServer
 {
     private readonly LocalServerConfig _config;
     private readonly HttpRouter _router;
-    private readonly WebsocketManager? _wsManager;
+    private readonly IWebSocketBroadcaster? _wsBroadcaster;
     private readonly Lock _statusLock = new();
 
     private WebApplication? _app;
@@ -37,13 +37,13 @@ public class LocalServer
 
     public bool ShouldAutoStart => _config.AutoStart;
 
-    public LocalServer(ILocalIpAddressResolver ipResolver, LocalServerConfig config, HttpRouter router, WebsocketManager? wsManager = null)
+    public LocalServer(ILocalIpAddressResolver ipResolver, LocalServerConfig config, HttpRouter router, IWebSocketBroadcaster? wsBroadcater = null)
     {
         LocalIPAddress = ipResolver.Get();
 
         _config = config;
         _router = router;
-        _wsManager = wsManager;
+        _wsBroadcaster = wsBroadcater;
     }
 
     public async Task Start()
@@ -92,7 +92,7 @@ public class LocalServer
                 if (context.WebSockets.IsWebSocketRequest)
                 {
                     using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                    _wsManager?.AddClient(webSocket);
+                    _wsBroadcaster?.AddClient(webSocket);
                     try
                     {
                         await Task.Delay(Timeout.InfiniteTimeSpan, context.RequestAborted);

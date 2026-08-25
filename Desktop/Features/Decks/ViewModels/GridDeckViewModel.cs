@@ -20,7 +20,7 @@ namespace StreamTabula.Features.Decks.ViewModels
         public DeckButtonEditorViewModel Editor { get; }
         public DeckCanvasViewModel Canvas { get; }
 
-        private readonly WebsocketManager _wsManager;
+        private readonly IWebSocketBroadcaster _wsBroadcaster;
 
         private readonly string _deckType = "grid";
 
@@ -31,7 +31,7 @@ namespace StreamTabula.Features.Decks.ViewModels
         public GridDeckViewModel(
             GridDeckStorage storage,
             ActionRegistry registry,
-            WebsocketManager wsManager,
+            IWebSocketBroadcaster wsBroadcaster,
             IClipboardService clipboard,
             IDialogService dialogService
         )
@@ -44,7 +44,7 @@ namespace StreamTabula.Features.Decks.ViewModels
             Editor = new DeckButtonEditorViewModel(storage, dialogService, clipboard);
             Canvas = new DeckCanvasViewModel(_buttonServise, _pageServise, dialogService, EditorState);
 
-            _wsManager = wsManager;
+            _wsBroadcaster = wsBroadcaster;
 
             Canvas.PropertyChanged += OnCanvasPropertyChanged;
             _pageServise.SelectedPageChanged += OnSelectedPageChanged;
@@ -70,7 +70,7 @@ namespace StreamTabula.Features.Decks.ViewModels
             var selectedPage = Pages.SelectedPage;
             if (selectedPage != null)
             {
-                _ = _wsManager.BroadcastAsync(WebsocketMessageType.PageChanged, new
+                _ = _wsBroadcaster.BroadcastAsync(WebsocketMessageType.PageChanged, new
                 {
                     deck_type = _deckType,
                     pageId = selectedPage.Id,
@@ -81,7 +81,7 @@ namespace StreamTabula.Features.Decks.ViewModels
 
         private void OnPageRenamed(string pageId, string newName)
         {
-            _ = _wsManager.BroadcastAsync(WebsocketMessageType.PageRenamed, new
+            _ = _wsBroadcaster.BroadcastAsync(WebsocketMessageType.PageRenamed, new
             {
                 deck_type = _deckType,
                 pageId,
@@ -95,7 +95,7 @@ namespace StreamTabula.Features.Decks.ViewModels
             {
                 var newGrid = ((GridCanvasConfig)sender!).SelectedGrid;
 
-                _ = _wsManager.BroadcastAsync(WebsocketMessageType.GridLayoutChanged, new
+                _ = _wsBroadcaster.BroadcastAsync(WebsocketMessageType.GridLayoutChanged, new
                 {
                     deck_type = _deckType,
                     grid_layout = newGrid,
@@ -128,7 +128,7 @@ namespace StreamTabula.Features.Decks.ViewModels
 
         private void OnButtonsSwapped(int indexA, int indexB)
         {
-            _ = _wsManager.BroadcastAsync(WebsocketMessageType.ButtonsSwapped, new
+            _ = _wsBroadcaster.BroadcastAsync(WebsocketMessageType.ButtonsSwapped, new
             {
                 deck_type = _deckType,
                 index_a = indexA,
@@ -142,7 +142,7 @@ namespace StreamTabula.Features.Decks.ViewModels
             var bgColor = config.BackgroundColor;
             var imgPath = config.ImagePath;
 
-            _ = _wsManager.BroadcastAsync(WebsocketMessageType.ButtonUpdated, new
+            _ = _wsBroadcaster.BroadcastAsync(WebsocketMessageType.ButtonUpdated, new
             {
                 deck_type = _deckType,
                 index = index,
