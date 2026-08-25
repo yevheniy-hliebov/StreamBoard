@@ -1,31 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
-using StreamTabula.Features.Servers.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using StreamTabula.Features.Servers.Services;
-using System.Net;
 
 namespace StreamTabula.Features.Servers.Controllers;
 
-public class HomeController(LocalServerConfig config, ILocalIpAddressResolver ipResolver) : IHttpController
+[ApiController]
+[Route("/")]
+public class HomeController(ServerConfigsStorage storage, ILocalIpAddressResolver ipResolver) : ControllerBase
 {
-    private readonly LocalServerConfig _config = config;
-
-    public string RoutePrefix => "/";
-
-    public async Task HandleAsync(HttpContext ctx)
+    [HttpGet]
+    public IActionResult Get()
     {
-        try
-        {
-            var address = ipResolver.Get();
-            string responseText = $"Running on {address}:{_config.Port}";
-
-            ctx.Response.ContentType = "text/plain";
-            ctx.Response.StatusCode = (int)HttpStatusCode.OK;
-
-            await ctx.Response.WriteAsync(responseText);
-        }
-        catch (Exception)
-        {
-            ctx.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        }
+        var address = ipResolver.Get();
+        string responseText = $"Running on {address}:{storage.Current.Local.Port}";
+        
+        return Content(responseText, "text/plain");
     }
 }

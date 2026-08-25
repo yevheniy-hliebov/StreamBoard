@@ -1,37 +1,34 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using OBSWebsocketDotNet;
 using StreamTabula.Core.Services;
-
-using StreamTabula.Features.Decks.Services;
 using StreamTabula.Features.Actions.Services;
-using StreamTabula.Features.Integrations.Common.Services;
-using StreamTabula.Features.Integrations.OBS.Services;
-using StreamTabula.Features.Integrations.Twitch.Services;
-using StreamTabula.Features.Settings.Services;
-using StreamTabula.Features.Servers.Services;
-using StreamTabula.Features.Updater.Services;
-
-using StreamTabula.Features.Home.Views.Pages;
-using StreamTabula.Features.Decks.Views.Pages;
-using StreamTabula.Features.Integrations.Common.Views.Pages;
-using StreamTabula.Features.Integrations.OBS.Views.Pages;
-using StreamTabula.Features.Integrations.Twitch.Views.Pages;
-using StreamTabula.Features.Settings.Views.Pages;
-
+using StreamTabula.Features.Decks.Services;
 using StreamTabula.Features.Decks.ViewModels;
+using StreamTabula.Features.Decks.Views.Pages;
+using StreamTabula.Features.Home.Views.Pages;
+using StreamTabula.Features.Integrations.Common.Services;
 using StreamTabula.Features.Integrations.Common.ViewModels;
+using StreamTabula.Features.Integrations.Common.Views.Pages;
+using StreamTabula.Features.Integrations.OBS.Services;
 using StreamTabula.Features.Integrations.OBS.ViewModels;
+using StreamTabula.Features.Integrations.OBS.Views.Pages;
+using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Features.Integrations.Twitch.ViewModels;
-using StreamTabula.Features.Servers.ViewModels;
-using StreamTabula.Features.Settings.ViewModels;
-using StreamTabula.Features.Updater.ViewModels;
-
+using StreamTabula.Features.Integrations.Twitch.Views.Pages;
 using StreamTabula.Features.Servers.Controllers;
-
+using StreamTabula.Features.Servers.Models;
+using StreamTabula.Features.Servers.Services;
+using StreamTabula.Features.Servers.ViewModels;
+using StreamTabula.Features.Servers.Views.Pages;
+using StreamTabula.Features.Settings.Services;
+using StreamTabula.Features.Settings.ViewModels;
+using StreamTabula.Features.Settings.Views.Pages;
+using StreamTabula.Features.Updater.Services;
+using StreamTabula.Features.Updater.ViewModels;
+using System.Net;
 using System.Net.Http;
 using Wpf.Ui;
-using OBSWebsocketDotNet;
-using StreamTabula.Features.Servers.Views.Pages;
 
 namespace StreamTabula.Bootstrapping;
 
@@ -95,18 +92,34 @@ public static class ServiceRegistration
         services.AddSingleton<IWebSocketBroadcaster, WebSocketBroadcaster>();
         services.AddSingleton<ILocalIpAddressResolver, LocalIpAddressResolver>();
         services.AddSingleton<IQrGenerator, QrGenerator>();
-        
-        services.AddSingleton<ILocalServer, LocalServer>(sp =>
+
+        services.AddTransient<TwitchAuthController>();
+        services.AddTransient<HomeController>();
+        services.AddTransient<GridDeckController>();
+
+        services.AddSingleton<ISystemServer, SystemServer>(sp =>
+        {
+            return new SystemServer(
+                address: IPAddress.Loopback,
+                config: new LocalServerConfig { Port = 13551 },
+                controllers: [typeof(TwitchAuthController)],
+                parentServices: sp
+            );
+        });
+
+        services.AddSingleton<IMobileServer, MobileServer>(sp =>
         {
             var storage = sp.GetRequiredService<ServerConfigsStorage>();
             var ipResolver = sp.GetRequiredService<ILocalIpAddressResolver>();
-            var homeController = new HomeController(storage.Current.Local, ipResolver);
-            var gridDeckStorage = sp.GetRequiredService<GridDeckStorage>();
-            var gridDeckController = new GridDeckController(gridDeckStorage);
-            var httpRouter = new HttpRouter([homeController, gridDeckController]);
             var wsBroadcaster = sp.GetRequiredService<IWebSocketBroadcaster>();
 
-            return new LocalServer(ipResolver.Get(), storage.Current.Local, httpRouter, wsBroadcaster);
+            return new MobileServer(
+                address: ipResolver.Get(),
+                storage.Current.Local,
+                controllers: [typeof(HomeController), typeof(GridDeckController)],
+                parentServices: sp,
+                wsBroadcaster: wsBroadcaster
+            );
         });
 
         services.AddSingleton<AppInfoService>();

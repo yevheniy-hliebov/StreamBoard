@@ -8,7 +8,7 @@ public class LocalServerBootstrapper
 {
     public static async Task EnsureStartedAsync(IServiceProvider serviceProvider)
     {
-        var localServer = serviceProvider.GetRequiredService<ILocalServer>();
+        var localServer = serviceProvider.GetRequiredService<IMobileServer>();
         try
         {
             if (localServer?.ShouldAutoStart == true && !localServer.IsRunning)

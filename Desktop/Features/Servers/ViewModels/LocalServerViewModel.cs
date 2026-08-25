@@ -13,7 +13,7 @@ namespace StreamTabula.Features.Servers.ViewModels;
 public class LocalServerViewModel : ObservableObject
 {
     private readonly ServerConfigsStorage _storage;
-    private readonly ILocalServer _server;
+    private readonly IMobileServer _server;
     private readonly IQrGenerator _qrGenerator;
 
     public IRelayCommand<object?> ShowQrCodeCommand { get; }
@@ -21,7 +21,7 @@ public class LocalServerViewModel : ObservableObject
 
     public ObservableCollection<HttpRequestLog> HttpRequestLogs { get; } = new();
 
-    public LocalServerViewModel(ServerConfigsStorage storage, ILocalServer server, IQrGenerator qrGenerator)
+    public LocalServerViewModel(ServerConfigsStorage storage, IMobileServer server, IQrGenerator qrGenerator)
     {
         _storage = storage;
         _server = server;

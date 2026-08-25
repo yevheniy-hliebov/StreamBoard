@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using StreamTabula.Features.Servers.Models;
 using System.IO;
@@ -8,6 +9,9 @@ using System.Net;
 using System.Net.Sockets;
 
 namespace StreamTabula.Features.Servers.Services;
+
+public interface ISystemServer : ILocalServer { }
+public interface IMobileServer : ILocalServer { }
 
 public interface ILocalServer
 {
@@ -23,11 +27,18 @@ public interface ILocalServer
     Task StopAsync();
 }
 
+public class SystemServer(IPAddress address, LocalServerConfig config, Type[] controllers, IServiceProvider parentServices)
+        : LocalServer(address, config, controllers, parentServices, null), ISystemServer;
+
+public class MobileServer(IPAddress address, LocalServerConfig config, Type[] controllers, IServiceProvider parentServices, IWebSocketBroadcaster wsBroadcaster)
+    : LocalServer(address, config, controllers, parentServices, wsBroadcaster), IMobileServer;
+
 public class LocalServer(
     IPAddress address,
-    LocalServerConfig config, 
-    HttpRouter router, 
-    IWebSocketBroadcaster? wsBroadcater = null) : ILocalServer
+    LocalServerConfig config,
+    Type[] controllers,
+    IServiceProvider parentServices,
+    IWebSocketBroadcaster? wsBroadcaster = null) : ILocalServer
 {
     private readonly Lock _statusLock = new();
 
@@ -80,13 +91,45 @@ public class LocalServer(
                 serverOptions.ListenAnyIP(config.Port);
             });
 
+            builder.Services.AddControllers().ConfigureApplicationPartManager(manager =>
+                    {
+                        var defaultProvider = manager.FeatureProviders.OfType<ControllerFeatureProvider>().FirstOrDefault();
+                        if (defaultProvider != null)
+                            manager.FeatureProviders.Remove(defaultProvider);
+
+                        manager.FeatureProviders.Add(new AllowedControllersFeatureProvider(controllers));
+                    })
+                    .AddControllersAsServices();
+
+            foreach (var type in controllers)
+            {
+                builder.Services.AddTransient(type, sp => parentServices.GetRequiredService(type));
+            }
+
             _app = builder.Build();
 
             _app.UseCors();
+
+            _app.Use(async (context, next) =>
+            {
+                try
+                {
+                    await next(context);
+                }
+                finally
+                {
+                    RequestProcessed?.Invoke(new HttpRequestLog(context));
+                }
+            });
+
             _app.UseWebSockets();
 
-            _app.Map("/ws", HandleWebSocketRequest);
-            _app.MapFallback(ProcessHttpRequest);
+            if (wsBroadcaster != null)
+            {
+                _app.Map("/ws", HandleWebSocketRequest);
+            }
+
+            _app.MapControllers();
 
             await _app.StartAsync();
             Status = ServerStatus.Running;
@@ -151,38 +194,11 @@ public class LocalServer(
         }
 
         using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-        wsBroadcater?.AddClient(webSocket);
+        wsBroadcaster?.AddClient(webSocket);
         try
         {
             await Task.Delay(Timeout.InfiniteTimeSpan, context.RequestAborted);
         }
         catch (OperationCanceledException) { }
-    }
-
-    private async Task ProcessHttpRequest(HttpContext context)
-    {
-        var path = context.Request.Path.Value ?? "/";
-        var controller = router.Resolve(path);
-
-        if (controller == null)
-        {
-            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-            await context.Response.WriteAsync("404 - Not Found");
-            return;
-        }
-
-        try
-        {
-            await controller.HandleAsync(context);
-        }
-        catch
-        {
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            await context.Response.WriteAsync("500 - Internal Server Error");
-        }
-        finally
-        {
-            RequestProcessed?.Invoke(new HttpRequestLog(context));
-        }
     }
 }

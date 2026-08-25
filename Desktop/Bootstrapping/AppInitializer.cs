@@ -71,13 +71,7 @@ public static class AppInitializer
         }
 
         // System Http Server
-        var twitchAccountsGateway = serviceProvider.GetRequiredService<ITwitchAccountsGateway>();
-        var twitchController = new TwitchAuthController(twitchAccountsGateway);
-        var httpRouter = new HttpRouter([twitchController]);
-
-        var serverConfig = new LocalServerConfig { Port = 13551 };
-        var systemServer = new LocalServer(IPAddress.Loopback, serverConfig, httpRouter);
-
+        var systemServer = serviceProvider.GetRequiredService<ISystemServer>();
         await systemServer.StartAsync();
 
         // Actions
