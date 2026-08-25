@@ -1,24 +1,22 @@
-﻿namespace StreamTabula.Features.Servers.Services
+﻿namespace StreamTabula.Features.Servers.Services;
+
+public class HttpRouter(IEnumerable<IHttpController> controllers)
 {
-    public class HttpRouter(IEnumerable<IHttpController> controllers)
+    private readonly List<IHttpController> _controllers = controllers
+            .OrderByDescending(c => c.RoutePrefix.Length)
+            .ToList();
+
+    public IHttpController? Resolve(string path)
     {
-        private readonly List<IHttpController> _controllers = controllers
-                .OrderByDescending(c => c.RoutePrefix.Length)
-                .ToList();
+        var normalizedPath = Normalize(path);
 
-        public IHttpController? Resolve(string path)
-        {
-            var normalizedPath = Normalize(path);
+        return _controllers.FirstOrDefault(c =>
+            normalizedPath.StartsWith(Normalize(c.RoutePrefix), StringComparison.OrdinalIgnoreCase));
+    }
 
-            return _controllers.FirstOrDefault(c =>
-                normalizedPath.StartsWith(Normalize(c.RoutePrefix), StringComparison.OrdinalIgnoreCase));
-        }
-
-        private static string Normalize(string path)
-        {
-            if (string.IsNullOrEmpty(path)) return "/";
-            var normalized = path.ToLowerInvariant();
-            return normalized == "/" ? normalized : normalized.TrimEnd('/');
-        }
+    private static string Normalize(string path)
+    {
+        if (string.IsNullOrEmpty(path)) return "/";
+        return path == "/" ? path : path.TrimEnd('/');
     }
 }

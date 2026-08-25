@@ -20,13 +20,13 @@ namespace StreamTabula.Features.Servers.Controllers
             string path = ctx.Request.Path.Value ?? "/";
             string method = ctx.Request.Method;
 
-            if (method == "GET" && HttpRouteHelper.TryMatch(path, "/twitch/{type}", out var paramsGet))
+            if (method == "GET" && RouteMatcher.TryMatch(path, "/twitch/{type}", out var paramsGet))
             {
                 await ServeAuthPage(ctx);
                 return;
             }
 
-            if (method == "POST" && HttpRouteHelper.TryMatch(path, "/twitch/{type}", out var paramsPost))
+            if (method == "POST" && RouteMatcher.TryMatch(path, "/twitch/{type}", out var paramsPost))
             {
                 await HandleTokenSubmit(ctx, paramsPost["type"]);
                 return;

@@ -1,25 +1,39 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using StreamTabula.Features.Servers.Models;
+using System.IO;
 using System.Net;
-using System.Net.NetworkInformation;
+using System.Net.Sockets;
 
 namespace StreamTabula.Features.Servers.Services;
 
-public class LocalServer
+public interface ILocalServer
 {
-    private readonly LocalServerConfig _config;
-    private readonly HttpRouter _router;
-    private readonly IWebSocketBroadcaster? _wsBroadcaster;
+    IPAddress Address { get; }
+    ServerStatus Status { get; }
+    bool IsRunning { get; }
+    bool ShouldAutoStart { get; }
+
+    event Action<ServerStatus>? StatusChanged;
+    event Action<HttpRequestLog>? RequestProcessed;
+
+    Task StartAsync();
+    Task StopAsync();
+}
+
+public class LocalServer(
+    IPAddress address,
+    LocalServerConfig config, 
+    HttpRouter router, 
+    IWebSocketBroadcaster? wsBroadcater = null) : ILocalServer
+{
     private readonly Lock _statusLock = new();
 
     private WebApplication? _app;
 
-    public IPAddress LocalIPAddress { get; }
-
-    public event Action<ServerStatus>? StatusChanged;
-    public event Action<HttpRequestLog>? RequestProcessed;
+    public IPAddress Address { get; } = address;
 
     private ServerStatus _status = ServerStatus.Stopped;
     public ServerStatus Status
@@ -34,19 +48,12 @@ public class LocalServer
     }
 
     public bool IsRunning => Status == ServerStatus.Running;
+    public bool ShouldAutoStart => config.AutoStart;
 
-    public bool ShouldAutoStart => _config.AutoStart;
+    public event Action<ServerStatus>? StatusChanged;
+    public event Action<HttpRequestLog>? RequestProcessed;
 
-    public LocalServer(ILocalIpAddressResolver ipResolver, LocalServerConfig config, HttpRouter router, IWebSocketBroadcaster? wsBroadcater = null)
-    {
-        LocalIPAddress = ipResolver.Get();
-
-        _config = config;
-        _router = router;
-        _wsBroadcaster = wsBroadcater;
-    }
-
-    public async Task Start()
+    public async Task StartAsync()
     {
         lock (_statusLock)
         {
@@ -56,94 +63,47 @@ public class LocalServer
 
         try
         {
-            if (IsPortInUse(_config.Port))
-            {
-                throw new InvalidOperationException($"Port {_config.Port} is already in use by another application.");
-            }
-
             var builder = WebApplication.CreateBuilder();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
 
             builder.WebHost.ConfigureKestrel(serverOptions =>
             {
-                serverOptions.ListenAnyIP(_config.Port);
+                serverOptions.ListenAnyIP(config.Port);
             });
 
             _app = builder.Build();
 
-            _app.Use(async (context, next) =>
-            {
-                context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
-                context.Response.Headers.Append("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-                context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type, Accept, Host");
-
-                if (context.Request.Method.Equals("OPTIONS", StringComparison.OrdinalIgnoreCase))
-                {
-                    context.Response.StatusCode = (int)HttpStatusCode.OK;
-                    return;
-                }
-
-                await next();
-            });
-
+            _app.UseCors();
             _app.UseWebSockets();
 
-            _app.Map("/ws", async context =>
-            {
-                if (context.WebSockets.IsWebSocketRequest)
-                {
-                    using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                    _wsBroadcaster?.AddClient(webSocket);
-                    try
-                    {
-                        await Task.Delay(Timeout.InfiniteTimeSpan, context.RequestAborted);
-                    }
-                    catch (OperationCanceledException) { }
-                }
-                else
-                {
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                }
-            });
-
+            _app.Map("/ws", HandleWebSocketRequest);
             _app.MapFallback(ProcessHttpRequest);
 
             await _app.StartAsync();
-
             Status = ServerStatus.Running;
         }
-        catch (System.IO.IOException ex)
+        catch (IOException ex) when (IsAddressInUseException(ex))
         {
-            Status = ServerStatus.Stopped;
-
-            if (_app != null)
-            {
-                await _app.DisposeAsync();
-                _app = null;
-            }
-
-            if (ex.InnerException is System.Net.Sockets.SocketException socketEx &&
-                socketEx.SocketErrorCode == System.Net.Sockets.SocketError.AddressAlreadyInUse)
-            {
-                throw new InvalidOperationException($"Port {_config.Port} is already in use by another application.", ex);
-            }
-
-            throw new InvalidOperationException($"Failed to bind to port {_config.Port}.", ex);
+            await CleanupAppAsync();
+            throw new InvalidOperationException($"Port {config.Port} is already in use by another application.", ex);
         }
         catch (Exception)
         {
-            Status = ServerStatus.Stopped;
-
-            if (_app != null)
-            {
-                await _app.DisposeAsync();
-                _app = null;
-            }
-
+            await CleanupAppAsync();
             throw;
         }
     }
 
-    public async Task Stop()
+    public async Task StopAsync()
     {
         lock (_statusLock)
         {
@@ -157,9 +117,7 @@ public class LocalServer
             {
                 using var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(500));
                 await _app.StopAsync(cts.Token);
-
-                await _app.DisposeAsync();
-                _app = null;
+                await CleanupAppAsync();
             }
         }
         finally
@@ -168,10 +126,43 @@ public class LocalServer
         }
     }
 
+    private async Task CleanupAppAsync()
+    {
+        if (_app != null)
+        {
+            await _app.DisposeAsync();
+            _app = null;
+        }
+        Status = ServerStatus.Stopped;
+    }
+
+    private static bool IsAddressInUseException(IOException ex)
+    {
+        return ex.InnerException is SocketException socketEx &&
+               socketEx.SocketErrorCode == SocketError.AddressAlreadyInUse;
+    }
+
+    private async Task HandleWebSocketRequest(HttpContext context)
+    {
+        if (!context.WebSockets.IsWebSocketRequest)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            return;
+        }
+
+        using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+        wsBroadcater?.AddClient(webSocket);
+        try
+        {
+            await Task.Delay(Timeout.InfiniteTimeSpan, context.RequestAborted);
+        }
+        catch (OperationCanceledException) { }
+    }
+
     private async Task ProcessHttpRequest(HttpContext context)
     {
         var path = context.Request.Path.Value ?? "/";
-        var controller = _router.Resolve(path);
+        var controller = router.Resolve(path);
 
         if (controller == null)
         {
@@ -193,21 +184,5 @@ public class LocalServer
         {
             RequestProcessed?.Invoke(new HttpRequestLog(context));
         }
-    }
-
-    private static bool IsPortInUse(int port)
-    {
-        var ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
-        var tcpListeners = ipGlobalProperties.GetActiveTcpListeners();
-
-        foreach (var endpoint in tcpListeners)
-        {
-            if (endpoint.Port == port)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

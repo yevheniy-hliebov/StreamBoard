@@ -25,19 +25,19 @@ namespace StreamTabula.Features.Servers.Controllers
                 string path = ctx.Request.Path.Value ?? "/";
                 string method = ctx.Request.Method;
 
-                if (method == "GET" && HttpRouteHelper.TryMatch(path, "/api/grid/buttons", out _))
+                if (method == "GET" && RouteMatcher.TryMatch(path, "/api/grid/buttons", out _))
                 {
                     await GetButtons(ctx);
                     return;
                 }
 
-                if (method == "GET" && HttpRouteHelper.TryMatch(path, "/api/grid/{key}/image", out var imgParams))
+                if (method == "GET" && RouteMatcher.TryMatch(path, "/api/grid/{key}/image", out var imgParams))
                 {
                     await GetImage(ctx, imgParams["key"]);
                     return;
                 }
 
-                if (method == "POST" && HttpRouteHelper.TryMatch(path, "/api/grid/{key}", out var postParams))
+                if (method == "POST" && RouteMatcher.TryMatch(path, "/api/grid/{key}", out var postParams))
                 {
                     await ClickKey(ctx, postParams["key"]);
                     return;

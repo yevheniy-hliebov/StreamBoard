@@ -8,12 +8,12 @@ public class LocalServerBootstrapper
 {
     public static async Task EnsureStartedAsync(IServiceProvider serviceProvider)
     {
-        var localServer = serviceProvider.GetRequiredService<LocalServer>();
+        var localServer = serviceProvider.GetRequiredService<ILocalServer>();
         try
         {
             if (localServer?.ShouldAutoStart == true && !localServer.IsRunning)
             {
-                await localServer.Start();
+                await localServer.StartAsync();
             }
         }
         catch (InvalidOperationException ex)

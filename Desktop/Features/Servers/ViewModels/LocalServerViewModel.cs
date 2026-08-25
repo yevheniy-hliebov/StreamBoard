@@ -13,7 +13,7 @@ namespace StreamTabula.Features.Servers.ViewModels;
 public class LocalServerViewModel : ObservableObject
 {
     private readonly ServerConfigsStorage _storage;
-    private readonly LocalServer _server;
+    private readonly ILocalServer _server;
     private readonly IQrGenerator _qrGenerator;
 
     public IRelayCommand<object?> ShowQrCodeCommand { get; }
@@ -21,7 +21,7 @@ public class LocalServerViewModel : ObservableObject
 
     public ObservableCollection<HttpRequestLog> HttpRequestLogs { get; } = new();
 
-    public LocalServerViewModel(ServerConfigsStorage storage, LocalServer server, IQrGenerator qrGenerator)
+    public LocalServerViewModel(ServerConfigsStorage storage, ILocalServer server, IQrGenerator qrGenerator)
     {
         _storage = storage;
         _server = server;
@@ -112,9 +112,9 @@ public class LocalServerViewModel : ObservableObject
         try
         {
             if (_server.Status == ServerStatus.Running)
-                await _server.Stop();
+                await _server.StopAsync();
             else
-                await _server.Start();
+                await _server.StartAsync();
         }
         catch (Exception ex)
         {
@@ -153,7 +153,7 @@ public class LocalServerViewModel : ObservableObject
     }
 
     // NetworkIpAddress
-    public string NetworkIpAddress => _server.LocalIPAddress.ToString();
+    public string NetworkIpAddress => _server.Address.ToString();
 
     // Port
     public int Port

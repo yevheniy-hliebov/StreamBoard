@@ -96,7 +96,7 @@ public static class ServiceRegistration
         services.AddSingleton<ILocalIpAddressResolver, LocalIpAddressResolver>();
         services.AddSingleton<IQrGenerator, QrGenerator>();
         
-        services.AddSingleton<LocalServer>(sp =>
+        services.AddSingleton<ILocalServer, LocalServer>(sp =>
         {
             var storage = sp.GetRequiredService<ServerConfigsStorage>();
             var ipResolver = sp.GetRequiredService<ILocalIpAddressResolver>();
@@ -106,7 +106,7 @@ public static class ServiceRegistration
             var httpRouter = new HttpRouter([homeController, gridDeckController]);
             var wsBroadcaster = sp.GetRequiredService<IWebSocketBroadcaster>();
 
-            return new LocalServer(ipResolver, storage.Current.Local, httpRouter, wsBroadcaster);
+            return new LocalServer(ipResolver.Get(), storage.Current.Local, httpRouter, wsBroadcaster);
         });
 
         services.AddSingleton<AppInfoService>();
