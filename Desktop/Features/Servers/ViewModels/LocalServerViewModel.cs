@@ -14,16 +14,18 @@ public class LocalServerViewModel : ObservableObject
 {
     private readonly ServerConfigsStorage _storage;
     private readonly LocalServer _server;
+    private readonly IQrGenerator _qrGenerator;
 
     public IRelayCommand<object?> ShowQrCodeCommand { get; }
 
 
     public ObservableCollection<HttpRequestLog> HttpRequestLogs { get; } = new();
 
-    public LocalServerViewModel(ServerConfigsStorage storage, LocalServer server)
+    public LocalServerViewModel(ServerConfigsStorage storage, LocalServer server, IQrGenerator qrGenerator)
     {
         _storage = storage;
         _server = server;
+        _qrGenerator = qrGenerator;
 
         ShowQrCodeCommand = new RelayCommand<object?>(_ => ShowQrCode());
 
@@ -33,9 +35,8 @@ public class LocalServerViewModel : ObservableObject
 
     private void ShowQrCode()
     {
-        var qrBitmap = QrHelper.GenerateUrlQrCode(NetworkIpAddress, Port);
-
         var url = $"http://{NetworkIpAddress}:{Port}";
+        var qrBitmap = _qrGenerator.Generate(url);
 
         var dialog = new QrCodeDialogWindow(
             title: "Connect Mobile App",

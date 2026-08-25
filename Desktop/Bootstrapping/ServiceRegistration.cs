@@ -94,6 +94,8 @@ public static class ServiceRegistration
 
         services.AddSingleton<WebsocketManager>();
         services.AddSingleton<ILocalIpAddressResolver, LocalIpAddressResolver>();
+        services.AddSingleton<IQrGenerator, QrGenerator>();
+        
         services.AddSingleton<LocalServer>(sp =>
         {
             var storage = sp.GetRequiredService<ServerConfigsStorage>();
