@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using StreamTabula.Features.Decks.Models;
 using StreamTabula.Features.Decks.Services;
+using StreamTabula.Features.Servers.Models.DTO;
 using System.Diagnostics;
 
 namespace StreamTabula.Features.Servers.Controllers;
@@ -9,56 +11,53 @@ namespace StreamTabula.Features.Servers.Controllers;
 [Route("api/grid")]
 public class GridDeckController(GridDeckStorage storage) : ControllerBase
 {
+    private static readonly FileExtensionContentTypeProvider _contentTypeProvider = new();
+
     [HttpGet("buttons")]
     public IActionResult GetButtons()
     {
         var profile = storage.Current;
-        var map = profile.CurrentPageButtonMap;
-        var selectedPage = profile.PagesState.AllPages.FirstOrDefault(p => p.Id == profile.PagesState.SelectedPageId);
-        var gridCanvasConfig = (GridCanvasConfig)profile.CanvasConfig;
 
-        var responseObj = new
+        if (profile.CanvasConfig is not GridCanvasConfig gridCanvasConfig)
         {
-            grid_layout = gridCanvasConfig.SelectedGrid,
-            current_page_id = profile.PagesState.SelectedPageId,
-            current_page_name = selectedPage?.Name,
-            page_map = map?.ToDictionary(
-                kvp => kvp.Key,
-                kvp => new
-                {
-                    name = kvp.Value.Name,
-                    background_color = kvp.Value.BackgroundColor,
-                    image_path = kvp.Value.ImagePath
-                }
-            )
-        };
+            return BadRequest("Invalid canvas configuration type.");
+        }
 
-        return Ok(responseObj);
+        var selectedPage = profile.PagesState.AllPages.FirstOrDefault(p => p.Id == profile.PagesState.SelectedPageId);
+
+        var pageMap = profile.CurrentPageButtonMap?.ToDictionary(
+            kvp => kvp.Key,
+            kvp => new GridButtonDto(
+                kvp.Value.Name,
+                kvp.Value.BackgroundColor,
+                kvp.Value.ImagePath
+            )
+        );
+
+        var response = new GridDeckResponseDto(
+            gridCanvasConfig.SelectedGrid,
+            profile.PagesState.SelectedPageId,
+            selectedPage?.Name,
+            pageMap
+        );
+
+        return Ok(response);
     }
 
     [HttpGet("{key}/image")]
     public IActionResult GetImage(string key)
     {
-        var map = storage.Current.CurrentPageButtonMap;
-
-        if (map == null || !map.TryGetValue(key, out var buttonConfig))
-            return BadRequest("Key binding data not found");
+        if (!TryGetButtonConfig(key, out var buttonConfig))
+            return NotFound("Key binding data not found");
 
         string? imagePath = buttonConfig.ImagePath;
         if (string.IsNullOrEmpty(imagePath) || !System.IO.File.Exists(imagePath))
             return NotFound("Image not found");
 
-        string extension = System.IO.Path.GetExtension(imagePath).ToLowerInvariant();
-        string mimeType = extension switch
+        if (!_contentTypeProvider.TryGetContentType(imagePath, out var mimeType))
         {
-            ".png" => "image/png",
-            ".jpg" or ".jpeg" => "image/jpeg",
-            ".gif" => "image/gif",
-            ".webp" => "image/webp",
-            ".svg" => "image/svg+xml",
-            ".bmp" => "image/bmp",
-            _ => "application/octet-stream"
-        };
+            mimeType = "application/octet-stream";
+        }
 
         return PhysicalFile(imagePath, mimeType);
     }
@@ -66,9 +65,7 @@ public class GridDeckController(GridDeckStorage storage) : ControllerBase
     [HttpPost("{key}")]
     public async Task<IActionResult> ClickKey(string key)
     {
-        var map = storage.Current.CurrentPageButtonMap;
-
-        if (map == null || !map.TryGetValue(key, out var buttonConfig))
+        if (!TryGetButtonConfig(key, out var buttonConfig))
             return NotFound("Key binding data not found");
 
         if (buttonConfig.Actions != null)
@@ -86,6 +83,18 @@ public class GridDeckController(GridDeckStorage storage) : ControllerBase
             }
         }
 
-        return Ok("Action executed");
+        return Ok("Key pressed");
+    }
+
+    private bool TryGetButtonConfig(string key, out DeckButtonConfig config)
+    {
+        var map = storage.Current.CurrentPageButtonMap;
+        if (map != null && map.TryGetValue(key, out config!))
+        {
+            return true;
+        }
+
+        config = null!;
+        return false;
     }
 }
