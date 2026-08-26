@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using StreamTabula.Features.Integrations.Twitch.Models;
 using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Features.Servers.Models;
+using System.IO;
 
 namespace StreamTabula.Features.Servers.Controllers;
 
@@ -13,7 +14,14 @@ public class TwitchAuthController(ITwitchAccountsGateway gateway) : ControllerBa
     [HttpGet("{role}")]
     public IActionResult ServeAuthPage(string role)
     {
-        return Content(TwitchAuthTemplates.AuthPageHtml, "text/html");
+        var filePath = Path.Combine(AppContext.BaseDirectory, "wwwroot", "integrations", "twitch", "twitch_auth.html");
+
+        if (!System.IO.File.Exists(filePath))
+        {
+            return NotFound("Auth template not found.");
+        }
+
+        return PhysicalFile(filePath, "text/html");
     }
 
     [HttpPost("{role}")]
@@ -23,6 +31,11 @@ public class TwitchAuthController(ITwitchAccountsGateway gateway) : ControllerBa
         {
             if (payload == null || string.IsNullOrEmpty(payload.AccessToken))
                 return BadRequest("Invalid payload or missing access token.");
+
+            if (!Enum.TryParse<TwitchAccountRole>(role, ignoreCase: true, out var accountRole))
+            {
+                return BadRequest($"Unknown role: {role}");
+            }
 
             var scopesList = (payload.Scope ?? "")
                 .Split([' ', '+'], StringSplitOptions.RemoveEmptyEntries)
@@ -35,17 +48,16 @@ public class TwitchAuthController(ITwitchAccountsGateway gateway) : ControllerBa
             var authContext = new TwitchAuthContext(payload.AccessToken, tokenType, scopesList);
             string state = payload.State ?? string.Empty;
 
-            if (role.Equals("broadcaster", StringComparison.OrdinalIgnoreCase))
+            switch (accountRole)
             {
-                await gateway.Broadcaster.Authenticator.FinalizeLogin(authContext, state);
-            }
-            else if (role.Equals("bot", StringComparison.OrdinalIgnoreCase))
-            {
-                await gateway.Bot.Authenticator.FinalizeLogin(authContext, state);
-            }
-            else
-            {
-                return BadRequest($"Unknown role: {role}");
+                case TwitchAccountRole.Broadcaster:
+                    await gateway.Broadcaster.Authenticator.FinalizeLogin(authContext, state);
+                    break;
+                case TwitchAccountRole.Bot:
+                    await gateway.Bot.Authenticator.FinalizeLogin(authContext, state);
+                    break;
+                default:
+                    return BadRequest($"Unsupported role: {accountRole}");
             }
 
             return Ok("Data received");

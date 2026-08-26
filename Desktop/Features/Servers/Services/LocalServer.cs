@@ -129,6 +129,8 @@ public class LocalServer(
                 _app.Map("/ws", HandleWebSocketRequest);
             }
 
+            _app.UseStaticFiles();
+
             _app.MapControllers();
 
             await _app.StartAsync();

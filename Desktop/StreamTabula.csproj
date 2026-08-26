@@ -34,10 +34,7 @@
 		</Resource>
 		<Resource Include="Assets\Images\logo.ico">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Resource>
-		<Resource Include="Assets\Images\logo.png">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Resource>
+		</Resource>		
 	</ItemGroup>
 
 	<!-- Assets/Sounds -->
@@ -72,5 +69,22 @@
 	<ItemGroup>
 		<Watch Include="**\*.xaml" />
 	</ItemGroup>
+
+	<!-- wwwroot -->
+	<ItemGroup>
+		<Content Include="wwwroot\favicon.ico">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="wwwroot\integrations\twitch\script.js">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="wwwroot\integrations\twitch\style.css">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="wwwroot\integrations\twitch\twitch_auth.html">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
 
 </Project>
