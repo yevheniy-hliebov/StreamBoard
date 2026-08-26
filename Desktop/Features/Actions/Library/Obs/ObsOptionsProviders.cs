@@ -1,9 +1,10 @@
-using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using OBSWebsocketDotNet;
 using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Models.OBS;
 using StreamTabula.Features.Integrations.OBS.Models;
 using StreamTabula.Features.Integrations.OBS.Services;
+using System.Diagnostics;
 
 namespace StreamTabula.Features.Actions.Library.Obs;
 
@@ -22,10 +23,10 @@ public class ObsSceneOptionsProvider : IOptionsProvider
             var options = sceneList.Scenes.Select(s => s.Name).ToList();
             options.Reverse();
 
-            if (string.IsNullOrEmpty(GetSceneName(action)))
+            if (action is IHasSceneName sceneAction && string.IsNullOrEmpty(sceneAction.SceneName))
             {
                 var first = options.FirstOrDefault();
-                if (first != null) SetSceneName(action, first);
+                if (first != null) sceneAction.SceneName = first;
             }
 
             return options;
@@ -34,23 +35,6 @@ public class ObsSceneOptionsProvider : IOptionsProvider
         {
             return ["Error loading scenes"];
         }
-    }
-
-    private static string? GetSceneName(BaseAction action) => action switch
-    {
-        SourceVisibilityAction a => a.SceneName,
-        MuteSourceAction a => a.SceneName,
-        SwitchSceneAction a => a.SceneName,
-        ScreenshotAction a => a.SceneName,
-        _ => null
-    };
-
-    private static void SetSceneName(BaseAction action, string value)
-    {
-        if (action is SourceVisibilityAction v) v.SceneName = value;
-        else if (action is MuteSourceAction m) m.SceneName = value;
-        else if (action is SwitchSceneAction s) s.SceneName = value;
-        else if (action is ScreenshotAction sc) sc.SceneName = value;
     }
 }
 

@@ -1,5 +1,4 @@
-﻿using StreamTabula.Features.Actions.Models;
-using StreamTabula.Features.Actions.Attributes;
+﻿using StreamTabula.Features.Actions.Attributes;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using StreamTabula.Controls.Icons;
@@ -7,17 +6,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.System;
 
 [ActionDiscriminator("website")]
+[ActionInfo("Open Website", "Enter URL", FluentIconType.Globe)]
 public class WebsiteAction : SystemBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Open Website",
-        DialogTitle: "Enter URL",
-        Icon: FluentIconType.Globe
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _url = "";
 
     [InputField("Website URL", Hint = "Enter url...")]
@@ -32,9 +23,6 @@ public class WebsiteAction : SystemBaseAction
             OnPropertyChanged(nameof(Label));
         }
     }
-
-    [JsonIgnore]
-    public override string Label => string.IsNullOrEmpty(Url) ? Metadata.Name : $"{Metadata.Name} ({Url})";
 
     public override Task ExecuteAsync(object? data = null)
     {
@@ -57,10 +45,4 @@ public class WebsiteAction : SystemBaseAction
 
         return Task.CompletedTask;
     }
-
-    public override BaseAction Copy() => new WebsiteAction
-    {
-        Id = this.Id,
-        Url = this.Url
-    };
 }

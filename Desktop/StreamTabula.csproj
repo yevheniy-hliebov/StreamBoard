@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
@@ -34,6 +34,9 @@
 		</Resource>
 		<Resource Include="Assets\Images\logo.ico">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Assets\Images\logo.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>		
 	</ItemGroup>
 

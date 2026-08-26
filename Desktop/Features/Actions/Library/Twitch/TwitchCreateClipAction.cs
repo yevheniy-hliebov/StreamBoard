@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Controls.Icons;
@@ -9,17 +8,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.Twitch;
 
 [ActionDiscriminator("twitch_create_clip")]
+[ActionInfo("Create Clip", "Create Clip Settings", FluentIconType.Video)]
 public class TwitchCreateClipAction : TwitchBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Create Clip",
-        DialogTitle: "Create Clip Settings",
-        Icon: FluentIconType.Video
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _clipTitle = string.Empty;
     private int _durationSeconds = 0;
 
@@ -83,11 +74,4 @@ public class TwitchCreateClipAction : TwitchBaseAction
             Debug.WriteLine($"[Twitch Create Clip] Error: {ex.Message}");
         }
     }
-
-    public override BaseAction Copy() => new TwitchCreateClipAction
-    {
-        Id = this.Id,
-        ClipTitle = this.ClipTitle,
-        DurationSeconds = this.DurationSeconds
-    };
 }

@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OBSWebsocketDotNet;
 using StreamTabula.Controls.Icons;
 using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Models.OBS;
 using StreamTabula.Features.Integrations.OBS.Services;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
@@ -10,17 +10,9 @@ using System.Text.Json.Serialization;
 namespace StreamTabula.Features.Actions.Library.Obs;
 
 [ActionDiscriminator("obs_source_visibility")]
-public class SourceVisibilityAction : ObsBaseAction
+[ActionInfo("Source Visibility", "Source Visibility Settings", FluentIconType.View)]
+public class SourceVisibilityAction : ObsBaseAction, IHasSceneName
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Source Visibility",
-        DialogTitle: "Source Visibility Settings",
-        Icon: FluentIconType.View
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _sceneName = string.Empty;
     private string _sourceName = string.Empty;
     private string _visibilityState = "Toggle";
@@ -47,20 +39,6 @@ public class SourceVisibilityAction : ObsBaseAction
     {
         get => _visibilityState;
         set => SetProperty(ref _visibilityState, value);
-    }
-
-    [JsonIgnore]
-    public override string Label
-    {
-        get
-        {
-            if (string.IsNullOrEmpty(SceneName) || string.IsNullOrEmpty(SourceName))
-            {
-                return Metadata.Name;
-            }
-
-            return $"{Metadata.Name} ({SceneName}, {SourceName}, {VisibilityState})";
-        }
     }
 
     public override async Task ExecuteAsync(object? data = null)
@@ -101,12 +79,4 @@ public class SourceVisibilityAction : ObsBaseAction
 
         await Task.CompletedTask;
     }
-
-    public override BaseAction Copy() => new SourceVisibilityAction
-    {
-        Id = this.Id,
-        SceneName = this.SceneName,
-        SourceName = this.SourceName,
-        VisibilityState = this.VisibilityState
-    };
 }

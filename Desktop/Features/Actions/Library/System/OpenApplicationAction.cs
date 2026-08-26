@@ -8,17 +8,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.System;
 
 [ActionDiscriminator("open_application")]
+[ActionInfo("Open Application", "Enter Application Path", FluentIconType.Apps)]
 public class OpenApplicationAction : SystemBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Open Application",
-        DialogTitle: "Enter Application Path",
-        Icon: FluentIconType.Apps
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _appPath = "";
 
     [PathField("Application Path", PathSelectionType.File, Filter = "Executables (*.exe)|*.exe|Shortcuts (*.lnk)|*.lnk|All files (*.*)|*.*", Hint = "Select .exe or shortcut...")]
@@ -74,11 +66,4 @@ public class OpenApplicationAction : SystemBaseAction
 
         return Task.CompletedTask;
     }
-
-    public override BaseAction Copy() => new OpenApplicationAction
-    {
-        Id = this.Id,
-        AppPath = this.AppPath,
-        Arguments = this.Arguments
-    };
 }

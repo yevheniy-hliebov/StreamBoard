@@ -2,24 +2,16 @@ using Microsoft.Extensions.DependencyInjection;
 using OBSWebsocketDotNet;
 using StreamTabula.Controls.Icons;
 using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Models.OBS;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace StreamTabula.Features.Actions.Library.Obs;
 
 [ActionDiscriminator("obs_switch_scene")]
-public class SwitchSceneAction : ObsBaseAction
+[ActionInfo("Switch Scene", "Select OBS Scene", FluentIconType.FitPage)]
+public class SwitchSceneAction : ObsBaseAction, IHasSceneName
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Switch Scene",
-        DialogTitle: "Select OBS Scene",
-        Icon: FluentIconType.FitPage
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _sceneName = string.Empty;
 
     [DropdownField("Select Scene", typeof(ObsSceneOptionsProvider), Hint = "Choose a scene from the list...")]
@@ -35,11 +27,6 @@ public class SwitchSceneAction : ObsBaseAction
             }
         }
     }
-
-    [JsonIgnore]
-    public override string Label => string.IsNullOrEmpty(SceneName)
-        ? Metadata.Name
-        : $"{Metadata.Name} ({SceneName})";
 
     public override async Task ExecuteAsync(object? data = null)
     {
@@ -65,10 +52,4 @@ public class SwitchSceneAction : ObsBaseAction
 
         await Task.CompletedTask;
     }
-
-    public override BaseAction Copy() => new SwitchSceneAction
-    {
-        Id = this.Id,
-        SceneName = this.SceneName
-    };
 }

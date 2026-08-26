@@ -1,27 +1,14 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
-using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Controls.Icons;
 
 namespace StreamTabula.Features.Actions.Library.System;
 
 [ActionDiscriminator("close_active_window")]
+[ActionInfo("Close Active Window", "Close Active Window", FluentIconType.ChromeClose)]
 public class CloseActiveWindowAction : SystemBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Close Active Window",
-        DialogTitle: "Close Active Window",
-        Icon: FluentIconType.ChromeClose
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
-    [JsonIgnore]
-    public override string Label => Metadata.Name;
-
     private const uint WM_CLOSE = 0x0010;
 
     [DllImport("user32.dll", ExactSpelling = true)]
@@ -62,9 +49,4 @@ public class CloseActiveWindowAction : SystemBaseAction
 
         return Task.CompletedTask;
     }
-
-    public override BaseAction Copy() => new CloseActiveWindowAction
-    {
-        Id = this.Id
-    };
 }

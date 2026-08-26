@@ -9,17 +9,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.Twitch;
 
 [ActionDiscriminator("twitch_start_commercial")]
+[ActionInfo("Start Commercial", "Start Commercial Settings", FluentIconType.Bank)]
 public class TwitchStartCommercialAction : TwitchBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Start Commercial",
-        DialogTitle: "Start Commercial Settings",
-        Icon: FluentIconType.Bank
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private int _commercialLength = 30;
 
     [InputField("Length (Seconds)", Hint = "Valid: 30, 60, 90, 120, 150, 180")]
@@ -34,9 +26,6 @@ public class TwitchStartCommercialAction : TwitchBaseAction
                 OnPropertyChanged(nameof(Label));
         }
     }
-
-    [JsonIgnore]
-    public override string Label => $"{Metadata.Name} ({CommercialLength}s)";
 
     public override async Task ExecuteAsync(object? data = null)
     {
@@ -57,10 +46,4 @@ public class TwitchStartCommercialAction : TwitchBaseAction
             Debug.WriteLine($"[Twitch Start Commercial] Error: {ex.Message}");
         }
     }
-
-    public override BaseAction Copy() => new TwitchStartCommercialAction
-    {
-        Id = this.Id,
-        CommercialLength = this.CommercialLength
-    };
 }

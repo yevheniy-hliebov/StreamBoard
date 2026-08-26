@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Controls.Icons;
@@ -9,17 +8,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.Twitch;
 
 [ActionDiscriminator("twitch_set_steam_title")]
+[ActionInfo("Set Stream Title", "Set Stream Title Settings", FluentIconType.Edit)]
 public class TwitchSetStreamTitleAction : TwitchBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Set Stream Title",
-        DialogTitle: "Set Stream Title Settings",
-        Icon: FluentIconType.Edit
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _title = string.Empty;
 
     [InputField("Title", Hint = "Enter title...")]
@@ -32,19 +23,6 @@ public class TwitchSetStreamTitleAction : TwitchBaseAction
             _title = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(Label));
-        }
-    }
-
-    [JsonIgnore]
-    public override string Label
-    {
-        get
-        {
-            if (string.IsNullOrEmpty(Title))
-            {
-                return Metadata.Name;
-            }
-            return $"{Metadata.Name} ({Title})";
         }
     }
 
@@ -73,10 +51,4 @@ public class TwitchSetStreamTitleAction : TwitchBaseAction
             throw;
         }
     }
-
-    public override BaseAction Copy() => new TwitchSetStreamTitleAction
-    {
-        Id = this.Id,
-        Title = this.Title
-    };
 }

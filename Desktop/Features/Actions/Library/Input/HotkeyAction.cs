@@ -2,7 +2,6 @@ using StreamTabula.Controls.Icons;
 using StreamTabula.Core.Interop;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Actions.Exceptions;
-using StreamTabula.Features.Actions.Models;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using System.Windows.Input;
@@ -10,17 +9,9 @@ using System.Windows.Input;
 namespace StreamTabula.Features.Actions.Library.Input;
 
 [ActionDiscriminator("hotkey")]
+[ActionInfo("Hotkey", "Set Hotkey Combination", FluentIconType.Keyboard)]
 public class HotkeyAction : InputBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Hotkey",
-        DialogTitle: "Set Hotkey Combination",
-        Icon: FluentIconType.Keyboard
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private bool _ctrl;
 
     [InputField("Ctrl", Hint = "Press Ctrl")]
@@ -149,14 +140,4 @@ public class HotkeyAction : InputBaseAction
 
         return 0;
     }
-
-    public override BaseAction Copy() => new HotkeyAction
-    {
-        Id = this.Id,
-        Ctrl = this.Ctrl,
-        Shift = this.Shift,
-        Alt = this.Alt,
-        Win = this.Win,
-        KeyToPress = this.KeyToPress
-    };
 }

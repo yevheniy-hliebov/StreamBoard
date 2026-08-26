@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Controls.Icons;
@@ -9,17 +8,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.Twitch;
 
 [ActionDiscriminator("twitch_create_stream_marker")]
+[ActionInfo("Create Marker", "Stream Marker Settings", FluentIconType.Bookmarks)]
 public class TwitchCreateStreamMarkerAction : TwitchBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Create Marker",
-        DialogTitle: "Stream Marker Settings",
-        Icon: FluentIconType.Bookmarks
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _description = string.Empty;
 
     [InputField("Description", Hint = "Optional. Max 140 chars.")]
@@ -33,16 +24,6 @@ public class TwitchCreateStreamMarkerAction : TwitchBaseAction
 
             if (SetProperty(ref _description, safeValue))
                 OnPropertyChanged(nameof(Label));
-        }
-    }
-
-    [JsonIgnore]
-    public override string Label
-    {
-        get
-        {
-            if (string.IsNullOrWhiteSpace(Description)) return Metadata.Name;
-            return $"{Metadata.Name} ({Description})";
         }
     }
 
@@ -70,10 +51,4 @@ public class TwitchCreateStreamMarkerAction : TwitchBaseAction
             Debug.WriteLine($"[Twitch Stream Marker] Error: {ex.Message}");
         }
     }
-
-    public override BaseAction Copy() => new TwitchCreateStreamMarkerAction
-    {
-        Id = this.Id,
-        Description = this.Description
-    };
 }

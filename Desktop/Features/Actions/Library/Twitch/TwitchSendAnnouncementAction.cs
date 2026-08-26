@@ -10,17 +10,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.Twitch;
 
 [ActionDiscriminator("twitch_send_announcement")]
+[ActionInfo("Send Announcement", "Send Announcement Settings", FluentIconType.Megaphone)]
 public class TwitchSendAnnouncementAction : TwitchBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Send Announcement",
-        DialogTitle: "Send Announcement Settings",
-        Icon: FluentIconType.Megaphone
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _username = string.Empty;
 
     [InputField("Channel Name", Hint = "Target username...", DefaultValueProvider = typeof(TwitchUsernameProvider))]
@@ -119,13 +111,4 @@ public class TwitchSendAnnouncementAction : TwitchBaseAction
             throw;
         }
     }
-
-    public override BaseAction Copy() => new TwitchSendAnnouncementAction
-    {
-        Id = this.Id,
-        Username = this.Username,
-        Announcement = this.Announcement,
-        Color = this.Color,
-        UseBot = this.UseBot,
-    };
 }

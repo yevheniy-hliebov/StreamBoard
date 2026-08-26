@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Core.Services.Audio;
 using StreamTabula.Controls.Icons;
@@ -7,17 +6,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.System;
 
 [ActionDiscriminator("delay")]
+[ActionInfo("Delay", "Set Delay", FluentIconType.Timer)]
 public class DelayAction : SystemBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Delay",
-        DialogTitle: "Set Delay",
-        Icon: FluentIconType.Timer
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private int _delayMs = 500;
     private bool _playTickEverySecond = false;
     private int _soundVolume = 50;
@@ -76,12 +67,4 @@ public class DelayAction : SystemBaseAction
             }
         }
     }
-
-    public override BaseAction Copy() => new DelayAction
-    {
-        Id = this.Id,
-        DelayMs = this.DelayMs,
-        PlayTickEverySecond = this.PlayTickEverySecond,
-        SoundVolume = this.SoundVolume
-    };
 }

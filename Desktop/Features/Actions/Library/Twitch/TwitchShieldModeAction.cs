@@ -9,17 +9,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.Twitch;
 
 [ActionDiscriminator("twitch_shield_mode")]
+[ActionInfo("Shield Mode", "Shield Mode Settings", FluentIconType.DefenderApp)]
 public class TwitchShieldModeAction : TwitchBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Shield Mode",
-        DialogTitle: "Shield Mode Settings",
-        Icon: FluentIconType.DefenderApp
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _shieldModeState = "Toggle";
 
     [DropdownField("State", typeof(TwitchShieldModeStateOptionsProvider), Hint = "Select action...")]
@@ -33,9 +25,6 @@ public class TwitchShieldModeAction : TwitchBaseAction
                 OnPropertyChanged(nameof(Label));
         }
     }
-
-    [JsonIgnore]
-    public override string Label => $"{Metadata.Name} ({ShieldModeState})";
 
     public override async Task ExecuteAsync(object? data = null)
     {
@@ -78,10 +67,4 @@ public class TwitchShieldModeAction : TwitchBaseAction
             Debug.WriteLine($"[Twitch Shield Mode] Error: {ex.Message}");
         }
     }
-
-    public override BaseAction Copy() => new TwitchShieldModeAction
-    {
-        Id = this.Id,
-        ShieldModeState = this.ShieldModeState
-    };
 }

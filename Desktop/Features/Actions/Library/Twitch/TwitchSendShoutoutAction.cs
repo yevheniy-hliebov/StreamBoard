@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Controls.Icons;
@@ -9,17 +8,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.Twitch;
 
 [ActionDiscriminator("twitch_send_shoutout")]
+[ActionInfo("Send Shoutout", "Send Shoutout Settings", FluentIconType.People)]
 public class TwitchSendShoutoutAction : TwitchBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Send Shoutout",
-        DialogTitle: "Send Shoutout Settings",
-        Icon: FluentIconType.People
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _username = string.Empty;
 
     [InputField("Username", Hint = "Enter username...")]
@@ -32,19 +23,6 @@ public class TwitchSendShoutoutAction : TwitchBaseAction
             _username = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(Label));
-        }
-    }
-
-    [JsonIgnore]
-    public override string Label
-    {
-        get
-        {
-            if (string.IsNullOrEmpty(Username))
-            {
-                return Metadata.Name;
-            }
-            return $"{Metadata.Name} ({Username})";
         }
     }
 
@@ -78,10 +56,4 @@ public class TwitchSendShoutoutAction : TwitchBaseAction
             throw;
         }
     }
-
-    public override BaseAction Copy() => new TwitchSendShoutoutAction
-    {
-        Id = this.Id,
-        Username = this.Username
-    };
 }

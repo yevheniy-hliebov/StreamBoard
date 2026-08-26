@@ -2,24 +2,15 @@ using Microsoft.Extensions.DependencyInjection;
 using OBSWebsocketDotNet;
 using StreamTabula.Controls.Icons;
 using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Features.Actions.Models;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace StreamTabula.Features.Actions.Library.Obs;
 
 [ActionDiscriminator("obs_stream")]
+[ActionInfo("Stream", "Stream Settings", FluentIconType.Streaming)]
 public class StreamAction : ObsBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Stream",
-        DialogTitle: "Stream Settings",
-        Icon: FluentIconType.Streaming
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _streamState = "Toggle";
 
     [DropdownField("State", typeof(ObsOutputStateOptionsProvider), Hint = "Select stream state...")]
@@ -61,10 +52,4 @@ public class StreamAction : ObsBaseAction
 
         await Task.CompletedTask;
     }
-
-    public override BaseAction Copy() => new StreamAction
-    {
-        Id = this.Id,
-        StreamState = this.StreamState
-    };
 }

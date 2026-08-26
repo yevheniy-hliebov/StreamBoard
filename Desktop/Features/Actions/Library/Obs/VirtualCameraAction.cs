@@ -2,24 +2,15 @@ using Microsoft.Extensions.DependencyInjection;
 using OBSWebsocketDotNet;
 using StreamTabula.Controls.Icons;
 using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Features.Actions.Models;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace StreamTabula.Features.Actions.Library.Obs;
 
 [ActionDiscriminator("obs_virtual_camera")]
+[ActionInfo("Virtual Camera", "Virtual Camera Settings", FluentIconType.Video)]
 public class VirtualCameraAction : ObsBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Virtual Camera",
-        DialogTitle: "Virtual Camera Settings",
-        Icon: FluentIconType.Video
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _cameraState = "Toggle";
 
     [DropdownField("State", typeof(ObsOutputStateOptionsProvider), Hint = "Select camera state...")]
@@ -29,9 +20,6 @@ public class VirtualCameraAction : ObsBaseAction
         get => _cameraState;
         set => SetProperty(ref _cameraState, value);
     }
-
-    [JsonIgnore]
-    public override string Label => $"{Metadata.Name} ({CameraState})";
 
     public override async Task ExecuteAsync(object? data = null)
     {
@@ -61,10 +49,4 @@ public class VirtualCameraAction : ObsBaseAction
 
         await Task.CompletedTask;
     }
-
-    public override BaseAction Copy() => new VirtualCameraAction
-    {
-        Id = this.Id,
-        CameraState = this.CameraState
-    };
 }

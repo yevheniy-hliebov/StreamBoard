@@ -1,24 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using StreamTabula.Controls.Icons;
 using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Decks.Services;
 using System.Text.Json.Serialization;
 
 namespace StreamTabula.Features.Actions.Library.DeckNavigation
 {
     [ActionDiscriminator("deck_navigation_grid_switch_page")]
+    [ActionInfo("Switch Page (Grid)", "Jump to a specific grid page", FluentIconType.Switch)]
     public class SwitchPageActionGrid : DeckNavigationBaseAction
     {
-        public static readonly ActionMetadata StaticMetadata = new(
-            Name: "Switch Page (Grid)",
-            DialogTitle: "Jump to a specific grid page",
-            Icon: FluentIconType.Switch
-        );
-
-        [JsonIgnore]
-        public override ActionMetadata Metadata => StaticMetadata;
-
         [JsonPropertyName("target_page_id")]
         public string TargetPageId { get; set; } = string.Empty;
 
@@ -73,11 +64,5 @@ namespace StreamTabula.Features.Actions.Library.DeckNavigation
             }
             return Task.CompletedTask;
         }
-
-        public override BaseAction Copy() => new SwitchPageActionGrid
-        {
-            Id = this.Id,
-            TargetPageId = this.TargetPageId
-        };
     }
 }

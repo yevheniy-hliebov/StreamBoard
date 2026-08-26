@@ -1,7 +1,5 @@
 using System.Diagnostics;
-using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Controls.Icons;
@@ -9,17 +7,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.Twitch;
 
 [ActionDiscriminator("twitch_clear_chat")]
+[ActionInfo("Clear Chat", "Clear Chat Settings", FluentIconType.Delete)]
 public class TwitchClearChatAction : TwitchBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Clear Chat",
-        DialogTitle: "Clear Chat Settings",
-        Icon: FluentIconType.Delete
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     public override async Task ExecuteAsync(object? data = null)
     {
         try
@@ -43,6 +33,4 @@ public class TwitchClearChatAction : TwitchBaseAction
             throw;
         }
     }
-
-    public override BaseAction Copy() => new TwitchClearChatAction { Id = this.Id };
 }

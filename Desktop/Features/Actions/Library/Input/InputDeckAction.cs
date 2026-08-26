@@ -8,17 +8,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.Input;
 
 [ActionDiscriminator("text_string")]
+[ActionInfo("Text String", "Enter Text to Type", FluentIconType.Rename)]
 public class TextStringAction : InputBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Text String",
-        DialogTitle: "Enter Text to Type",
-        Icon: FluentIconType.Rename
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _textToType = "";
 
     [InputField("Text", Hint = "Enter text to type...")]
@@ -33,11 +25,6 @@ public class TextStringAction : InputBaseAction
             OnPropertyChanged(nameof(Label));
         }
     }
-
-    [JsonIgnore]
-    public override string Label => string.IsNullOrEmpty(TextToType)
-        ? Metadata.Name
-        : $"{Metadata.Name} (\"{TextToType}\")";
 
     private const int INPUT_KEYBOARD = 1;
     private const uint KEYEVENTF_UNICODE = 0x0004;
@@ -134,10 +121,4 @@ public class TextStringAction : InputBaseAction
 
         return Task.CompletedTask;
     }
-
-    public override BaseAction Copy() => new TextStringAction
-    {
-        Id = this.Id,
-        TextToType = this.TextToType
-    };
 }

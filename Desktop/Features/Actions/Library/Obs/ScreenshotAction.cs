@@ -4,6 +4,7 @@ using StreamTabula.Controls.Icons;
 using StreamTabula.Core.Services.Audio;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Actions.Models;
+using StreamTabula.Features.Actions.Models.OBS;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json.Serialization;
@@ -11,17 +12,9 @@ using System.Text.Json.Serialization;
 namespace StreamTabula.Features.Actions.Library.Obs;
 
 [ActionDiscriminator("obs_screenshot")]
-public class ScreenshotAction : ObsBaseAction
+[ActionInfo("Screenshot", "Screenshot Settings", FluentIconType.RectangularClipping)]
+public class ScreenshotAction : ObsBaseAction, IHasSceneName
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Screenshot",
-        DialogTitle: "Screenshot Settings",
-        Icon: FluentIconType.RectangularClipping
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private bool _captureActiveScene = true;
     private string _sceneName = string.Empty;
     private string _savePath = string.Empty;
@@ -128,13 +121,4 @@ public class ScreenshotAction : ObsBaseAction
             Debug.WriteLine($"[OBS Screenshot] {ex.Message}");
         }
     }
-
-    public override BaseAction Copy() => new ScreenshotAction
-    {
-        Id = this.Id,
-        CaptureActiveScene = this.CaptureActiveScene,
-        SceneName = this.SceneName,
-        SavePath = this.SavePath,
-        PlaySoundOnComplete = this.PlaySoundOnComplete
-    };
 }

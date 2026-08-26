@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Controls.Icons;
@@ -9,17 +8,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.Twitch;
 
 [ActionDiscriminator("twitch_send_chat_message")]
+[ActionInfo("Send Chat Message", "Send Chat Message Settings", FluentIconType.Message)]
 public class TwitchSendChatMessageAction : TwitchBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Send Chat Message",
-        DialogTitle: "Send Chat Message Settings",
-        Icon: FluentIconType.Message
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _username = string.Empty;
 
     [InputField("Channel Name", Hint = "Target username...", DefaultValueProvider = typeof(TwitchUsernameProvider))]
@@ -107,12 +98,4 @@ public class TwitchSendChatMessageAction : TwitchBaseAction
             throw;
         }
     }
-
-    public override BaseAction Copy() => new TwitchSendChatMessageAction
-    {
-        Id = this.Id,
-        Username = this.Username,
-        Message = this.Message,
-        UseBot = this.UseBot,
-    };
 }

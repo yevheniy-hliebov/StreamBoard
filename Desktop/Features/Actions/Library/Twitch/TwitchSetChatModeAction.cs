@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Integrations.Twitch.Services;
 using StreamTabula.Controls.Icons;
@@ -9,17 +8,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.Twitch;
 
 [ActionDiscriminator("twitch_set_chat_mode")]
+[ActionInfo("Set Chat Mode", "Set Chat Mode Settings", FluentIconType.ChatBubbles)]
 public class TwitchSetChatModeAction : TwitchBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Set Chat Mode",
-        DialogTitle: "Set Chat Mode Settings",
-        Icon: FluentIconType.ChatBubbles
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _chatMode = "Emote-Only";
     private bool _enableMode = true;
     private int _parameterValue = 0;
@@ -103,12 +94,4 @@ public class TwitchSetChatModeAction : TwitchBaseAction
             Debug.WriteLine($"Twitch set chat mode error: {ex.Message}");
         }
     }
-
-    public override BaseAction Copy() => new TwitchSetChatModeAction
-    {
-        Id = this.Id,
-        ChatMode = this.ChatMode,
-        EnableMode = this.EnableMode,
-        ParameterValue = this.ParameterValue
-    };
 }

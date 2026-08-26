@@ -7,17 +7,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.System;
 
 [ActionDiscriminator("open_folder")]
+[ActionInfo("Open Folder", "Enter Folder Path", FluentIconType.Folder)]
 public class OpenFolderAction : SystemBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Open Folder",
-        DialogTitle: "Enter Folder Path",
-        Icon: FluentIconType.Folder
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _folderPath = "";
 
     [PathField("Folder Path", PathSelectionType.Folder, Hint = "Enter folder path...")]
@@ -32,9 +24,6 @@ public class OpenFolderAction : SystemBaseAction
             OnPropertyChanged(nameof(Label));
         }
     }
-
-    [JsonIgnore]
-    public override string Label => string.IsNullOrEmpty(FolderPath) ? Metadata.Name : $"{Metadata.Name} ({FolderPath})";
 
     public override Task ExecuteAsync(object? data = null)
     {
@@ -57,10 +46,4 @@ public class OpenFolderAction : SystemBaseAction
 
         return Task.CompletedTask;
     }
-
-    public override BaseAction Copy() => new OpenFolderAction
-    {
-        Id = this.Id,
-        FolderPath = this.FolderPath
-    };
 }

@@ -7,17 +7,9 @@ using StreamTabula.Controls.Icons;
 namespace StreamTabula.Features.Actions.Library.System;
 
 [ActionDiscriminator("open_file")]
+[ActionInfo("Open File", "Enter File Path", FluentIconType.Document)]
 public class OpenFileAction : SystemBaseAction
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Open File",
-        DialogTitle: "Enter File Path",
-        Icon: FluentIconType.Document
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _filePath = "";
 
     [PathField("File Path", PathSelectionType.File, Hint = "Enter file path...")]
@@ -32,9 +24,6 @@ public class OpenFileAction : SystemBaseAction
             OnPropertyChanged(nameof(Label));
         }
     }
-
-    [JsonIgnore]
-    public override string Label => string.IsNullOrEmpty(FilePath) ? Metadata.Name : $"{Metadata.Name} ({FilePath})";
 
     public override Task ExecuteAsync(object? data = null)
     {
@@ -57,10 +46,4 @@ public class OpenFileAction : SystemBaseAction
 
         return Task.CompletedTask;
     }
-
-    public override BaseAction Copy() => new OpenFileAction
-    {
-        Id = this.Id,
-        FilePath = this.FilePath
-    };
 }

@@ -1,25 +1,17 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Controls.Icons;
 using OBSWebsocketDotNet;
+using StreamTabula.Features.Actions.Models.OBS;
 
 namespace StreamTabula.Features.Actions.Library.Obs;
 
 [ActionDiscriminator("obs_mute_source")]
-public class MuteSourceAction : ObsBaseAction
+[ActionInfo("Mute Source", "Mute Source Settings", FluentIconType.Mute)]
+public class MuteSourceAction : ObsBaseAction, IHasSceneName
 {
-    public static readonly ActionMetadata StaticMetadata = new(
-        Name: "Mute Source",
-        DialogTitle: "Mute Source Settings",
-        Icon: FluentIconType.Mute
-    );
-
-    [JsonIgnore]
-    public override ActionMetadata Metadata => StaticMetadata;
-
     private string _sceneName = string.Empty;
     private string _sourceName = string.Empty;
     private string _muteState = "Toggle";
@@ -46,20 +38,6 @@ public class MuteSourceAction : ObsBaseAction
     {
         get => _muteState;
         set => SetProperty(ref _muteState, value);
-    }
-
-    [JsonIgnore]
-    public override string Label
-    {
-        get
-        {
-            if (string.IsNullOrEmpty(SceneName) || string.IsNullOrEmpty(SourceName))
-            {
-                return Metadata.Name;
-            }
-
-            return $"{Metadata.Name} ({SceneName}, {SourceName}, {MuteState})";
-        }
     }
 
     public override async Task ExecuteAsync(object? data = null)
@@ -89,12 +67,4 @@ public class MuteSourceAction : ObsBaseAction
 
         await Task.CompletedTask;
     }
-
-    public override BaseAction Copy() => new MuteSourceAction
-    {
-        Id = this.Id,
-        SceneName = this.SceneName,
-        SourceName = this.SourceName,
-        MuteState = this.MuteState
-    };
 }
