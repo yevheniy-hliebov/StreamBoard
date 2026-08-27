@@ -8,7 +8,7 @@ namespace StreamTabula.Features.Actions.Services;
 
 public class ActionRegistry
 {
-    public List<ActionCategoryViewModel> Categories { get; private set; } = new();
+    public List<ActionCategoryViewModel> Categories { get; private set; } = [];
 
     public void RegisterActions()
     {
@@ -16,19 +16,26 @@ public class ActionRegistry
 
         var actionTypes = Assembly.GetExecutingAssembly()
             .GetTypes()
-            .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(BaseAction)));
+            .Where(t => t.IsClass
+                     && !t.IsAbstract
+                     && t.Namespace != null
+                     && t.Namespace.StartsWith("StreamTabula.Features.Actions.Library")
+                     && t.IsSubclassOf(typeof(BaseAction)));
 
         foreach (var type in actionTypes)
         {
-            if (Activator.CreateInstance(type) is not BaseAction tempInstance) continue;
+            var categoryAttribute = type.GetCustomAttribute<ActionCategoryAttribute>();
 
-            var attribute = type.GetCustomAttribute<ActionCategoryAttribute>();
+            string categoryName = categoryAttribute?.Name ?? GetRawCategoryFromNamespace(type.Namespace);
+            FluentIconType icon = categoryAttribute?.FluentIcon ?? FluentIconType.Folder;
+            IntegrationIconType? integrationIcon = categoryAttribute?.IntegrationIcon;
 
-            string categoryName = attribute?.Name ?? GetRawCategoryFromNamespace(type.Namespace);
-            FluentIconType icon = attribute?.FluentIcon ?? FluentIconType.Folder;
-            IntegrationIconType? integrationIcon = attribute?.IntegrationIcon;
+            var infoAttribute = type.GetCustomAttribute<ActionInfoAttribute>();
+            var metadata = infoAttribute != null
+                ? new ActionMetadata(infoAttribute.Name, infoAttribute.DialogTitle, infoAttribute.Icon)
+                : new ActionMetadata(type.Name, "Settings", FluentIconType.Settings);
 
-            var descriptor = new ActionDescriptor(categoryName, tempInstance.Metadata, type);
+            var descriptor = new ActionDescriptor(categoryName, metadata, type);
 
             if (!categoryMap.TryGetValue(categoryName, out var categoryVm))
             {
@@ -49,7 +56,7 @@ public class ActionRegistry
         Categories = categoryMap.Values.OrderBy(c => c.Name).ToList();
     }
 
-    private string GetRawCategoryFromNamespace(string? ns)
+    private static string GetRawCategoryFromNamespace(string? ns)
     {
         if (string.IsNullOrEmpty(ns)) return "Uncategorized";
         return ns.Split('.').Last();
