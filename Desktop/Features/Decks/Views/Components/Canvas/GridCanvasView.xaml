@@ -31,29 +31,25 @@
 
                 <dd:DraggableWrapper Payload="{Binding}">
                     <local:DeckButtonSlotView Margin="4"
-                                              ButtonBackground="{Binding Config.BackgroundColor, FallbackValue=#2B2B2B}"
+                                              Config="{Binding Config}"
                                               ButtonIndex="{Binding Index}"
-                                              ButtonName="{Binding Config.Name}"
-                                              Command="{Binding DataContext.ClickButtonCommand, ElementName=Root}"
+                                              IsSelected="{Binding IsSelected}"
+                                              Command="{Binding DataContext.ClickButtonCommand, RelativeSource={RelativeSource AncestorType=local:GridCanvasView}}"
                                               CommandParameter="{Binding}"
-                                              Cursor="Hand"
-                                              ImagePath="{Binding Config.ImagePath}"
-                                              IsSelected="{Binding IsSelected}" />
+                                              Cursor="Hand" />
                 </dd:DraggableWrapper>
 
             </dd:DropWrapper>
         </DataTemplate>
 
         <DataTemplate x:Key="ClickModeTemplate">
-            <local:DeckButtonSlotView Margin="6"
-                                      ButtonBackground="{Binding Config.BackgroundColor, FallbackValue=#2B2B2B}"
+            <local:DeckButtonSlotView Margin="4"
+                                      Config="{Binding Config}"
                                       ButtonIndex="{Binding Index}"
-                                      ButtonName="{Binding Config.Name}"
-                                      Command="{Binding DataContext.ClickButtonCommand, ElementName=Root}"
+                                      IsSelected="{Binding IsSelected}"
+                                      Command="{Binding DataContext.ClickButtonCommand, RelativeSource={RelativeSource AncestorType=local:GridCanvasView}}"
                                       CommandParameter="{Binding}"
-                                      Cursor="Hand"
-                                      ImagePath="{Binding Config.ImagePath}"
-                                      IsSelected="{Binding IsSelected}" />
+                                      Cursor="Hand" />
         </DataTemplate>
     </UserControl.Resources>
 
@@ -138,11 +134,11 @@
                       IsEnabled="{Binding DataContext.EditorState.IsEditorMode, RelativeSource={RelativeSource AncestorType=Page}}" />
 
             <inputs:LabeledToggle Grid.Column="2"
-                                    Margin="12"
-                                    VerticalAlignment="Center"
-                                    IsChecked="{Binding DataContext.EditorState.IsClickMode, RelativeSource={RelativeSource AncestorType=Page}}"
-                                    ToggleOffText="Editor Mode"
-                                    ToggleOnText="Click Mode" />
+                                  Margin="12"
+                                  VerticalAlignment="Center"
+                                  IsChecked="{Binding DataContext.EditorState.IsClickMode, RelativeSource={RelativeSource AncestorType=Page}}"
+                                  ToggleOffText="Editor Mode"
+                                  ToggleOnText="Click Mode" />
         </Grid>
 
     </Grid>
