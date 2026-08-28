@@ -5,11 +5,11 @@ using StreamTabula.Features.Actions.Attributes;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace StreamTabula.Features.Actions.Library.Obs;
+namespace StreamTabula.Features.Actions.Library.OBS;
 
 [ActionDiscriminator("obs_stream")]
 [ActionInfo("Stream", "Stream Settings", FluentIconType.Streaming)]
-public class StreamAction : ObsBaseAction
+public class OBSStreamAction : OBSBaseAction
 {
     private string _streamState = "Toggle";
 

@@ -5,11 +5,11 @@ using StreamTabula.Features.Actions.Attributes;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace StreamTabula.Features.Actions.Library.Obs;
+namespace StreamTabula.Features.Actions.Library.OBS;
 
 [ActionDiscriminator("obs_virtual_camera")]
 [ActionInfo("Virtual Camera", "Virtual Camera Settings", FluentIconType.Video)]
-public class VirtualCameraAction : ObsBaseAction
+public class OBSVirtualCameraAction : OBSBaseAction
 {
     private string _cameraState = "Toggle";
 

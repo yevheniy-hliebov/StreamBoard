@@ -2,22 +2,21 @@ using Microsoft.Extensions.DependencyInjection;
 using OBSWebsocketDotNet;
 using StreamTabula.Controls.Icons;
 using StreamTabula.Features.Actions.Attributes;
-using StreamTabula.Features.Actions.Models.OBS;
 using StreamTabula.Features.Integrations.OBS.Services;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace StreamTabula.Features.Actions.Library.Obs;
+namespace StreamTabula.Features.Actions.Library.OBS;
 
 [ActionDiscriminator("obs_source_visibility")]
 [ActionInfo("Source Visibility", "Source Visibility Settings", FluentIconType.View)]
-public class SourceVisibilityAction : ObsBaseAction, IHasSceneName
+public class OBSSourceVisibilityAction : OBSBaseAction, IHasSceneName
 {
     private string _sceneName = string.Empty;
     private string _sourceName = string.Empty;
     private string _visibilityState = "Toggle";
 
-    [DropdownField("Scene", typeof(ObsSceneOptionsProvider), Hint = "Select scene...")]
+    [DropdownField("Scene", typeof(OBSSceneOptionsProvider), Hint = "Select scene...")]
     [JsonPropertyName("scene_name")]
     public string SceneName
     {

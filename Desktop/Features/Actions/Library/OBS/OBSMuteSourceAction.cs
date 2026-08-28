@@ -4,19 +4,18 @@ using Microsoft.Extensions.DependencyInjection;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Controls.Icons;
 using OBSWebsocketDotNet;
-using StreamTabula.Features.Actions.Models.OBS;
 
-namespace StreamTabula.Features.Actions.Library.Obs;
+namespace StreamTabula.Features.Actions.Library.OBS;
 
 [ActionDiscriminator("obs_mute_source")]
 [ActionInfo("Mute Source", "Mute Source Settings", FluentIconType.Mute)]
-public class MuteSourceAction : ObsBaseAction, IHasSceneName
+public class OBSMuteSourceAction : OBSBaseAction, IHasSceneName
 {
     private string _sceneName = string.Empty;
     private string _sourceName = string.Empty;
     private string _muteState = "Toggle";
 
-    [DropdownField("Scene", typeof(ObsSceneOptionsProvider), Hint = "Select scene...")]
+    [DropdownField("Scene", typeof(OBSSceneOptionsProvider), Hint = "Select scene...")]
     [JsonPropertyName("scene_name")]
     public string SceneName
     {

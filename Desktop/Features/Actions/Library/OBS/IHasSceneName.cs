@@ -1,4 +1,4 @@
-﻿namespace StreamTabula.Features.Actions.Models.OBS;
+﻿namespace StreamTabula.Features.Actions.Library.OBS;
 
 public interface IHasSceneName
 {

@@ -5,11 +5,11 @@ using StreamTabula.Features.Actions.Attributes;
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace StreamTabula.Features.Actions.Library.Obs;
+namespace StreamTabula.Features.Actions.Library.OBS;
 
 [ActionDiscriminator("obs_record")]
 [ActionInfo("Record", "Record Settings", FluentIconType.Record)]
-public class RecordAction : ObsBaseAction
+public class OBSRecordAction : OBSBaseAction
 {
     private string _recordState = "Toggle";
 

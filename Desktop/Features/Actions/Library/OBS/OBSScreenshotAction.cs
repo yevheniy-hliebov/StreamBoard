@@ -4,16 +4,15 @@ using StreamTabula.Controls.Icons;
 using StreamTabula.Core.Services.Audio;
 using StreamTabula.Features.Actions.Attributes;
 using StreamTabula.Features.Actions.Models;
-using StreamTabula.Features.Actions.Models.OBS;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json.Serialization;
 
-namespace StreamTabula.Features.Actions.Library.Obs;
+namespace StreamTabula.Features.Actions.Library.OBS;
 
 [ActionDiscriminator("obs_screenshot")]
 [ActionInfo("Screenshot", "Screenshot Settings", FluentIconType.RectangularClipping)]
-public class ScreenshotAction : ObsBaseAction, IHasSceneName
+public class OBSScreenshotAction : OBSBaseAction, IHasSceneName
 {
     private bool _captureActiveScene = true;
     private string _sceneName = string.Empty;
@@ -32,7 +31,7 @@ public class ScreenshotAction : ObsBaseAction, IHasSceneName
         }
     }
 
-    [DropdownField("Scene", typeof(ObsSceneOptionsProvider), Hint = "Select scene if not capturing active...")]
+    [DropdownField("Scene", typeof(OBSSceneOptionsProvider), Hint = "Select scene if not capturing active...")]
     [JsonPropertyName("scene_name")]
     public string SceneName
     {

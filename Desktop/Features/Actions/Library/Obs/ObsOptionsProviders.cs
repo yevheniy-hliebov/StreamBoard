@@ -1,14 +1,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using OBSWebsocketDotNet;
 using StreamTabula.Features.Actions.Models;
-using StreamTabula.Features.Actions.Models.OBS;
 using StreamTabula.Features.Integrations.OBS.Models;
 using StreamTabula.Features.Integrations.OBS.Services;
 using System.Diagnostics;
 
-namespace StreamTabula.Features.Actions.Library.Obs;
+namespace StreamTabula.Features.Actions.Library.OBS;
 
-public class ObsSceneOptionsProvider : IOptionsProvider
+public class OBSSceneOptionsProvider : IOptionsProvider
 {
     public IEnumerable<object> GetOptions(BaseAction action)
     {
