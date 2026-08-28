@@ -1,6 +1,8 @@
-﻿using StreamTabula.Core.Services;
+﻿using StreamTabula.Core.Serialization;
+using StreamTabula.Core.Services;
 using StreamTabula.Features.Decks.Models;
 using System.Collections.ObjectModel;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace StreamTabula.Features.Decks.Services
@@ -120,6 +122,20 @@ namespace StreamTabula.Features.Decks.Services
                 Name = payload.Name
             };
 
+            if (payload.Buttons != null)
+            {
+                foreach (var button in payload.Buttons.Values)
+                {
+                    if (button.Actions != null)
+                    {
+                        foreach (var action in button.Actions)
+                        {
+                            action.RegenerateId();
+                        }
+                    }
+                }
+            }
+
             _profile.ButtonMaps[newPage.Id] = payload.Buttons ?? [];
             _profile.PagesState.AllPages.Add(newPage);
 
@@ -159,7 +175,20 @@ namespace StreamTabula.Features.Decks.Services
 
             if (_profile.ButtonMaps.TryGetValue(id, out var originalButtons))
             {
-                var clonedButtons = new Dictionary<string, DeckButtonConfig>(originalButtons);
+                var json = JsonSerializer.Serialize(originalButtons, GlobalJsonOptions.Default);
+                var clonedButtons = JsonSerializer.Deserialize<Dictionary<string, DeckButtonConfig>>(json, GlobalJsonOptions.Default) ?? [];
+
+                foreach (var button in clonedButtons.Values)
+                {
+                    if (button.Actions != null)
+                    {
+                        foreach (var action in button.Actions)
+                        {
+                            action.RegenerateId();
+                        }
+                    }
+                }
+
                 _profile.ButtonMaps[newPage.Id] = clonedButtons;
             }
             else

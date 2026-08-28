@@ -126,6 +126,14 @@ namespace StreamTabula.Features.Decks.Services
             var newConfig = _clipboardService.Paste<DeckButtonConfig>();
             if (newConfig == null) return;
 
+            if (newConfig.Actions != null)
+            {
+                foreach (var action in newConfig.Actions)
+                {
+                    action.RegenerateId();
+                }
+            }
+
             var map = GetCurrentButtonMap();
             map[index.ToString()] = newConfig;
 
