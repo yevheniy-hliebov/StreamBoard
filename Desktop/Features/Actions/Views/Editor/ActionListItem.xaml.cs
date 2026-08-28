@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace StreamTabula.Features.Actions.Views.Components.Editor;
+namespace StreamTabula.Features.Actions.Views.Editor;
 
 public partial class ActionListItem : UserControl
 {

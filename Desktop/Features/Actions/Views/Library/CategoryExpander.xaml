@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="StreamTabula.Features.Actions.Views.Components.Library.CategoryExpander"
+    x:Class="StreamTabula.Features.Actions.Views.Library.CategoryExpander"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:icons="clr-namespace:StreamTabula.Controls.Icons"

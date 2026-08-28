@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="StreamTabula.Features.Actions.Views.Components.Editor.ActionListItem"
+    x:Class="StreamTabula.Features.Actions.Views.Editor.ActionListItem"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:inputs="clr-namespace:StreamTabula.Controls.Inputs"

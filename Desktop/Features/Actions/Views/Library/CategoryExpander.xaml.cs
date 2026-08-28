@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace StreamTabula.Features.Actions.Views.Components.Library;
+namespace StreamTabula.Features.Actions.Views.Library;
 
 public partial class CategoryExpander : UserControl
 {

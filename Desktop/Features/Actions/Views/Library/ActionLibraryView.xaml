@@ -1,11 +1,11 @@
 ﻿<UserControl
-    x:Class="StreamTabula.Features.Actions.Views.Components.Library.ActionLibraryView"
+    x:Class="StreamTabula.Features.Actions.Views.Library.ActionLibraryView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:icons="clr-namespace:StreamTabula.Controls.Icons"
     xmlns:dd="clr-namespace:CustomDragDropLib;assembly=CustomDragDropLib"
     xmlns:layout="clr-namespace:StreamTabula.Features.Decks.Views.Components.Layout"
-    xmlns:local="clr-namespace:StreamTabula.Features.Actions.Views.Components.Library"
+    xmlns:local="clr-namespace:StreamTabula.Features.Actions.Views.Library"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:vm="clr-namespace:StreamTabula.Features.Decks.ViewModels">
 

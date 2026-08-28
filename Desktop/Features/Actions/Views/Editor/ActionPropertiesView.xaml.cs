@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace StreamTabula.Features.Actions.Views.Components.Editor
+namespace StreamTabula.Features.Actions.Views.Editor
 {
     public partial class ActionPropertiesView : UserControl
     {

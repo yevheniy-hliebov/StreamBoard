@@ -2,7 +2,7 @@ using GongSolutions.Wpf.DragDrop;
 using StreamTabula.Core.Mvvm;
 using StreamTabula.Features.Actions.Models;
 using StreamTabula.Features.Actions.Services;
-using StreamTabula.Features.Actions.Views.Components.Editor;
+using StreamTabula.Features.Actions.Views.Editor;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Wpf.Ui.Input;
