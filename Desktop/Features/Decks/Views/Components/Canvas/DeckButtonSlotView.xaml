@@ -35,6 +35,10 @@
             <MouseBinding Command="{Binding Command, ElementName=Root}"
                           CommandParameter="{Binding CommandParameter, ElementName=Root}"
                           MouseAction="LeftClick" />
+
+            <MouseBinding Command="{Binding Command, ElementName=Root}"
+                          CommandParameter="{Binding CommandParameter, ElementName=Root}"
+                          MouseAction="LeftDoubleClick" />
         </Grid.InputBindings>
 
         <layout:SmoothBorder CornerRadius="12"

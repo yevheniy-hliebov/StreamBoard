@@ -1,16 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using StreamTabula.Features.Decks.ViewModels;
+﻿using StreamTabula.Features.Decks.ViewModels;
 using System.Windows.Controls;
 
-namespace StreamTabula.Features.Decks.Views.Pages
-{
-    public partial class GridDeckPage : Page
-    {
-        public GridDeckPage()
-        {
-            InitializeComponent();
+namespace StreamTabula.Features.Decks.Views.Pages;
 
-            this.DataContext = App.ServiceProvider.GetRequiredService<GridDeckViewModel>();
-        }
+public partial class GridDeckPage : Page
+{
+    public GridDeckPage(GridDeckViewModel viewModel)
+    {
+        InitializeComponent();
+        DataContext = viewModel;
     }
 }

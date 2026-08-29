@@ -3,22 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:inputs="clr-namespace:StreamTabula.Controls.Inputs"
              xmlns:dd="clr-namespace:CustomDragDropLib;assembly=CustomDragDropLib"
+             xmlns:layout="clr-namespace:StreamTabula.Controls.Layout"
              xmlns:local="clr-namespace:StreamTabula.Features.Decks.Views.Components.Canvas"
-             xmlns:models="clr-namespace:StreamTabula.Features.Decks.Models"
              x:Name="Root">
 
     <UserControl.InputBindings>
         <KeyBinding Modifiers="Ctrl"
                     Key="C"
-                    Command="{Binding CopyCommand}" />
+                    Command="{Binding CopyCommand, ElementName=Root}" />
         <KeyBinding Modifiers="Ctrl"
                     Key="V"
-                    Command="{Binding PasteCommand}" />
+                    Command="{Binding PasteCommand, ElementName=Root}" />
         <KeyBinding Modifiers="Ctrl"
                     Key="X"
-                    Command="{Binding CutCommand}" />
+                    Command="{Binding CutCommand, ElementName=Root}" />
         <KeyBinding Key="Delete"
-                    Command="{Binding DeleteCommand}" />
+                    Command="{Binding DeleteCommand, ElementName=Root}" />
     </UserControl.InputBindings>
 
     <UserControl.Resources>
@@ -34,7 +34,7 @@
                                               Config="{Binding Config}"
                                               ButtonIndex="{Binding Index}"
                                               IsSelected="{Binding IsSelected}"
-                                              Command="{Binding DataContext.ClickButtonCommand, RelativeSource={RelativeSource AncestorType=local:GridCanvasView}}"
+                                              Command="{Binding ClickButtonCommand, RelativeSource={RelativeSource AncestorType=local:GridCanvasView}}"
                                               CommandParameter="{Binding}"
                                               Cursor="Hand" />
                 </dd:DraggableWrapper>
@@ -43,11 +43,11 @@
         </DataTemplate>
 
         <DataTemplate x:Key="ClickModeTemplate">
-            <local:DeckButtonSlotView Margin="4"
+            <local:DeckButtonSlotView Margin="6"
                                       Config="{Binding Config}"
                                       ButtonIndex="{Binding Index}"
                                       IsSelected="{Binding IsSelected}"
-                                      Command="{Binding DataContext.ClickButtonCommand, RelativeSource={RelativeSource AncestorType=local:GridCanvasView}}"
+                                      Command="{Binding ClickButtonCommand, RelativeSource={RelativeSource AncestorType=local:GridCanvasView}}"
                                       CommandParameter="{Binding}"
                                       Cursor="Hand" />
         </DataTemplate>
@@ -60,34 +60,22 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Canvas x:Name="Viewport"
-                Grid.Row="0"
-                Grid.RowSpan="2"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="Transparent"
-                ClipToBounds="True">
-
-            <Border x:Name="DeckSurface"
-                    Padding="16"
+        <layout:PannableWorkspace Grid.Row="0"
+                                  Grid.RowSpan="2">
+            <Border Padding="16"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{DynamicResource TextFillColorPrimaryBrush}"
                     BorderThickness="1"
-                    CornerRadius="8"
-                    RenderTransformOrigin="0,0">
+                    CornerRadius="8">
 
-                <Border.RenderTransform>
-                    <TranslateTransform x:Name="PanTransform" />
-                </Border.RenderTransform>
+                <ItemsControl ItemsSource="{Binding Buttons, RelativeSource={RelativeSource AncestorType=local:GridCanvasView}}">
 
-
-                <ItemsControl ItemsSource="{Binding Buttons}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Columns="{Binding CanvasConfig.SelectedGrid.Columns}"
-                                         Rows="{Binding CanvasConfig.SelectedGrid.Rows}" />
+                            <UniformGrid Columns="{Binding CanvasConfig.SelectedGrid.Columns, RelativeSource={RelativeSource AncestorType=local:GridCanvasView}}"
+                                         Rows="{Binding CanvasConfig.SelectedGrid.Rows, RelativeSource={RelativeSource AncestorType=local:GridCanvasView}}" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
@@ -99,7 +87,7 @@
                                         <Setter Property="ContentTemplate"
                                                 Value="{StaticResource EditorModeTemplate}" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding DataContext.EditorState.IsClickMode, RelativeSource={RelativeSource AncestorType=Page}}"
+                                            <DataTrigger Binding="{Binding IsClickMode, RelativeSource={RelativeSource AncestorType=local:GridCanvasView}}"
                                                          Value="True">
                                                 <Setter Property="ContentTemplate"
                                                         Value="{StaticResource ClickModeTemplate}" />
@@ -113,7 +101,7 @@
 
                 </ItemsControl>
             </Border>
-        </Canvas>
+        </layout:PannableWorkspace>
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -122,24 +110,22 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-
             <ComboBox Grid.Column="0"
                       Width="110"
                       Margin="12"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
                       DisplayMemberPath="Name"
-                      ItemsSource="{Binding CanvasConfig.Grids}"
-                      SelectedItem="{Binding CanvasConfig.SelectedGrid, Mode=TwoWay}"
-                      IsEnabled="{Binding DataContext.EditorState.IsEditorMode, RelativeSource={RelativeSource AncestorType=Page}}" />
+                      ItemsSource="{Binding CanvasConfig.Grids, ElementName=Root}"
+                      SelectedItem="{Binding CanvasConfig.SelectedGrid, ElementName=Root, Mode=TwoWay}"
+                      IsEnabled="{Binding IsEditorMode, ElementName=Root}" />
 
             <inputs:LabeledToggle Grid.Column="2"
                                   Margin="12"
                                   VerticalAlignment="Center"
-                                  IsChecked="{Binding DataContext.EditorState.IsClickMode, RelativeSource={RelativeSource AncestorType=Page}}"
+                                  IsChecked="{Binding IsClickMode, ElementName=Root}"
                                   ToggleOffText="Editor Mode"
                                   ToggleOnText="Click Mode" />
         </Grid>
-
     </Grid>
 </UserControl>
