@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="StreamTabula.Controls.Layout.SmoothBorder"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="Root">
+
+    <Grid>
+        <Border Background="{Binding BorderBrush, ElementName=Root}"
+                CornerRadius="{Binding CornerRadius, ElementName=Root}" />
+
+        <Border Margin="{Binding BorderThickness, ElementName=Root}"
+                Background="{Binding Background, ElementName=Root}"
+                CornerRadius="{Binding InnerCornerRadius, ElementName=Root}" />
+
+        <Border Margin="{Binding BorderThickness, ElementName=Root}"
+                Background="{Binding OverlayBrush, ElementName=Root}"
+                CornerRadius="{Binding InnerCornerRadius, ElementName=Root}">
+
+            <ContentPresenter Content="{Binding InnerContent, ElementName=Root}"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch" />
+        </Border>
+    </Grid>
+
+</UserControl>
