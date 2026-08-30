@@ -1,20 +1,22 @@
 ﻿using StreamTabula.Controls.Icons;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace StreamTabula.Features.Actions.Views.Library;
 
+[ContentProperty(nameof(InnerContent))]
 public partial class CategoryExpander : UserControl
 {
     public CategoryExpander() => InitializeComponent();
 
-    public string Title
+    public string Category
     {
-        get => (string)GetValue(TitleProperty);
-        set => SetValue(TitleProperty, value);
+        get => (string)GetValue(CategoryProperty);
+        set => SetValue(CategoryProperty, value);
     }
-    public static readonly DependencyProperty TitleProperty =
-        DependencyProperty.Register("Title", typeof(string), typeof(CategoryExpander), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty CategoryProperty =
+        DependencyProperty.Register("Category", typeof(string), typeof(CategoryExpander), new PropertyMetadata(string.Empty));
 
     public FluentIconType Icon
     {

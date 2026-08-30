@@ -1,33 +1,31 @@
-﻿<UserControl
-    x:Class="StreamTabula.Features.Actions.Views.Library.ActionLibraryView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:icons="clr-namespace:StreamTabula.Controls.Icons"
-    xmlns:dd="clr-namespace:CustomDragDropLib;assembly=CustomDragDropLib"
-    xmlns:layout="clr-namespace:StreamTabula.Features.Decks.Views.Components.Layout"
-    xmlns:local="clr-namespace:StreamTabula.Features.Actions.Views.Library"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:vm="clr-namespace:StreamTabula.Features.Decks.ViewModels">
+﻿<UserControl x:Class="StreamTabula.Features.Actions.Views.Library.ActionLibraryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:icons="clr-namespace:StreamTabula.Controls.Icons"
+             xmlns:dd="clr-namespace:CustomDragDropLib;assembly=CustomDragDropLib"
+             xmlns:layout="clr-namespace:StreamTabula.Features.Decks.Views.Components.Layout"
+             xmlns:local="clr-namespace:StreamTabula.Features.Actions.Views.Library"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             x:Name="Root">
 
     <UserControl.Resources>
         <DataTemplate x:Key="ActionGhostTemplate">
-            <Border
-                Padding="4,2"
-                Background="#2B2B2B"
-                BorderBrush="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                BorderThickness="1"
-                CornerRadius="6"
-                Opacity="0.95">
+            <Border Padding="4,2"
+                    Background="#2B2B2B"
+                    BorderBrush="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                    BorderThickness="1"
+                    CornerRadius="6"
+                    Opacity="0.95">
 
                 <Border.Effect>
-                    <DropShadowEffect
-                        BlurRadius="10"
-                        Direction="315"
-                        Opacity="0.4"
-                        ShadowDepth="4" />
+                    <DropShadowEffect BlurRadius="10"
+                                      Direction="315"
+                                      Opacity="0.4"
+                                      ShadowDepth="4" />
                 </Border.Effect>
 
-                <local:ActionLibraryItem Icon="{Binding Metadata.Icon}" Text="{Binding Metadata.Name}" />
+                <local:ActionLibraryItem Icon="{Binding Metadata.Icon}"
+                                         Text="{Binding Metadata.Name}" />
             </Border>
         </DataTemplate>
     </UserControl.Resources>
@@ -40,11 +38,10 @@
 
         <layout:DeckSidebarHeader Title="Action Library">
             <layout:DeckSidebarHeader.BottomContent>
-                <ui:TextBox
-                    Margin="8,0,8,8"
-                    ClearButtonEnabled="True"
-                    PlaceholderText="Search actions..."
-                    Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ui:TextBox Margin="8,0,8,8"
+                            ClearButtonEnabled="True"
+                            PlaceholderText="Search actions..."
+                            Text="{Binding SearchText, RelativeSource={RelativeSource AncestorType=local:ActionLibraryView}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ui:TextBox.Icon>
                         <icons:FluentIcon IconType="Search" />
                     </ui:TextBox.Icon>
@@ -52,33 +49,33 @@
             </layout:DeckSidebarHeader.BottomContent>
         </layout:DeckSidebarHeader>
 
-        <ScrollViewer
-            Grid.Row="1"
-            Margin="0,4,0,0"
-            VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding FilteredCategories}">
+        <ScrollViewer Grid.Row="1"
+                      Margin="0,4,0,0"
+                      VerticalScrollBarVisibility="Auto">
+
+            <ItemsControl ItemsSource="{Binding Categories, ElementName=Root}">
+
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <local:CategoryExpander
-                            Title="{Binding Name}"
-                            Margin="0,0,0,4"
-                            Icon="{Binding Icon}"
-                            IntegrationIcon="{Binding IntegrationIcon}"
-                            IsExpanded="{Binding IsExpanded}">
-                            <local:CategoryExpander.InnerContent>
-                                <ItemsControl ItemsSource="{Binding Actions}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <dd:DraggableWrapper GhostTemplate="{StaticResource ActionGhostTemplate}" Payload="{Binding}">
-                                                <local:ActionLibraryItem
-                                                    Margin="12,0,0,0"
-                                                    Icon="{Binding Metadata.Icon}"
-                                                    Text="{Binding Metadata.Name}" />
-                                            </dd:DraggableWrapper>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </local:CategoryExpander.InnerContent>
+                        <local:CategoryExpander Category="{Binding Name}"
+                                                Margin="0,0,0,4"
+                                                Icon="{Binding Icon}"
+                                                IntegrationIcon="{Binding IntegrationIcon}"
+                                                IsExpanded="{Binding IsExpanded}">
+
+                            <ItemsControl ItemsSource="{Binding Actions}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <dd:DraggableWrapper GhostTemplate="{StaticResource ActionGhostTemplate}"
+                                                             Payload="{Binding}">
+                                            <local:ActionLibraryItem Margin="12,0,0,0"
+                                                                     Icon="{Binding Metadata.Icon}"
+                                                                     Text="{Binding Metadata.Name}" />
+                                        </dd:DraggableWrapper>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
                         </local:CategoryExpander>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

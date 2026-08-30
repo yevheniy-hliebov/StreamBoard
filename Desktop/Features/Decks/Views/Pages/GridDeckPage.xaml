@@ -46,7 +46,8 @@
         </layout:DeckEditorLayout.PropertiesContent>
 
         <layout:DeckEditorLayout.LibraryContent>
-            <action_library:ActionLibraryView DataContext="{Binding Library}" />
+            <action_library:ActionLibraryView SearchText="{Binding Library.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              Categories="{Binding Library.FilteredCategories}" />
         </layout:DeckEditorLayout.LibraryContent>
 
     </layout:DeckEditorLayout>
