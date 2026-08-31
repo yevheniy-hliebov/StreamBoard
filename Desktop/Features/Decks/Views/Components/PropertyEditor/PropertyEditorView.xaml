@@ -4,7 +4,6 @@
              xmlns:ae="clr-namespace:StreamTabula.Features.Actions.Views.Editor"
              xmlns:inputs="clr-namespace:StreamTabula.Controls.Inputs"
              xmlns:layout="clr-namespace:StreamTabula.Features.Decks.Views.Components.Layout"
-             xmlns:local="clr-namespace:StreamTabula.Features.Decks.Views.Components.PropertyEditor"
              xmlns:colorpicker="clr-namespace:StreamTabula.Controls.ColorPicker"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
 
@@ -92,7 +91,7 @@
                                 Margin="8">
                         <Label Margin="0,0,0,4"
                                Content="Button Image" />
-                        <local:ImagePicker HorizontalAlignment="Left"
+                        <inputs:ImagePicker HorizontalAlignment="Left"
                                            ImagePath="{Binding Canvas.SelectedButton.Config.ImagePath}" />
                     </StackPanel>
 
