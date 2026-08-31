@@ -4,7 +4,7 @@
       xmlns:action_library="clr-namespace:StreamTabula.Features.Actions.Views.Library"
       xmlns:canvas="clr-namespace:StreamTabula.Features.Decks.Views.Components.Canvas"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:deck_profile="clr-namespace:StreamTabula.Features.Decks.Views.Components.DeckProfile"
+      xmlns:deck_page_list="clr-namespace:StreamTabula.Features.Decks.Views.Components.PageList"
       xmlns:layout="clr-namespace:StreamTabula.Features.Decks.Views.Components.Layout"
       xmlns:local="clr-namespace:StreamTabula.Features.Decks.Views.Pages"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -26,7 +26,19 @@
                              IsClickMode="{Binding EditorState.IsClickMode}">
 
         <layout:DeckEditorLayout.LeftBarContent>
-            <deck_profile:DeckProfilyView DataContext="{Binding Pages}" />
+            <deck_page_list:DeckPageListView AllPages="{Binding Pages.AllPages}"
+                                             SelectedPage="{Binding Pages.SelectedPage, Mode=TwoWay}"
+                                             IsEditorMode="{Binding EditorState.IsEditorMode}"
+                                             IsRenameMode="{Binding Pages.IsRenameMode}"
+                                             DropHandler="{Binding Pages}"
+                                             AddPageCommand="{Binding Pages.AddPageCommand}"
+                                             CopyPageCommand="{Binding Pages.CopyPageCommand}"
+                                             PastePageCommand="{Binding Pages.PastePageCommand}"
+                                             CutPageCommand="{Binding Pages.CutPageCommand}"
+                                             DuplicatePageCommand="{Binding Pages.DuplicatePageCommand}"
+                                             RenamePageCommand="{Binding Pages.RenamePageCommand}"
+                                             DeletePageCommand="{Binding Pages.DeletePageCommand}"
+                                             EndRenameCommand="{Binding Pages.EndRenameCommand}" />
         </layout:DeckEditorLayout.LeftBarContent>
 
         <layout:DeckEditorLayout.CanvasContent>

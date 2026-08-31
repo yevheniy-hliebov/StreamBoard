@@ -1,0 +1,120 @@
+﻿<UserControl x:Class="StreamTabula.Features.Decks.Views.Components.PageList.DeckPageListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:inputs="clr-namespace:StreamTabula.Controls.Inputs"
+             xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+             xmlns:layout="clr-namespace:StreamTabula.Features.Decks.Views.Components.Layout"
+             xmlns:local="clr-namespace:StreamTabula.Features.Decks.Views.Components.PageList"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:reorder="clr-namespace:StreamTabula.Controls.Lists"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             x:Name="Root">
+
+    <UserControl.InputBindings>
+        <KeyBinding Modifiers="Ctrl"
+                    Key="C"
+                    Command="{Binding CopyPageCommand, ElementName=Root}" />
+        <KeyBinding Modifiers="Ctrl"
+                    Key="V"
+                    Command="{Binding PastePageCommand, ElementName=Root}" />
+        <KeyBinding Modifiers="Ctrl"
+                    Key="X"
+                    Command="{Binding CutPageCommand, ElementName=Root}" />
+        <KeyBinding Modifiers="Ctrl"
+                    Key="D"
+                    Command="{Binding DuplicatePageCommand, ElementName=Root}" />
+        <KeyBinding Modifiers="Ctrl"
+                    Key="R"
+                    Command="{Binding RenamePageCommand, ElementName=Root}" />
+        <KeyBinding Key="Delete"
+                    Command="{Binding DeletePageCommand, ElementName=Root}" />
+    </UserControl.InputBindings>
+
+    <Grid VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <layout:DeckSidebarHeader Title="Pages"
+                                  Grid.Row="0">
+            <layout:DeckSidebarHeader.RightContent>
+                <StackPanel Orientation="Horizontal">
+                    <inputs:IconButton Command="{Binding AddPageCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DeckPageListView}}}"
+                                       IconType="Add"
+                                       TooltipText="Add New Page" />
+
+                    <inputs:IconButton Margin="8,0,0,0"
+                                       Command="{Binding DuplicatePageCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DeckPageListView}}}"
+                                       IconType="Copy"
+                                       TooltipText="Duplicate Page" />
+
+                    <inputs:IconButton Margin="8,0,0,0"
+                                       Command="{Binding RenamePageCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DeckPageListView}}}"
+                                       IconType="Rename"
+                                       TooltipText="Rename Page" />
+
+                    <inputs:IconButton Margin="8,0,0,0"
+                                       Command="{Binding DeletePageCommand, RelativeSource={RelativeSource AncestorType={x:Type local:DeckPageListView}}}"
+                                       IconType="Delete"
+                                       TooltipText="Delete Page" />
+                </StackPanel>
+            </layout:DeckSidebarHeader.RightContent>
+        </layout:DeckSidebarHeader>
+
+        <ScrollViewer Grid.Row="1"
+                      Padding="5"
+                      CanContentScroll="True"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+
+            <reorder:ReorderListView IsDragEnabled="{Binding IsEditorMode, ElementName=Root}"
+                                     dd:DragDrop.DropHandler="{Binding DropHandler, ElementName=Root}"
+                                     HorizontalContentAlignment="Stretch"
+                                     ItemsSource="{Binding AllPages, ElementName=Root}"
+                                     SelectedItem="{Binding SelectedPage, ElementName=Root, Mode=TwoWay}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                <reorder:ReorderListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ui:ListViewItem}"
+                           BasedOn="{StaticResource {x:Type ui:ListViewItem}}">
+                        <Setter Property="HorizontalContentAlignment"
+                                Value="Stretch" />
+                        <Setter Property="Padding"
+                                Value="0" />
+                    </Style>
+                </reorder:ReorderListView.ItemContainerStyle>
+
+                <reorder:ReorderListView.ItemTemplate>
+                    <DataTemplate>
+                        <reorder:ReorderListItemWrapper ShowDragHandle="True"
+                                                        UseDragHandle="True"
+                                                        Margin="8,4">
+                            <local:DeckPageItem Title="{Binding Name, Mode=TwoWay}"
+                                                EndEditCommand="{Binding EndRenameCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                <local:DeckPageItem.Style>
+                                    <Style TargetType="local:DeckPageItem">
+                                        <Setter Property="IsEditing"
+                                                Value="False" />
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListViewItem}}"
+                                                               Value="True" />
+                                                    <Condition Binding="{Binding IsRenameMode, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                               Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEditing"
+                                                        Value="True" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </local:DeckPageItem.Style>
+                            </local:DeckPageItem>
+                        </reorder:ReorderListItemWrapper>
+                    </DataTemplate>
+                </reorder:ReorderListView.ItemTemplate>
+            </reorder:ReorderListView>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
