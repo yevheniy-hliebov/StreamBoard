@@ -138,7 +138,7 @@
 
                 <ae:ActionListView Grid.Row="1"
                                    Margin="8"
-                                   DataContext="{Binding Editor.ActionList}" />
+                                   ViewModel="{Binding Editor.ActionList}" />
             </Grid>
         </Grid>
     </Grid>

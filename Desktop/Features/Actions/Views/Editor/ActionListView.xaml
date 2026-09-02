@@ -6,38 +6,16 @@
              xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
              xmlns:local="clr-namespace:StreamTabula.Features.Actions.Views.Editor"
              xmlns:reorder="clr-namespace:StreamTabula.Controls.Lists"
-             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
-
-    <UserControl.InputBindings>
-        <KeyBinding Modifiers="Ctrl"
-                    Key="C"
-                    Command="{Binding CopyActionCommand}"
-                    CommandParameter="{Binding SelectedAction.Id}" />
-
-        <KeyBinding Modifiers="Ctrl"
-                    Key="X"
-                    Command="{Binding CutActionCommand}"
-                    CommandParameter="{Binding SelectedAction.Id}" />
-
-        <KeyBinding Modifiers="Ctrl"
-                    Key="D"
-                    Command="{Binding DuplicateActionCommand}"
-                    CommandParameter="{Binding SelectedAction.Id}" />
-
-        <KeyBinding Key="Delete"
-                    Command="{Binding DeleteActionCommand}"
-                    CommandParameter="{Binding SelectedAction.Id}" />
-
-        <KeyBinding Modifiers="Ctrl"
-                    Key="V"
-                    Command="{Binding PasteActionCommand}" />
-    </UserControl.InputBindings>
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             x:Name="Root">
 
     <cdd:DropWrapper Margin="0"
                      Padding="2"
                      DragOverBackground="Transparent"
                      DragOverBorderBrush="{DynamicResource AccentTextFillColorPrimaryBrush}"
+                     DataContext="{Binding ViewModel, ElementName=Root}"
                      DropCommand="{Binding ReceiveActionDropCommand}">
+
         <layout:ConstrainedScrollBorder>
 
             <reorder:ReorderListView SelectedItem="{Binding SelectedAction, Mode=TwoWay}"
@@ -48,26 +26,43 @@
                                      ItemsSource="{Binding Actions}"
                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
+                <reorder:ReorderListView.InputBindings>
+                    <KeyBinding Modifiers="Ctrl"
+                                Key="C"
+                                Command="{Binding CopyActionCommand}"
+                                CommandParameter="{Binding SelectedAction.Id}" />
+                    <KeyBinding Modifiers="Ctrl"
+                                Key="X"
+                                Command="{Binding CutActionCommand}"
+                                CommandParameter="{Binding SelectedAction.Id}" />
+                    <KeyBinding Modifiers="Ctrl"
+                                Key="D"
+                                Command="{Binding DuplicateActionCommand}"
+                                CommandParameter="{Binding SelectedAction.Id}" />
+                    <KeyBinding Key="Delete"
+                                Command="{Binding DeleteActionCommand}"
+                                CommandParameter="{Binding SelectedAction.Id}" />
+                    <KeyBinding Modifiers="Ctrl"
+                                Key="V"
+                                Command="{Binding PasteActionCommand}" />
+                </reorder:ReorderListView.InputBindings>
+
                 <reorder:ReorderListView.ItemTemplate>
                     <DataTemplate>
                         <reorder:ReorderListItemWrapper ShowDragHandle="True"
                                                         UseDragHandle="True">
+
                             <local:ActionListItem ActionId="{Binding Id}"
-                                                  DeleteCommand="{Binding DataContext.DeleteActionCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
                                                   Icon="{Binding Metadata.Icon}"
-                                                  Text="{Binding FullLabel}">
+                                                  Text="{Binding FullLabel}"
+                                                  DeleteCommand="{Binding DataContext.DeleteActionCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
+                                                  EditCommand="{Binding DataContext.OpenEditDialogCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}" />
 
-                                <local:ActionListItem.InputBindings>
-                                    <MouseBinding Command="{Binding DataContext.OpenEditDialogCommand, RelativeSource={RelativeSource AncestorType=reorder:ReorderListView}}"
-                                                  CommandParameter="{Binding Id}"
-                                                  MouseAction="LeftDoubleClick" />
-                                </local:ActionListItem.InputBindings>
-
-                            </local:ActionListItem>
                         </reorder:ReorderListItemWrapper>
                     </DataTemplate>
                 </reorder:ReorderListView.ItemTemplate>
             </reorder:ReorderListView>
+
         </layout:ConstrainedScrollBorder>
     </cdd:DropWrapper>
 </UserControl>
